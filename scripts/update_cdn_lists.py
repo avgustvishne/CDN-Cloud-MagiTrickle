@@ -195,7 +195,8 @@ def main():
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
-        "version": VERSION, "updated": now, "ripe_min_peers": MIN_PEERS,\n        "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
+        "version": VERSION, "updated": now, "ripe_min_peers": MIN_PEERS,
+        "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
         "max_provider_prefixes": MAX_PROVIDER_PREFIXES, "global_only": True,
