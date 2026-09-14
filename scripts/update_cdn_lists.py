@@ -5,17 +5,17 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 7
+VERSION = 8
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 5
-RETRIES = 4
-TIMEOUT = 45
+RETRIES = 5
+TIMEOUT = 30
 RETRY_BASE = 2
 MAX_PROVIDER_PREFIXES = 50000
-MIN_PREFIXES = {"aws": 20, "cloudflare": 5, "akamai": 10, "default": 1}
+MIN_CHANGE_RATIO = 0.50
+MIN_PREFIXES = {"aws": 20, "cloudflare": 5, "akamai": 10, "fastly": 5, "gcore": 10, "backblaze": 1, "default": 1}
 
-# Stable fallback for providers that publish a small fixed edge range set.
 STATIC = {
     "backblaze": [
         "45.11.36.0/22",
@@ -57,13 +57,11 @@ def jsonget(url):
 
 
 def ripe(asn):
-    query = urllib.parse.urlencode(
-        {
-            "resource": "AS" + asn,
-            "min_peers_seeing": MIN_PEERS,
-            "sourceapp": "CDN-Cloud-MagiTrickle",
-        }
-    )
+    query = urllib.parse.urlencode({
+        "resource": "AS" + asn,
+        "min_peers_seeing": MIN_PEERS,
+        "sourceapp": "CDN-Cloud-MagiTrickle",
+    })
     payload = jsonget(RIPE + "?" + query)
     return [x.get("prefix", "") for x in payload.get("data", {}).get("prefixes", [])]
 
@@ -82,13 +80,9 @@ def walk_strings(obj):
 def official(name):
     if name == "aws":
         obj = jsonget("https://ip-ranges.amazonaws.com/ip-ranges.json")
-        return [x["ip_prefix"] for x in obj.get("prefixes", [])] + [
-            x["ipv6_prefix"] for x in obj.get("ipv6_prefixes", [])
-        ]
+        return [x["ip_prefix"] for x in obj.get("prefixes", [])] + [x["ipv6_prefix"] for x in obj.get("ipv6_prefixes", [])]
     if name == "cloudflare":
-        return request("https://www.cloudflare.com/ips-v4/").decode().splitlines() + request(
-            "https://www.cloudflare.com/ips-v6/"
-        ).decode().splitlines()
+        return request("https://www.cloudflare.com/ips-v4/").decode().splitlines() + request("https://www.cloudflare.com/ips-v6/").decode().splitlines()
     if name == "fastly":
         return list(walk_strings(jsonget("https://api.fastly.com/public-ip-list")))
     if name == "gcore":
@@ -98,23 +92,19 @@ def official(name):
     return []
 
 
-def nets(values, version):
+def nets(values, version, global_only=True):
     parsed = set()
     for value in values:
         try:
-            net = (
-                value
-                if isinstance(value, (ipaddress.IPv4Network, ipaddress.IPv6Network))
-                else ipaddress.ip_network(str(value).strip(), strict=False)
-            )
-            if net.version == version:
-                parsed.add(net)
+            net = value if isinstance(value, (ipaddress.IPv4Network, ipaddress.IPv6Network)) else ipaddress.ip_network(str(value).strip(), strict=False)
+            if net.version != version:
+                continue
+            if global_only and not net.is_global:
+                continue
+            parsed.add(net)
         except Exception:
             continue
-    return sorted(
-        ipaddress.collapse_addresses(parsed),
-        key=lambda net: (int(net.network_address), net.prefixlen),
-    )
+    return sorted(ipaddress.collapse_addresses(parsed), key=lambda net: (int(net.network_address), net.prefixlen))
 
 
 def atomic(path, networks):
@@ -182,20 +172,32 @@ def main():
         v4, v6 = nets(raw, 4), nets(raw, 6)
         old4 = DATA / f"{name}-v4.txt"
         old6 = DATA / f"{name}-v6.txt"
+        prev4 = load_previous(old4, 4)
+        prev6 = load_previous(old6, 6)
         minimum = MIN_PREFIXES.get(name, 1)
         status = "OK"
         used_fallback = False
 
-        # Reject clearly broken upstream responses and preserve the last good data.
-        if len(v4) < minimum or len(v4) > MAX_PROVIDER_PREFIXES:
-            prev4 = load_previous(old4, 4)
-            prev6 = load_previous(old6, 6)
-            if prev4:
-                v4, v6 = prev4, (prev6 if prev6 else v6)
-                status = "KEEP_OLD"
+        suspicious = len(v4) < minimum or len(v4) > MAX_PROVIDER_PREFIXES
+        if prev4 and len(v4) < int(len(prev4) * MIN_CHANGE_RATIO):
+            suspicious = True
+
+        if suspicious and prev4:
+            v4 = prev4
+            v6 = prev6 if prev6 else v6
+            status = "KEEP_OLD"
+            used_fallback = True
+        elif suspicious and not prev4:
+            status = "EMPTY" if not v4 else "ANOMALY"
+
+        if errors:
+            if prev4 and (len(v4) < len(prev4)):
+                v4 = prev4
+                v6 = prev6 if prev6 else v6
+                status = "KEEP_OLD_PARTIAL"
                 used_fallback = True
-            elif len(v4) == 0:
-                status = "EMPTY"
+            elif status == "OK":
+                status = "PARTIAL"
 
         if not used_fallback:
             atomic(old4, v4)
@@ -204,22 +206,19 @@ def main():
         source = "+".join(dict.fromkeys(sources)) or "none"
         all4.extend(v4)
         all6.extend(v6)
-        rows.append(
-            {
-                "name": name,
-                "ipv4": len(v4),
-                "ipv6": len(v6),
-                "source": source,
-                "status": status,
-                "errors": errors[:10],
-            }
-        )
+        rows.append({
+            "name": name,
+            "ipv4": len(v4),
+            "ipv6": len(v6),
+            "source": source,
+            "status": status,
+            "errors": errors[:10],
+        })
         print(f"{name}: v4={len(v4)} v6={len(v6)} {source} {status}")
         if errors:
             print(f"  warnings: {len(errors)}")
 
-    all4 = nets(all4, 4)
-    all6 = nets(all6, 6)
+    all4, all6 = nets(all4, 4), nets(all6, 6)
     if not all4:
         sys.exit("[FATAL] no aggregate IPv4")
 
@@ -233,7 +232,9 @@ def main():
         "ripe_min_peers": MIN_PEERS,
         "retries": RETRIES,
         "timeout_seconds": TIMEOUT,
+        "min_change_ratio": MIN_CHANGE_RATIO,
         "max_provider_prefixes": MAX_PROVIDER_PREFIXES,
+        "global_only": True,
         "aggregate": {"ipv4": len(all4), "ipv6": len(all6)},
         "providers": {
             row["name"]: {
@@ -249,14 +250,12 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
 
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
-    checksum_text = "\n".join(
-        f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files
-    ) + "\n"
+    checksum_text = "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n"
     write_text_atomic(DATA / "checksums.sha256", checksum_text)
 
     summary = [
         f"Updated: {now}",
-        "V7: quality gates + source tracking + resilient retries + keep-old + atomic writes + SHA256",
+        "V8: global-only filtering + anomaly shield + partial-source detection + resilient retries + keep-old + atomic writes + SHA256",
         f"ALL IPv4: {len(all4)}",
         f"ALL IPv6: {len(all6)}",
         "",
