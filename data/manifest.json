@@ -1,11 +1,10 @@
 {
-  "version": 23,
-  "updated": "2026-09-14 22:58:06 UTC",
+  "version": 25,
+  "updated": "2026-09-14 23:02:02 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official",
-    "RIPEstat",
-    "RouteViews"
+    "RIPEstat"
   ],
   "provider_asn_counts": {
     "aws": 2,
@@ -39,75 +38,33 @@
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 11594,
-    "ipv6": 4261
+    "ipv4": 11588,
+    "ipv6": 4195
   },
   "providers": {
     "aws": {
       "ipv4": 5290,
-      "ipv6": 1492,
+      "ipv6": 1491,
       "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 5975,
-      "routeviews_ipv6": 1072,
-      "crosscheck": {
-        "ripe_ipv4": 5290,
-        "routeviews_ipv4": 5975,
-        "ripe_ipv6": 1491,
-        "routeviews_ipv6": 1072,
-        "only_ripe_ipv4": 490,
-        "only_routeviews_ipv4": 1175,
-        "only_ripe_ipv6": 428,
-        "only_routeviews_ipv6": 9,
-        "common_ipv4": 4800,
-        "common_ipv6": 1063
-      }
+      "rejected_ipv6": 0
     },
     "cloudflare": {
-      "ipv4": 653,
-      "ipv6": 115,
+      "ipv4": 652,
+      "ipv6": 114,
       "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 963,
-      "routeviews_ipv6": 1645,
-      "crosscheck": {
-        "ripe_ipv4": 652,
-        "routeviews_ipv4": 963,
-        "ripe_ipv6": 114,
-        "routeviews_ipv6": 1645,
-        "only_ripe_ipv4": 32,
-        "only_routeviews_ipv4": 343,
-        "only_ripe_ipv6": 45,
-        "only_routeviews_ipv6": 1576,
-        "common_ipv4": 620,
-        "common_ipv6": 69
-      }
+      "rejected_ipv6": 0
     },
     "hetzner": {
-      "ipv4": 87,
+      "ipv4": 85,
       "ipv6": 6,
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 87,
-      "routeviews_ipv6": 6,
-      "crosscheck": {
-        "ripe_ipv4": 85,
-        "routeviews_ipv4": 87,
-        "ripe_ipv6": 6,
-        "routeviews_ipv6": 6,
-        "only_ripe_ipv4": 0,
-        "only_routeviews_ipv4": 2,
-        "only_ripe_ipv6": 0,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 85,
-        "common_ipv6": 6
-      }
+      "rejected_ipv6": 0
     },
     "ovh": {
       "ipv4": 631,
@@ -115,43 +72,15 @@
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 608,
-      "routeviews_ipv6": 4,
-      "crosscheck": {
-        "ripe_ipv4": 631,
-        "routeviews_ipv4": 608,
-        "ripe_ipv6": 4,
-        "routeviews_ipv6": 4,
-        "only_ripe_ipv4": 23,
-        "only_routeviews_ipv4": 0,
-        "only_ripe_ipv6": 0,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 608,
-        "common_ipv6": 4
-      }
+      "rejected_ipv6": 0
     },
     "akamai": {
-      "ipv4": 322,
-      "ipv6": 237,
+      "ipv4": 321,
+      "ipv6": 231,
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 321,
-      "routeviews_ipv6": 237,
-      "crosscheck": {
-        "ripe_ipv4": 321,
-        "routeviews_ipv4": 321,
-        "ripe_ipv6": 231,
-        "routeviews_ipv6": 237,
-        "only_ripe_ipv4": 2,
-        "only_routeviews_ipv4": 2,
-        "only_ripe_ipv6": 6,
-        "only_routeviews_ipv6": 12,
-        "common_ipv4": 319,
-        "common_ipv6": 225
-      }
+      "rejected_ipv6": 0
     },
     "digitalocean": {
       "ipv4": 196,
@@ -159,21 +88,7 @@
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 196,
-      "routeviews_ipv6": 13,
-      "crosscheck": {
-        "ripe_ipv4": 196,
-        "routeviews_ipv4": 196,
-        "ripe_ipv6": 13,
-        "routeviews_ipv6": 13,
-        "only_ripe_ipv4": 0,
-        "only_routeviews_ipv4": 0,
-        "only_ripe_ipv6": 0,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 196,
-        "common_ipv6": 13
-      }
+      "rejected_ipv6": 0
     },
     "microsoft": {
       "ipv4": 937,
@@ -181,43 +96,15 @@
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 935,
-      "routeviews_ipv6": 95,
-      "crosscheck": {
-        "ripe_ipv4": 937,
-        "routeviews_ipv4": 935,
-        "ripe_ipv6": 95,
-        "routeviews_ipv6": 95,
-        "only_ripe_ipv4": 2,
-        "only_routeviews_ipv4": 0,
-        "only_ripe_ipv6": 0,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 935,
-        "common_ipv6": 95
-      }
+      "rejected_ipv6": 0
     },
     "oracle": {
-      "ipv4": 1194,
-      "ipv6": 312,
+      "ipv4": 1193,
+      "ipv6": 311,
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 1186,
-      "routeviews_ipv6": 310,
-      "crosscheck": {
-        "ripe_ipv4": 1193,
-        "routeviews_ipv4": 1186,
-        "ripe_ipv6": 311,
-        "routeviews_ipv6": 310,
-        "only_ripe_ipv4": 8,
-        "only_routeviews_ipv4": 1,
-        "only_ripe_ipv6": 2,
-        "only_routeviews_ipv6": 1,
-        "common_ipv4": 1185,
-        "common_ipv6": 309
-      }
+      "rejected_ipv6": 0
     },
     "alibaba": {
       "ipv4": 626,
@@ -225,21 +112,7 @@
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 614,
-      "routeviews_ipv6": 181,
-      "crosscheck": {
-        "ripe_ipv4": 626,
-        "routeviews_ipv4": 614,
-        "ripe_ipv6": 183,
-        "routeviews_ipv6": 181,
-        "only_ripe_ipv4": 24,
-        "only_routeviews_ipv4": 12,
-        "only_ripe_ipv6": 2,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 602,
-        "common_ipv6": 181
-      }
+      "rejected_ipv6": 0
     },
     "cdn77": {
       "ipv4": 187,
@@ -247,43 +120,15 @@
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 187,
-      "routeviews_ipv6": 33,
-      "crosscheck": {
-        "ripe_ipv4": 187,
-        "routeviews_ipv4": 187,
-        "ripe_ipv6": 33,
-        "routeviews_ipv6": 33,
-        "only_ripe_ipv4": 0,
-        "only_routeviews_ipv4": 0,
-        "only_ripe_ipv6": 0,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 187,
-        "common_ipv6": 33
-      }
+      "rejected_ipv6": 0
     },
     "fastly": {
       "ipv4": 48,
-      "ipv6": 41,
+      "ipv6": 42,
       "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 113,
-      "routeviews_ipv6": 577,
-      "crosscheck": {
-        "ripe_ipv4": 48,
-        "routeviews_ipv4": 113,
-        "ripe_ipv6": 42,
-        "routeviews_ipv6": 577,
-        "only_ripe_ipv4": 11,
-        "only_routeviews_ipv4": 76,
-        "only_ripe_ipv6": 3,
-        "only_routeviews_ipv6": 538,
-        "common_ipv4": 37,
-        "common_ipv6": 39
-      }
+      "rejected_ipv6": 0
     },
     "melbicom": {
       "ipv4": 99,
@@ -291,21 +136,7 @@
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 99,
-      "routeviews_ipv6": 18,
-      "crosscheck": {
-        "ripe_ipv4": 99,
-        "routeviews_ipv4": 99,
-        "ripe_ipv6": 18,
-        "routeviews_ipv6": 18,
-        "only_ripe_ipv4": 0,
-        "only_routeviews_ipv4": 0,
-        "only_ripe_ipv6": 0,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 99,
-        "common_ipv6": 18
-      }
+      "rejected_ipv6": 0
     },
     "buyvm": {
       "ipv4": 23,
@@ -313,43 +144,15 @@
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 23,
-      "routeviews_ipv6": 27,
-      "crosscheck": {
-        "ripe_ipv4": 23,
-        "routeviews_ipv4": 23,
-        "ripe_ipv6": 27,
-        "routeviews_ipv6": 27,
-        "only_ripe_ipv4": 0,
-        "only_routeviews_ipv4": 0,
-        "only_ripe_ipv6": 0,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 23,
-        "common_ipv6": 27
-      }
+      "rejected_ipv6": 0
     },
     "vultr": {
-      "ipv4": 703,
-      "ipv6": 1468,
+      "ipv4": 702,
+      "ipv6": 1410,
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 639,
-      "routeviews_ipv6": 476,
-      "crosscheck": {
-        "ripe_ipv4": 702,
-        "routeviews_ipv4": 639,
-        "ripe_ipv6": 1410,
-        "routeviews_ipv6": 476,
-        "only_ripe_ipv4": 69,
-        "only_routeviews_ipv4": 6,
-        "only_ripe_ipv6": 1135,
-        "only_routeviews_ipv6": 201,
-        "common_ipv4": 633,
-        "common_ipv6": 275
-      }
+      "rejected_ipv6": 0
     },
     "contabo": {
       "ipv4": 250,
@@ -357,21 +160,7 @@
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 250,
-      "routeviews_ipv6": 2,
-      "crosscheck": {
-        "ripe_ipv4": 250,
-        "routeviews_ipv4": 250,
-        "ripe_ipv6": 2,
-        "routeviews_ipv6": 2,
-        "only_ripe_ipv4": 0,
-        "only_routeviews_ipv4": 0,
-        "only_ripe_ipv6": 0,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 250,
-        "common_ipv6": 2
-      }
+      "rejected_ipv6": 0
     },
     "scaleway": {
       "ipv4": 14,
@@ -379,21 +168,7 @@
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 14,
-      "routeviews_ipv6": 1,
-      "crosscheck": {
-        "ripe_ipv4": 14,
-        "routeviews_ipv4": 14,
-        "ripe_ipv6": 1,
-        "routeviews_ipv6": 1,
-        "only_ripe_ipv4": 0,
-        "only_routeviews_ipv4": 0,
-        "only_ripe_ipv6": 0,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 14,
-        "common_ipv6": 1
-      }
+      "rejected_ipv6": 0
     },
     "gcore": {
       "ipv4": 572,
@@ -401,21 +176,7 @@
       "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 354,
-      "routeviews_ipv6": 50,
-      "crosscheck": {
-        "ripe_ipv4": 572,
-        "routeviews_ipv4": 354,
-        "ripe_ipv6": 222,
-        "routeviews_ipv6": 50,
-        "only_ripe_ipv4": 220,
-        "only_routeviews_ipv4": 2,
-        "only_ripe_ipv6": 172,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 352,
-        "common_ipv6": 50
-      }
+      "rejected_ipv6": 0
     },
     "backblaze": {
       "ipv4": 5,
@@ -423,21 +184,7 @@
       "source": "static",
       "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "routeviews_ipv4": 0,
-      "routeviews_ipv6": 0,
-      "crosscheck": {
-        "ripe_ipv4": 5,
-        "routeviews_ipv4": 0,
-        "ripe_ipv6": 1,
-        "routeviews_ipv6": 0,
-        "only_ripe_ipv4": 5,
-        "only_routeviews_ipv4": 0,
-        "only_ripe_ipv6": 1,
-        "only_routeviews_ipv6": 0,
-        "common_ipv4": 0,
-        "common_ipv6": 0
-      }
+      "rejected_ipv6": 0
     }
   }
 }
