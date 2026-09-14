@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 9
+VERSION = 11
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 5
@@ -24,6 +24,8 @@ TIMEOUT = 30
 RETRY_BASE = 2
 MAX_PROVIDER_PREFIXES = 50000
 MIN_CHANGE_RATIO = 0.50
+MIN_CHANGE_RATIO_V6 = 0.35
+MAX_AGGREGATE_PREFIXES = 200000
 MIN_PREFIXLEN = {4: 8, 6: 16}
 MIN_PREFIXES = {"aws": 20, "cloudflare": 5, "akamai": 10, "fastly": 5, "gcore": 10, "backblaze": 1, "default": 1}
 
@@ -137,15 +139,22 @@ def sha256(path):
 def main():
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     all4, all6, rows = [], [], []
+    seen_asns = set()
     for name, asns in cfg["providers"].items():
         raw, sources, errors = [], [], []
+        unique_asns = []
+        for asn in asns:
+            if asn not in seen_asns:
+                seen_asns.add(asn); unique_asns.append(asn)
+            else:
+                errors.append(f"duplicate ASN ignored: AS{asn}")
         try:
             raw = official(name)
             if raw: sources.append("official" if name not in STATIC else "static")
         except Exception as exc:
             errors.append("official:" + str(exc))
         if not raw:
-            for asn in asns:
+            for asn in unique_asns:
                 try:
                     raw.extend(ripe(asn)); sources.append("RIPEstat")
                 except Exception as exc:
@@ -156,8 +165,9 @@ def main():
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
         minimum = MIN_PREFIXES.get(name, MIN_PREFIXES["default"])
         status = "OK"; used_fallback = False
-        suspicious = len(v4) < minimum or len(v4) > MAX_PROVIDER_PREFIXES
+        suspicious = len(v4) < minimum or len(v4) > MAX_PROVIDER_PREFIXES or len(v6) > MAX_PROVIDER_PREFIXES
         if prev4 and len(v4) < int(len(prev4) * MIN_CHANGE_RATIO): suspicious = True
+        if prev6 and len(v6) < int(len(prev6) * MIN_CHANGE_RATIO_V6): suspicious = True
         if suspicious and prev4:
             v4, v6 = prev4, (prev6 if prev6 else v6); status = "KEEP_OLD"; used_fallback = True
         elif suspicious and not prev4:
@@ -178,11 +188,14 @@ def main():
         if rejected4 or rejected6: print(f"  filtered: ipv4={rejected4} ipv6={rejected6}")
     all4, _ = nets(all4, 4); all6, _ = nets(all6, 6)
     if not all4: sys.exit("[FATAL] no aggregate IPv4")
+    if len(all4) > MAX_AGGREGATE_PREFIXES or len(all6) > MAX_AGGREGATE_PREFIXES:
+        sys.exit("[FATAL] aggregate prefix count exceeds safety limit")
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": MIN_PEERS,
-        "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO,
+        "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
+        "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
         "max_provider_prefixes": MAX_PROVIDER_PREFIXES, "global_only": True,
         "min_prefixlen": {"ipv4": MIN_PREFIXLEN[4], "ipv6": MIN_PREFIXLEN[6]},
         "aggregate": {"ipv4": len(all4), "ipv6": len(all6)},
@@ -195,7 +208,7 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V9: global filtering + broad-prefix shield + anomaly protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V11: global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
 
