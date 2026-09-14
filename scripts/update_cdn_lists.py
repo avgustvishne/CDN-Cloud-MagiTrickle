@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 20
+VERSION = 21
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 ROUTEVIEWS = "https://api.routeviews.org/asn/"
@@ -73,9 +73,10 @@ def routeviews(asn, version):
         raise RuntimeError("unexpected RouteViews response")
     return [str(item) for item in payload if isinstance(item, str)]
 
-def web2core(asn, version):
+def web2core(asns, version):
     suffix = "v4" if version == 4 else "v6"
-    data = request(f"{WEB2CORE}AS{asn}?{suffix}").decode("utf-8", "replace")
+    resource = ",".join("AS" + str(asn) for asn in asns)
+    data = request(f"{WEB2CORE}{resource}?{suffix}").decode("utf-8", "replace")
     values = []
     for line in data.splitlines():
         line = line.strip()
@@ -223,12 +224,11 @@ def main():
 
         # Web2Core is audit-only: it is never trusted as a source for generated subscriptions.
         web4_raw, web6_raw, web_errors = [], [], []
-        for asn in unique_asns:
-            for version, target in ((4, web4_raw), (6, web6_raw)):
-                try:
-                    target.extend(web2core(asn, version))
-                except Exception as exc:
-                    web_errors.append(f"AS{asn}/v{version}:{exc}")
+        for version, target in ((4, web4_raw), (6, web6_raw)):
+            try:
+                target.extend(web2core(unique_asns, version))
+            except Exception as exc:
+                web_errors.append(f"provider/{name}/v{version}:{exc}")
         web4, web_rej4 = nets(web4_raw, 4); web6, web_rej6 = nets(web6_raw, 6)
         ov4 = overlap_count(web4, v4) if web4 and v4 else 0
         ov6 = overlap_count(web6, v6) if web6 and v6 else 0
@@ -292,7 +292,7 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V20: provider subscriptions + official sources + RIPEstat + RouteViews union + Web2Core audit + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V21: provider subscriptions + official sources + RIPEstat + RouteViews union + Web2Core audit + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     compare_lines = ["Provider,Web2CoreIPv4,GeneratedIPv4,IPv4Coverage%,Web2CoreIPv6,GeneratedIPv6,IPv6Coverage%,Web2CoreErrors"]
     for row in comparisons:
