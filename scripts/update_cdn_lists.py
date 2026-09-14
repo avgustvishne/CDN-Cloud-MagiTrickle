@@ -72,6 +72,9 @@ def routeviews(asn, version):
         raise RuntimeError("unexpected RouteViews response")
     return [str(item) for item in payload if isinstance(item, str)]
 
+def prefix_set(networks):
+    return set(map(str, networks))
+
 def address_count(networks):
     return sum(n.num_addresses for n in networks)
 
@@ -198,6 +201,15 @@ def main():
         rv4, _ = nets(rv4, 4); rv6, _ = nets(rv6, 6)
         v4, rejected4 = nets(list(ripe4) + list(rv4), 4)
         v6, rejected6 = nets(list(ripe6) + list(rv6), 6)
+        ripe4s, rv4s = prefix_set(ripe4), prefix_set(rv4)
+        ripe6s, rv6s = prefix_set(ripe6), prefix_set(rv6)
+        crosscheck = {
+            "ripe_ipv4": len(ripe4s), "routeviews_ipv4": len(rv4s),
+            "ripe_ipv6": len(ripe6s), "routeviews_ipv6": len(rv6s),
+            "only_ripe_ipv4": len(ripe4s - rv4s), "only_routeviews_ipv4": len(rv4s - ripe4s),
+            "only_ripe_ipv6": len(ripe6s - rv6s), "only_routeviews_ipv6": len(rv6s - ripe6s),
+            "common_ipv4": len(ripe4s & rv4s), "common_ipv6": len(ripe6s & rv6s),
+        }
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
 
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
@@ -220,7 +232,7 @@ def main():
             atomic(old4, v4); atomic(old6, v6)
         source = "+".join(dict.fromkeys(sources)) or "none"
         all4.extend(v4); all6.extend(v6)
-        rows.append({"name": name, "ipv4": len(v4), "ipv6": len(v6), "source": source, "status": status, "errors": errors[:10], "rejected_ipv4": rejected4, "rejected_ipv6": rejected6, "routeviews_ipv4": len(rv4), "routeviews_ipv6": len(rv6)})
+        rows.append({"name": name, "ipv4": len(v4), "ipv6": len(v6), "source": source, "status": status, "errors": errors[:10], "rejected_ipv4": rejected4, "rejected_ipv6": rejected6, "routeviews_ipv4": len(rv4), "routeviews_ipv6": len(rv6), "crosscheck": crosscheck})
         print(f"{name}: v4={len(v4)} v6={len(v6)} {source} {status}")
         if errors: print(f"  warnings: {len(errors)}")
         if rejected4 or rejected6: print(f"  filtered: ipv4={rejected4} ipv6={rejected6}")
@@ -240,7 +252,7 @@ def main():
         "aggregate": {"ipv4": len(all4), "ipv6": len(all6)},
         "providers": {row["name"]: {
             "ipv4": row["ipv4"], "ipv6": row["ipv6"], "source": row["source"],
-            "status": row["status"], "rejected_ipv4": row["rejected_ipv4"], "rejected_ipv6": row["rejected_ipv6"], "routeviews_ipv4": row.get("routeviews_ipv4", 0), "routeviews_ipv6": row.get("routeviews_ipv6", 0),
+            "status": row["status"], "rejected_ipv4": row["rejected_ipv4"], "rejected_ipv6": row["rejected_ipv6"], "routeviews_ipv4": row.get("routeviews_ipv4", 0), "routeviews_ipv6": row.get("routeviews_ipv6", 0), "crosscheck": row.get("crosscheck", {}),
             **({"errors": row["errors"]} if row["errors"] else {})
         } for row in rows},
     }
