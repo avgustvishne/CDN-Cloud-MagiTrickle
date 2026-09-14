@@ -1,24 +1,24 @@
-Updated: 2026-09-14 20:13:15 UTC
-V8: global-only filtering + anomaly shield + partial-source detection + resilient retries + keep-old + atomic writes + SHA256
+Updated: 2026-09-14 20:22:05 UTC
+V9: global filtering + broad-prefix shield + anomaly protection + partial-source detection + retries + atomic writes + SHA256
 ALL IPv4: 7544
 ALL IPv6: 4814
 
-Provider,IPv4,IPv6,Source,Status,Errors
-aws,1738,2360,official,OK,0
-cloudflare,15,7,official,OK,0
-hetzner,85,6,RIPEstat,OK,0
-ovh,625,4,RIPEstat,OK,0
-akamai,319,232,RIPEstat,OK,0
-digitalocean,196,13,RIPEstat,OK,0
-microsoft,937,95,RIPEstat,OK,0
-oracle,1182,309,RIPEstat,OK,0
-alibaba,603,181,RIPEstat,OK,0
-cdn77,187,33,RIPEstat,OK,0
-fastly,19,2,official,OK,0
-melbicom,99,18,RIPEstat,OK,0
-buyvm,23,27,RIPEstat,OK,0
-vultr,697,1052,RIPEstat,OK,0
-contabo,250,2,RIPEstat,OK,0
-scaleway,14,1,RIPEstat,OK,0
-gcore,575,473,official,OK,0
-backblaze,5,1,static,OK,0
+Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6
+aws,1738,2360,official,OK,0,0,0
+cloudflare,15,7,official,OK,0,0,0
+hetzner,85,6,RIPEstat,OK,0,0,0
+ovh,625,4,RIPEstat,OK,0,0,0
+akamai,319,232,RIPEstat,OK,0,0,0
+digitalocean,196,13,RIPEstat,OK,0,0,0
+microsoft,937,95,RIPEstat,OK,0,0,0
+oracle,1182,309,RIPEstat,OK,0,0,0
+alibaba,603,181,RIPEstat,OK,0,0,0
+cdn77,187,33,RIPEstat,OK,0,0,0
+fastly,19,2,official,OK,0,0,0
+melbicom,99,18,RIPEstat,OK,0,0,0
+buyvm,23,27,RIPEstat,OK,0,0,0
+vultr,697,1052,RIPEstat,OK,0,0,0
+contabo,250,2,RIPEstat,OK,0,0,0
+scaleway,14,1,RIPEstat,OK,0,0,0
+gcore,575,473,official,OK,0,0,0
+backblaze,5,1,static,OK,0,0,0

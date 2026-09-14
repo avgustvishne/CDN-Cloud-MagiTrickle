@@ -1,12 +1,16 @@
 {
-  "version": 8,
-  "updated": "2026-09-14 20:13:15 UTC",
+  "version": 9,
+  "updated": "2026-09-14 20:22:05 UTC",
   "ripe_min_peers": 5,
   "retries": 5,
   "timeout_seconds": 30,
   "min_change_ratio": 0.5,
   "max_provider_prefixes": 50000,
   "global_only": true,
+  "min_prefixlen": {
+    "ipv4": 8,
+    "ipv6": 16
+  },
   "aggregate": {
     "ipv4": 7544,
     "ipv6": 4814
@@ -16,109 +20,145 @@
       "ipv4": 1738,
       "ipv6": 2360,
       "source": "official",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "cloudflare": {
       "ipv4": 15,
       "ipv6": 7,
       "source": "official",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "hetzner": {
       "ipv4": 85,
       "ipv6": 6,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "ovh": {
       "ipv4": 625,
       "ipv6": 4,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "akamai": {
       "ipv4": 319,
       "ipv6": 232,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "digitalocean": {
       "ipv4": 196,
       "ipv6": 13,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "microsoft": {
       "ipv4": 937,
       "ipv6": 95,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "oracle": {
       "ipv4": 1182,
       "ipv6": 309,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "alibaba": {
       "ipv4": 603,
       "ipv6": 181,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "cdn77": {
       "ipv4": 187,
       "ipv6": 33,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "fastly": {
       "ipv4": 19,
       "ipv6": 2,
       "source": "official",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "melbicom": {
       "ipv4": 99,
       "ipv6": 18,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "buyvm": {
       "ipv4": 23,
       "ipv6": 27,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "vultr": {
       "ipv4": 697,
       "ipv6": 1052,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "contabo": {
       "ipv4": 250,
       "ipv6": 2,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "scaleway": {
       "ipv4": 14,
       "ipv6": 1,
       "source": "RIPEstat",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "gcore": {
       "ipv4": 575,
       "ipv6": 473,
       "source": "official",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     },
     "backblaze": {
       "ipv4": 5,
       "ipv6": 1,
       "source": "static",
-      "status": "OK"
+      "status": "OK",
+      "rejected_ipv4": 0,
+      "rejected_ipv6": 0
     }
   }
 }
