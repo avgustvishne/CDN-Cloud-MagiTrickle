@@ -84,8 +84,6 @@ def official(name):
         return list(walk_strings(jsonget("https://api.fastly.com/public-ip-list")))
     if name == "gcore":
         return list(walk_strings(jsonget("https://api.gcore.com/cdn/public-ip-list")))
-    if name == "bunny":
-        return list(walk_strings(jsonget("https://api.bunny.net/system/edgeserverlist")))
     if name in STATIC:
         return STATIC[name]
     return []
