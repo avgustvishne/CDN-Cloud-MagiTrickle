@@ -15,11 +15,10 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 21
+VERSION = 22
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 ROUTEVIEWS = "https://api.routeviews.org/asn/"
-WEB2CORE = "https://asn.web2core.workers.dev/"
 MIN_PEERS = 1
 RETRIES = 5
 TIMEOUT = 30
@@ -72,25 +71,6 @@ def routeviews(asn, version):
     if not isinstance(payload, list):
         raise RuntimeError("unexpected RouteViews response")
     return [str(item) for item in payload if isinstance(item, str)]
-
-def web2core(asns, version):
-    suffix = "v4" if version == 4 else "v6"
-    resource = ",".join("AS" + str(asn) for asn in asns)
-    data = request(f"{WEB2CORE}{resource}?{suffix}").decode("utf-8", "replace")
-    values = []
-    for line in data.splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        for token in line.replace(",", " ").split():
-            try:
-                ipaddress.ip_network(token, strict=False)
-                values.append(token)
-            except ValueError:
-                pass
-    if not values:
-        raise RuntimeError("no CIDR prefixes in Web2Core response")
-    return values
 
 def address_count(networks):
     return sum(n.num_addresses for n in networks)
@@ -186,7 +166,6 @@ def main():
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
-    comparisons = []
     seen_asns = set()
     provider_asns = {}
     for name, asns in cfg["providers"].items():
@@ -222,29 +201,6 @@ def main():
         v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
 
-        # Web2Core is audit-only: it is never trusted as a source for generated subscriptions.
-        web4_raw, web6_raw, web_errors = [], [], []
-        for version, target in ((4, web4_raw), (6, web6_raw)):
-            try:
-                target.extend(web2core(unique_asns, version))
-            except Exception as exc:
-                web_errors.append(f"provider/{name}/v{version}:{exc}")
-        web4, web_rej4 = nets(web4_raw, 4); web6, web_rej6 = nets(web6_raw, 6)
-        ov4 = overlap_count(web4, v4) if web4 and v4 else 0
-        ov6 = overlap_count(web6, v6) if web6 and v6 else 0
-        comparisons.append({
-            "name": name,
-            "web2core_ipv4": len(web4), "web2core_ipv6": len(web6),
-            "generated_ipv4": len(v4), "generated_ipv6": len(v6),
-            "web2core_ipv4_addresses": address_count(web4),
-            "web2core_ipv6_addresses": address_count(web6),
-            "generated_ipv4_addresses": address_count(v4),
-            "generated_ipv6_addresses": address_count(v6),
-            "covered_ipv4_percent": round(100 * ov4 / address_count(web4), 4) if web4 else None,
-            "covered_ipv6_percent": round(100 * ov6 / address_count(web6), 4) if web6 else None,
-            "web2core_rejected_ipv4": web_rej4, "web2core_rejected_ipv6": web_rej6,
-            "errors": web_errors[:10]
-        })
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
         minimum = MIN_PREFIXES.get(name, MIN_PREFIXES["default"])
         status = "OK"; used_fallback = False
@@ -276,7 +232,7 @@ def main():
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
-        "version": VERSION, "updated": now, "ripe_min_peers": min_peers, "sources": ["official", "RIPEstat", "RouteViews"], "audit_source": "Web2Core",
+        "version": VERSION, "updated": now, "ripe_min_peers": min_peers, "sources": ["official", "RIPEstat", "RouteViews"],
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
@@ -292,19 +248,8 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V21: provider subscriptions + official sources + RIPEstat + RouteViews union + Web2Core audit + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V22: provider subscriptions + official sources + RIPEstat + RouteViews union + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
-    compare_lines = ["Provider,Web2CoreIPv4,GeneratedIPv4,IPv4Coverage%,Web2CoreIPv6,GeneratedIPv6,IPv6Coverage%,Web2CoreErrors"]
-    for row in comparisons:
-        compare_lines.append(",".join([
-            row["name"], str(row["web2core_ipv4"]), str(row["generated_ipv4"]), str(row["covered_ipv4_percent"] if row["covered_ipv4_percent"] is not None else ""),
-            str(row["web2core_ipv6"]), str(row["generated_ipv6"]), str(row["covered_ipv6_percent"] if row["covered_ipv6_percent"] is not None else ""),
-            str(len(row["errors"]))
-        ]))
-    write_text_atomic(DATA / "web2core-comparison.csv", "\n".join(compare_lines) + "\n")
-    manifest["web2core_comparison"] = comparisons
-    write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
-    summary.extend(["", "Web2Core audit:", *compare_lines])
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
 
 if __name__ == "__main__": main()
