@@ -1,7 +1,10 @@
 {
-  "version": 6,
-  "updated": "2026-09-14 20:06:43 UTC",
+  "version": 7,
+  "updated": "2026-09-14 20:09:25 UTC",
   "ripe_min_peers": 5,
+  "retries": 4,
+  "timeout_seconds": 45,
+  "max_provider_prefixes": 50000,
   "aggregate": {
     "ipv4": 7544,
     "ipv6": 4814
@@ -112,7 +115,7 @@
     "backblaze": {
       "ipv4": 5,
       "ipv6": 1,
-      "source": "official",
+      "source": "static",
       "status": "OK"
     }
   }

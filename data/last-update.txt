@@ -1,24 +1,24 @@
-Updated: 2026-09-14 20:06:43 UTC
-V6: official sources + RIPE fallback + retries + keep-old + atomic writes
+Updated: 2026-09-14 20:09:25 UTC
+V7: quality gates + source tracking + resilient retries + keep-old + atomic writes + SHA256
 ALL IPv4: 7544
 ALL IPv6: 4814
 
-Provider,IPv4,IPv6,Source,Status
-aws,1738,2360,official,OK
-cloudflare,15,7,official,OK
-hetzner,85,6,RIPEstat,OK
-ovh,625,4,RIPEstat,OK
-akamai,319,232,RIPEstat,OK
-digitalocean,196,13,RIPEstat,OK
-microsoft,937,95,RIPEstat,OK
-oracle,1182,309,RIPEstat,OK
-alibaba,603,181,RIPEstat,OK
-cdn77,187,33,RIPEstat,OK
-fastly,19,2,official,OK
-melbicom,99,18,RIPEstat,OK
-buyvm,23,27,RIPEstat,OK
-vultr,697,1052,RIPEstat,OK
-contabo,250,2,RIPEstat,OK
-scaleway,14,1,RIPEstat,OK
-gcore,575,473,official,OK
-backblaze,5,1,official,OK
+Provider,IPv4,IPv6,Source,Status,Errors
+aws,1738,2360,official,OK,0
+cloudflare,15,7,official,OK,0
+hetzner,85,6,RIPEstat,OK,0
+ovh,625,4,RIPEstat,OK,0
+akamai,319,232,RIPEstat,OK,0
+digitalocean,196,13,RIPEstat,OK,0
+microsoft,937,95,RIPEstat,OK,0
+oracle,1182,309,RIPEstat,OK,0
+alibaba,603,181,RIPEstat,OK,0
+cdn77,187,33,RIPEstat,OK,0
+fastly,19,2,official,OK,0
+melbicom,99,18,RIPEstat,OK,0
+buyvm,23,27,RIPEstat,OK,0
+vultr,697,1052,RIPEstat,OK,0
+contabo,250,2,RIPEstat,OK,0
+scaleway,14,1,RIPEstat,OK,0
+gcore,575,473,official,OK,0
+backblaze,5,1,static,OK,0
