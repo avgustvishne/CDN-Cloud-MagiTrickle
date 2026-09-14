@@ -1,4 +1,4 @@
-name: Update CDN + Cloud lists
+name: Update MagiTrickle provider subscriptions
 
 on:
   schedule:
@@ -6,15 +6,21 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - "config/providers.json"
       - "scripts/update_cdn_lists.py"
       - ".github/workflows/update.yml"
 
 permissions:
   contents: write
 
+concurrency:
+  group: magitrickle-subscriptions
+  cancel-in-progress: true
+
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,8 +30,23 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Update lists
+      - name: Generate subscriptions
         run: python scripts/update_cdn_lists.py
+
+      - name: Validate generated files
+        run: |
+          test -s data/aws-v4.txt
+          test -s data/cloudflare-v4.txt
+          test -s data/vultr-v4.txt
+          python - <<'PY'
+          import ipaddress, pathlib
+          for p in pathlib.Path("data").glob("*.txt"):
+              if p.name == "last-update.txt":
+                  continue
+              for line in p.read_text().splitlines():
+                  ipaddress.ip_network(line)
+          print("CIDR validation OK")
+          PY
 
       - name: Commit changes
         run: |
@@ -36,5 +57,5 @@ jobs:
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: update CDN and cloud IP lists"
+          git commit -m "chore: update provider subscriptions"
           git push
