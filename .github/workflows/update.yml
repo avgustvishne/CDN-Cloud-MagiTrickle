@@ -1,4 +1,4 @@
-name: Update MagiTrickle V8 subscriptions
+name: Update MagiTrickle V9 subscriptions
 
 on:
   schedule:
@@ -27,27 +27,36 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generate V8
+      - name: Generate V9
         run: python scripts/update_cdn_lists.py
 
-      - name: Validate V8 data
+      - name: Validate V9 data
         run: |
           python - <<'PY'
-          import hashlib, ipaddress, json, pathlib
+          import hashlib
+          import ipaddress
+          import json
+          import pathlib
+
           d = pathlib.Path("data")
           assert (d / "all-cloud-v4.txt").stat().st_size > 0
           assert (d / "all-cloud-v6.txt").exists()
+
           for p in d.glob("*.txt"):
               if p.name == "last-update.txt":
                   continue
               for line in p.read_text(encoding="utf-8").splitlines():
                   n = ipaddress.ip_network(line)
                   assert n.is_global, f"non-global prefix: {line} in {p.name}"
+                  assert n.prefixlen >= (8 if n.version == 4 else 16), f"broad prefix: {line} in {p.name}"
+
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
-          assert m["version"] == 8
+          assert m["version"] == 9
           assert m["global_only"] is True
+          assert m["min_prefixlen"] == {"ipv4": 8, "ipv6": 16}
           assert m["aggregate"]["ipv4"] > 0
           assert m["aggregate"]["ipv6"] >= 0
+
           checks = (d / "checksums.sha256").read_text(encoding="utf-8").splitlines()
           assert checks
           for row in checks:
@@ -55,7 +64,8 @@ jobs:
               p = pathlib.Path(rel)
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
-          print("V8 validation OK")
+
+          print("V9 validation OK")
           PY
 
       - name: Show summary
@@ -70,5 +80,5 @@ jobs:
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: V8 update provider subscriptions"
+          git commit -m "chore: V9 update provider subscriptions"
           git push
