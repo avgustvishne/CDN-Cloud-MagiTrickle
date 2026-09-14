@@ -47,72 +47,6 @@ https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/a
 https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/<provider>-v4.txt
 ```
 
-## Тестовые подписки V10
-
-В V10 добавлен отдельный набор доменных списков для проверки подключения и приватности. Эти списки не смешиваются с CDN/cloud CIDR, поэтому они не увеличивают общий IP-набор и не меняют его маршрутизацию.
-
-### QUIC / HTTP3
-
-Проверка доступности HTTP/3 и QUIC:
-
-```text
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-quic-http3.txt
-```
-
-В список входят Google, Cloudflare DNS, QUIC.cloud и HTTP/3 test endpoints. HTTP/3 работает поверх QUIC/UDP; блокировка UDP может привести к переходу клиента на TCP-версии HTTP. citeturn0search4turn0search15
-
-### Proxy / Anonymity
-
-```text
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-proxy-anonymity.txt
-```
-
-Используется для проверки того, какой внешний адрес и сетевую информацию видят диагностические сервисы.
-
-### DNS / Resolver
-
-```text
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-dns-resolver.txt
-```
-
-Сюда входят DNS Leak Test и Cloudflare resolver endpoints. Cloudflare также предоставляет DNS debug endpoints для определения публичного IP, ASN и точки присутствия, с которой приходит DNS-запрос. citeturn0search8
-
-### Google Connectivity
-
-```text
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-google-connectivity.txt
-```
-
-Включены домены, используемые Google для проверки подключения, в том числе `connectivitycheck.android.com`, `connectivitycheck.gstatic.com` и Google connectivity endpoint `www.google.com/generate_204`. citeturn0search3
-
-### Privacy / Fingerprint
-
-```text
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-privacy-fingerprint.txt
-```
-
-Список предназначен для перехода к сервисам проверки браузера, DNS, IP и fingerprint.
-
-Сам по себе этот список не делает fingerprint анонимным. Fingerprinting и WebRTC требуют отдельной защиты браузера и сетевого стека.
-
-### WebRTC / IP Leak
-
-```text
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-web-rtc-ip.txt
-```
-
-WebRTC способен раскрывать дополнительные сведения о сетевых адресах через ICE-кандидатов, поэтому проверку WebRTC лучше выполнять отдельно от обычного IP-теста. citeturn0search7turn0search6
-
-### Все тесты
-
-Если MagiTrickle должен использовать один список тестовых endpoints:
-
-```text
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-all.txt
-```
-
-## Важное отличие
-
 Файлы `tests-*.txt` содержат **доменные имена**, а `*-v4.txt` и `*-v6.txt` содержат **CIDR**.
 
 Поэтому подключать тестовые файлы нужно только в поле/группу MagiTrickle, которая принимает доменные правила. Не следует добавлять их в IP/CIDR-подписку.
@@ -230,8 +164,6 @@ cloudflare-dns.com
 ## Текущая версия
 
 Основной генератор CIDR — V9.
-
-Дополнительные доменные подписки для диагностических и privacy-тестов — V10.
 
 ## Примечание
 
