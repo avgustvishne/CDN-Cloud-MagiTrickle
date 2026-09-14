@@ -1,58 +1,86 @@
-# CDN + Cloud MagiTrickle — V6
+# CDN + Cloud MagiTrickle
 
-Автообновляемые IPv4/IPv6-подписки для MagiTrickle по основным CDN, cloud и hosting-провайдерам.
+Готовые списки IPv4/IPv6 для MagiTrickle.
 
-## V6
-
-V6 расширяет V5 официальными источниками для AWS, Cloudflare, Fastly, Gcore и Backblaze, сохраняя RIPEstat fallback для остальных провайдеров.
-
-- AWS: официальный `ip-ranges.json`.
-- Cloudflare: официальные `ips-v4` и `ips-v6`.
-- Fastly: официальный `https://api.fastly.com/public-ip-list`.
-- Gcore: официальный `https://api.gcore.com/cdn/public-ip-list`.
-- Backblaze: опубликованные компанией сервисные CIDR.
-- Остальные: RIPEstat announced-prefixes с `min_peers_seeing=5`.
-
-Дополнительно:
-- 3 попытки загрузки источника с backoff;
-- safe keep-old при аномально маленьком результате;
-- атомарная запись файлов;
-- удаление дублей и агрегация CIDR;
-- проверка всех CIDR перед commit;
-- `manifest.json` со статусом и источником каждого провайдера;
-- `checksums.sha256` для контроля целостности опубликованных списков;
-- общий `all-cloud-v4.txt` и `all-cloud-v6.txt`;
-- отдельные файлы каждого провайдера;
-- GitHub Actions каждые 12 часов и ручной запуск.
+Репозиторий собирает адресные диапазоны крупных CDN, cloud и hosting-провайдеров и публикует их в формате CIDR. Списки обновляются автоматически через GitHub Actions, поэтому в MagiTrickle можно использовать постоянную Raw-ссылку.
 
 ## Провайдеры
 
-AWS, Cloudflare, Hetzner, OVH, Akamai, DigitalOcean, Microsoft, Oracle, Alibaba, CDN77, Fastly, Melbicom, BuyVM/Frantech, Vultr, Contabo, Scaleway, Gcore и Backblaze.
+AWS, Cloudflare, Hetzner, OVH, Akamai, DigitalOcean, Microsoft, Oracle, Alibaba, CDN77, Fastly, Melbicom, BuyVM / Frantech, Vultr, Contabo, Scaleway, Gcore и Backblaze.
 
-ASN перечислены в `config/providers.json`. Для Gcore используются AS199524 и AS202422. Backblaze использует официальный опубликованный список CIDR и не требует ASN.
+Для AWS, Cloudflare, Fastly и Gcore используются публичные списки самих провайдеров. Для остальных сетей берутся анонсируемые BGP-префиксы из RIPEstat. Backblaze подключён отдельным статическим набором сетей.
 
-## Raw URL
+## Основные списки
 
-Шаблон:
-`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/<provider>-v4.txt`
+IPv4 всех провайдеров:
 
-Общий IPv4:
-`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt`
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt
+```
 
-Общий IPv6:
-`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt`
+IPv6 всех провайдеров:
 
-AWS IPv4:
-`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt`
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt
+```
 
-Cloudflare IPv4:
-`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt`
+Отдельный провайдер:
 
-Fastly IPv4:
-`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v4.txt`
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/<provider>-v4.txt
+```
 
-Gcore IPv4:
-`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt`
+Примеры:
+
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v4.txt
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt
+```
+
+Для IPv6 используется тот же путь с `-v6.txt`.
+
+## Источники
+
+AWS
+
+`https://ip-ranges.amazonaws.com/ip-ranges.json`
+
+Cloudflare
+
+`https://www.cloudflare.com/ips-v4/`
+
+`https://www.cloudflare.com/ips-v6/`
+
+Fastly
+
+`https://api.fastly.com/public-ip-list`
+
+Gcore
+
+`https://api.gcore.com/cdn/public-ip-list`
+
+Для остальных провайдеров используется RIPEstat announced-prefixes с `min_peers_seeing=5`.
+
+## Обновление
+
+Списки собираются два раза в сутки. Запуск можно также выполнить вручную через GitHub Actions.
+
+При каждом обновлении скрипт получает данные от источников, приводит записи к CIDR, убирает дубликаты, объединяет сети и записывает отдельные списки провайдеров и общий список.
+
+Внешний источник может временно не ответить. В таком случае выполняются повторные попытки. Если новый результат пустой, слишком маленький или явно аномальный, предыдущая рабочая версия списка сохраняется.
+
+## Проверки перед публикацией
+
+Перед отправкой изменений в `main` проверяется:
+
+- корректность IPv4/IPv6 CIDR;
+- наличие общего IPv4-списка;
+- наличие IPv6-списка;
+- корректная версия `manifest.json`;
+- контрольные суммы SHA-256;
+- отсутствие подмены рабочего списка пустым результатом.
 
 ## Структура
 
@@ -63,8 +91,8 @@ CDN-Cloud-MagiTrickle/
 ├── scripts/
 │   └── update_cdn_lists.py
 ├── data/
-│   ├── <provider>-v4.txt
-│   ├── <provider>-v6.txt
+│   ├── *-v4.txt
+│   ├── *-v6.txt
 │   ├── all-cloud-v4.txt
 │   ├── all-cloud-v6.txt
 │   ├── manifest.json
@@ -75,14 +103,39 @@ CDN-Cloud-MagiTrickle/
         └── update.yml
 ```
 
-## GitHub Actions
+`config/providers.json` содержит ASN провайдеров. Для Gcore используются AS199524 и AS202422. Backblaze работает без ASN, через статические CIDR.
 
-Workflow: `.github/workflows/update.yml`
+## Генератор
 
-Автоматический запуск — каждые 12 часов. Также доступен `workflow_dispatch`.
+Основной скрипт:
 
-Перед публикацией выполняется проверка наличия агрегированного IPv4, корректности CIDR и версии manifest. Если официальный источник не отвечает, используется fallback, а при аномально малом результате сохраняется предыдущий рабочий список.
+```text
+scripts/update_cdn_lists.py
+```
 
-## Статус
+Он отвечает за загрузку исходных данных, проверку, нормализацию и агрегацию сетей, защиту предыдущей версии и подготовку итоговых файлов.
 
-**V6** — текущая версия генератора подписок.
+В генераторе используются повторные запросы с задержкой, таймауты, атомарная запись и ограничение на аномально большой объём prefix у одного провайдера.
+
+## Формат
+
+Каждая строка в списках — одна сеть в формате CIDR:
+
+```text
+1.2.3.0/24
+2001:db8::/32
+```
+
+Файлы можно использовать напрямую в MagiTrickle и других инструментах, которые принимают IPv4/IPv6 prefix.
+
+## Текущая версия
+
+V8
+
+Основная задача версии V8 — сделать обновления предсказуемыми. При проблемах с источниками рабочие списки не стираются, а результат проверяется до публикации.
+
+## Примечание
+
+Адресные пространства CDN и облачных платформ со временем меняются. Для постоянного использования рекомендуется подключать Raw-ссылку на нужный файл, а не сохранять список локально.
+
+Отдельная лицензия в репозитории не задана.
