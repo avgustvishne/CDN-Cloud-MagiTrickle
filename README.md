@@ -2,25 +2,47 @@
 
 Готовые **IPv4/IPv6 CIDR-подписки** для MagiTrickle.
 
-## Провайдеры
+## Все сети
 
-AWS · Cloudflare · Hetzner · OVH · Akamai · DigitalOcean · Microsoft · Oracle · Alibaba · CDN77 · Fastly · Melbicom · BuyVM/Frantech · Vultr · Contabo · Scaleway · Gcore · Backblaze
-
-## Подписки
-
-**Все IPv4**  
+**IPv4**  
 `https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt`
 
-**Все IPv6**  
+**IPv6**  
 `https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt`
 
-**Отдельный провайдер**  
+## Отдельные провайдеры
+
+Для каждого провайдера есть отдельные IPv4 и IPv6 подписки:
+
+- AWS
+- Cloudflare
+- Hetzner
+- OVH
+- Akamai
+- DigitalOcean
+- Microsoft
+- Oracle
+- Alibaba
+- CDN77
+- Fastly
+- Melbicom
+- BuyVM / Frantech
+- Vultr
+- Contabo
+- Scaleway
+- Gcore
+- Backblaze
+
+Шаблон ссылки:
+
 `https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/<provider>-v4.txt`
 
-Для IPv6 замените `-v4.txt` на `-v6.txt`.
+Для IPv6:
 
-Списки обновляются автоматически и содержат CIDR без дубликатов.
+`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/<provider>-v6.txt`
 
-## Источники
+Например:
 
-Официальные списки провайдеров используются там, где они доступны. Для остальных сетей используются анонсируемые BGP-префиксы через RIPEstat.
+`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt`
+
+Выбирай **общую подписку**, если нужны все сети, или добавляй **отдельные провайдеры**, если хочешь самостоятельно собрать свой набор.
