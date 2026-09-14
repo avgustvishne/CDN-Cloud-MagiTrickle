@@ -1,4 +1,4 @@
-name: Update MagiTrickle V16 subscriptions
+name: Update MagiTrickle V17 subscriptions
 
 on:
   schedule:
@@ -27,10 +27,10 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generate V16
+      - name: Generate V17
         run: python scripts/update_cdn_lists.py
 
-      - name: Validate V16 data
+      - name: Validate V17 data
         run: |
           python - <<'PY'
           import hashlib
@@ -45,13 +45,30 @@ jobs:
           for p in d.glob("*.txt"):
               if p.name == "last-update.txt":
                   continue
+              lines = [x.strip() for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+              assert len(lines) == len(set(lines)), f"duplicate CIDR: {p.name}"
+              expected_version = 6 if p.name.endswith("-v6.txt") else 4
+              for line in lines:
+                  n = ipaddress.ip_network(line)
+                  assert n.version == expected_version, f"wrong IP version: {line} in {p.name}"
+                  assert n.is_global, f"non-global prefix: {line} in {p.name}"
+                  assert n.prefixlen >= (8 if n.version == 4 else 16), f"broad prefix: {line} in {p.name}"
+
+          cfg = json.loads(pathlib.Path("config/providers.json").read_text(encoding="utf-8"))
+          provider_names = set(cfg["providers"])
+          generated_names = {p.name[:-7] for p in d.glob("*-v4.txt") if p.name != "all-cloud-v4.txt"}
+          assert generated_names == provider_names, f"provider files mismatch: generated={sorted(generated_names)} config={sorted(provider_names)}"
+          for obsolete in ("cdn-cloud-v4.txt", "cdn-cloud-v6.txt", "dpi-recommended-v4.txt", "dpi-recommended-v6.txt"):
+              assert not (d / obsolete).exists(), f"obsolete file remains: {obsolete}"
+              if p.name == "last-update.txt":
+                  continue
               for line in p.read_text(encoding="utf-8").splitlines():
                   n = ipaddress.ip_network(line)
                   assert n.is_global, f"non-global prefix: {line} in {p.name}"
                   assert n.prefixlen >= (8 if n.version == 4 else 16), f"broad prefix: {line} in {p.name}"
 
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
-          assert m["version"] == 16
+          assert m["version"] == 17
           assert m["global_only"] is True
           assert m["min_prefixlen"] == {"ipv4": 8, "ipv6": 16}
           assert m["aggregate"]["ipv4"] > 0
@@ -65,7 +82,7 @@ jobs:
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
 
-          print("V16 validation OK")
+          print("V17 validation OK")
           PY
 
       - name: Show summary
@@ -82,7 +99,7 @@ jobs:
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: V16 update provider subscriptions"
+          git commit -m "chore: V17 update provider subscriptions"
 
           for attempt in 1 2 3 4 5; do
             if git push; then
@@ -100,5 +117,5 @@ jobs:
             }
           done
 
-          echo "Unable to push generated V16 data after 5 attempts."
+          echo "Unable to push generated V17 data after 5 attempts."
           exit 1
