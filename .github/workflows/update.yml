@@ -1,4 +1,4 @@
-name: Update MagiTrickle V12 subscriptions
+name: Update MagiTrickle V14 subscriptions
 
 on:
   schedule:
@@ -27,10 +27,10 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generate V12
+      - name: Generate V14
         run: python scripts/update_cdn_lists.py
 
-      - name: Validate V12 data
+      - name: Validate V14 data
         run: |
           python - <<'PY'
           import hashlib
@@ -65,7 +65,7 @@ jobs:
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
 
-          print("V12 validation OK")
+          print("V14 validation OK")
           PY
 
       - name: Show summary
@@ -82,7 +82,7 @@ jobs:
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: V12 update provider subscriptions"
+          git commit -m "chore: V14 update provider subscriptions"
 
           for attempt in 1 2 3 4 5; do
             if git push; then
@@ -100,5 +100,5 @@ jobs:
             }
           done
 
-          echo "Unable to push generated V12 data after 5 attempts."
+          echo "Unable to push generated V14 data after 5 attempts."
           exit 1
