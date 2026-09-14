@@ -28,7 +28,7 @@ def nets(v,ver):
     s=set()
     for x in v:
         try:
-            n=ipaddress.ip_network(x.strip(),strict=False)
+            n=x if isinstance(x,(ipaddress.IPv4Network,ipaddress.IPv6Network)) else ipaddress.ip_network(x.strip(),strict=False)
             if n.version==ver:s.add(n)
         except:pass
     return sorted(ipaddress.collapse_addresses(s),key=lambda n:(int(n.network_address),n.prefixlen))
