@@ -1,41 +1,64 @@
-# CDN + Cloud для MagiTrickle
+# CDN + Cloud MagiTrickle — V2
 
-Готовый репозиторий для автоматической подписки с IPv4/IPv6 CIDR основных CDN и hosting/cloud сетей.
+Автообновляемые отдельные подписки по CDN/Cloud/hosting-провайдерам.
 
-## Что входит
+## Источник
 
-Источник `123jjck/cdn-ip-ranges` и его список `cdn-only`, который включает CDN и hosting-провайдеров без Discord Voice, Telegram и Meta. В актуальном списке есть, среди прочего: Akamai, AWS, Bunny, BuyVM, CDN77, Cloudflare, Contabo, DigitalOcean, Fastly, Gcore, Hetzner, MelBiCom, Oracle, OVH, Scaleway, Vercel и др.
+V2 получает актуальные BGP-announced prefixes через официальный RIPE NCC RIPEstat Data API endpoint **announced-prefixes**. RIPEstat документирует этот endpoint как источник всех объявленных префиксов для указанного ASN. Используется фильтр видимости `min_peers_seeing=5`, чтобы отсекать маловидимые локальные объявления.
 
-Скрипт:
-- скачивает актуальные IPv4/IPv6 диапазоны;
-- удаляет мусор и дубликаты;
-- агрегирует соседние CIDR через `ipaddress.collapse_addresses()`;
-- сохраняет готовые plain-text списки;
-- GitHub Actions обновляет их каждые 12 часов.
+AWS дополнительно публикует собственный официальный `ip-ranges.json`; при необходимости AWS можно перевести на этот источник отдельно.
 
-## Файлы
+## Провайдеры
 
-- `data/cdn-cloud-v4.txt` — IPv4, по одному CIDR на строку.
-- `data/cdn-cloud-v6.txt` — IPv6, по одному CIDR на строку.
-- `data/last-update.txt` — статистика последнего обновления.
+AWS, Cloudflare, Hetzner, OVH, Akamai, DigitalOcean, Microsoft, Oracle, Alibaba, CDN77, Fastly, Melbicom, BuyVM/Frantech, Vultr, Contabo и Scaleway.
 
-## Как подключить к MagiTrickle
+Список ASN находится в `config/providers.json`.
 
-После создания репозитория `USERNAME/REPO` используй:
+## Подписки MagiTrickle
 
 IPv4:
-`https://raw.githubusercontent.com/USERNAME/REPO/main/data/cdn-cloud-v4.txt`
 
-IPv6:
-`https://raw.githubusercontent.com/USERNAME/REPO/main/data/cdn-cloud-v6.txt`
+- `aws-v4.txt`
+- `cloudflare-v4.txt`
+- `hetzner-v4.txt`
+- `ovh-v4.txt`
+- `akamai-v4.txt`
+- `digitalocean-v4.txt`
+- `microsoft-v4.txt`
+- `oracle-v4.txt`
+- `alibaba-v4.txt`
+- `cdn77-v4.txt`
+- `fastly-v4.txt`
+- `melbicom-v4.txt`
+- `buyvm-v4.txt`
+- `vultr-v4.txt`
+- `contabo-v4.txt`
+- `scaleway-v4.txt`
 
-Для MagiTrickle лучше использовать IPv4-список как отдельную группу `CDN + CLOUD ALL` с интерфейсом `Mihomo`.
+Также создаются одноимённые `-v6.txt`.
 
-## Установка
+Общие списки:
 
-1. Создай новый публичный GitHub repository.
-2. Загрузи содержимое этого проекта в корень репозитория.
-3. Открой Actions и запусти `Update CDN + Cloud lists` вручную один раз.
-4. После успешного запуска используй raw-ссылку из раздела выше.
+- `all-cloud-v4.txt`
+- `all-cloud-v6.txt`
 
-GitHub Actions затем будет обновлять список каждые 12 часов.
+## Raw URL
+
+Шаблон:
+
+`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt`
+
+Например:
+
+`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt`
+
+`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v4.txt`
+
+Общий:
+
+`https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt`
+
+## Автообновление
+
+GitHub Actions запускает обновление каждые 12 часов и вручную через `workflow_dispatch`. Перед commit выполняется проверка CIDR.
+
