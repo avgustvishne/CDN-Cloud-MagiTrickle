@@ -51,8 +51,11 @@ jobs:
                   assert n.prefixlen >= (8 if n.version == 4 else 16), f"broad prefix: {line} in {p.name}"
 
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
-          assert m["version"] == 12
+          assert m["version"] == 14
           assert m["global_only"] is True
+          assert m["dpi_aware"] is True
+          assert (d / "dpi-recommended-v4.txt").exists()
+          assert (d / "dpi-recommended-v6.txt").exists()
           assert m["min_prefixlen"] == {"ipv4": 8, "ipv6": 16}
           assert m["aggregate"]["ipv4"] > 0
           assert m["aggregate"]["ipv6"] >= 0
