@@ -15,10 +15,10 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 17
+VERSION = 18
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
-MIN_PEERS = 5
+MIN_PEERS = 1
 RETRIES = 5
 TIMEOUT = 30
 RETRY_BASE = 2
@@ -211,7 +211,7 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V16: provider subscriptions + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V18: provider subscriptions + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
 
