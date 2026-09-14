@@ -15,10 +15,11 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 18
+VERSION = 19
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
-MIN_PEERS = 5
+ROUTEVIEWS = "https://api.routeviews.org/asn/"
+MIN_PEERS = 1
 RETRIES = 5
 TIMEOUT = 30
 RETRY_BASE = 2
@@ -59,10 +60,17 @@ def request(url):
 def jsonget(url):
     return json.loads(request(url).decode("utf-8"))
 
-def ripe(asn):
+def ripe(asn, min_peers):
     query = urllib.parse.urlencode({"resource": "AS" + asn, "min_peers_seeing": min_peers, "sourceapp": "CDN-Cloud-MagiTrickle"})
     payload = jsonget(RIPE + "?" + query)
     return [item.get("prefix", "") for item in payload.get("data", {}).get("prefixes", [])]
+
+def routeviews(asn, version):
+    af = "4" if version == 4 else "6"
+    payload = jsonget(f"{ROUTEVIEWS}{asn}?af={af}")
+    if not isinstance(payload, list):
+        raise RuntimeError("unexpected RouteViews response")
+    return [str(item) for item in payload if isinstance(item, str)]
 
 def walk_strings(obj):
     if isinstance(obj, str):
@@ -156,13 +164,22 @@ def main():
             if raw: sources.append("official" if name not in STATIC else "static")
         except Exception as exc:
             errors.append("official:" + str(exc))
-        if not raw:
-            for asn in unique_asns:
-                try:
-                    raw.extend(ripe(asn)); sources.append("RIPEstat")
-                except Exception as exc:
-                    errors.append(f"AS{asn}:{exc}")
-                time.sleep(0.12)
+        # Always union authoritative/provider data with two independent BGP views.
+        # This avoids losing low-visibility or newly announced prefixes when one source is incomplete.
+        for asn in unique_asns:
+            try:
+                raw.extend(ripe(asn, min_peers)); sources.append("RIPEstat")
+            except Exception as exc:
+                errors.append(f"RIPE-AS{asn}:{exc}")
+            try:
+                raw.extend(routeviews(asn, 4)); sources.append("RouteViews")
+            except Exception as exc:
+                errors.append(f"RouteViews-v4-AS{asn}:{exc}")
+            try:
+                raw.extend(routeviews(asn, 6)); sources.append("RouteViews")
+            except Exception as exc:
+                errors.append(f"RouteViews-v6-AS{asn}:{exc}")
+            time.sleep(0.12)
         v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
@@ -196,7 +213,7 @@ def main():
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
-        "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
+        "version": VERSION, "updated": now, "ripe_min_peers": min_peers, "sources": ["official", "RIPEstat", "RouteViews"],
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
@@ -212,7 +229,7 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V18: provider subscriptions + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V19: provider subscriptions + official sources + RIPEstat + RouteViews union + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
 
