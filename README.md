@@ -2,7 +2,7 @@
 
 Готовые списки IPv4/IPv6 в формате CIDR для MagiTrickle.
 
-Репозиторий собирает адресные диапазоны крупных CDN, cloud и hosting-провайдеров и публикует их в виде обычных текстовых списков. Обновление выполняется автоматически два раза в сутки.
+Репозиторий собирает адресные диапазоны крупных CDN, cloud и hosting-провайдеров и публикует их в виде обычных текстовых списков. Основное обновление сетей выполняется автоматически два раза в сутки.
 
 ## Провайдеры
 
@@ -47,16 +47,75 @@ https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/a
 https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/<provider>-v4.txt
 ```
 
-Примеры:
+## Тестовые подписки V10
+
+В V10 добавлен отдельный набор доменных списков для проверки подключения и приватности. Эти списки не смешиваются с CDN/cloud CIDR, поэтому они не увеличивают общий IP-набор и не меняют его маршрутизацию.
+
+### QUIC / HTTP3
+
+Проверка доступности HTTP/3 и QUIC:
 
 ```text
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v4.txt
-https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-quic-http3.txt
 ```
 
-Для IPv6 используется тот же путь с `-v6.txt`.
+В список входят Google, Cloudflare DNS, QUIC.cloud и HTTP/3 test endpoints. HTTP/3 работает поверх QUIC/UDP; блокировка UDP может привести к переходу клиента на TCP-версии HTTP. citeturn0search4turn0search15
+
+### Proxy / Anonymity
+
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-proxy-anonymity.txt
+```
+
+Используется для проверки того, какой внешний адрес и сетевую информацию видят диагностические сервисы.
+
+### DNS / Resolver
+
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-dns-resolver.txt
+```
+
+Сюда входят DNS Leak Test и Cloudflare resolver endpoints. Cloudflare также предоставляет DNS debug endpoints для определения публичного IP, ASN и точки присутствия, с которой приходит DNS-запрос. citeturn0search8
+
+### Google Connectivity
+
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-google-connectivity.txt
+```
+
+Включены домены, используемые Google для проверки подключения, в том числе `connectivitycheck.android.com`, `connectivitycheck.gstatic.com` и Google connectivity endpoint `www.google.com/generate_204`. citeturn0search3
+
+### Privacy / Fingerprint
+
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-privacy-fingerprint.txt
+```
+
+Список предназначен для перехода к сервисам проверки браузера, DNS, IP и fingerprint.
+
+Сам по себе этот список не делает fingerprint анонимным. Fingerprinting и WebRTC требуют отдельной защиты браузера и сетевого стека.
+
+### WebRTC / IP Leak
+
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-web-rtc-ip.txt
+```
+
+WebRTC способен раскрывать дополнительные сведения о сетевых адресах через ICE-кандидатов, поэтому проверку WebRTC лучше выполнять отдельно от обычного IP-теста. citeturn0search7turn0search6
+
+### Все тесты
+
+Если MagiTrickle должен использовать один список тестовых endpoints:
+
+```text
+https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/tests-all.txt
+```
+
+## Важное отличие
+
+Файлы `tests-*.txt` содержат **доменные имена**, а `*-v4.txt` и `*-v6.txt` содержат **CIDR**.
+
+Поэтому подключать тестовые файлы нужно только в поле/группу MagiTrickle, которая принимает доменные правила. Не следует добавлять их в IP/CIDR-подписку.
 
 ## Источники
 
@@ -93,58 +152,35 @@ https://stat.ripe.net/data/announced-prefixes/data.json
 
 Параметр `min_peers_seeing` установлен в `5`.
 
-## Как собираются списки
+## Проверка и защита
 
-Генератор получает исходные prefix, проверяет их как IPv4/IPv6 сети, удаляет некорректные записи и дубликаты, после чего объединяет пересекающиеся диапазоны.
+Генератор проверяет IPv4/IPv6 CIDR, удаляет некорректные записи и дубликаты, объединяет пересекающиеся сети и отбрасывает не-global адресное пространство.
 
-В итоговые файлы попадают только глобальные адресные пространства. Слишком широкие prefix также отбрасываются: для IPv4 минимальная длина префикса — `/8`, для IPv6 — `/16`. Это дополнительная защита от случайного попадания слишком большого диапазона в подписку.
+Также используются:
 
-Для каждого провайдера сохраняется отдельный список. После этого строятся два общих файла — IPv4 и IPv6.
-
-## Защита от сбоев источников
-
-Ошибки внешнего сервиса не должны превращать рабочую подписку в пустой файл.
-
-Используются:
-
-- повторные попытки запроса;
+- повторные попытки запросов;
 - таймауты;
-- контроль пустого ответа;
-- ограничение на максимальное число prefix одного провайдера;
+- контроль пустых ответов;
+- ограничение максимального количества prefix;
 - сравнение с предыдущей рабочей версией;
-- сохранение предыдущего списка при подозрительном резком падении количества сетей;
-- отдельная фиксация ошибок источников в `manifest.json`;
-- атомарная запись файлов.
-
-Для провайдеров с несколькими ASN ошибка одного запроса не стирает результаты остальных ASN.
-
-## Проверка перед публикацией
-
-GitHub Actions проверяет:
-
-- корректность каждого IPv4/IPv6 CIDR;
-- наличие только глобальных сетей;
-- отсутствие слишком широких prefix;
-- наличие общего IPv4-списка;
-- наличие IPv6-файла;
-- версию `manifest.json`;
-- контрольные SHA-256 для опубликованных списков.
-
-Только после успешной проверки сгенерированные файлы отправляются в `main`.
+- сохранение предыдущего списка при подозрительном резком падении;
+- фиксация ошибок источников в `manifest.json`;
+- атомарная запись;
+- SHA-256 контроль файлов.
 
 ## Автоматическое обновление
 
-Workflow находится здесь:
+Workflow:
 
 ```text
 .github/workflows/update.yml
 ```
 
-Запуск выполняется каждые 12 часов. Дополнительно его можно запустить вручную через GitHub Actions.
+Основные CIDR-списки обновляются каждые 12 часов. Workflow можно запустить вручную через GitHub Actions.
 
-Изменения в `data/` сами по себе не запускают новый цикл обновления, поэтому публикация результатов не создаёт бесконечную цепочку запусков.
+Изменения в `data/` сами по себе не запускают новый цикл обновления.
 
-## Файлы
+## Структура
 
 ```text
 CDN-Cloud-MagiTrickle/
@@ -157,6 +193,13 @@ CDN-Cloud-MagiTrickle/
 │   ├── <provider>-v6.txt
 │   ├── all-cloud-v4.txt
 │   ├── all-cloud-v6.txt
+│   ├── tests-quic-http3.txt
+│   ├── tests-proxy-anonymity.txt
+│   ├── tests-dns-resolver.txt
+│   ├── tests-google-connectivity.txt
+│   ├── tests-privacy-fingerprint.txt
+│   ├── tests-web-rtc-ip.txt
+│   ├── tests-all.txt
 │   ├── manifest.json
 │   ├── checksums.sha256
 │   └── last-update.txt
@@ -165,27 +208,33 @@ CDN-Cloud-MagiTrickle/
         └── update.yml
 ```
 
-`config/providers.json` содержит список ASN. Для Gcore используются AS199524 и AS202422. Для Backblaze ASN не используются.
+## Формат
 
-## Формат списков
-
-Каждая строка — одна сеть в формате CIDR:
+CIDR-файлы:
 
 ```text
 1.2.3.0/24
 2001:db8::/32
 ```
 
-Списки подходят для MagiTrickle и других инструментов, которые принимают IPv4/IPv6 prefix.
+Тестовые файлы:
+
+```text
+www.google.com
+browserleaks.com
+cloudflare-dns.com
+```
+
+Каждая запись находится на отдельной строке.
 
 ## Текущая версия
 
-V9
+Основной генератор CIDR — V9.
 
-В V9 основной упор сделан на защиту от ошибочных обновлений: глобальные сети, отсечение слишком широких prefix, контроль аномальных изменений, обработка частичных ошибок источников, повторные запросы и проверка целостности перед публикацией.
+Дополнительные доменные подписки для диагностических и privacy-тестов — V10.
 
 ## Примечание
 
-Адресные пространства CDN и облачных платформ меняются со временем. Для постоянного использования удобнее подключать Raw-ссылку на нужный файл, а не копировать список вручную.
+Списки тестовых сервисов являются подборкой endpoints для диагностики. Они не являются механизмом блокировки рекламы, полноценной анонимизации или гарантией отсутствия утечек.
 
-Лицензия в репозитории отдельно не задана.
+WebRTC, DNS, IPv6 и fingerprint необходимо проверять отдельно: один только маршрут через VPN не гарантирует, что браузер не раскроет дополнительные сведения о сетевом окружении. citeturn0search0turn0search7
