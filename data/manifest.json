@@ -1,7 +1,12 @@
 {
-  "version": 18,
-  "updated": "2026-09-14 22:24:15 UTC",
-  "ripe_min_peers": 5,
+  "version": 19,
+  "updated": "2026-09-14 22:38:24 UTC",
+  "ripe_min_peers": 1,
+  "sources": [
+    "official",
+    "RIPEstat",
+    "RouteViews"
+  ],
   "provider_asn_counts": {
     "aws": 2,
     "cloudflare": 11,
@@ -34,149 +39,94 @@
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 7545,
-    "ipv6": 4814
+    "ipv4": 11594,
+    "ipv6": 4263
   },
   "providers": {
     "aws": {
-      "ipv4": 1739,
-      "ipv6": 2360,
-      "source": "official",
+      "ipv4": 5290,
+      "ipv6": 1492,
+      "source": "official+RIPEstat+RouteViews",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "cloudflare": {
-      "ipv4": 15,
-      "ipv6": 7,
-      "source": "official",
+      "ipv4": 653,
+      "ipv6": 115,
+      "source": "official+RIPEstat+RouteViews",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "hetzner": {
-      "ipv4": 85,
+      "ipv4": 87,
       "ipv6": 6,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS24940:name 'min_peers' is not defined",
-        "AS213230:name 'min_peers' is not defined",
-        "AS212317:name 'min_peers' is not defined",
-        "AS215859:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "ovh": {
-      "ipv4": 625,
+      "ipv4": 631,
       "ipv6": 4,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS16276:name 'min_peers' is not defined",
-        "AS35540:name 'min_peers' is not defined",
-        "AS199949:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "akamai": {
-      "ipv4": 319,
-      "ipv6": 232,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "ipv4": 322,
+      "ipv6": 237,
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS16625:name 'min_peers' is not defined",
-        "AS20940:name 'min_peers' is not defined",
-        "AS12222:name 'min_peers' is not defined",
-        "AS18680:name 'min_peers' is not defined",
-        "AS18717:name 'min_peers' is not defined",
-        "AS22207:name 'min_peers' is not defined",
-        "AS23903:name 'min_peers' is not defined",
-        "AS32787:name 'min_peers' is not defined",
-        "AS35994:name 'min_peers' is not defined",
-        "AS36183:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "digitalocean": {
       "ipv4": 196,
       "ipv6": 13,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS14061:name 'min_peers' is not defined",
-        "AS133165:name 'min_peers' is not defined",
-        "AS394362:name 'min_peers' is not defined",
-        "AS393406:name 'min_peers' is not defined",
-        "AS135340:name 'min_peers' is not defined",
-        "AS201229:name 'min_peers' is not defined",
-        "AS202018:name 'min_peers' is not defined",
-        "AS202109:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "microsoft": {
       "ipv4": 937,
       "ipv6": 95,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS8075:name 'min_peers' is not defined",
-        "AS12076:name 'min_peers' is not defined",
-        "AS54489:name 'min_peers' is not defined",
-        "AS3598:name 'min_peers' is not defined",
-        "AS6584:name 'min_peers' is not defined",
-        "AS8068:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "oracle": {
-      "ipv4": 1182,
-      "ipv6": 309,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "ipv4": 1194,
+      "ipv6": 312,
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS31898:name 'min_peers' is not defined",
-        "AS23871:name 'min_peers' is not defined",
-        "AS39648:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "alibaba": {
-      "ipv4": 603,
-      "ipv6": 181,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "ipv4": 626,
+      "ipv6": 183,
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS37963:name 'min_peers' is not defined",
-        "AS45102:name 'min_peers' is not defined",
-        "AS24429:name 'min_peers' is not defined",
-        "AS45090:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "cdn77": {
       "ipv4": 187,
       "ipv6": 33,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS60068:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "fastly": {
-      "ipv4": 19,
-      "ipv6": 2,
-      "source": "official",
+      "ipv4": 48,
+      "ipv6": 41,
+      "source": "official+RIPEstat+RouteViews",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -184,63 +134,47 @@
     "melbicom": {
       "ipv4": 99,
       "ipv6": 18,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS56630:name 'min_peers' is not defined",
-        "AS8849:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "buyvm": {
       "ipv4": 23,
       "ipv6": 27,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS53667:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "vultr": {
-      "ipv4": 697,
-      "ipv6": 1052,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "ipv4": 703,
+      "ipv6": 1470,
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS20473:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "contabo": {
       "ipv4": 250,
       "ipv6": 2,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS51167:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "scaleway": {
       "ipv4": 14,
       "ipv6": 1,
-      "source": "none",
-      "status": "KEEP_OLD",
+      "source": "RIPEstat+RouteViews",
+      "status": "OK",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0,
-      "errors": [
-        "AS12876:name 'min_peers' is not defined"
-      ]
+      "rejected_ipv6": 0
     },
     "gcore": {
-      "ipv4": 575,
-      "ipv6": 473,
-      "source": "official",
+      "ipv4": 572,
+      "ipv6": 222,
+      "source": "official+RIPEstat+RouteViews",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
