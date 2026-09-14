@@ -72,7 +72,9 @@ jobs:
         run: cat data/last-update.txt
 
       - name: Commit generated lists
+        shell: bash
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/
@@ -81,4 +83,22 @@ jobs:
             exit 0
           fi
           git commit -m "chore: V9 update provider subscriptions"
-          git push
+
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Push succeeded on attempt ${attempt}."
+              exit 0
+            fi
+
+            echo "Push was not a fast-forward; refreshing main (attempt ${attempt})."
+            git fetch origin main
+            git rebase origin/main || {
+              git rebase --abort || true
+              echo "Rebase failed on attempt ${attempt}."
+              sleep $((attempt * 2))
+              continue
+            }
+          done
+
+          echo "Unable to push generated V9 data after 5 attempts."
+          exit 1
