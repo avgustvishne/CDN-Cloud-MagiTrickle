@@ -1,7 +1,14 @@
 {
-  "version": 12,
-  "updated": "2026-09-14 21:22:37 UTC",
+  "version": 14,
+  "updated": "2026-09-14 21:34:35 UTC",
   "ripe_min_peers": 5,
+  "dpi_aware": true,
+  "dpi_status_source": "config/dpi-status.json",
+  "dpi_recommended": {
+    "ipv4": 0,
+    "ipv6": 0,
+    "providers": []
+  },
   "provider_asn_counts": {
     "aws": 2,
     "cloudflare": 11,
@@ -34,12 +41,12 @@
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 7544,
+    "ipv4": 7545,
     "ipv6": 4814
   },
   "providers": {
     "aws": {
-      "ipv4": 1738,
+      "ipv4": 1739,
       "ipv6": 2360,
       "source": "official",
       "status": "OK",
