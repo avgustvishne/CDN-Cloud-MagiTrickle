@@ -1,7 +1,7 @@
-Updated: 2026-09-14 19:58:51 UTC
-V5: official + RIPE fallback + retries + safe keep-old
-ALL IPv4: 7060
-ALL IPv6: 4906
+Updated: 2026-09-14 20:06:43 UTC
+V6: official sources + RIPE fallback + retries + keep-old + atomic writes
+ALL IPv4: 7544
+ALL IPv6: 4814
 
 Provider,IPv4,IPv6,Source,Status
 aws,1738,2360,official,OK
@@ -14,9 +14,11 @@ microsoft,937,95,RIPEstat,OK
 oracle,1182,309,RIPEstat,OK
 alibaba,603,181,RIPEstat,OK
 cdn77,187,33,RIPEstat,OK
-fastly,112,567,RIPEstat,OK
+fastly,19,2,official,OK
 melbicom,99,18,RIPEstat,OK
 buyvm,23,27,RIPEstat,OK
 vultr,697,1052,RIPEstat,OK
 contabo,250,2,RIPEstat,OK
 scaleway,14,1,RIPEstat,OK
+gcore,575,473,official,OK
+backblaze,5,1,official,OK
