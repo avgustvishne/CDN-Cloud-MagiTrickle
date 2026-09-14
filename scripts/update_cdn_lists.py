@@ -206,7 +206,9 @@ def main():
     atomic(DATA / 'dpi-recommended-v4.txt', dpi4); atomic(DATA / 'dpi-recommended-v6.txt', dpi6)
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
-        "version": VERSION, "updated": now, "ripe_min_peers": MIN_PEERS,\n        "dpi_aware": True, "dpi_status_source": "config/dpi-status.json",\n        "dpi_recommended": {"ipv4": len(dpi4), "ipv6": len(dpi6), "providers": dpi_rows},
+        "version": VERSION, "updated": now, "ripe_min_peers": MIN_PEERS,
+        "dpi_aware": True, "dpi_status_source": "config/dpi-status.json",
+        "dpi_recommended": {"ipv4": len(dpi4), "ipv6": len(dpi6), "providers": dpi_rows},
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
