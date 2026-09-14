@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 22
+VERSION = 23
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 ROUTEVIEWS = "https://api.routeviews.org/asn/"
@@ -182,23 +182,22 @@ def main():
             if raw: sources.append("official" if name not in STATIC else "static")
         except Exception as exc:
             errors.append("official:" + str(exc))
-        # Always union authoritative/provider data with two independent BGP views.
-        # This avoids losing low-visibility or newly announced prefixes when one source is incomplete.
         for asn in unique_asns:
             try:
                 raw.extend(ripe(asn, min_peers)); sources.append("RIPEstat")
-            except Exception as exc:
-                errors.append(f"RIPE-AS{asn}:{exc}")
-            try:
-                raw.extend(routeviews(asn, 4)); sources.append("RouteViews")
-            except Exception as exc:
-                errors.append(f"RouteViews-v4-AS{asn}:{exc}")
-            try:
-                raw.extend(routeviews(asn, 6)); sources.append("RouteViews")
-            except Exception as exc:
-                errors.append(f"RouteViews-v6-AS{asn}:{exc}")
+            except Exception as exc: errors.append(f"RIPE-AS{asn}:{exc}")
             time.sleep(0.12)
-        v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
+        ripe4, _ = nets([x for x in raw if "/" in x], 4)
+        ripe6, _ = nets([x for x in raw if "/" in x], 6)
+        rv4, rv6 = [], []
+        for asn in unique_asns:
+            try: rv4.extend(routeviews(asn, 4))
+            except Exception as exc: errors.append(f"RouteViews-v4-AS{asn}:{exc}")
+            try: rv6.extend(routeviews(asn, 6))
+            except Exception as exc: errors.append(f"RouteViews-v6-AS{asn}:{exc}")
+        rv4, _ = nets(rv4, 4); rv6, _ = nets(rv6, 6)
+        v4, rejected4 = nets(list(ripe4) + list(rv4), 4)
+        v6, rejected6 = nets(list(ripe6) + list(rv6), 6)
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
 
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
@@ -221,7 +220,7 @@ def main():
             atomic(old4, v4); atomic(old6, v6)
         source = "+".join(dict.fromkeys(sources)) or "none"
         all4.extend(v4); all6.extend(v6)
-        rows.append({"name": name, "ipv4": len(v4), "ipv6": len(v6), "source": source, "status": status, "errors": errors[:10], "rejected_ipv4": rejected4, "rejected_ipv6": rejected6})
+        rows.append({"name": name, "ipv4": len(v4), "ipv6": len(v6), "source": source, "status": status, "errors": errors[:10], "rejected_ipv4": rejected4, "rejected_ipv6": rejected6, "routeviews_ipv4": len(rv4), "routeviews_ipv6": len(rv6)})
         print(f"{name}: v4={len(v4)} v6={len(v6)} {source} {status}")
         if errors: print(f"  warnings: {len(errors)}")
         if rejected4 or rejected6: print(f"  filtered: ipv4={rejected4} ipv6={rejected6}")
@@ -241,14 +240,14 @@ def main():
         "aggregate": {"ipv4": len(all4), "ipv6": len(all6)},
         "providers": {row["name"]: {
             "ipv4": row["ipv4"], "ipv6": row["ipv6"], "source": row["source"],
-            "status": row["status"], "rejected_ipv4": row["rejected_ipv4"], "rejected_ipv6": row["rejected_ipv6"],
+            "status": row["status"], "rejected_ipv4": row["rejected_ipv4"], "rejected_ipv6": row["rejected_ipv6"], "routeviews_ipv4": row.get("routeviews_ipv4", 0), "routeviews_ipv6": row.get("routeviews_ipv6", 0),
             **({"errors": row["errors"]} if row["errors"] else {})
         } for row in rows},
     }
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V22: provider subscriptions + official sources + RIPEstat + RouteViews union + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V23: provider subscriptions + official sources + RIPEstat + RouteViews cross-check + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
 
