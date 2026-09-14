@@ -1,4 +1,5 @@
-name: Update MagiTrickle V6 subscriptions
+name: Update MagiTrickle V7 subscriptions
+
 on:
   schedule:
     - cron: "17 */12 * * *"
@@ -8,40 +9,57 @@ on:
       - "config/providers.json"
       - "scripts/update_cdn_lists.py"
       - ".github/workflows/update.yml"
+
 permissions:
   contents: write
+
 concurrency:
   group: magitrickle-subscriptions
   cancel-in-progress: true
+
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
-      - name: Generate V6
+
+      - name: Generate V7
         run: python scripts/update_cdn_lists.py
+
       - name: Validate CIDR and manifests
         run: |
           python - <<'PY'
-          import ipaddress, pathlib, json, hashlib
-          d=pathlib.Path("data")
-          assert (d/"all-cloud-v4.txt").stat().st_size > 0
+          import hashlib, ipaddress, json, pathlib
+          d = pathlib.Path("data")
+          assert (d / "all-cloud-v4.txt").stat().st_size > 0
+          assert (d / "all-cloud-v6.txt").exists()
           for p in d.glob("*.txt"):
-            if p.name == "last-update.txt":
-              continue
-            for line in p.read_text().splitlines():
-              ipaddress.ip_network(line)
-          m=json.loads((d/"manifest.json").read_text())
-          assert m["version"] == 6
+              if p.name == "last-update.txt":
+                  continue
+              for line in p.read_text(encoding="utf-8").splitlines():
+                  ipaddress.ip_network(line)
+          m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
+          assert m["version"] == 7
           assert m["aggregate"]["ipv4"] > 0
-          print("V6 validation OK")
+          assert m["aggregate"]["ipv6"] >= 0
+          checks = (d / "checksums.sha256").read_text(encoding="utf-8").splitlines()
+          assert checks
+          for row in checks:
+              digest, rel = row.split("  ", 1)
+              p = pathlib.Path(rel)
+              assert p.exists()
+              h = hashlib.sha256(p.read_bytes()).hexdigest()
+              assert h == digest, f"checksum mismatch: {rel}"
+          print("V7 validation OK")
           PY
+
       - name: Show summary
         run: cat data/last-update.txt
+
       - name: Commit generated lists
         run: |
           git config user.name "github-actions[bot]"
@@ -51,5 +69,5 @@ jobs:
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: V6 update provider subscriptions"
+          git commit -m "chore: V7 update provider subscriptions"
           git push
