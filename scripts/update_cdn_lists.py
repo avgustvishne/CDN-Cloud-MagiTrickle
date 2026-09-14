@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 14
+VERSION = 15
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 5
@@ -139,8 +139,10 @@ def sha256(path):
 def main():
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     all4, all6, rows = [], [], []
-    dpi_cfg_path = ROOT / 'config/dpi-status.json'
-    dpi_cfg = json.loads(dpi_cfg_path.read_text(encoding='utf-8')) if dpi_cfg_path.exists() else {'providers': {}}
+    dpi_cfg_path = ROOT / "config/dpi-status.json"
+    dpi_cfg = json.loads(dpi_cfg_path.read_text(encoding="utf-8")) if dpi_cfg_path.exists() else {"providers": {}}
+    cidr_cfg_path = ROOT / "config/dpi-cidr.json"
+    cidr_cfg = json.loads(cidr_cfg_path.read_text(encoding="utf-8")) if cidr_cfg_path.exists() else {"cidrs": {}}
     seen_asns = set()
     provider_asns = {}
     for name, asns in cfg["providers"].items():
@@ -203,12 +205,26 @@ def main():
             if p6.exists(): dpi6.extend(p6.read_text(encoding='utf-8').splitlines())
             dpi_rows.append(name)
     dpi4, _ = nets(dpi4, 4); dpi6, _ = nets(dpi6, 6)
-    atomic(DATA / 'dpi-recommended-v4.txt', dpi4); atomic(DATA / 'dpi-recommended-v6.txt', dpi6)
+    cidr_status = {str(k): str(v).lower() for k, v in cidr_cfg.get("cidrs", {}).items()}
+    def dpi_filter(networks):
+        selected, stats = [], {"safe": 0, "blocked": 0, "unknown": 0}
+        for net in networks:
+            status = cidr_status.get(str(net), "unknown")
+            if status == "safe":
+                selected.append(net); stats["safe"] += 1
+            elif status == "blocked":
+                stats["blocked"] += 1
+            else:
+                stats["unknown"] += 1
+        return selected, stats
+    dpi4, dpi4_stats = dpi_filter(dpi4)
+    dpi6, dpi6_stats = dpi_filter(dpi6)
+    atomic(DATA / "dpi-recommended-v4.txt", dpi4); atomic(DATA / "dpi-recommended-v6.txt", dpi6)
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": MIN_PEERS,
         "dpi_aware": True, "dpi_status_source": "config/dpi-status.json",
-        "dpi_recommended": {"ipv4": len(dpi4), "ipv6": len(dpi6), "providers": dpi_rows},
+        "dpi_recommended": {"ipv4": len(dpi4), "ipv6": len(dpi6), "providers": dpi_rows, "cidr": {"ipv4": dpi4_stats, "ipv6": dpi6_stats}},
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
@@ -224,7 +240,7 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V14: DPI-aware provider selection + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V15: DPI + ASN + CIDR-aware provider selection + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
 
