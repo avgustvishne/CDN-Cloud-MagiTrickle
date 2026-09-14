@@ -1,4 +1,4 @@
-name: Update MagiTrickle V14 subscriptions
+name: Update MagiTrickle V15 subscriptions
 
 on:
   schedule:
@@ -7,6 +7,8 @@ on:
   push:
     paths:
       - "config/providers.json"
+      - "config/dpi-status.json"
+      - "config/dpi-cidr.json"
       - "scripts/update_cdn_lists.py"
       - ".github/workflows/update.yml"
 
@@ -27,10 +29,10 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generate V14
+      - name: Generate V15
         run: python scripts/update_cdn_lists.py
 
-      - name: Validate V14 data
+      - name: Validate V15 data
         run: |
           python - <<'PY'
           import hashlib
@@ -51,9 +53,10 @@ jobs:
                   assert n.prefixlen >= (8 if n.version == 4 else 16), f"broad prefix: {line} in {p.name}"
 
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
-          assert m["version"] == 14
+          assert m["version"] == 15
           assert m["global_only"] is True
           assert m["dpi_aware"] is True
+          assert "cidr" in m["dpi_recommended"]
           assert (d / "dpi-recommended-v4.txt").exists()
           assert (d / "dpi-recommended-v6.txt").exists()
           assert m["min_prefixlen"] == {"ipv4": 8, "ipv6": 16}
@@ -68,7 +71,7 @@ jobs:
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
 
-          print("V14 validation OK")
+          print("V15 validation OK")
           PY
 
       - name: Show summary
@@ -80,12 +83,12 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/
+          git add data/ config/dpi-status.json config/dpi-cidr.json
           if git diff --cached --quiet; then
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: V14 update provider subscriptions"
+          git commit -m "chore: V15 update provider subscriptions"
 
           for attempt in 1 2 3 4 5; do
             if git push; then
@@ -103,5 +106,5 @@ jobs:
             }
           done
 
-          echo "Unable to push generated V14 data after 5 attempts."
+          echo "Unable to push generated V15 data after 5 attempts."
           exit 1
