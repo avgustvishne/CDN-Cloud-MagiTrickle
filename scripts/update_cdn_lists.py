@@ -18,7 +18,7 @@ DATA.mkdir(exist_ok=True)
 VERSION = 18
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
-MIN_PEERS = 1
+MIN_PEERS = 5
 RETRIES = 5
 TIMEOUT = 30
 RETRY_BASE = 2
@@ -60,7 +60,7 @@ def jsonget(url):
     return json.loads(request(url).decode("utf-8"))
 
 def ripe(asn):
-    query = urllib.parse.urlencode({"resource": "AS" + asn, "min_peers_seeing": MIN_PEERS, "sourceapp": "CDN-Cloud-MagiTrickle"})
+    query = urllib.parse.urlencode({"resource": "AS" + asn, "min_peers_seeing": min_peers, "sourceapp": "CDN-Cloud-MagiTrickle"})
     payload = jsonget(RIPE + "?" + query)
     return [item.get("prefix", "") for item in payload.get("data", {}).get("prefixes", [])]
 
@@ -138,6 +138,7 @@ def sha256(path):
 
 def main():
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
+    min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
     seen_asns = set()
     provider_asns = {}
@@ -195,7 +196,7 @@ def main():
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
-        "version": VERSION, "updated": now, "ripe_min_peers": MIN_PEERS,
+        "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
