@@ -88,11 +88,12 @@ def main():
         all4+=v4;all6+=v6;rows.append((name,len(v4),len(v6),src,status));print(f"{name}: v4={len(v4)} v6={len(v6)} {src} {status}")
     all4,all6=nets(all4,4),nets(all6,6)
     if not all4:sys.exit("[FATAL] no aggregate IPv4")
-    atomic(DATA/"all-cloud-v4.txt",all4);atomic(DATA/"all-cloud-v6.txt",all6)
+    atomic(DATA/"all-cloud-v4.txt",all4); atomic(DATA/"all-cloud-v6.txt",all6)
     now=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     m={"version":6,"updated":now,"ripe_min_peers":MIN_PEERS,"aggregate":{"ipv4":len(all4),"ipv6":len(all6)},"providers":{}}
     for n,a,b,s,st in rows:m["providers"][n]={"ipv4":a,"ipv6":b,"source":s,"status":st}
     (DATA/"manifest.json").write_text(json.dumps(m,indent=2,ensure_ascii=False)+"\n")
-    (DATA/"checksums.sha256").write_text("\n".join(f"{sha256(p)}  {p.relative_to(ROOT).as_posix()}" for p in sorted(DATA.glob("*-v*.txt"))+[f"{sha256(DATA/'all-cloud-v4.txt')}  data/all-cloud-v4.txt",f"{sha256(DATA/'all-cloud-v6.txt')}  data/all-cloud-v6.txt"])+"\n")
+    checksum_files=sorted(set([*DATA.glob("*-v*.txt"),DATA/"all-cloud-v4.txt",DATA/"all-cloud-v6.txt"]))
+    (DATA/"checksums.sha256").write_text("\n".join(f"{sha256(p)}  {p.relative_to(ROOT).as_posix()}" for p in checksum_files)+"\n")
     (DATA/"last-update.txt").write_text("\n".join([f"Updated: {now}","V6: official sources + RIPE fallback + retries + keep-old + atomic writes",f"ALL IPv4: {len(all4)}",f"ALL IPv6: {len(all6)}","","Provider,IPv4,IPv6,Source,Status"]+[f"{n},{a},{b},{s},{st}" for n,a,b,s,st in rows])+"\n")
 if __name__=="__main__":main()
