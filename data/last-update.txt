@@ -1,23 +1,22 @@
-Updated: 2026-09-14 19:47:39 UTC
-V3 source policy: official where available, RIPEstat fallback
-RIPE min peers: 5
-ALL IPv4 CIDRs: 7060
-ALL IPv6 CIDRs: 4914
+Updated: 2026-09-14 19:57:26 UTC
+V5: official + RIPE fallback + retries + safe keep-old
+ALL IPv4: 7060
+ALL IPv6: 4906
 
-Provider,IPv4,IPv6,Source
-aws,1738,2368,official
-cloudflare,15,7,official
-hetzner,85,6,RIPEstat
-ovh,625,4,RIPEstat
-akamai,319,232,RIPEstat
-digitalocean,196,13,RIPEstat
-microsoft,937,95,RIPEstat
-oracle,1182,309,RIPEstat
-alibaba,603,181,RIPEstat
-cdn77,187,33,RIPEstat
-fastly,112,567,RIPEstat
-melbicom,99,18,RIPEstat
-buyvm,23,27,RIPEstat
-vultr,697,1052,RIPEstat
-contabo,250,2,RIPEstat
-scaleway,14,1,RIPEstat
+Provider,IPv4,IPv6,Source,Status
+aws,1738,2360,official,OK
+cloudflare,15,7,official,OK
+hetzner,85,6,RIPEstat,OK
+ovh,625,4,RIPEstat,OK
+akamai,319,232,RIPEstat,OK
+digitalocean,196,13,RIPEstat,OK
+microsoft,937,95,RIPEstat,OK
+oracle,1182,309,RIPEstat,OK
+alibaba,603,181,RIPEstat,OK
+cdn77,187,33,RIPEstat,OK
+fastly,112,567,RIPEstat,OK
+melbicom,99,18,RIPEstat,OK
+buyvm,23,27,RIPEstat,OK
+vultr,697,1052,RIPEstat,OK
+contabo,250,2,RIPEstat,OK
+scaleway,14,1,RIPEstat,OK
