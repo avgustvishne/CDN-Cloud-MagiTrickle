@@ -1,24 +1,24 @@
-Updated: 2026-09-14 22:16:15 UTC
-V16: provider subscriptions + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256
+Updated: 2026-09-14 22:24:15 UTC
+V18: provider subscriptions + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256
 ALL IPv4: 7545
 ALL IPv6: 4814
 
 Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6
 aws,1739,2360,official,OK,0,0,0
 cloudflare,15,7,official,OK,0,0,0
-hetzner,85,6,RIPEstat,OK,0,0,0
-ovh,625,4,RIPEstat,OK,0,0,0
-akamai,319,232,RIPEstat,OK,0,0,0
-digitalocean,196,13,RIPEstat,OK,0,0,0
-microsoft,937,95,RIPEstat,OK,0,0,0
-oracle,1182,309,RIPEstat,OK,0,0,0
-alibaba,603,181,RIPEstat,OK,0,0,0
-cdn77,187,33,RIPEstat,OK,0,0,0
+hetzner,85,6,none,KEEP_OLD,4,0,0
+ovh,625,4,none,KEEP_OLD,3,0,0
+akamai,319,232,none,KEEP_OLD,10,0,0
+digitalocean,196,13,none,KEEP_OLD,8,0,0
+microsoft,937,95,none,KEEP_OLD,6,0,0
+oracle,1182,309,none,KEEP_OLD,3,0,0
+alibaba,603,181,none,KEEP_OLD,4,0,0
+cdn77,187,33,none,KEEP_OLD,1,0,0
 fastly,19,2,official,OK,0,0,0
-melbicom,99,18,RIPEstat,OK,0,0,0
-buyvm,23,27,RIPEstat,OK,0,0,0
-vultr,697,1052,RIPEstat,OK,0,0,0
-contabo,250,2,RIPEstat,OK,0,0,0
-scaleway,14,1,RIPEstat,OK,0,0,0
+melbicom,99,18,none,KEEP_OLD,2,0,0
+buyvm,23,27,none,KEEP_OLD,1,0,0
+vultr,697,1052,none,KEEP_OLD,1,0,0
+contabo,250,2,none,KEEP_OLD,1,0,0
+scaleway,14,1,none,KEEP_OLD,1,0,0
 gcore,575,473,official,OK,0,0,0
 backblaze,5,1,static,OK,0,0,0
