@@ -6,6 +6,11 @@ on:
       - "scripts/**"
       - "config/**"
       - ".github/workflows/reproducibility.yml"
+  push:
+    paths:
+      - "data/**"
+      - "config/**"
+      - "scripts/**"
   workflow_dispatch:
 
 permissions:
