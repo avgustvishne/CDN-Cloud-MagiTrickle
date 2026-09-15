@@ -19,10 +19,10 @@ if str(ROOT / "scripts") not in sys.path: sys.path.insert(0, str(ROOT / "scripts
 from policy_engine import apply as apply_policy
 DATA.mkdir(exist_ok=True)
 
-VERSION = 44
+VERSION = 45
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
-MIN_PEERS = 1
+MIN_PEERS = 2
 RETRIES = 5
 TIMEOUT = 30
 RETRY_BASE = 2
@@ -565,7 +565,7 @@ def main():
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews", "sw.ext.io"],
         "features": ["source-fusion","multi-collector-bgp","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
-        "engine": "unified-provider-sources-v44",
+        "engine": "unified-provider-sources-v45",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
