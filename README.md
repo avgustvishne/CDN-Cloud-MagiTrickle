@@ -23,7 +23,7 @@
 - IPv4 и IPv6 CIDR
 - ASN-подписки
 - CDN и Cloud наборы
-- Готовые профили **FULL / BALANCED / LITE**
+- Готовые профили **FULL / BALANCED / MINIMAL**
 - Отдельные наборы **CDN / Cloud / Video / VPN**
 - Отдельные списки по провайдерам
 - Общий **ASN ALL** без повторяющихся CIDR
@@ -37,7 +37,7 @@
 |---|---|---|---|
 | **FULL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) | Максимальное покрытие |
 | **BALANCED** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) | Рекомендуемый вариант |
-| **LITE** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/lite-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/lite-v6.txt) | Минимальный объём |
+| **MINIMAL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) | Минимальный объём |
 
 ## 📦 Специализированные наборы
 
@@ -52,6 +52,11 @@
 
 - **ASN ALL IPv4:** [asn-all-v4.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt)
 - **ASN ALL IPv6:** [asn-all-v6.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt)
+
+**ALL-CLOUD IPv4:** [all-cloud-v4.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt)  
+**ALL-CLOUD IPv6:** [all-cloud-v6.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt)
+
+`ALL-CLOUD` — единый дедуплицированный агрегат всех провайдерских списков. Отдельный `PROVIDERS ALL` не создаётся, чтобы не дублировать эти данные.
 
 Все источники объединяются, одинаковые CIDR удаляются, вложенные сети агрегируются, IPv4 и IPv6 хранятся отдельно.
 
