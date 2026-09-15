@@ -29,6 +29,13 @@
 | **Video** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
 | **VPN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
 
+## Чем отличаются провайдерские и ASN-подписки
+
+- **Отдельные провайдеры** — готовые списки IP/CIDR, собранные генератором из доступных источников. Обычно дают более полное и актуальное покрытие конкретного провайдера.
+- **ASN-подписки** — IP/CIDR, относящиеся к указанному автономному номеру (ASN). Удобны для точечного выбора сети или конкретной инфраструктуры.
+
+**Коротко:** провайдерская подписка — **всё покрытие провайдера**, ASN — **конкретная сеть провайдера**.
+
 ## Отдельные провайдеры
 
 Для каждого провайдера доступны отдельные IPv4 и IPv6 подписки.
