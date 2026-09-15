@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 28
+VERSION = 29
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
@@ -213,6 +213,25 @@ def main():
     if len(all4) > MAX_AGGREGATE_PREFIXES or len(all6) > MAX_AGGREGATE_PREFIXES:
         sys.exit("[FATAL] aggregate prefix count exceeds safety limit")
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
+    # Build stable preset subscriptions from generated provider files.
+    presets = {
+        "cdn": ["cloudflare", "akamai", "fastly", "cdn77", "gcore"],
+        "cloud": ["aws", "cloudflare", "microsoft", "oracle", "alibaba", "digitalocean"],
+        "video": ["cloudflare", "fastly", "akamai", "aws", "microsoft"],
+        "vpn": ["vultr", "buyvm", "ovh", "hetzner", "digitalocean", "gcore", "contabo", "scaleway", "melbicom"],
+    }
+    preset_dir = DATA / "presets"
+    preset_dir.mkdir(exist_ok=True)
+    for preset, names in presets.items():
+        for version, label in ((4, "v4"), (6, "v6")):
+            combined = []
+            for name in names:
+                path = DATA / f"{name}-{label}.txt"
+                if path.exists():
+                    combined.extend(path.read_text(encoding="utf-8").splitlines())
+            combined, _ = nets(combined, version)
+            atomic(preset_dir / f"{preset}-{label}.txt", combined)
+
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers, "sources": ["official", "RIPEstat"],
@@ -232,7 +251,7 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V28: provider subscriptions + automatic change audit + official sources + RIPEstat + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V29: provider subscriptions + presets + automatic change audit + history + official sources + RIPEstat + global filtering + anomaly protection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
     audit_lines = ["Provider,IPv4,IPv6,PreviousIPv4,PreviousIPv6,IPv4Change%,IPv6Change%,Status,Source,Errors"]
@@ -241,5 +260,13 @@ def main():
         for r in audit_rows
     )
     write_text_atomic(DATA / "audit.csv", "\n".join(audit_lines) + "\n")
+    history_path = DATA / "history.csv"
+    header = "Timestamp,Provider,IPv4,IPv6,IPv4Change%,IPv6Change%,Status"
+    history_lines = history_path.read_text(encoding="utf-8").splitlines() if history_path.exists() else [header]
+    for r in audit_rows:
+        history_lines.append(
+            f"{now},{r['provider']},{r['ipv4_prefixes']},{r['ipv6_prefixes']},{r['ipv4_change_percent']},{r['ipv6_change_percent']},{r['status']}"
+        )
+    write_text_atomic(history_path, "\n".join(history_lines[-10001:]) + "\n")
 
 if __name__ == "__main__": main()
