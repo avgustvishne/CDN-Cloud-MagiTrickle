@@ -74,6 +74,18 @@ jobs:
           assert generated_names == provider_names, f"provider files mismatch: generated={sorted(generated_names)} config={sorted(provider_names)}"
           for obsolete in ("cdn-cloud-v4.txt", "cdn-cloud-v6.txt", "dpi-recommended-v4.txt", "dpi-recommended-v6.txt"):
               assert not (d / obsolete).exists(), f"obsolete file remains: {obsolete}"
+          required_profiles = [
+              "full-v4.txt", "full-v6.txt",
+              "balanced-v4.txt", "balanced-v6.txt",
+              "lite-v4.txt", "lite-v6.txt",
+              "cdn-v4.txt", "cdn-v6.txt",
+              "cloud-v4.txt", "cloud-v6.txt",
+              "video-v4.txt", "video-v6.txt",
+              "vpn-v4.txt", "vpn-v6.txt",
+          ]
+          for name in required_profiles:
+              p = d / "presets" / name
+              assert p.exists() and p.stat().st_size > 0, f"missing/empty profile: {name}"
 
           summary = json.loads((d / "change-summary.json").read_text(encoding="utf-8"))
           assert isinstance(summary.get("datasets"), dict)
