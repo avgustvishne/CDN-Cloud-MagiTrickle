@@ -36,6 +36,47 @@
 | **Gcore** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v6.txt) |
 | **Backblaze** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v6.txt) |
 
+## ASN-подписки
+
+Отдельные **Full ASN**-подписки позволяют получить полный набор маршрутизируемых IPv4/IPv6-префиксов конкретного ASN. Ссылки ниже ведут на ASN-генератор; они не ограничены текущими provider-файлами репозитория.
+
+> **Важно:** ASN и provider — не одно и то же. Для провайдеров с несколькими ASN рекомендуется использовать объединённую подписку только после проверки, что все ASN действительно относятся к нужной инфраструктуре.
+
+| Провайдер | ASN | IPv4 | IPv6 |
+|---|---|---|---|
+| **AWS** | AS16509 | [IPv4](https://asn.web2core.workers.dev/AS16509?v4) | [IPv6](https://asn.web2core.workers.dev/AS16509?v6) |
+| **AWS** | AS14618 | [IPv4](https://asn.web2core.workers.dev/AS14618?v4) | [IPv6](https://asn.web2core.workers.dev/AS14618?v6) |
+| **Cloudflare** | AS13335 | [IPv4](https://asn.web2core.workers.dev/AS13335?v4) | [IPv6](https://asn.web2core.workers.dev/AS13335?v6) |
+| **Hetzner** | AS24940 | [IPv4](https://asn.web2core.workers.dev/AS24940?v4) | [IPv6](https://asn.web2core.workers.dev/AS24940?v6) |
+| **OVHcloud** | AS16276 | [IPv4](https://asn.web2core.workers.dev/AS16276?v4) | [IPv6](https://asn.web2core.workers.dev/AS16276?v6) |
+| **Akamai** | AS20940 | [IPv4](https://asn.web2core.workers.dev/AS20940?v4) | [IPv6](https://asn.web2core.workers.dev/AS20940?v6) |
+| **Akamai** | AS16625 | [IPv4](https://asn.web2core.workers.dev/AS16625?v4) | [IPv6](https://asn.web2core.workers.dev/AS16625?v6) |
+| **Akamai** | AS63949 | [IPv4](https://asn.web2core.workers.dev/AS63949?v4) | [IPv6](https://asn.web2core.workers.dev/AS63949?v6) |
+| **DigitalOcean** | AS14061 | [IPv4](https://asn.web2core.workers.dev/AS14061?v4) | [IPv6](https://asn.web2core.workers.dev/AS14061?v6) |
+| **Microsoft** | AS8075 | [IPv4](https://asn.web2core.workers.dev/AS8075?v4) | [IPv6](https://asn.web2core.workers.dev/AS8075?v6) |
+| **Oracle Cloud** | AS31898 | [IPv4](https://asn.web2core.workers.dev/AS31898?v4) | [IPv6](https://asn.web2core.workers.dev/AS31898?v6) |
+| **Alibaba Cloud** | AS45102 | [IPv4](https://asn.web2core.workers.dev/AS45102?v4) | [IPv6](https://asn.web2core.workers.dev/AS45102?v6) |
+| **Alibaba Cloud** | AS37963 | [IPv4](https://asn.web2core.workers.dev/AS37963?v4) | [IPv6](https://asn.web2core.workers.dev/AS37963?v6) |
+| **CDN77** | AS60068 | [IPv4](https://asn.web2core.workers.dev/AS60068?v4) | [IPv6](https://asn.web2core.workers.dev/AS60068?v6) |
+| **Fastly** | AS54113 | [IPv4](https://asn.web2core.workers.dev/AS54113?v4) | [IPv6](https://asn.web2core.workers.dev/AS54113?v6) |
+| **BuyVM / FranTech** | AS53667 | [IPv4](https://asn.web2core.workers.dev/AS53667?v4) | [IPv6](https://asn.web2core.workers.dev/AS53667?v6) |
+| **Vultr** | AS20473 | [IPv4](https://asn.web2core.workers.dev/AS20473?v4) | [IPv6](https://asn.web2core.workers.dev/AS20473?v6) |
+| **Contabo** | AS51167 | [IPv4](https://asn.web2core.workers.dev/AS51167?v4) | [IPv6](https://asn.web2core.workers.dev/AS51167?v6) |
+| **Scaleway** | AS12876 | [IPv4](https://asn.web2core.workers.dev/AS12876?v4) | [IPv6](https://asn.web2core.workers.dev/AS12876?v6) |
+| **Gcore** | AS199524 | [IPv4](https://asn.web2core.workers.dev/AS199524?v4) | [IPv6](https://asn.web2core.workers.dev/AS199524?v6) |
+| **Backblaze** | AS19503 | [IPv4](https://asn.web2core.workers.dev/AS19503?v4) | [IPv6](https://asn.web2core.workers.dev/AS19503?v6) |
+
+### Multi-ASN провайдеры
+
+Для **AWS, Akamai и Alibaba Cloud** один ASN не покрывает всю инфраструктуру провайдера. Поэтому в таблице указаны несколько основных ASN. Для Akamai список здесь намеренно не объявляется исчерпывающим: у Akamai есть дополнительные связанные ASN, и их следует добавлять только после проверки актуального BGP/IRR-происхождения. Например, актуальные данные подтверждают как минимум AS20940 и AS16625, а также AS63949 как Akamai ASN. citeturn0search6turn0search2
+
+AWS использует AS16509 как основной публичный ASN, а AS14618 также принадлежит Amazon; поэтому оба оставлены отдельно. citeturn0search12turn0search25
+
+Alibaba Cloud использует как минимум AS45102 и AS37963; оба ASN представлены в актуальных сетевых данных. citeturn0search8turn0search4
+
+Oracle Cloud Infrastructure имеет AS31898 и собственный IRR AS-set AS31898; поэтому для OCI базовой ASN-подпиской используется AS31898. citeturn0search5turn0search20
+
+
 ## Использование
 
 Можно использовать общую подписку, если нужны все сети, или отдельные подписки провайдеров для более точной настройки MagiTrickle.
