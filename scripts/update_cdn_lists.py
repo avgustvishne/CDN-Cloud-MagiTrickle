@@ -232,7 +232,6 @@ def routeviews_prefixes(asn):
 def ripe(asn, min_peers):
     """Merge RIPEstat BGP views and use RouteViews as a fallback."""
     found = set()
-    ripe_ok = False
 
     query = urllib.parse.urlencode({
         "resource": "AS" + asn,
@@ -241,7 +240,6 @@ def ripe(asn, min_peers):
     })
     try:
         payload = jsonget(RIPE + "?" + query)
-        ripe_ok = True
         for item in payload.get("data", {}).get("prefixes", []):
             if isinstance(item, dict) and item.get("prefix"):
                 found.add(item["prefix"])
@@ -269,10 +267,13 @@ def ripe(asn, min_peers):
     except Exception:
         pass
 
-    # Only use the third-party source when RIPEstat did not return data.
-    # This avoids replacing a healthy RIPE result with a different BGP view.
-    if not found or not ripe_ok:
-        found.update(routeviews_prefixes(asn))
+    # Fuse RouteViews with RIPEstat instead of treating it only as a hard
+    # fallback. Different collectors can see different announcements; merging
+    # both views improves coverage while the normal CIDR normalization and
+    # aggregation stage removes duplicates and nested prefixes.
+    routeviews = routeviews_prefixes(asn)
+    if routeviews:
+        found.update(routeviews)
 
     return sorted(found)
 
@@ -563,7 +564,7 @@ def main():
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io"],
-        "features": ["source-fusion","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
+        "features": ["source-fusion","multi-collector-bgp","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
         "engine": "unified-provider-sources-v43",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
