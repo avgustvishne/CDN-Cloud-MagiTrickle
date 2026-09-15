@@ -1,0 +1,46 @@
+name: Link Checker
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "43 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check repository URLs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import pathlib, re, subprocess, sys
+          urls=set()
+          for p in pathlib.Path(".").rglob("*"):
+              if not p.is_file() or ".git" in p.parts or "data" in p.parts:
+                  continue
+              try: text=p.read_text(encoding="utf-8")
+              except Exception: continue
+              urls.update(re.findall(r'https?://[^\s<>")\]]+', text))
+          urls={u.rstrip(".,;") for u in urls if "github.com" in u or "raw.githubusercontent.com" in u or "https://" in u}
+          bad=[]
+          for u in sorted(urls):
+              r=subprocess.run(["curl","-L","-sS","-o","/dev/null","-w","%{http_code}", "--max-time","15",u],text=True,capture_output=True)
+              code=r.stdout.strip()
+              if code not in {"200","206","301","302","307","308"}:
+                  bad.append((code,u))
+                  print("FAIL",code,u)
+              else:
+                  print("OK",code,u)
+          if bad:
+              print(f"{len(bad)} broken links")
+              sys.exit(1)
+          PY
