@@ -4,6 +4,11 @@ on:
   workflow_run:
     workflows: ["Update MagiTrickle subscriptions"]
     types: [completed]
+  push:
+    paths:
+      - "data/**"
+      - "config/**"
+      - "scripts/**"
   workflow_dispatch:
   schedule:
     - cron: "53 6 * * 1"
