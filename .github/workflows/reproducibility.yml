@@ -36,9 +36,14 @@ jobs:
               nets={n for n in nets if n.version==version}
               return "\n".join(map(str, sorted(ipaddress.collapse_addresses(nets), key=lambda n:(int(n.network_address),n.prefixlen))))+"\n"
 
-          for p in files:
-              a=normalize(p); b=normalize(p)
-              if hashlib.sha256(a.encode()).hexdigest()!=hashlib.sha256(b.encode()).hexdigest():
-                  raise SystemExit(f"non-deterministic normalization: {p}")
+          with tempfile.TemporaryDirectory() as td:
+              td=pathlib.Path(td)
+              for p in files:
+                  a=normalize(p)
+                  q=td / p.name
+                  q.write_text(a, encoding="utf-8")
+                  b=normalize(q)
+                  if hashlib.sha256(a.encode()).hexdigest()!=hashlib.sha256(b.encode()).hexdigest():
+                      raise SystemExit(f"non-idempotent normalization: {p}")
           print(f"Reproducibility normalization OK: {len(files)} files")
           PY
