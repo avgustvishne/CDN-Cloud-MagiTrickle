@@ -101,7 +101,7 @@
 
 Актуальный статус CDN/cloud-провайдеров: доступность, HTTP-ответ и задержка.
 
-**[Открыть мониторинг](monitor/)**
+**[Открыть Dashboard](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/monitor/)
 
 Статус автоматически обновляется каждые 10 минут.
 
