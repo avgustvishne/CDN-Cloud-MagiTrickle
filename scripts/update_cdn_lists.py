@@ -215,7 +215,7 @@ def main():
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
     # Build stable preset subscriptions from generated provider files.
     presets = {
-        "full": list(PROVIDERS.keys()),
+        "full": list(cfg["providers"].keys()),
         "balanced": ["cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway"],
         "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
         "cdn": ["cloudflare", "akamai", "fastly", "cdn77", "gcore"],
