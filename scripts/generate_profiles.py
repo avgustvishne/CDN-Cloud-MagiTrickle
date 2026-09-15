@@ -3,14 +3,18 @@ import ipaddress
 import pathlib
 import tempfile
 import os
+import json
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 PRESETS = DATA / "presets"
 PRESETS.mkdir(parents=True, exist_ok=True)
 
+CFG = json.loads((ROOT / "config" / "providers.json").read_text(encoding="utf-8"))
+PROVIDERS = sorted(CFG["providers"])
+
 PROFILES = {
-    "full": None,
+    "full": PROVIDERS,
     "balanced": ["cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway"],
     "lite": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
 }
@@ -43,10 +47,8 @@ def atomic(path, values):
         if os.path.exists(tmp):
             os.unlink(tmp)
 
-providers = sorted(p.name[:-7] for p in DATA.glob("*-v4.txt") if p.name != "all-cloud-v4.txt")
-
 for profile, selected in PROFILES.items():
-    names = providers if selected is None else selected
+    names = selected
     for version in (4, 6):
         if profile == "full":
             source = read("all-cloud", version)
