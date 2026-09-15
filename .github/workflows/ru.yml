@@ -1,0 +1,56 @@
+name: Generate RU WhiteLists
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */12 * * *"
+  push:
+    paths:
+      - "scripts/generate_ru.py"
+      - ".github/workflows/ru.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: magitrickle-ru
+  cancel-in-progress: false
+
+jobs:
+  ru:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+      - name: Generate RU profiles
+        run: python scripts/generate_ru.py
+      - name: Validate RU profiles
+        run: |
+          python - <<'PY'
+          import ipaddress, pathlib
+          d=pathlib.Path("data")
+          for name in ["ru-full-v4.txt","ru-full-v6.txt","ru-common-v4.txt","ru-common-v6.txt"]:
+              p=d/name
+              assert p.exists() and p.stat().st_size > 0, f"missing/empty: {name}"
+              version=6 if "-v6" in name else 4
+              lines=[x.strip() for x in p.read_text().splitlines() if x.strip()]
+              assert len(lines)==len(set(lines)), f"duplicates: {name}"
+              for x in lines:
+                  n=ipaddress.ip_network(x,strict=False)
+                  assert n.version==version and n.is_global
+          print("RU validation OK")
+          PY
+      - name: Commit RU profiles
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ru-*.txt data/ru-manifest.json
+          if git diff --cached --quiet; then
+            echo "No RU changes."
+            exit 0
+          fi
+          git commit -m "chore: update RU WhiteLists"
+          git push
