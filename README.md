@@ -59,15 +59,8 @@
 
 Отдельные списки доступны для **AWS, Cloudflare, Hetzner, OVH, Akamai, DigitalOcean, Microsoft, Oracle, Alibaba, CDN77, Fastly, Melbicom, BuyVM, Vultr, Contabo, Scaleway, Gcore и Backblaze**.
 
-Полный список ASN и ссылки на IPv4/IPv6 доступны в [конфигурации проекта](config/providers.json).
+Полный список ASN и рабочие ссылки на IPv4/IPv6 доступны в [конфигурации проекта](config/providers.json).
 
-## 🔎 DPI Check (отдельно)
-
-Отдельный диагностический инструмент для анализа готового лога MagiTrickle. Он **не участвует в генерации подписок** и не изменяет маршрутизацию.
-
-`python scripts/dpi_classifier.py dpi.log -o dpi-report.json`
-
-Результат показывает состояние каждого узла: `detected`, `possible`, `unlikely`, `safe` или `dead`.
 ## ❤️ Поддержка
 
 Если проект оказался полезен, его развитие можно поддержать:
