@@ -27,6 +27,12 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Compile Python
+        run: python -m compileall -q scripts tests
+
+      - name: Run generator unit tests
+        run: python -m unittest discover -s tests -p "test_*.py" -v
+
       - name: Generate subscriptions
         run: python scripts/update_cdn_lists.py
 
