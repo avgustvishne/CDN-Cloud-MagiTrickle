@@ -1,4 +1,4 @@
-name: Update MagiTrickle V33 subscriptions
+name: Update MagiTrickle V40 subscriptions
 
 on:
   schedule:
@@ -27,10 +27,10 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generate V33
+      - name: Generate V40
         run: python scripts/update_cdn_lists.py
 
-      - name: Validate V33 data
+      - name: Validate V40 data
         run: |
           python - <<'PY'
           import hashlib
@@ -62,7 +62,7 @@ jobs:
               assert not (d / obsolete).exists(), f"obsolete file remains: {obsolete}"
 
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
-          assert m["version"] == 33
+          assert m["version"] == 40
           assert m["global_only"] is True
           assert m["min_prefixlen"] == {"ipv4": 8, "ipv6": 16}
           assert m["aggregate"]["ipv4"] > 0
@@ -76,7 +76,7 @@ jobs:
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
 
-          print("V33 validation OK")
+          print("V40 validation OK")
           PY
 
       - name: Show summary
@@ -93,7 +93,7 @@ jobs:
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: V33 update provider subscriptions"
+          git commit -m "chore: V40 update provider subscriptions"
 
           for attempt in 1 2 3 4 5; do
             if git push; then
@@ -111,5 +111,5 @@ jobs:
             }
           done
 
-          echo "Unable to push generated V33 data after 5 attempts."
+          echo "Unable to push generated V40 data after 5 attempts."
           exit 1
