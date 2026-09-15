@@ -115,6 +115,41 @@ def request(url):
 def jsonget(url):
     return json.loads(request(url).decode("utf-8"))
 
+def ripe_routing_status(asn):
+    """Return current RIPEstat routing status for an ASN."""
+    url = "https://stat.ripe.net/data/routing-status/data.json?" + urllib.parse.urlencode({
+        "resource": "AS" + asn,
+        "sourceapp": "CDN-Cloud-MagiTrickle",
+    })
+    try:
+        return jsonget(url).get("data", {})
+    except Exception:
+        return {}
+
+
+def ripe_prefix_overview(prefix):
+    """Return RIPEstat's current view for one candidate prefix."""
+    url = "https://stat.ripe.net/data/prefix-overview/data.json?" + urllib.parse.urlencode({
+        "resource": prefix,
+        "sourceapp": "CDN-Cloud-MagiTrickle",
+    })
+    try:
+        return jsonget(url).get("data", {})
+    except Exception:
+        return {}
+
+
+def validate_prefix_with_ripe(prefix):
+    """Confirm that a candidate is currently represented in RIPEstat."""
+    data = ripe_prefix_overview(prefix)
+    if not data:
+        return False
+    for key in ("announced", "visibility", "bgp_state", "origin"):
+        if key in data and data[key] not in (None, False, "", [], {}):
+            return True
+    return False
+
+
 def routeviews_prefixes(asn):
     """Fallback BGP source using RouteViews current RIB data."""
     found = set()
@@ -353,6 +388,9 @@ def main():
                     all_asn4.extend(v for v in values if "/" in v and ":" not in v)
                     all_asn6.extend(v for v in values if ":" in v)
                     sources.append("RIPEstat")
+                    routing = ripe_routing_status(asn)
+                    if routing:
+                        sources.append("RIPE routing-status")
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
         old4_raw, old6_raw = load_old_raw(old4), load_old_raw(old6)
         v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
@@ -405,6 +443,18 @@ def main():
         if rejected4 or rejected6: print(f"  filtered: ipv4={rejected4} ipv6={rejected6}")
     all4, _ = nets(all4, 4); all6, _ = nets(all6, 6)
     all_asn4, _ = nets(all_asn4, 4); all_asn6, _ = nets(all_asn6, 6)
+
+    validated_asn4 = []
+    validated_asn6 = []
+    candidates = all_asn4 + all_asn6
+    if candidates:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+            checks = list(pool.map(validate_prefix_with_ripe, candidates))
+        for prefix, confirmed in zip(candidates, checks):
+            if confirmed:
+                (validated_asn6 if ":" in prefix else validated_asn4).append(prefix)
+    atomic(DATA / "asn-confirmed-v4.txt", validated_asn4)
+    atomic(DATA / "asn-confirmed-v6.txt", validated_asn6)
     atomic(DATA / "asn-all-v4.txt", all_asn4)
     atomic(DATA / "asn-all-v6.txt", all_asn6)
     if not all4: sys.exit("[FATAL] no aggregate IPv4")
@@ -437,7 +487,7 @@ def main():
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io"],
-        "features": ["source-fusion","multi-source-asn-discovery","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
+        "features": ["source-fusion","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
         "engine": "unified-provider-sources-v41",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
@@ -456,7 +506,7 @@ def main():
     }
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     write_text_atomic(DATA / "policy-explain.json", json.dumps(policy_explain, indent=2, ensure_ascii=False) + "\n")
-    checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt", DATA / "asn-all-v4.txt", DATA / "asn-all-v6.txt"})
+    checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt", DATA / "asn-all-v4.txt", DATA / "asn-all-v6.txt", DATA / "asn-confirmed-v4.txt", DATA / "asn-confirmed-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
     summary = [f"Updated: {now}", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", f"ALL ASN IPv4: {len(all_asn4)}", f"ALL ASN IPv6: {len(all_asn6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
