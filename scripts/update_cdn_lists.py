@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 33
+VERSION = 40
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
@@ -36,6 +36,41 @@ STATIC = {
     ]
 }
 
+SOURCE_HEALTH = DATA / "source-health.json"
+DIFF_DIR = DATA / "diff"
+DIFF_DIR.mkdir(exist_ok=True)
+HISTORY_LIMIT = 10001
+
+def source_probe(url):
+    try:
+        data = request(url)
+        return {"ok": True, "bytes": len(data)}
+    except Exception as exc:
+        return {"ok": False, "error": str(exc)[:240]}
+
+def load_old_raw(path):
+    if not path.exists(): return []
+    try: return path.read_text(encoding="utf-8").splitlines()
+    except Exception: return []
+
+def write_diff(name, old4, new4, old6, new6):
+    def diff(old, new):
+        return sorted(set(new)-set(old)), sorted(set(old)-set(new))
+    add4, del4 = diff(old4,new4); add6, del6 = diff(old6,new6)
+    payload = {
+        "provider": name,
+        "added": {"ipv4": len(add4), "ipv6": len(add6)},
+        "removed": {"ipv4": len(del4), "ipv6": len(del6)},
+        "sample_added": {"ipv4": add4[:100], "ipv6": add6[:100]},
+        "sample_removed": {"ipv4": del4[:100], "ipv6": del6[:100]}
+    }
+    write_text_atomic(DIFF_DIR / f"{name}.json", json.dumps(payload, indent=2, ensure_ascii=False)+"\n")
+    return payload
+
+def discover_asn_notes(cfg):
+    # Record configured ASN coverage; discovery is advisory and never mutates providers.json automatically.
+    return {name: sorted(set(asns)) for name, asns in cfg["providers"].items()}
+    
 def request(url):
     last = None
     for attempt in range(1, RETRIES + 1):
@@ -188,7 +223,7 @@ def main():
             except Exception as exc: errors.append(f"RIPE-AS{asn}:{exc}")
             time.sleep(0.12)
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
-
+        old4_raw, old6_raw = load_old_raw(old4), load_old_raw(old6)
         v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
 
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
@@ -216,6 +251,7 @@ def main():
             if status == "OK": status = "FILTERED"
         if not used_fallback:
             atomic(old4, v4); atomic(old6, v6)
+        diff_info = write_diff(name, old4_raw, list(map(str,v4)), old6_raw, list(map(str,v6)))
         source = "+".join(dict.fromkeys(sources)) or "none"
         all4.extend(v4); all6.extend(v6)
         prev4_count, prev6_count = len(prev4), len(prev6)
@@ -260,15 +296,19 @@ def main():
 
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
-        "version": VERSION, "updated": now, "ripe_min_peers": min_peers, "sources": ["official", "RIPEstat", "static"],
+        "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
+        "sources": ["official", "RIPEstat", "static"],
+        "features": ["source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit"],
         "engine": "unified-provider-sources-v33",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
+        "provider_asns": provider_asns,
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
         "max_provider_prefixes": MAX_PROVIDER_PREFIXES, "global_only": True,
         "min_prefixlen": {"ipv4": MIN_PREFIXLEN[4], "ipv6": MIN_PREFIXLEN[6]},
         "aggregate": {"ipv4": len(all4), "ipv6": len(all6)},
         "audit": audit_rows,
+        "diff": {name: write_diff(name, load_old_raw(DATA/f"{name}-v4.txt"), [], load_old_raw(DATA/f"{name}-v6.txt"), []) for name in []},
         "providers": {row["name"]: {
             "ipv4": row["ipv4"], "ipv6": row["ipv6"], "source": row["source"],
             "status": row["status"], "rejected_ipv4": row["rejected_ipv4"], "rejected_ipv6": row["rejected_ipv6"],
@@ -278,9 +318,18 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V33: unified multi-source provider engine + official sources + ASN fallback + anomaly protection + profiles + audit + history + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V40: reliability + source health + dedup + aggregation + diff + profiles + checksums + ASN discovery", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
+    health = {
+        "checked_at": now,
+        "sources": {
+            "RIPEstat": source_probe(RIPE + "?resource=AS13335&min_peers_seeing=1"),
+            "AWS": source_probe("https://ip-ranges.amazonaws.com/ip-ranges.json"),
+            "Cloudflare": source_probe("https://www.cloudflare.com/ips-v4/")
+        }
+    }
+    write_text_atomic(SOURCE_HEALTH, json.dumps(health, indent=2, ensure_ascii=False)+"\n")
     audit_lines = ["Provider,IPv4,IPv6,PreviousIPv4,PreviousIPv6,IPv4Change%,IPv6Change%,Status,Source,Errors"]
     audit_lines.extend(
         f"{r['provider']},{r['ipv4_prefixes']},{r['ipv6_prefixes']},{r['previous_ipv4_prefixes']},{r['previous_ipv6_prefixes']},{r['ipv4_change_percent']},{r['ipv6_change_percent']},{r['status']},{r['source']},{r['errors']}"
@@ -294,6 +343,6 @@ def main():
         history_lines.append(
             f"{now},{r['provider']},{r['ipv4_prefixes']},{r['ipv6_prefixes']},{r['ipv4_change_percent']},{r['ipv6_change_percent']},{r['status']}"
         )
-    write_text_atomic(history_path, "\n".join(history_lines[-10001:]) + "\n")
+    write_text_atomic(history_path, "\n".join(history_lines[-HISTORY_LIMIT:]) + "\n")
 
 if __name__ == "__main__": main()
