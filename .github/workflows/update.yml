@@ -36,6 +36,12 @@ jobs:
       - name: Generate subscriptions
         run: python scripts/update_cdn_lists.py
 
+      - name: Generate change summary
+        run: python scripts/diff_summary.py
+
+      - name: Generate release notes
+        run: python scripts/release_notes.py
+
       - name: Validate generated data
         run: |
           python - <<'PY'
@@ -68,6 +74,11 @@ jobs:
           assert generated_names == provider_names, f"provider files mismatch: generated={sorted(generated_names)} config={sorted(provider_names)}"
           for obsolete in ("cdn-cloud-v4.txt", "cdn-cloud-v6.txt", "dpi-recommended-v4.txt", "dpi-recommended-v6.txt"):
               assert not (d / obsolete).exists(), f"obsolete file remains: {obsolete}"
+
+          summary = json.loads((d / "change-summary.json").read_text(encoding="utf-8"))
+          assert isinstance(summary.get("datasets"), dict)
+          notes = (d / "release-notes.md").read_text(encoding="utf-8")
+          assert notes.startswith("# Subscription update — v")
 
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
           assert m["global_only"] is True
