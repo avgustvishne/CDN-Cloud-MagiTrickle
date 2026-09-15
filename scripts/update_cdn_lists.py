@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 32
+VERSION = 33
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
@@ -261,7 +261,7 @@ def main():
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers, "sources": ["official", "RIPEstat", "static"],
-        "engine": "unified-provider-sources-v31",
+        "engine": "unified-provider-sources-v33",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
