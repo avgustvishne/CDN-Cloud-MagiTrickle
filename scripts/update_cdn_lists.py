@@ -19,7 +19,7 @@ if str(ROOT / "scripts") not in sys.path: sys.path.insert(0, str(ROOT / "scripts
 from policy_engine import apply as apply_policy
 DATA.mkdir(exist_ok=True)
 
-VERSION = 46
+VERSION = 47
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 2
@@ -317,6 +317,40 @@ def external_ipsets(name, asns):
     return values, sources
 
 
+SOURCE_REGISTRY = ROOT / "config" / "source_registry.json"
+
+
+def registry_sources(name):
+    """Fetch additive CIDRs from configured public source registries."""
+    try:
+        registry = json.loads(SOURCE_REGISTRY.read_text(encoding="utf-8"))
+    except Exception:
+        return [], []
+    values, sources = [], []
+    for source_id, spec in registry.items():
+        rel = spec.get("files", {}).get(name)
+        if not rel:
+            continue
+        url = spec["base"].rstrip("/") + "/" + rel
+        try:
+            data = request(url).decode("utf-8", errors="replace")
+            found = []
+            for line in data.splitlines():
+                value = line.split("#", 1)[0].strip()
+                if not value or "/" not in value:
+                    continue
+                try:
+                    ipaddress.ip_network(value, strict=False)
+                    found.append(value)
+                except ValueError:
+                    continue
+            if found:
+                values.extend(found)
+                sources.append(source_id)
+        except Exception:
+            continue
+    return values, sources
+
 def official(name): 
     if name == "aws":
         obj = jsonget("https://ip-ranges.amazonaws.com/ip-ranges.json")
@@ -460,6 +494,12 @@ def main():
             errors.append("official:" + str(exc))
 
         try:
+            registry_extra, registry_sources_used = registry_sources(name)
+            raw.extend(registry_extra)
+            sources.extend(registry_sources_used)
+        except Exception as exc:
+            errors.append("registry:" + str(exc))
+        try:
             extra, extra_sources = external_ipsets(name, unique_asns)
             raw.extend(extra)
             sources.extend(extra_sources)
@@ -596,7 +636,7 @@ def main():
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews", "sw.ext.io"],
         "features": ["source-fusion","multi-collector-bgp","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
-        "engine": "unified-provider-sources-v46",
+        "engine": "unified-provider-sources-v47",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
