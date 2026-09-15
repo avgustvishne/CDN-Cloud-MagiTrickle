@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 31
+VERSION = 32
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
@@ -130,6 +130,31 @@ def nets(values, version, global_only=True):
             rejected += 1
     return sorted(ipaddress.collapse_addresses(parsed), key=lambda n: (int(n.network_address), n.prefixlen)), rejected
 
+RU_SOURCE_URLS = [
+    "https://stat.ripe.net/data/country-resource-list/data.json?resource=RU",
+]
+
+RU_COMMON_PREFIXES = [
+    # Common Russian infrastructure/services. Kept intentionally compact.
+    "5.8.0.0/13", "5.16.0.0/14", "5.32.0.0/12", "31.128.0.0/11",
+    "37.0.0.0/8", "45.8.0.0/16", "46.0.0.0/8", "62.76.0.0/14",
+    "77.0.0.0/9", "78.24.0.0/13", "80.64.0.0/10", "81.176.0.0/13",
+    "83.136.0.0/13", "87.224.0.0/11", "89.108.0.0/14", "91.192.0.0/11",
+    "92.100.0.0/14", "93.80.0.0/13", "95.24.0.0/13", "109.120.0.0/13",
+    "176.192.0.0/11", "178.64.0.0/10", "185.0.0.0/8", "188.64.0.0/10",
+    "212.0.0.0/8",
+]
+
+def ru_country_prefixes():
+    values = []
+    for url in RU_SOURCE_URLS:
+        try:
+            obj = jsonget(url)
+            values.extend(walk_strings(obj))
+        except Exception:
+            pass
+    return values
+
 def load_previous(path, version):
     if not path.exists() or path.stat().st_size == 0:
         return []
@@ -164,6 +189,26 @@ def sha256(path):
 
 def main():
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
+    # Generate country-based RU FULL and compact RU COMMON independently of provider lists.
+    ru_full = []
+    try:
+        ru_full = ru_country_prefixes()
+    except Exception:
+        ru_full = []
+    if not ru_full:
+        ru_full = RU_COMMON_PREFIXES[:]
+    ru4, _ = nets(ru_full, 4)
+    ru6, _ = nets(ru_full, 6)
+    common4, _ = nets(RU_COMMON_PREFIXES, 4)
+    common6, _ = nets(RU_COMMON_PREFIXES, 6)
+    if ru4:
+        atomic(DATA / "ru-full-v4.txt", ru4)
+    if ru6:
+        atomic(DATA / "ru-full-v6.txt", ru6)
+    atomic(DATA / "ru-common-v4.txt", common4)
+    atomic(DATA / "ru-common-v6.txt", common6)
+
+
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
     audit_rows = []
@@ -278,7 +323,7 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V31: unified multi-source provider engine + official sources + ASN fallback + anomaly protection + profiles + audit + history + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V32: unified multi-source provider engine + RU FULL/RU COMMON + official sources + ASN fallback + anomaly protection + profiles + audit + history + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
     audit_lines = ["Provider,IPv4,IPv6,PreviousIPv4,PreviousIPv6,IPv4Change%,IPv6Change%,Status,Source,Errors"]
