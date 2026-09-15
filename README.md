@@ -36,14 +36,6 @@
 
 **Коротко:** провайдерская подписка — **всё покрытие провайдера**, ASN — **конкретная сеть провайдера**.
 
-## RU WhiteList
-
-| Подписка | IPv4 | IPv6 | Назначение |
-|---|---|---|---|
-| **RU CLEAN** | [IPv4](https://raw.githubusercontent.com/jinndi/geoip-ru-ipset/main/data/ru-no-blocked.txt) | [IPv6](https://raw.githubusercontent.com/jinndi/geoip-ru-ipset/main/data/ru-no-blocked6.txt) | Российские IP без известных заблокированных диапазонов |
-
-**RU CLEAN** обновляется автоматически upstream-проектом `jinndi/geoip-ru`. 
-
 
 ## Отдельные провайдеры
 
