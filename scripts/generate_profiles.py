@@ -16,7 +16,7 @@ PROVIDERS = sorted(CFG["providers"])
 PROFILES = {
     "full": PROVIDERS,
     "balanced": ["cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway"],
-    "lite": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
+    "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
 }
 
 def read(name, version):
