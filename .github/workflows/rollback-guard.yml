@@ -23,7 +23,7 @@ jobs:
           python-version: "3.x"
       - name: Check generated datasets
         run: |
-          python scripts/rollback_guard.py data --previous-ref HEAD^ --report data/rollback-report.json
+          python scripts/rollback_guard.py data --previous-ref HEAD^ --report "$RUNNER_TEMP/rollback-report.json"
       - name: Commit automatic rollback
         if: success()
         run: |
