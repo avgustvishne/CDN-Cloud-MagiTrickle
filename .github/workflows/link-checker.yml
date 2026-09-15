@@ -3,8 +3,6 @@ name: Link Checker
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
   schedule:
     - cron: "43 4 * * 1"
   workflow_dispatch:
