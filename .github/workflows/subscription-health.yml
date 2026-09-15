@@ -1,0 +1,50 @@
+name: Subscription Health Check
+
+on:
+  workflow_run:
+    workflows: ["Update MagiTrickle V40 subscriptions"]
+    types: [completed]
+  workflow_dispatch:
+  schedule:
+    - cron: "11 5 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate published subscriptions
+        run: |
+          python - <<'PY'
+          import ipaddress, pathlib, sys
+          root=pathlib.Path("data")
+          files=list(root.glob("*.txt"))+list((root/"presets").glob("*.txt"))
+          files=[p for p in files if p.name!="last-update.txt"]
+          assert files, "No subscription files found"
+          errors=[]
+          for p in files:
+              lines=[x.strip() for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+              if not lines:
+                  errors.append(f"empty: {p}")
+                  continue
+              if p.name.endswith("-v4.txt"): ver=4
+              elif p.name.endswith("-v6.txt"): ver=6
+              else: ver=None
+              seen=set()
+              for line in lines:
+                  if line in seen: errors.append(f"duplicate: {p}: {line}")
+                  seen.add(line)
+                  try: n=ipaddress.ip_network(line)
+                  except ValueError: errors.append(f"invalid CIDR: {p}: {line}"); continue
+                  if ver and n.version!=ver: errors.append(f"wrong family: {p}: {line}")
+                  if not n.is_global: errors.append(f"non-global: {p}: {line}")
+              print(f"{p}: {len(lines)} entries")
+          if errors:
+              print("\n".join(errors[:100]))
+              sys.exit(1)
+          print("Subscription health: OK")
+          PY
