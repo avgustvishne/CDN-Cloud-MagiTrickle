@@ -743,7 +743,10 @@ def main():
         "sources": {
             "RIPEstat": source_probe(RIPE + "?resource=AS13335&min_peers_seeing=1"),
             "AWS": source_probe("https://ip-ranges.amazonaws.com/ip-ranges.json"),
-            "Cloudflare": source_probe("https://www.cloudflare.com/ips-v4/")
+            "Cloudflare": source_probe("https://www.cloudflare.com/ips-v4/"),
+            "cloud-ip-ranges": source_probe("https://raw.githubusercontent.com/disposable/cloud-ip-ranges/master/txt/aws.txt"),
+            "cloud-egress-ip-ranges": source_probe("https://github.com/ipanalytics/Cloud-Egress-IP-Ranges/releases/latest/download/cloud-egress-ip-ranges.json"),
+            "RouteViews": source_probe("https://api.routeviews.org/")
         }
     }
     write_text_atomic(SOURCE_HEALTH, json.dumps(health, indent=2, ensure_ascii=False)+"\n")
