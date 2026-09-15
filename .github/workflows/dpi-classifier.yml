@@ -1,0 +1,32 @@
+name: DPI Classifier Validation
+
+on:
+  push:
+    paths:
+      - "scripts/evaluate_dpi.py"
+      - "config/dpi-policy.json"
+      - ".github/workflows/dpi-classifier.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+      - name: Validate DPI classifier
+        run: |
+          python -m py_compile scripts/evaluate_dpi.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path("config/dpi-policy.json").read_text())
+          assert p["latency_ms"]["excellent_max"] < p["latency_ms"]["good_max"] < p["latency_ms"]["slow_max"]
+          assert set(p["classes"]) == {"best","good","slow","backup","blocked","dead","unknown"}
+          print("DPI policy OK")
+          PY
