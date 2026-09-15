@@ -95,6 +95,10 @@ jobs:
 
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
           assert m["global_only"] is True
+          assert m["engine"] == "final-v43-wide-source-fusion"
+          overlaps = json.loads((d / "provider-overlaps.json").read_text(encoding="utf-8"))
+          assert isinstance(overlaps.get("entries"), list)
+          assert overlaps.get("exact_cross_provider_overlaps", 0) >= 0
           assert m["min_prefixlen"] == {"ipv4": 8, "ipv6": 16}
           assert m["aggregate"]["ipv4"] > 0
           assert m["aggregate"]["ipv6"] >= 0
@@ -107,7 +111,9 @@ jobs:
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
 
-          print("Validation OK")
+          # Cross-provider overlaps are audited separately; they are not duplicate
+          # lines inside a single subscription and must not be silently deleted.
+          print("Validation OK: syntax, CIDR uniqueness, provider coverage, profiles, checksums and overlap audit")
           PY
 
       - name: Show summary
