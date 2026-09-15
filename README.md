@@ -116,6 +116,7 @@ ASN позволяет выбрать конкретную автономную 
 | Scaleway | `AS12876` | [IPv4](https://asn.web2core.workers.dev/AS12876?v4) | [IPv6](https://asn.web2core.workers.dev/AS12876?v6) |
 | Gcore | `AS199524` | [IPv4](https://asn.web2core.workers.dev/AS199524?v4) | [IPv6](https://asn.web2core.workers.dev/AS199524?v6) |
 | Backblaze | `AS19503` | [IPv4](https://asn.web2core.workers.dev/AS19503?v4) | [IPv6](https://asn.web2core.workers.dev/AS19503?v6) |
+| **Google / YouTube** | `AS15169` | [IPv4](https://asn.web2core.workers.dev/AS15169?v4) | [IPv6](https://asn.web2core.workers.dev/AS15169?v6) |
 
 ### Provider vs ASN
 
