@@ -1,6 +1,15 @@
 # CDN + Cloud MagiTrickle
 
+**Automated CDN and Cloud IP ranges: IPv4/IPv6 CIDR and ASN subscriptions for MagiTrickle.**
+
 Готовые **IPv4/IPv6 CIDR-подписки** для MagiTrickle.
+
+## Проверки качества
+
+- [Quality report](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/quality-report.json)
+- [CIDR validation](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cidr-validation.json)
+- `BEST / GOOD / SLOW / BACKUP / BLOCKED / DEAD` — автоматическая DPI-оценка точек.
+
 
 ## Профили
 
