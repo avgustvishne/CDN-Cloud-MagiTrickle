@@ -42,7 +42,8 @@ def main() -> None:
     for name in changed:
         print(f"BUILD {name}")
     for name in removed:
-        print(f"REMOVE {name}")
+        print("REMOVE " + name)
+    # Intentionally read-only: the experiment never writes its state file.
 
 if __name__ == "__main__":
     main()
