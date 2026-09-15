@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/hero.svg" alt="CDN-Cloud-MagiTrickle — IPv4, IPv6, ASN, CDN, Cloud, Video and VPN subscriptions" width="100%"></p>
+
 <div align="center">
 
 # CDN + Cloud MagiTrickle
