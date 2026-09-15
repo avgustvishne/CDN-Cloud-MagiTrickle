@@ -19,14 +19,37 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
-      - name: Validate DPI classifier
+      - name: Validate syntax and policy
         run: |
           python -m py_compile scripts/evaluate_dpi.py
           python - <<'PY'
           import json
           from pathlib import Path
           p=json.loads(Path("config/dpi-policy.json").read_text())
-          assert p["latency_ms"]["excellent_max"] < p["latency_ms"]["good_max"] < p["latency_ms"]["slow_max"]
+          assert p["score"]["scale"] == "0-100"
+          assert p["latency_ms"]["excellent_max"] < p["latency_ms"]["best_max"] < p["latency_ms"]["good_max"] < p["latency_ms"]["slow_max"]
           assert set(p["classes"]) == {"best","good","slow","backup","blocked","dead","unknown"}
           print("DPI policy OK")
+          PY
+      - name: Unit-test scoring
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, "scripts")
+          from evaluate_dpi import score_and_class
+          cases = [
+              (("yes", "not detected", 700), (100, "best")),
+              (("yes", "not detected", 1500), (95, "best")),
+              (("yes", "not detected", 4000), (85, "good")),
+              (("yes", "not detected", 7000), (70, "slow")),
+              (("yes", "not detected", 10000), (50, "backup")),
+              (("yes", "unlikely", 500), (60, "backup")),
+              (("yes", "possible detected", 500), (45, "backup")),
+              (("yes", "detected", 500), (0, "blocked")),
+              (("no", "unknown", 500), (0, "dead")),
+          ]
+          for args, expected in cases:
+              actual = score_and_class(*args)
+              assert actual == expected, (args, actual, expected)
+          print("DPI scoring tests OK")
           PY
