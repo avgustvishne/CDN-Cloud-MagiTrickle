@@ -1,13 +1,17 @@
 {
   "version": 41,
-  "updated": "2026-09-15 11:19:10 UTC",
+  "updated": "2026-09-15 11:23:05 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official",
     "RIPEstat",
-    "static"
+    "RIPE RIS",
+    "RouteViews fallback",
+    "sw.ext.io"
   ],
   "features": [
+    "source-fusion",
+    "multi-source-asn-discovery",
     "source-health",
     "deduplication",
     "cidr-aggregation",
@@ -152,7 +156,7 @@
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 11597,
+    "ipv4": 11647,
     "ipv6": 4251
   },
   "audit": [
@@ -170,14 +174,14 @@
     },
     {
       "provider": "cloudflare",
-      "ipv4_prefixes": 642,
+      "ipv4_prefixes": 692,
       "ipv6_prefixes": 115,
       "previous_ipv4_prefixes": 642,
       "previous_ipv6_prefixes": 115,
-      "ipv4_change_percent": 0.0,
+      "ipv4_change_percent": 7.79,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "official+RIPEstat",
+      "source": "official+sw.ext.io+RIPEstat",
       "errors": 0
     },
     {
@@ -384,9 +388,9 @@
       "rejected_ipv6": 0
     },
     "cloudflare": {
-      "ipv4": 642,
+      "ipv4": 692,
       "ipv6": 115,
-      "source": "official+RIPEstat",
+      "source": "official+sw.ext.io+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
