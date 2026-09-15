@@ -75,6 +75,7 @@ for profile, names in SPECIAL.items():
         for name in names:
             source.extend(read(name, version))
         result = collapse(source, version)
-        if result:
-            atomic(PRESETS / f"{profile}-v{version}.txt", result)
-            print(f"{profile}-v{version}: {len(result)} prefixes")
+        if not result:
+            raise SystemExit(f"empty profile: {profile}-v{version}")
+        atomic(PRESETS / f"{profile}-v{version}.txt", result)
+        print(f"{profile}-v{version}: {len(result)} prefixes")
