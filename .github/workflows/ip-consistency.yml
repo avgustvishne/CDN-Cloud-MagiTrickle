@@ -1,0 +1,44 @@
+name: IP Consistency Check
+
+on:
+  workflow_run:
+    workflows: ["Update MagiTrickle subscriptions"]
+    types: [completed]
+  workflow_dispatch:
+  schedule:
+    - cron: "53 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  consistency:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate IPv4 and IPv6 consistency
+        run: |
+          python - <<'PY'
+          import ipaddress, pathlib, sys
+          root=pathlib.Path("data")
+          errors=[]
+          for p in sorted(root.glob("*-v[46].txt")):
+              version=6 if p.name.endswith("-v6.txt") else 4
+              nets=[]
+              for line in p.read_text(encoding="utf-8").splitlines():
+                  if not line.strip(): continue
+                  try: n=ipaddress.ip_network(line, strict=False)
+                  except ValueError: errors.append(f"{p}: invalid {line}"); continue
+                  if n.version != version: errors.append(f"{p}: wrong family {line}")
+                  if not n.is_global: errors.append(f"{p}: non-global {line}")
+                  if n.prefixlen < (8 if version==4 else 16): errors.append(f"{p}: too broad {line}")
+                  nets.append(n)
+              if len(nets) != len(set(nets)): errors.append(f"{p}: duplicate networks")
+              if nets != sorted(nets, key=lambda n:(int(n.network_address),n.prefixlen)): errors.append(f"{p}: not sorted")
+              for a,b in zip(nets,nets[1:]):
+                  if a.overlaps(b): errors.append(f"{p}: overlapping networks {a} / {b}")
+          if errors:
+              print("\n".join(map(str,errors[:200]))); sys.exit(1)
+          print("IPv4/IPv6 consistency OK")
+          PY
