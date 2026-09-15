@@ -1,11 +1,6 @@
 name: Generator Reproducibility Check
 
 on:
-  pull_request:
-    paths:
-      - "scripts/**"
-      - "config/**"
-      - ".github/workflows/reproducibility.yml"
   push:
     paths:
       - "data/**"
