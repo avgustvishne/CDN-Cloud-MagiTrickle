@@ -6,8 +6,6 @@
 
 ## Проверки качества
 
-- [Quality report](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/quality-report.json)
-- [CIDR validation](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cidr-validation.json)
 - `BEST / GOOD / SLOW / BACKUP / BLOCKED / DEAD` — автоматическая DPI-оценка точек.
 
 
