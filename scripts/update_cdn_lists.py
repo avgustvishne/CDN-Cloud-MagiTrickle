@@ -559,9 +559,6 @@ def main():
                     all_asn4.extend(v for v in values if "/" in v and ":" not in v)
                     all_asn6.extend(v for v in values if ":" in v)
                     sources.append("RIPEstat")
-                    routing = ripe_routing_status(asn)
-                    if routing:
-                        sources.append("RIPE routing-status")
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
         old4_raw, old6_raw = load_old_raw(old4), load_old_raw(old6)
         v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
@@ -673,7 +670,7 @@ def main():
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews", "sw.ext.io"],
-        "features": ["source-fusion","multi-collector-bgp","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","source-diff-guard"],
+        "features": ["source-fusion","multi-collector-bgp","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","source-diff-guard"],
         "engine": "unified-provider-sources-v48",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
