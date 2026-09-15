@@ -1,6 +1,6 @@
 {
-  "version": 40,
-  "updated": "2026-09-15 06:48:57 UTC",
+  "version": 41,
+  "updated": "2026-09-15 07:34:08 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official",
@@ -14,9 +14,11 @@
     "diff",
     "profiles",
     "sha256",
-    "asn-audit"
+    "asn-audit",
+    "parallel-fetch",
+    "source-cache"
   ],
-  "engine": "unified-provider-sources-v33",
+  "engine": "unified-provider-sources-v41",
   "provider_asn_counts": {
     "aws": 2,
     "cloudflare": 11,
@@ -138,6 +140,8 @@
   },
   "retries": 5,
   "timeout_seconds": 30,
+  "max_workers": 8,
+  "cache_ttl_seconds": 21600,
   "min_change_ratio": 0.5,
   "min_change_ratio_v6": 0.35,
   "max_aggregate_prefixes": 200000,
