@@ -97,3 +97,11 @@
 | **Scaleway** | AS12876 | [IPv4](https://asn.web2core.workers.dev/AS12876?v4) | [IPv6](https://asn.web2core.workers.dev/AS12876?v6) |
 | **Gcore** | AS199524 | [IPv4](https://asn.web2core.workers.dev/AS199524?v4) | [IPv6](https://asn.web2core.workers.dev/AS199524?v6) |
 | **Backblaze** | AS19503 | [IPv4](https://asn.web2core.workers.dev/AS19503?v4) | [IPv6](https://asn.web2core.workers.dev/AS19503?v6) |
+## Поддержка проекта
+
+Если CDN-Cloud-MagiTrickle оказался полезен, вы можете поддержать развитие проекта:
+
+**Поддержать проект:** https://tips.tips/000484125
+
+Спасибо за поддержку! ❤️
+
