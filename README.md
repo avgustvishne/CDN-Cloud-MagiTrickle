@@ -66,17 +66,6 @@
 | **Gcore** | AS199524 | [IPv4](https://asn.web2core.workers.dev/AS199524?v4) | [IPv6](https://asn.web2core.workers.dev/AS199524?v6) |
 | **Backblaze** | AS19503 | [IPv4](https://asn.web2core.workers.dev/AS19503?v4) | [IPv6](https://asn.web2core.workers.dev/AS19503?v6) |
 
-### Multi-ASN провайдеры
-
-Для **AWS, Akamai и Alibaba Cloud** один ASN не покрывает всю инфраструктуру провайдера. Поэтому в таблице указаны несколько основных ASN. Для Akamai список здесь намеренно не объявляется исчерпывающим: у Akamai есть дополнительные связанные ASN, и их следует добавлять только после проверки актуального BGP/IRR-происхождения. Например, актуальные данные подтверждают как минимум AS20940 и AS16625, а также AS63949 как Akamai ASN. citeturn0search6turn0search2
-
-AWS использует AS16509 как основной публичный ASN, а AS14618 также принадлежит Amazon; поэтому оба оставлены отдельно. citeturn0search12turn0search25
-
-Alibaba Cloud использует как минимум AS45102 и AS37963; оба ASN представлены в актуальных сетевых данных. citeturn0search8turn0search4
-
-Oracle Cloud Infrastructure имеет AS31898 и собственный IRR AS-set AS31898; поэтому для OCI базовой ASN-подпиской используется AS31898. citeturn0search5turn0search20
-
-
 ## Использование
 
 Можно использовать общую подписку, если нужны все сети, или отдельные подписки провайдеров для более точной настройки MagiTrickle.
