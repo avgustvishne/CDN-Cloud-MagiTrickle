@@ -29,17 +29,6 @@
 | **Video** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
 | **VPN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
 
-## Генератор V40
-
-- 🛡️ **Fallback и защита от аномалий** — плохое обновление не затирает рабочий список.
-- 🔎 **Проверка источников** — состояние основных источников сохраняется в `data/source-health.json`.
-- ♻️ **Dedup + CIDR aggregation** — дубли удаляются, соседние сети объединяются.
-- 📊 **Diff** — изменения каждого провайдера сохраняются в `data/diff/`.
-- ⚡ **FULL / BALANCED / MINIMAL** — готовые профили в `data/presets/`.
-- 🎯 **CDN / CLOUD / VIDEO / VPN** — специализированные профили.
-- 📈 **History** — количество IPv4/IPv6 и процент изменений сохраняются в `data/history.csv`.
-- 🔐 **SHA256** — контрольные суммы публикуются в `data/checksums.sha256`.
-- 🧩 **ASN audit** — ASN каждого провайдера фиксируются в `data/manifest.json` без автоматического изменения конфигурации.
 
 ## Чем отличаются провайдерские и ASN-подписки
 
