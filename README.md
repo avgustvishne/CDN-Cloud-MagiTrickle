@@ -1,5 +1,14 @@
 # CDN + Cloud MagiTrickle
 
+## Support the project
+
+If CDN-Cloud-MagiTrickle is useful to you, you can support its development:
+
+**Tips:** https://tips.tips/000484125
+
+Thank you! ❤️
+
+
 **Automated CDN and Cloud IP ranges: IPv4/IPv6 CIDR and ASN subscriptions for MagiTrickle.**
 
 Готовые **IPv4/IPv6 CIDR-подписки** для MagiTrickle.
