@@ -1,0 +1,38 @@
+name: Provider Coverage Check
+
+on:
+  workflow_run:
+    workflows: ["Update MagiTrickle subscriptions"]
+    types: [completed]
+  workflow_dispatch:
+  schedule:
+    - cron: "27 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check provider coverage
+        run: |
+          python - <<'PY'
+          import csv, pathlib, sys
+          rows=list(csv.DictReader((pathlib.Path("data")/"audit.csv").open(encoding="utf-8")))
+          bad=[]
+          for r in rows:
+              v4=int(r["IPv4"]); v6=int(r["IPv6"])
+              p4=r["IPv4Change%"]; p6=r["IPv6Change%"]
+              if r["Status"] in {"EMPTY","ANOMALY"}: bad.append(f'{r["Provider"]}: status={r["Status"]}')
+              if v4 == 0 and v6 == 0: bad.append(f'{r["Provider"]}: no prefixes')
+              for label,val,limit in (("IPv4",p4,50),("IPv6",p6,65)):
+                  if val not in ("None","") and abs(float(val)) >= limit:
+                      bad.append(f'{r["Provider"]}: {label} change {val}%')
+          if bad:
+              print("\n".join(bad))
+              sys.exit(1)
+          print(f"Provider coverage OK: {len(rows)} providers")
+          PY
