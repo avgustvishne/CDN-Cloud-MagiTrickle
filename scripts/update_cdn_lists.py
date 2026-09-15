@@ -328,22 +328,39 @@ def registry_sources(name):
         return [], []
     values, sources = [], []
     for source_id, spec in registry.items():
-        rel = spec.get("files", {}).get(name)
-        if not rel:
-            continue
-        url = spec["base"].rstrip("/") + "/" + rel
         try:
-            data = request(url).decode("utf-8", errors="replace")
-            found = []
-            for line in data.splitlines():
-                value = line.split("#", 1)[0].strip()
-                if not value or "/" not in value:
+            if "files" in spec:
+                rel = spec.get("files", {}).get(name)
+                if not rel:
                     continue
-                try:
-                    ipaddress.ip_network(value, strict=False)
-                    found.append(value)
-                except ValueError:
+                url = spec["base"].rstrip("/") + "/" + rel
+                data = request(url).decode("utf-8", errors="replace")
+                found = []
+                for line in data.splitlines():
+                    value = line.split("#", 1)[0].strip()
+                    if not value or "/" not in value:
+                        continue
+                    try:
+                        ipaddress.ip_network(value, strict=False)
+                        found.append(value)
+                    except ValueError:
+                        continue
+            else:
+                if name not in set(spec.get("providers", [])):
                     continue
+                payload = json.loads(request(spec["url"]).decode("utf-8"))
+                found = []
+                rows = payload if isinstance(payload, list) else payload.get("records", [])
+                for row in rows:
+                    if not isinstance(row, dict) or row.get(spec.get("provider_field", "provider")) != name:
+                        continue
+                    value = row.get(spec.get("cidr_field", "cidr"))
+                    if value:
+                        try:
+                            ipaddress.ip_network(value, strict=False)
+                            found.append(value)
+                        except ValueError:
+                            pass
             if found:
                 values.extend(found)
                 sources.append(source_id)
