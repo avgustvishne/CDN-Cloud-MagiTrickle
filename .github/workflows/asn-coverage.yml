@@ -1,0 +1,39 @@
+name: ASN Coverage Check
+
+on:
+  workflow_run:
+    workflows: ["Update MagiTrickle subscriptions"]
+    types: [completed]
+  workflow_dispatch:
+  schedule:
+    - cron: "41 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  asn:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check configured ASN coverage
+        run: |
+          python - <<'PY'
+          import json, pathlib, sys
+          cfg=json.loads(pathlib.Path("config/providers.json").read_text(encoding="utf-8"))
+          manifest=json.loads(pathlib.Path("data/manifest.json").read_text(encoding="utf-8"))
+          expected={k: sorted(set(v)) for k,v in cfg["providers"].items()}
+          actual={k: sorted(set(v)) for k,v in manifest.get("provider_asns",{}).items()}
+          errors=[]
+          for name,asns in expected.items():
+              if expected[name] != actual.get(name,[]):
+                  errors.append(f"{name}: manifest ASN set differs from config")
+              if not asns and name != "backblaze":
+                  errors.append(f"{name}: no configured ASN")
+          if set(expected) != set(actual):
+              errors.append("provider names differ between config and manifest")
+          if errors:
+              print("\n".join(errors)); sys.exit(1)
+          print(f"ASN coverage OK: {len(expected)} providers")
+          PY
