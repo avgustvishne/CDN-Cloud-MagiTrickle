@@ -18,29 +18,58 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Check repository URLs
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           python - <<'PY'
-          import pathlib, re, subprocess, sys
+          import pathlib, re, subprocess, sys, time
+
           urls=set()
           for p in pathlib.Path(".").rglob("*"):
               if not p.is_file() or ".git" in p.parts or "data" in p.parts:
                   continue
-              try: text=p.read_text(encoding="utf-8")
-              except Exception: continue
-              urls.update(re.findall(r'https?://[^\s<>")\]]+', text))
-          urls={u.rstrip(".,;") for u in urls if "github.com" in u or "raw.githubusercontent.com" in u or "https://" in u}
+              try:
+                  s=p.read_text(encoding="utf-8")
+              except Exception:
+                  continue
+              urls.update(re.findall(r'https?://[^\s<>")\]]+', s))
+
+          urls={u.rstrip(".,;:") for u in urls}
+          # Only validate externally reachable HTTP(S) URLs.
           bad=[]
+          transient={408,425,429,500,502,503,504}
+          allowed={200,206,301,302,303,307,308}
+
           for u in sorted(urls):
-              r=subprocess.run(["curl","-L","-sS","-o","/dev/null","-w","%{http_code}", "--max-time","15",u],text=True,capture_output=True)
-              code=r.stdout.strip()
-              if code not in {"200","206","301","302","307","308"}:
-                  bad.append((code,u))
-                  print("FAIL",code,u)
-              else:
-                  print("OK",code,u)
+              ok=False
+              last=""
+              for attempt in range(3):
+                  try:
+                      r=subprocess.run(
+                          ["curl","-L","-sS","-A","Mozilla/5.0 (compatible; MagiTrickle-LinkChecker/1.0)",
+                           "-o","/dev/null","-w","%{http_code}", "--connect-timeout","10",
+                           "--max-time","30", u],
+                          text=True, capture_output=True, timeout=40
+                      )
+                      code=int(r.stdout.strip() or 0)
+                      last=str(code)
+                      if code in allowed:
+                          ok=True
+                          print("OK",code,u)
+                          break
+                      if code in transient or code==0:
+                          time.sleep(2*(attempt+1))
+                          continue
+                      break
+                  except Exception as e:
+                      last=str(e)[:120]
+                      time.sleep(2*(attempt+1))
+              if not ok:
+                  bad.append((last,u))
+                  print("FAIL",last,u)
+
           if bad:
-              print(f"{len(bad)} broken links")
+              print(f"Broken links: {len(bad)}")
+              for code,u in bad:
+                  print(code,u)
               sys.exit(1)
+          print(f"Link check OK: {len(urls)} URLs")
           PY
