@@ -425,6 +425,17 @@ def parse_bgp_tools_table(text, wanted_asns):
             continue
     return {4: sorted(found[4]), 6: sorted(found[6])}
 
+
+def prefix_confidence(*, sources=0, hits=0, rpki="not-found"):
+    """Return a conservative quality score for a prefix evidence record."""
+    score = min(60, max(0, int(sources)) * 20)
+    score += min(30, max(0, int(hits)) // 10)
+    if str(rpki).lower() == "valid":
+        score += 10
+    elif str(rpki).lower() == "invalid":
+        score -= 100
+    return max(0, min(100, score))
+
 def main():
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
