@@ -550,27 +550,10 @@ def main():
     if len(all4) > MAX_AGGREGATE_PREFIXES or len(all6) > MAX_AGGREGATE_PREFIXES:
         sys.exit("[FATAL] aggregate prefix count exceeds safety limit")
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
-    # Build stable preset subscriptions from generated provider files.
-    presets = {
-        "full": list(cfg["providers"].keys()),
-        "balanced": ["cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway"],
-        "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
-        "cdn": ["cloudflare", "akamai", "fastly", "cdn77", "gcore"],
-        "cloud": ["aws", "cloudflare", "microsoft", "oracle", "alibaba", "digitalocean"],
-        "video": ["cloudflare", "fastly", "akamai", "aws", "microsoft"],
-        "vpn": ["vultr", "buyvm", "ovh", "hetzner", "digitalocean", "gcore", "contabo", "scaleway", "melbicom"],
-    }
-    preset_dir = DATA / "presets"
-    preset_dir.mkdir(exist_ok=True)
-    for preset, names in presets.items():
-        for version, label in ((4, "v4"), (6, "v6")):
-            combined = []
-            for name in names:
-                path = DATA / f"{name}-{label}.txt"
-                if path.exists():
-                    combined.extend(path.read_text(encoding="utf-8").splitlines())
-            combined, _ = nets(combined, version)
-            atomic(preset_dir / f"{preset}-{label}.txt", combined)
+    # Profiles have a single owner to prevent the stable engine and the standalone
+    # profile generator from drifting apart.
+    import subprocess
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "generate_profiles.py")], check=True)
 
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
@@ -595,8 +578,6 @@ def main():
     }
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     write_text_atomic(DATA / "policy-explain.json", json.dumps(policy_explain, indent=2, ensure_ascii=False) + "\n")
-    checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt", DATA / "asn-all-v4.txt", DATA / "asn-all-v6.txt", DATA / "asn-confirmed-v4.txt", DATA / "asn-confirmed-v6.txt"})
-    write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
     summary = [f"Updated: {now}", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", f"ALL ASN IPv4: {len(all_asn4)}", f"ALL ASN IPv6: {len(all_asn6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
@@ -623,5 +604,6 @@ def main():
             f"{now},{r['provider']},{r['ipv4_prefixes']},{r['ipv6_prefixes']},{r['ipv4_change_percent']},{r['ipv6_change_percent']},{r['status']}"
         )
     write_text_atomic(history_path, "\n".join(history_lines[-HISTORY_LIMIT:]) + "\n")
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_checksums.py")], check=True)
 
 if __name__ == "__main__": main()
