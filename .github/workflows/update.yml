@@ -1,4 +1,4 @@
-name: Update MagiTrickle V27 subscriptions
+name: Update MagiTrickle V29 subscriptions
 
 on:
   schedule:
@@ -27,10 +27,10 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generate V27
+      - name: Generate V29
         run: python scripts/update_cdn_lists.py
 
-      - name: Validate V27 data
+      - name: Validate V29 data
         run: |
           python - <<'PY'
           import hashlib
@@ -42,7 +42,7 @@ jobs:
           assert (d / "all-cloud-v4.txt").stat().st_size > 0
           assert (d / "all-cloud-v6.txt").exists()
 
-          for p in d.glob("*.txt"):
+          for p in list(d.glob("*.txt")) + list((d / "presets").glob("*.txt")):
               if p.name == "last-update.txt":
                   continue
               lines = [x.strip() for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
@@ -62,7 +62,7 @@ jobs:
               assert not (d / obsolete).exists(), f"obsolete file remains: {obsolete}"
 
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
-          assert m["version"] == 25
+          assert m["version"] == 29
           assert m["global_only"] is True
           assert m["min_prefixlen"] == {"ipv4": 8, "ipv6": 16}
           assert m["aggregate"]["ipv4"] > 0
@@ -76,7 +76,7 @@ jobs:
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
 
-          print("V27 validation OK")
+          print("V29 validation OK")
           PY
 
       - name: Show summary
@@ -93,7 +93,7 @@ jobs:
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: V27 update provider subscriptions"
+          git commit -m "chore: V29 update provider subscriptions"
 
           for attempt in 1 2 3 4 5; do
             if git push; then
@@ -111,5 +111,5 @@ jobs:
             }
           done
 
-          echo "Unable to push generated V27 data after 5 attempts."
+          echo "Unable to push generated V29 data after 5 attempts."
           exit 1
