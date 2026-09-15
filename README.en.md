@@ -1,6 +1,30 @@
+<div align="center">
+
 # CDN + Cloud MagiTrickle
 
-**Automated IPv4/IPv6 CIDR and ASN subscriptions for MagiTrickle.**
+**IPv4 / IPv6 CIDR · ASN · CDN · Cloud · Video · VPN**
+
+Automated network subscriptions for MagiTrickle.
+
+[🇷🇺 Русский](README.md) · [🇬🇧 English](README.en.md)
+
+[![MagiTrickle](https://img.shields.io/badge/MagiTrickle-subscriptions-2ea44f?style=flat-square)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle)
+[![IPv4](https://img.shields.io/badge/IP-v4-0969da?style=flat-square)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle)
+[![IPv6](https://img.shields.io/badge/IP-v6-8250df?style=flat-square)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle)
+
+</div>
+
+## ✨ Features
+
+- IPv4 and IPv6 CIDR
+- ASN subscriptions
+- CDN and Cloud sets
+- Specialized Video and VPN profiles
+- Provider-specific subscriptions
+- Combined subscription for all project ASNs
+- Automatic data updates
+
+**Automated IPv4/IPv6 CIDR, ASN, CDN, Cloud, Video and VPN subscriptions for MagiTrickle.**
 
 [Русская версия](README.md)
 
@@ -8,9 +32,11 @@ Ready-to-use **IPv4/IPv6 CIDR subscriptions** for MagiTrickle.
 
 
 
-## Profiles
+## ⚡ Quick start
 
-Choose a profile according to the required coverage and load.
+**Not sure what to choose? Start with `BALANCED`.**
+
+## 📦 Profiles
 
 | Profile | IPv4 | IPv6 | Purpose |
 |---|---|---|---|
@@ -32,8 +58,8 @@ Choose a profile according to the required coverage and load.
 |---|---|---|
 | **CDN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v6.txt) |
 | **Cloud** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
-| ~~**Video**~~ | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
-| ~~**VPN**~~ | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
+| **Video** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
+| **VPN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
 
 ## Provider subscriptions vs ASN subscriptions
 
