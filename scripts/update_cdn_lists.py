@@ -222,6 +222,7 @@ def main():
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
+    all_asn4, all_asn6 = [], []
     audit_rows = []
     policy_explain = {}
     provider_asns = {}
@@ -251,7 +252,10 @@ def main():
                 if error:
                     errors.append(f"RIPE-AS{asn}:{error}")
                 else:
-                    raw.extend(values); sources.append("RIPEstat")
+                    raw.extend(values)
+                    all_asn4.extend(v for v in values if "/" in v and ":" not in v)
+                    all_asn6.extend(v for v in values if ":" in v)
+                    sources.append("RIPEstat")
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
         old4_raw, old6_raw = load_old_raw(old4), load_old_raw(old6)
         v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
@@ -303,6 +307,9 @@ def main():
         if errors: print(f"  warnings: {len(errors)}")
         if rejected4 or rejected6: print(f"  filtered: ipv4={rejected4} ipv6={rejected6}")
     all4, _ = nets(all4, 4); all6, _ = nets(all6, 6)
+    all_asn4, _ = nets(all_asn4, 4); all_asn6, _ = nets(all_asn6, 6)
+    atomic(DATA / "asn-all-v4.txt", all_asn4)
+    atomic(DATA / "asn-all-v6.txt", all_asn6)
     if not all4: sys.exit("[FATAL] no aggregate IPv4")
     if len(all4) > MAX_AGGREGATE_PREFIXES or len(all6) > MAX_AGGREGATE_PREFIXES:
         sys.exit("[FATAL] aggregate prefix count exceeds safety limit")
@@ -352,9 +359,9 @@ def main():
     }
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     write_text_atomic(DATA / "policy-explain.json", json.dumps(policy_explain, indent=2, ensure_ascii=False) + "\n")
-    checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
+    checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt", DATA / "asn-all-v4.txt", DATA / "asn-all-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V40: reliability + source health + dedup + aggregation + diff + profiles + checksums + ASN discovery", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", f"ALL ASN IPv4: {len(all_asn4)}", f"ALL ASN IPv6: {len(all_asn6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
     health = {
