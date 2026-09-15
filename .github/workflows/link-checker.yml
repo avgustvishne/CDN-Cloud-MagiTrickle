@@ -35,6 +35,7 @@ jobs:
               for u in urls
               if "{" not in u and "}" not in u
               and not u.endswith("?")
+              and "stat.ripe.net/data/" not in u
               and "raw.githubusercontent.com" not in u
               and "avgustvishne.github.io/CDN-Cloud-MagiTrickle" not in u
           }
