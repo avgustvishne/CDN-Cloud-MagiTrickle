@@ -11,6 +11,7 @@ import tempfile
 import time
 import urllib.parse
 import urllib.request
+import argparse
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -19,10 +20,10 @@ if str(ROOT / "scripts") not in sys.path: sys.path.insert(0, str(ROOT / "scripts
 from policy_engine import apply as apply_policy
 DATA.mkdir(exist_ok=True)
 
-VERSION = 48
+VERSION = 43
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
-MIN_PEERS = 2
+MIN_PEERS = 1
 RETRIES = 5
 TIMEOUT = 30
 RETRY_BASE = 2
@@ -31,8 +32,6 @@ CACHE_TTL = 21600
 MAX_PROVIDER_PREFIXES = 50000
 MIN_CHANGE_RATIO = 0.50
 MIN_CHANGE_RATIO_V6 = 0.35
-SOURCE_DROP_RATIO = 0.50
-SOURCE_SNAPSHOT = DATA / "source-snapshots.json"
 MAX_AGGREGATE_PREFIXES = 200000
 MIN_PREFIXLEN = {4: 8, 6: 16}
 MIN_PREFIXES = {"aws": 20, "cloudflare": 5, "akamai": 10, "fastly": 5, "gcore": 10, "backblaze": 1, "bunny": 1, "leaseweb": 1, "upcloud": 1, "ionos": 1, "default": 1}
@@ -234,6 +233,7 @@ def routeviews_prefixes(asn):
 def ripe(asn, min_peers):
     """Merge RIPEstat BGP views and use RouteViews as a fallback."""
     found = set()
+    ripe_ok = False
 
     query = urllib.parse.urlencode({
         "resource": "AS" + asn,
@@ -242,6 +242,7 @@ def ripe(asn, min_peers):
     })
     try:
         payload = jsonget(RIPE + "?" + query)
+        ripe_ok = True
         for item in payload.get("data", {}).get("prefixes", []):
             if isinstance(item, dict) and item.get("prefix"):
                 found.add(item["prefix"])
@@ -269,13 +270,10 @@ def ripe(asn, min_peers):
     except Exception:
         pass
 
-    # Fuse RouteViews with RIPEstat instead of treating it only as a hard
-    # fallback. Different collectors can see different announcements; merging
-    # both views improves coverage while the normal CIDR normalization and
-    # aggregation stage removes duplicates and nested prefixes.
-    routeviews = routeviews_prefixes(asn)
-    if routeviews:
-        found.update(routeviews)
+    # Only use the third-party source when RIPEstat did not return data.
+    # This avoids replacing a healthy RIPE result with a different BGP view.
+    if not found or not ripe_ok:
+        found.update(routeviews_prefixes(asn))
 
     return sorted(found)
 
@@ -318,73 +316,6 @@ def external_ipsets(name, asns):
 
     return values, sources
 
-
-SOURCE_REGISTRY = ROOT / "config" / "source_registry.json"
-
-
-def registry_sources(name):
-    """Fetch additive CIDRs from configured public source registries."""
-    try:
-        registry = json.loads(SOURCE_REGISTRY.read_text(encoding="utf-8"))
-    except Exception:
-        return [], []
-    values, sources, stats = [], [], {}
-    try:
-        previous = json.loads(SOURCE_SNAPSHOT.read_text(encoding="utf-8")) if SOURCE_SNAPSHOT.exists() else {}
-    except Exception:
-        previous = {}
-    updated = dict(previous)
-    for source_id, spec in registry.items():
-        try:
-            if "files" in spec:
-                rel = spec.get("files", {}).get(name)
-                if not rel:
-                    continue
-                url = spec["base"].rstrip("/") + "/" + rel
-                data = request(url).decode("utf-8", errors="replace")
-                found = []
-                for line in data.splitlines():
-                    value = line.split("#", 1)[0].strip()
-                    if not value or "/" not in value:
-                        continue
-                    try:
-                        ipaddress.ip_network(value, strict=False)
-                        found.append(value)
-                    except ValueError:
-                        continue
-            else:
-                if name not in set(spec.get("providers", [])):
-                    continue
-                payload = json.loads(request(spec["url"]).decode("utf-8"))
-                found = []
-                rows = payload if isinstance(payload, list) else payload.get("records", [])
-                for row in rows:
-                    if not isinstance(row, dict) or row.get(spec.get("provider_field", "provider")) != name:
-                        continue
-                    value = row.get(spec.get("cidr_field", "cidr"))
-                    if value:
-                        try:
-                            ipaddress.ip_network(value, strict=False)
-                            found.append(value)
-                        except ValueError:
-                            pass
-            count = len(set(found))
-            prev = int(previous.get(source_id, {}).get(name, 0))
-            suspicious = prev > 0 and count < int(prev * SOURCE_DROP_RATIO)
-            stats[source_id] = {"count": count, "previous": prev, "suspicious": suspicious}
-            if suspicious:
-                continue
-            if found:
-                values.extend(found)
-                sources.append(source_id)
-                updated.setdefault(source_id, {})[name] = count
-        except Exception:
-            continue
-    try:
-        atomic_json(SOURCE_SNAPSHOT, updated)
-    except Exception:
-        pass
-    return values, sources, stats
 
 def official(name): 
     if name == "aws":
@@ -474,38 +405,12 @@ def sha256(path):
             digest.update(chunk)
     return digest.hexdigest()
 
-
-def parse_bgp_tools_table(text, wanted_asns):
-    """Extract CIDRs for wanted origins from bgp.tools table.jsonl."""
-    import json as _json
-    wanted = {int(a) for a in wanted_asns}
-    found = {4: set(), 6: set()}
-    for line in text.splitlines():
-        try:
-            row = _json.loads(line)
-            asn = int(row.get("ASN", -1))
-            cidr = str(row.get("CIDR", ""))
-            hits = int(row.get("Hits", 0))
-            if asn not in wanted or hits < 1:
-                continue
-            net = ipaddress.ip_network(cidr, strict=False)
-            found[net.version].add(net)
-        except (ValueError, TypeError, _json.JSONDecodeError):
-            continue
-    return {4: sorted(found[4]), 6: sorted(found[6])}
-
-
-def prefix_confidence(*, sources=0, hits=0, rpki="not-found"):
-    """Return a conservative quality score for a prefix evidence record."""
-    score = min(60, max(0, int(sources)) * 20)
-    score += min(30, max(0, int(hits)) // 10)
-    if str(rpki).lower() == "valid":
-        score += 10
-    elif str(rpki).lower() == "invalid":
-        score -= 100
-    return max(0, min(100, score))
-
 def main():
+    parser = argparse.ArgumentParser(description="Build CDN/ASN subscriptions")
+    parser.add_argument("--explain", action="store_true", help="generate per-CIDR policy explanations")
+    parser.add_argument("--skip-confirmation", action="store_true", help="skip optional RIPE prefix confirmation")
+    parser.add_argument("--skip-presets", action="store_true", help="skip preset subscription generation")
+    args = parser.parse_args()
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
@@ -529,15 +434,6 @@ def main():
             errors.append("official:" + str(exc))
 
         try:
-            registry_extra, registry_sources_used, registry_stats = registry_sources(name)
-            raw.extend(registry_extra)
-            sources.extend(registry_sources_used)
-            for sid, stat in registry_stats.items():
-                if stat.get("suspicious"):
-                    errors.append(f"registry:{sid}: sudden drop {stat.get('previous')} -> {stat.get('count')} prefixes")
-        except Exception as exc:
-            errors.append("registry:" + str(exc))
-        try:
             extra, extra_sources = external_ipsets(name, unique_asns)
             raw.extend(extra)
             sources.extend(extra_sources)
@@ -559,14 +455,18 @@ def main():
                     all_asn4.extend(v for v in values if "/" in v and ":" not in v)
                     all_asn6.extend(v for v in values if ":" in v)
                     sources.append("RIPEstat")
+                    routing = ripe_routing_status(asn)
+                    if routing:
+                        sources.append("RIPE routing-status")
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
         old4_raw, old6_raw = load_old_raw(old4), load_old_raw(old6)
         v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
         v4_raw, v6_raw = list(map(str, v4)), list(map(str, v6))
-        v4_policy, exp4 = apply_policy(name, v4_raw)
-        v6_policy, exp6 = apply_policy(name, v6_raw)
+        v4_policy, exp4 = apply_policy(name, v4_raw, collect_explain=args.explain)
+        v6_policy, exp6 = apply_policy(name, v6_raw, collect_explain=args.explain)
         v4, _ = nets(v4_policy, 4); v6, _ = nets(v6_policy, 6)
-        policy_explain[name] = {"ipv4": exp4, "ipv6": exp6}
+        if args.explain:
+            policy_explain[name] = {"ipv4": exp4, "ipv6": exp6}
 
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
         minimum = MIN_PREFIXES.get(name, MIN_PREFIXES["default"])
@@ -591,12 +491,8 @@ def main():
             if status == "OK": status = "PARTIAL"
         if rejected4 or rejected6:
             if status == "OK": status = "FILTERED"
-        # Persist each address family independently. A fallback in IPv4 must not
-        # prevent a healthy IPv6 refresh (and vice versa).
-        if not suspicious4 or not prev4:
-            atomic(old4, v4)
-        if not suspicious6 or not prev6:
-            atomic(old6, v6)
+        if not used_fallback:
+            atomic(old4, v4); atomic(old6, v6)
         diff_info = write_diff(name, old4_raw, list(map(str,v4)), old6_raw, list(map(str,v6)))
         source = "+".join(dict.fromkeys(sources)) or "none"
         all4.extend(v4); all6.extend(v6)
@@ -618,7 +514,7 @@ def main():
 
     validated_asn4 = []
     validated_asn6 = []
-    candidates = select_ripe_candidates(all_asn4 + all_asn6, limit=128)
+    candidates = [] if args.skip_confirmation else select_ripe_candidates(all_asn4 + all_asn6, limit=128)
     ripe_cache = load_ripe_cache()
     if candidates:
         # Cache reads happen before parallel requests; cache writes are merged
@@ -661,20 +557,39 @@ def main():
     if len(all4) > MAX_AGGREGATE_PREFIXES or len(all6) > MAX_AGGREGATE_PREFIXES:
         sys.exit("[FATAL] aggregate prefix count exceeds safety limit")
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
-    # Profiles have a single owner to prevent the stable engine and the standalone
-    # profile generator from drifting apart.
-    import subprocess
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "generate_profiles.py")], check=True)
+    # Build stable preset subscriptions from generated provider files.
+    presets = {
+        "full": list(cfg["providers"].keys()),
+        "balanced": ["cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway"],
+        "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
+        "cdn": ["cloudflare", "akamai", "fastly", "cdn77", "gcore"],
+        "cloud": ["aws", "cloudflare", "microsoft", "oracle", "alibaba", "digitalocean"],
+        "video": ["cloudflare", "fastly", "akamai", "aws", "microsoft"],
+        "vpn": ["vultr", "buyvm", "ovh", "hetzner", "digitalocean", "gcore", "contabo", "scaleway", "melbicom"],
+    }
+    preset_dir = DATA / "presets"
+    preset_dir.mkdir(exist_ok=True)
+    if args.skip_presets:
+        presets = {}
+    for preset, names in presets.items():
+        for version, label in ((4, "v4"), (6, "v6")):
+            combined = []
+            for name in names:
+                path = DATA / f"{name}-{label}.txt"
+                if path.exists():
+                    combined.extend(path.read_text(encoding="utf-8").splitlines())
+            combined, _ = nets(combined, version)
+            atomic(preset_dir / f"{preset}-{label}.txt", combined)
 
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
-        "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews", "sw.ext.io"],
-        "features": ["source-fusion","multi-collector-bgp","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","source-diff-guard"],
-        "engine": "unified-provider-sources-v48",
+        "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io"],
+        "features": ["source-fusion","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
+        "engine": "modular-incremental-v43",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
-        "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6, "source_drop_ratio": SOURCE_DROP_RATIO,
+        "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
         "max_provider_prefixes": MAX_PROVIDER_PREFIXES, "global_only": True,
         "min_prefixlen": {"ipv4": MIN_PREFIXLEN[4], "ipv6": MIN_PREFIXLEN[6]},
@@ -688,7 +603,10 @@ def main():
         } for row in rows},
     }
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
-    write_text_atomic(DATA / "policy-explain.json", json.dumps(policy_explain, indent=2, ensure_ascii=False) + "\n")
+    if args.explain:
+        write_text_atomic(DATA / "policy-explain.json", json.dumps(policy_explain, indent=2, ensure_ascii=False) + "\n")
+    checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt", DATA / "asn-all-v4.txt", DATA / "asn-all-v6.txt", DATA / "asn-confirmed-v4.txt", DATA / "asn-confirmed-v6.txt"})
+    write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
     summary = [f"Updated: {now}", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", f"ALL ASN IPv4: {len(all_asn4)}", f"ALL ASN IPv6: {len(all_asn6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
@@ -715,6 +633,5 @@ def main():
             f"{now},{r['provider']},{r['ipv4_prefixes']},{r['ipv6_prefixes']},{r['ipv4_change_percent']},{r['ipv6_change_percent']},{r['status']}"
         )
     write_text_atomic(history_path, "\n".join(history_lines[-HISTORY_LIMIT:]) + "\n")
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "check_checksums.py")], check=True)
 
 if __name__ == "__main__": main()
