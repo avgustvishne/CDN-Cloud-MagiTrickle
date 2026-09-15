@@ -2,9 +2,9 @@
 
 # CDN + Cloud MagiTrickle
 
-**IPv4 / IPv6 CIDR · ASN · CDN · Cloud**
+**IPv4 / IPv6 CIDR · ASN · CDN · Cloud · Video · VPN**
 
-Автоматически генерируемые сетевые подписки для MagiTrickle.
+Автоматически обновляемые сетевые подписки для MagiTrickle.
 
 [🇷🇺 Русский](README.md) · [🇬🇧 English](README.en.md)
 
@@ -18,20 +18,17 @@
 
 ## ✨ Возможности
 
-| Возможность | |
-|---|:---:|
-| IPv4 CIDR | ✅ |
-| IPv6 CIDR | ✅ |
-| ASN-подписки | ✅ |
-| CDN | ✅ |
-| Cloud | ✅ |
-| ~~Video~~ | ✅ |
-| ~~VPN~~ | ✅ |
-| MagiTrickle | ✅ |
+- IPv4 и IPv6 CIDR
+- ASN-подписки
+- Готовые наборы CDN и Cloud
+- Специализированные профили Video и VPN
+- Отдельные подписки для провайдеров
+- Общая подписка со всеми ASN
+- Автоматическое обновление данных
 
 ## ⚡ Быстрый старт
 
-Если не знаешь, что выбрать — начни с **BALANCED**.
+**Не знаешь, что выбрать? Начни с `BALANCED`.**
 
 | Профиль | IPv4 | IPv6 | Назначение |
 |---|---|---|---|
@@ -39,11 +36,11 @@
 | **BALANCED** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) | Оптимальный вариант |
 | **LITE** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/lite-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/lite-v6.txt) | Минимальный объём |
 
-> **BALANCED** — универсальный вариант. **FULL** — максимальное покрытие. **LITE** — компактный вариант с небольшим набором основных CDN и инфраструктурных провайдеров.
+
 
 ## 📦 Профили
 
-Готовые наборы под разные задачи:
+Готовые наборы для разных задач.
 
 | Профиль | IPv4 | IPv6 |
 |---|---|---|
