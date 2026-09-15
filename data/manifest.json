@@ -1,11 +1,13 @@
 {
-  "version": 30,
-  "updated": "2026-09-15 05:05:07 UTC",
+  "version": 31,
+  "updated": "2026-09-15 05:12:54 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official",
-    "RIPEstat"
+    "RIPEstat",
+    "static"
   ],
+  "engine": "unified-provider-sources-v31",
   "provider_asn_counts": {
     "aws": 2,
     "cloudflare": 11,
@@ -38,8 +40,8 @@
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 11576,
-    "ipv6": 4240
+    "ipv4": 11591,
+    "ipv6": 4241
   },
   "audit": [
     {
@@ -104,14 +106,14 @@
     },
     {
       "provider": "digitalocean",
-      "ipv4_prefixes": 196,
-      "ipv6_prefixes": 13,
+      "ipv4_prefixes": 199,
+      "ipv6_prefixes": 14,
       "previous_ipv4_prefixes": 196,
       "previous_ipv6_prefixes": 13,
-      "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv4_change_percent": 1.53,
+      "ipv6_change_percent": 7.69,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "official+RIPEstat",
       "errors": 0
     },
     {
@@ -128,14 +130,14 @@
     },
     {
       "provider": "oracle",
-      "ipv4_prefixes": 1194,
+      "ipv4_prefixes": 1206,
       "ipv6_prefixes": 311,
       "previous_ipv4_prefixes": 1194,
       "previous_ipv6_prefixes": 311,
-      "ipv4_change_percent": 0.0,
+      "ipv4_change_percent": 1.01,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "official+RIPEstat",
       "errors": 0
     },
     {
@@ -301,9 +303,9 @@
       "rejected_ipv6": 0
     },
     "digitalocean": {
-      "ipv4": 196,
-      "ipv6": 13,
-      "source": "RIPEstat",
+      "ipv4": 199,
+      "ipv6": 14,
+      "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -317,9 +319,9 @@
       "rejected_ipv6": 0
     },
     "oracle": {
-      "ipv4": 1194,
+      "ipv4": 1206,
       "ipv6": 311,
-      "source": "RIPEstat",
+      "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
