@@ -19,7 +19,7 @@ if str(ROOT / "scripts") not in sys.path: sys.path.insert(0, str(ROOT / "scripts
 from policy_engine import apply as apply_policy
 DATA.mkdir(exist_ok=True)
 
-VERSION = 47
+VERSION = 48
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 2
@@ -31,6 +31,8 @@ CACHE_TTL = 21600
 MAX_PROVIDER_PREFIXES = 50000
 MIN_CHANGE_RATIO = 0.50
 MIN_CHANGE_RATIO_V6 = 0.35
+SOURCE_DROP_RATIO = 0.50
+SOURCE_SNAPSHOT = DATA / "source-snapshots.json"
 MAX_AGGREGATE_PREFIXES = 200000
 MIN_PREFIXLEN = {4: 8, 6: 16}
 MIN_PREFIXES = {"aws": 20, "cloudflare": 5, "akamai": 10, "fastly": 5, "gcore": 10, "backblaze": 1, "bunny": 1, "leaseweb": 1, "upcloud": 1, "ionos": 1, "default": 1}
@@ -326,7 +328,12 @@ def registry_sources(name):
         registry = json.loads(SOURCE_REGISTRY.read_text(encoding="utf-8"))
     except Exception:
         return [], []
-    values, sources = [], []
+    values, sources, stats = [], [], {}
+    try:
+        previous = json.loads(SOURCE_SNAPSHOT.read_text(encoding="utf-8")) if SOURCE_SNAPSHOT.exists() else {}
+    except Exception:
+        previous = {}
+    updated = dict(previous)
     for source_id, spec in registry.items():
         try:
             if "files" in spec:
@@ -361,12 +368,23 @@ def registry_sources(name):
                             found.append(value)
                         except ValueError:
                             pass
+            count = len(set(found))
+            prev = int(previous.get(source_id, {}).get(name, 0))
+            suspicious = prev > 0 and count < int(prev * SOURCE_DROP_RATIO)
+            stats[source_id] = {"count": count, "previous": prev, "suspicious": suspicious}
+            if suspicious:
+                continue
             if found:
                 values.extend(found)
                 sources.append(source_id)
+                updated.setdefault(source_id, {})[name] = count
         except Exception:
             continue
-    return values, sources
+    try:
+        atomic_json(SOURCE_SNAPSHOT, updated)
+    except Exception:
+        pass
+    return values, sources, stats
 
 def official(name): 
     if name == "aws":
@@ -511,9 +529,12 @@ def main():
             errors.append("official:" + str(exc))
 
         try:
-            registry_extra, registry_sources_used = registry_sources(name)
+            registry_extra, registry_sources_used, registry_stats = registry_sources(name)
             raw.extend(registry_extra)
             sources.extend(registry_sources_used)
+            for sid, stat in registry_stats.items():
+                if stat.get("suspicious"):
+                    errors.append(f"registry:{sid}: sudden drop {stat.get("previous")} -> {stat.get("count")} prefixes")
         except Exception as exc:
             errors.append("registry:" + str(exc))
         try:
@@ -652,11 +673,11 @@ def main():
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews", "sw.ext.io"],
-        "features": ["source-fusion","multi-collector-bgp","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
-        "engine": "unified-provider-sources-v47",
+        "features": ["source-fusion","multi-collector-bgp","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","source-diff-guard"],
+        "engine": "unified-provider-sources-v48",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
-        "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
+        "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6, "source_drop_ratio": SOURCE_DROP_RATIO,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
         "max_provider_prefixes": MAX_PROVIDER_PREFIXES, "global_only": True,
         "min_prefixlen": {"ipv4": MIN_PREFIXLEN[4], "ipv6": MIN_PREFIXLEN[6]},
