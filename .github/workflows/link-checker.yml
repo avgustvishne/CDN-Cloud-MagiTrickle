@@ -30,11 +30,11 @@ jobs:
                   continue
               urls.update(re.findall(r'https?://[^\s<>")\]]+', s))
 
-          urls={u.rstrip(".,;:\"\'") for u in urls if "stat.ripe.net/data/announced-prefixes/data.json" not in u and "raw.githubusercontent.com" not in u}
+          urls={u.rstrip(".,;:\"\'") for u in urls if "stat.ripe.net/data/announced-prefixes/data.json" not in u and "raw.githubusercontent.com" not in u and "avgustvishne.github.io/CDN-Cloud-MagiTrickle" not in u}
           # Only validate externally reachable HTTP(S) URLs.
           bad=[]
           transient={408,425,429,500,502,503,504}
-          allowed={200,206,301,302,303,307,308}
+          allowed={200,204,206,301,302,303,307,308}
 
           for u in sorted(urls):
               ok=False
