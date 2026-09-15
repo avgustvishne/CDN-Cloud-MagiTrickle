@@ -6,9 +6,7 @@
 
 Готовые **IPv4/IPv6 CIDR-подписки** для MagiTrickle.
 
-## Проверки качества
 
-- `BEST / GOOD / SLOW / BACKUP / BLOCKED / DEAD` — автоматическая DPI-оценка точек.
 
 
 ## Профили
