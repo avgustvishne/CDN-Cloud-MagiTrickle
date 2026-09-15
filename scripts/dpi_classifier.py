@@ -18,10 +18,10 @@ LINE_RE = re.compile(
 
 def classify_message(message: str) -> str:
     m = message.lower()
-    if "tcp 16-20: detected" in m:
-        return "detected"
     if "tcp 16-20: possible detected" in m:
         return "possible"
+    if "tcp 16-20: detected" in m:
+        return "detected"
     if "tcp 16-20: unlikely" in m:
         return "unlikely"
     if "tcp 16-20: not detected" in m:
