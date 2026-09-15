@@ -116,9 +116,40 @@ def jsonget(url):
     return json.loads(request(url).decode("utf-8"))
 
 def ripe(asn, min_peers):
-    query = urllib.parse.urlencode({"resource": "AS" + asn, "min_peers_seeing": min_peers, "sourceapp": "CDN-Cloud-MagiTrickle"})
+    """Merge two independent RIPEstat BGP views for better ASN coverage."""
+    found = set()
+
+    # Current announced prefixes. min_peers=1 keeps low-visibility announcements.
+    query = urllib.parse.urlencode({
+        "resource": "AS" + asn,
+        "min_peers_seeing": min_peers,
+        "sourceapp": "CDN-Cloud-MagiTrickle",
+    })
     payload = jsonget(RIPE + "?" + query)
-    return [item.get("prefix", "") for item in payload.get("data", {}).get("prefixes", [])]
+    for item in payload.get("data", {}).get("prefixes", []):
+        if isinstance(item, dict) and item.get("prefix"):
+            found.add(item["prefix"])
+
+    # RIS originated prefixes: independent BGP snapshot of the same ASN.
+    ris_query = urllib.parse.urlencode({
+        "resource": "AS" + asn,
+        "list_prefixes": "true",
+        "types": "o",
+        "af": "v4,v6",
+        "noise": "filter",
+        "sourceapp": "CDN-Cloud-MagiTrickle",
+    })
+    ris_url = "https://stat.ripe.net/data/ris-prefixes/data.json?" + ris_query
+    ris = jsonget(ris_url)
+    for value in walk_strings(ris.get("data", {}).get("prefixes", [])):
+        if "/" in value:
+            try:
+                ipaddress.ip_network(value, strict=False)
+                found.add(value)
+            except ValueError:
+                pass
+
+    return sorted(found)
 
 def walk_strings(obj):
     if isinstance(obj, str):
