@@ -534,7 +534,7 @@ def main():
             sources.extend(registry_sources_used)
             for sid, stat in registry_stats.items():
                 if stat.get("suspicious"):
-                    errors.append(f"registry:{sid}: sudden drop {stat.get("previous")} -> {stat.get("count")} prefixes")
+                    errors.append(f"registry:{sid}: sudden drop {stat.get('previous')} -> {stat.get('count')} prefixes")
         except Exception as exc:
             errors.append("registry:" + str(exc))
         try:
