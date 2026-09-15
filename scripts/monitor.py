@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate a lightweight live provider status snapshot for GitHub Pages."""
-import concurrent.futures, datetime, ipaddress, json, socket, time, urllib.request
+import concurrent.futures, datetime, json, time, urllib.request
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -31,8 +31,7 @@ def main():
     rows.sort(key=lambda x:x["provider"])
     counts={s:sum(x["status"]==s for x in rows) for s in ("healthy","degraded","down","unknown")}
     payload={"generated_at":datetime.datetime.now(datetime.timezone.utc).isoformat(),"interval_minutes":10,"counts":counts,"providers":rows}
-    OUT.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"
-",encoding="utf-8")
+    OUT.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"providers":len(rows),"counts":counts,"seconds":round(time.time()-started,1)},ensure_ascii=False))
 
 if __name__=="__main__": main()
