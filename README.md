@@ -37,9 +37,9 @@
 |---|---|---|---|
 | **FULL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) | Максимальное покрытие |
 | **BALANCED** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) | Оптимальный вариант |
-| **MINIMAL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) | Минимальный объём |
+| **LITE** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/lite-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/lite-v6.txt) | Минимальный объём |
 
-> **BALANCED** — универсальный вариант. **FULL** — большее покрытие. **MINIMAL** — меньше правил и данных.
+> **BALANCED** — универсальный вариант. **FULL** — максимальное покрытие. **LITE** — компактный вариант с небольшим набором основных CDN и инфраструктурных провайдеров.
 
 ## 📦 Профили
 
