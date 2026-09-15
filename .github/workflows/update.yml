@@ -1,4 +1,4 @@
-name: Update MagiTrickle V29 subscriptions
+name: Update MagiTrickle V30 subscriptions
 
 on:
   schedule:
@@ -27,10 +27,10 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generate V29
+      - name: Generate V30
         run: python scripts/update_cdn_lists.py
 
-      - name: Validate V29 data
+      - name: Validate V30 data
         run: |
           python - <<'PY'
           import hashlib
@@ -76,7 +76,7 @@ jobs:
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
 
-          print("V29 validation OK")
+          print("V30 validation OK")
           PY
 
       - name: Show summary
@@ -93,7 +93,7 @@ jobs:
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: V29 update provider subscriptions"
+          git commit -m "chore: V30 update provider subscriptions"
 
           for attempt in 1 2 3 4 5; do
             if git push; then
@@ -111,5 +111,5 @@ jobs:
             }
           done
 
-          echo "Unable to push generated V29 data after 5 attempts."
+          echo "Unable to push generated V30 data after 5 attempts."
           exit 1
