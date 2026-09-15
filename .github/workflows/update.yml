@@ -73,7 +73,7 @@ jobs:
           provider_names = set(cfg["providers"])
           generated_names = {p.name[:-7] for p in d.glob("*-v4.txt") if p.name not in ("all-cloud-v4.txt", "asn-all-v4.txt", "asn-confirmed-v4.txt")}
           assert generated_names == provider_names, f"provider files mismatch: generated={sorted(generated_names)} config={sorted(provider_names)}"
-          for obsolete in ("cdn-cloud-v4.txt", "cdn-cloud-v6.txt", "dpi-recommended-v4.txt", "dpi-recommended-v6.txt"):
+          for obsolete in ("cdn-cloud-v4.txt", "cdn-cloud-v6.txt", "dpi-recommended-v4.txt", "dpi-recommended-v6.txt", "lite-v4.txt", "lite-v6.txt"):
               assert not (d / obsolete).exists(), f"obsolete file remains: {obsolete}"
           required_profiles = [
               "full-v4.txt", "full-v6.txt",
