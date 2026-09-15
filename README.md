@@ -2,6 +2,16 @@
 
 Готовые **IPv4/IPv6 CIDR-подписки** для MagiTrickle.
 
+## Профили
+
+Выбирай профиль в зависимости от нужного покрытия и нагрузки.
+
+| Профиль | IPv4 | IPv6 | Назначение |
+|---|---|---|---|
+| **FULL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) | Максимальное покрытие всех провайдеров |
+| **BALANCED** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) | Оптимальный баланс покрытия и нагрузки |
+| **MINIMAL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) | Минимальный набор основных сетей |
+
 ## Все сети
 
 **IPv4**  
@@ -10,10 +20,18 @@
 **IPv6**  
 [Подписка IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt)
 
+## Специализированные наборы
+
+| Набор | IPv4 | IPv6 |
+|---|---|---|
+| **CDN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v6.txt) |
+| **Cloud** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
+| **Video** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
+| **VPN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
+
 ## Отдельные провайдеры
 
-Для каждого провайдера доступны отдельные IPv4 и IPv6 подписки.  
-**Нажмите на IPv4 или IPv6, чтобы открыть готовую ссылку подписки.**
+Для каждого провайдера доступны отдельные IPv4 и IPv6 подписки.
 
 | Провайдер | IPv4 | IPv6 |
 |---|---|---|
@@ -38,10 +56,6 @@
 
 ## ASN-подписки
 
-Отдельные **Full ASN**-подписки позволяют получить полный набор маршрутизируемых IPv4/IPv6-префиксов конкретного ASN. Ссылки ниже ведут на ASN-генератор; они не ограничены текущими provider-файлами репозитория.
-
-> **Важно:** ASN и provider — не одно и то же. Для провайдеров с несколькими ASN рекомендуется использовать объединённую подписку только после проверки, что все ASN действительно относятся к нужной инфраструктуре.
-
 | Провайдер | ASN | IPv4 | IPv6 |
 |---|---|---|---|
 | **AWS** | AS16509 | [IPv4](https://asn.web2core.workers.dev/AS16509?v4) | [IPv6](https://asn.web2core.workers.dev/AS16509?v6) |
@@ -65,34 +79,3 @@
 | **Scaleway** | AS12876 | [IPv4](https://asn.web2core.workers.dev/AS12876?v4) | [IPv6](https://asn.web2core.workers.dev/AS12876?v6) |
 | **Gcore** | AS199524 | [IPv4](https://asn.web2core.workers.dev/AS199524?v4) | [IPv6](https://asn.web2core.workers.dev/AS199524?v6) |
 | **Backblaze** | AS19503 | [IPv4](https://asn.web2core.workers.dev/AS19503?v4) | [IPv6](https://asn.web2core.workers.dev/AS19503?v6) |
-
-## Контроль обновлений
-
-Генератор автоматически сравнивает новый и предыдущий набор префиксов для каждого провайдера. В репозитории сохраняется `data/audit.csv` со статистикой изменения IPv4/IPv6. При подозрительном резком уменьшении списка или частичном сбое источника используется предыдущая рабочая версия вместо повреждённой.
-
-## Профили подписок
-
-- **FULL** — все provider/ASN-подписки с максимальным покрытием.
-- **BALANCED** — оптимальный набор для повседневного использования без избыточного покрытия.
-- **MINIMAL** — компактные основные сети с минимальной нагрузкой.
-
-### Специализированные наборы
-
-В `data/presets/` автоматически создаются отдельные IPv4/IPv6-наборы:
-
-- `cdn-v4.txt` / `cdn-v6.txt` — CDN-провайдеры;
-- `cloud-v4.txt` / `cloud-v6.txt` — облачные платформы;
-- `video-v4.txt` / `video-v6.txt` — инфраструктура, наиболее полезная для видеосервисов;
-- `vpn-v4.txt` / `vpn-v6.txt` — VPS/hosting-провайдеры, используемые для VPN/прокси-инфраструктуры.
-
-### История изменений
-
-`data/audit.csv` содержит текущий аудит, а `data/history.csv` сохраняет историю количества IPv4/IPv6-префиксов и процентных изменений по провайдерам.
-
-## Использование
-
-Можно использовать общую подписку, если нужны все сети, или отдельные подписки провайдеров для более точной настройки MagiTrickle.
-
-### Прямые ссылки
-
-Все ссылки ведут непосредственно на актуальные файлы CIDR в репозитории и подходят для добавления в MagiTrickle как удалённые подписки.
