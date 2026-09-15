@@ -317,6 +317,105 @@ def external_ipsets(name, asns):
     return values, sources
 
 
+
+def load_source_registry():
+    path = ROOT / "config/source_registry.json"
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+def parse_cidr_lines(data):
+    values = []
+    for line in data.decode("utf-8", errors="replace").splitlines():
+        value = line.split("#", 1)[0].strip()
+        if not value:
+            continue
+        try:
+            ipaddress.ip_network(value, strict=False)
+            values.append(value)
+        except ValueError:
+            continue
+    return values
+
+def registry_cloud_ranges(name, registry):
+    cloud = registry.get("cloud-ip-ranges", {})
+    filename = cloud.get("files", {}).get(name)
+    if not filename:
+        return [], None
+    url = cloud.get("base", "").rstrip("/") + "/" + filename
+    try:
+        data = request(url)
+        values = parse_cidr_lines(data)
+        import re
+        text = data.decode("utf-8", errors="replace")
+        match = re.search(r"^#\\s*last_update:\\s*(\\d{4}-\\d{2}-\\d{2})", text, re.M)
+        if match:
+            stamp = datetime.datetime.fromisoformat(match.group(1)).replace(tzinfo=datetime.timezone.utc)
+            if (datetime.datetime.now(datetime.timezone.utc) - stamp).total_seconds() > 14 * 86400:
+                return [], "stale cloud-ip-ranges snapshot: " + match.group(1)
+        return values, url
+    except Exception as exc:
+        return [], "cloud-ip-ranges:" + str(exc)
+
+def registry_egress_ranges(name, registry):
+    spec = registry.get("cloud-egress-ip-ranges", {})
+    if name not in spec.get("providers", []):
+        return [], None
+    url = spec.get("url")
+    if not url:
+        return [], None
+    try:
+        obj = jsonget(url)
+        aliases = {
+            "microsoft": {"azure", "microsoft", "microsoft-azure"},
+            "aws": {"aws", "amazon"},
+        }
+        wanted = aliases.get(name, {name})
+        provider_field = spec.get("provider_field", "provider")
+        cidr_field = spec.get("cidr_field", "cidr")
+        records = obj if isinstance(obj, list) else obj.get("ranges", obj.get("data", []))
+        if isinstance(records, dict):
+            records = records.values()
+        values = []
+        for item in records or []:
+            if not isinstance(item, dict):
+                continue
+            if str(item.get(provider_field, "")).lower() not in wanted:
+                continue
+            cidr = item.get(cidr_field)
+            if cidr:
+                try:
+                    ipaddress.ip_network(str(cidr), strict=False)
+                    values.append(str(cidr))
+                except ValueError:
+                    pass
+        return values, url
+    except Exception as exc:
+        return [], "cloud-egress:" + str(exc)
+
+def find_exact_duplicates(values):
+    seen = set()
+    duplicates = set()
+    for value in values:
+        if value in seen:
+            duplicates.add(value)
+        else:
+            seen.add(value)
+    return sorted(duplicates)
+
+def build_provider_overlap_report(provider_networks):
+    owners = {}
+    for provider, values in provider_networks.items():
+        for value in values:
+            owners.setdefault(value, []).append(provider)
+    overlaps = {cidr: sorted(names) for cidr, names in owners.items() if len(names) > 1}
+    return {
+        "exact_cross_provider_overlaps": len(overlaps),
+        "entries": [{"cidr": cidr, "providers": providers} for cidr, providers in sorted(overlaps.items())],
+        "note": "Cross-provider overlaps are reported, not deleted; all-cloud is globally deduplicated."
+    }
+
 def official(name): 
     if name == "aws":
         obj = jsonget("https://ip-ranges.amazonaws.com/ip-ranges.json")
@@ -412,6 +511,7 @@ def main():
     parser.add_argument("--skip-presets", action="store_true", help="skip preset subscription generation")
     args = parser.parse_args()
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
+    registry = load_source_registry()
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
     all_asn4, all_asn6 = [], []
@@ -432,6 +532,26 @@ def main():
             if raw: sources.append("official" if name not in STATIC else "static")
         except Exception as exc:
             errors.append("official:" + str(exc))
+
+        try:
+            registry_values, registry_source = registry_cloud_ranges(name, registry)
+            if registry_values:
+                raw.extend(registry_values)
+                sources.append("cloud-ip-ranges")
+            elif registry_source and registry_source.startswith("stale"):
+                errors.append(registry_source)
+            elif registry_source and registry_source.startswith("cloud-ip-ranges:"):
+                errors.append(registry_source)
+        except Exception as exc:
+            errors.append("cloud-ip-ranges:" + str(exc))
+
+        try:
+            egress_values, egress_source = registry_egress_ranges(name, registry)
+            if egress_values:
+                raw.extend(egress_values)
+                sources.append("cloud-egress-ip-ranges")
+        except Exception as exc:
+            errors.append("cloud-egress:" + str(exc))
 
         try:
             extra, extra_sources = external_ipsets(name, unique_asns)
@@ -465,6 +585,8 @@ def main():
         v4_policy, exp4 = apply_policy(name, v4_raw, collect_explain=args.explain)
         v6_policy, exp6 = apply_policy(name, v6_raw, collect_explain=args.explain)
         v4, _ = nets(v4_policy, 4); v6, _ = nets(v6_policy, 6)
+        if find_exact_duplicates(v4_raw) or find_exact_duplicates(v6_raw):
+            errors.append("duplicate source CIDRs normalized before output")
         if args.explain:
             policy_explain[name] = {"ipv4": exp4, "ipv6": exp6}
 
@@ -509,6 +631,11 @@ def main():
         print(f"{name}: v4={len(v4)} v6={len(v6)} {source} {status}")
         if errors: print(f"  warnings: {len(errors)}")
         if rejected4 or rejected6: print(f"  filtered: ipv4={rejected4} ipv6={rejected6}")
+    provider_networks = {}
+    for name in cfg["providers"]:
+        provider_networks[name] = load_old_raw(DATA / f"{name}-v4.txt") + load_old_raw(DATA / f"{name}-v6.txt")
+    overlap_report = build_provider_overlap_report(provider_networks)
+
     all4, _ = nets(all4, 4); all6, _ = nets(all6, 6)
     all_asn4, _ = nets(all_asn4, 4); all_asn6, _ = nets(all_asn6, 6)
 
@@ -584,9 +711,9 @@ def main():
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
-        "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io"],
+        "sources": ["official provider feeds", "disposable/cloud-ip-ranges", "ipanalytics/Cloud-Egress-IP-Ranges", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io"],
         "features": ["source-fusion","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
-        "engine": "modular-incremental-v43",
+        "engine": "final-v43-wide-source-fusion",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
@@ -602,6 +729,7 @@ def main():
             **({"errors": row["errors"]} if row["errors"] else {})
         } for row in rows},
     }
+    write_text_atomic(DATA / "provider-overlaps.json", json.dumps(overlap_report, indent=2, ensure_ascii=False) + "\n")
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     if args.explain:
         write_text_atomic(DATA / "policy-explain.json", json.dumps(policy_explain, indent=2, ensure_ascii=False) + "\n")
