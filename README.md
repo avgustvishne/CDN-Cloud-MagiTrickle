@@ -36,8 +36,6 @@
 | **Gcore** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v6.txt) |
 | **Backblaze** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v6.txt) |
 
-> **Scaleway:** подписка дополнительно учитывает официальный диапазон `78.232.0.0/16`, опубликованный Scaleway, вместе с актуальными маршрутами AS12876. Это предотвращает потерю этого диапазона при неполной видимости BGP.
-
 ## ASN-подписки
 
 Отдельные **Full ASN**-подписки позволяют получить полный набор маршрутизируемых IPv4/IPv6-префиксов конкретного ASN. Ссылки ниже ведут на ASN-генератор; они не ограничены текущими provider-файлами репозитория.
