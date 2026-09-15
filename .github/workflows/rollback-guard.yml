@@ -1,0 +1,22 @@
+name: Rollback Guard
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/rollback_guard.py"
+      - ".github/workflows/rollback-guard.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+      - name: Validate rollback guard
+        run: python -m py_compile scripts/rollback_guard.py
