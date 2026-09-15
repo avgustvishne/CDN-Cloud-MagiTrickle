@@ -115,22 +115,43 @@ def request(url):
 def jsonget(url):
     return json.loads(request(url).decode("utf-8"))
 
-def ripe(asn, min_peers):
-    """Merge two independent RIPEstat BGP views for better ASN coverage."""
+def routeviews_prefixes(asn):
+    """Fallback BGP source using RouteViews current RIB data."""
     found = set()
+    for af in (4, 6):
+        url = f"https://api.routeviews.org/asn/{asn}?af={af}"
+        try:
+            payload = jsonget(url)
+            if isinstance(payload, list):
+                for item in payload:
+                    if isinstance(item, str) and "/" in item:
+                        found.add(item)
+                    elif isinstance(item, dict) and item.get("prefix"):
+                        found.add(item["prefix"])
+        except Exception:
+            pass
+    return sorted(found)
 
-    # Current announced prefixes. min_peers=1 keeps low-visibility announcements.
+
+def ripe(asn, min_peers):
+    """Merge RIPEstat BGP views and use RouteViews as a fallback."""
+    found = set()
+    ripe_ok = False
+
     query = urllib.parse.urlencode({
         "resource": "AS" + asn,
         "min_peers_seeing": min_peers,
         "sourceapp": "CDN-Cloud-MagiTrickle",
     })
-    payload = jsonget(RIPE + "?" + query)
-    for item in payload.get("data", {}).get("prefixes", []):
-        if isinstance(item, dict) and item.get("prefix"):
-            found.add(item["prefix"])
+    try:
+        payload = jsonget(RIPE + "?" + query)
+        ripe_ok = True
+        for item in payload.get("data", {}).get("prefixes", []):
+            if isinstance(item, dict) and item.get("prefix"):
+                found.add(item["prefix"])
+    except Exception:
+        pass
 
-    # RIS originated prefixes: independent BGP snapshot of the same ASN.
     ris_query = urllib.parse.urlencode({
         "resource": "AS" + asn,
         "list_prefixes": "true",
@@ -139,15 +160,23 @@ def ripe(asn, min_peers):
         "noise": "filter",
         "sourceapp": "CDN-Cloud-MagiTrickle",
     })
-    ris_url = "https://stat.ripe.net/data/ris-prefixes/data.json?" + ris_query
-    ris = jsonget(ris_url)
-    for value in walk_strings(ris.get("data", {}).get("prefixes", [])):
-        if "/" in value:
-            try:
-                ipaddress.ip_network(value, strict=False)
-                found.add(value)
-            except ValueError:
-                pass
+    try:
+        ris = jsonget("https://stat.ripe.net/data/ris-prefixes/data.json?" + ris_query)
+        ripe_ok = True
+        for value in walk_strings(ris.get("data", {}).get("prefixes", [])):
+            if "/" in value:
+                try:
+                    ipaddress.ip_network(value, strict=False)
+                    found.add(value)
+                except ValueError:
+                    pass
+    except Exception:
+        pass
+
+    # Only use the third-party source when RIPEstat did not return data.
+    # This avoids replacing a healthy RIPE result with a different BGP view.
+    if not found or not ripe_ok:
+        found.update(routeviews_prefixes(asn))
 
     return sorted(found)
 
