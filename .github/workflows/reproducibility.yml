@@ -1,0 +1,44 @@
+name: Generator Reproducibility Check
+
+on:
+  pull_request:
+    paths:
+      - "scripts/**"
+      - "config/**"
+      - ".github/workflows/reproducibility.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproducibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+      - name: Check deterministic normalization
+        run: |
+          python - <<'PY'
+          import ipaddress, pathlib, tempfile, hashlib
+
+          files=list(pathlib.Path("data").glob("*-v4.txt"))+list(pathlib.Path("data").glob("*-v6.txt"))
+          files += list((pathlib.Path("data")/"presets").glob("*.txt"))
+          files=[p for p in files if p.exists()]
+          assert files, "No generated subscription files available"
+
+          def normalize(path):
+              version=6 if path.name.endswith("-v6.txt") else 4
+              nets={ipaddress.ip_network(x.strip(), strict=False)
+                    for x in path.read_text(encoding="utf-8").splitlines() if x.strip()}
+              nets={n for n in nets if n.version==version}
+              return "\n".join(map(str, sorted(ipaddress.collapse_addresses(nets), key=lambda n:(int(n.network_address),n.prefixlen))))+"\n"
+
+          for p in files:
+              a=normalize(p); b=normalize(p)
+              if hashlib.sha256(a.encode()).hexdigest()!=hashlib.sha256(b.encode()).hexdigest():
+                  raise SystemExit(f"non-deterministic normalization: {p}")
+          print(f"Reproducibility normalization OK: {len(files)} files")
+          PY
