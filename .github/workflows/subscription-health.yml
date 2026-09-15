@@ -2,7 +2,7 @@ name: Subscription Health Check
 
 on:
   workflow_run:
-    workflows: ["Update MagiTrickle V40 subscriptions"]
+    workflows: ["Update MagiTrickle subscriptions"]
     types: [completed]
   workflow_dispatch:
   schedule:
