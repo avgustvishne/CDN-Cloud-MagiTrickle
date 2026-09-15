@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "description": "Automatic classification policy for Hyperion TCP 16-20 endpoint results.",
+  "latency_ms": {
+    "excellent_max": 2000,
+    "good_max": 5000,
+    "slow_max": 8000
+  },
+  "classes": {
+    "best": "not_detected_and_latency_le_2000",
+    "good": "not_detected_and_latency_le_5000",
+    "slow": "not_detected_and_latency_le_8000",
+    "backup": "not_detected_and_latency_gt_8000_or_unlikely_or_possible_detected",
+    "blocked": "detected",
+    "dead": "alived_no",
+    "unknown": "no_reliable_result"
+  }
+}
