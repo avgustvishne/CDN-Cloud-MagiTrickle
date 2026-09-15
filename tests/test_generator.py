@@ -49,7 +49,8 @@ class GeneratorUnitTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             cache_file = Path(td) / "ripe-prefix-cache.json"
             cache_file.write_text(json.dumps(payload), encoding="utf-8")
-            with patch.object(self.engine, "RIPE_CACHE_FILE", cache_file),                  patch.object(self.engine.time, "time", return_value=now):
+            with patch.object(self.engine, "RIPE_CACHE_FILE", cache_file), \
+             patch.object(self.engine.time, "time", return_value=now):
                 cache = self.engine.load_ripe_cache()
         self.assertEqual(set(cache), {"192.0.2.0/24", "192.0.4.0/24"})
         self.assertTrue(cache["192.0.2.0/24"]["confirmed"])
@@ -57,7 +58,8 @@ class GeneratorUnitTests(unittest.TestCase):
 
     def test_confirm_uses_cache_without_network_request(self):
         cache = {"192.0.2.0/24": {"ts": 2_000_000_000 - 3600, "confirmed": True}}
-        with patch.object(self.engine.time, "time", return_value=2_000_000_000),              patch.object(self.engine, "ripe_prefix_overview") as lookup:
+        with patch.object(self.engine.time, "time", return_value=2_000_000_000), \
+             patch.object(self.engine, "ripe_prefix_overview") as lookup:
             self.assertTrue(self.engine.validate_prefix_with_ripe("192.0.2.0/24", cache))
             lookup.assert_not_called()
 
