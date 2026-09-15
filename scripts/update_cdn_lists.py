@@ -129,14 +129,24 @@ def ripe_routing_status(asn):
 
 RIPE_CACHE_FILE = DATA / "ripe-prefix-cache.json"
 RIPE_CACHE_TTL = 86400
+RIPE_CACHE_MAX_AGE = 7 * 86400
 
 
 def load_ripe_cache():
+    now = int(time.time())
+    cutoff = now - (7 * 86400)
     try:
         if not RIPE_CACHE_FILE.exists():
             return {}
         obj = json.loads(RIPE_CACHE_FILE.read_text(encoding="utf-8"))
-        return obj if isinstance(obj, dict) else {}
+        if not isinstance(obj, dict):
+            return {}
+        # Keep the 24h validation TTL, but remove entries older than 7 days
+        # so the cache cannot grow indefinitely.
+        return {
+            prefix: entry for prefix, entry in obj.items()
+            if isinstance(entry, dict) and int(entry.get("ts", 0)) >= cutoff
+        }
     except Exception:
         return {}
 
