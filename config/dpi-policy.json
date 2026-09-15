@@ -1,18 +1,36 @@
 {
-  "version": 1,
-  "description": "Automatic classification policy for Hyperion TCP 16-20 endpoint results.",
+  "version": 2,
+  "description": "Automatic Hyperion TCP 16-20 endpoint ranking.",
+  "score": {
+    "scale": "0-100",
+    "best": "90-100",
+    "good": "75-89",
+    "slow": "61-74",
+    "backup": "1-60",
+    "blocked": "0",
+    "dead": "0",
+    "unknown": "25"
+  },
   "latency_ms": {
-    "excellent_max": 2000,
+    "excellent_max": 1000,
+    "best_max": 2000,
     "good_max": 5000,
     "slow_max": 8000
   },
   "classes": {
-    "best": "not_detected_and_latency_le_2000",
-    "good": "not_detected_and_latency_le_5000",
-    "slow": "not_detected_and_latency_le_8000",
-    "backup": "not_detected_and_latency_gt_8000_or_unlikely_or_possible_detected",
-    "blocked": "detected",
+    "best": "tcp_not_detected_and_latency_le_2000",
+    "good": "tcp_not_detected_and_latency_le_5000",
+    "slow": "tcp_not_detected_and_latency_le_8000",
+    "backup": "latency_gt_8000_or_unlikely_or_possible_detected",
+    "blocked": "tcp_detected",
     "dead": "alived_no",
     "unknown": "no_reliable_result"
-  }
+  },
+  "priority": [
+    "blocked",
+    "dead",
+    "possible detected",
+    "unlikely",
+    "not detected"
+  ]
 }
