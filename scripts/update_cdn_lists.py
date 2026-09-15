@@ -134,7 +134,7 @@ RIPE_CACHE_MAX_AGE = 7 * 86400
 
 def load_ripe_cache():
     now = int(time.time())
-    cutoff = now - (7 * 86400)
+    cutoff = now - RIPE_CACHE_MAX_AGE
     try:
         if not RIPE_CACHE_FILE.exists():
             return {}
@@ -181,14 +181,15 @@ def validate_prefix_with_ripe(prefix, cache=None):
     now = int(time.time())
     cache = cache if cache is not None else {}
     entry = cache.get(prefix)
-    if isinstance(entry, dict) and now - int(entry.get("ts", 0)) < RIPE_CACHE_TTL:
-        return bool(entry.get("confirmed", False))
+    if isinstance(entry, dict):
+        try:
+            if now - int(entry.get("ts", 0)) < RIPE_CACHE_TTL:
+                return bool(entry.get("confirmed", False))
+        except (TypeError, ValueError):
+            pass
 
     data = ripe_prefix_overview(prefix)
-    confirmed = bool(data) and any(
-        key in data and data[key] not in (None, False, "", [], {})
-        for key in ("announced", "visibility", "bgp_state", "origin")
-    )
+    confirmed = bool(data.get("announced") is True or data.get("asns"))
     cache[prefix] = {"ts": now, "confirmed": confirmed}
     return confirmed
 
@@ -508,10 +509,36 @@ def main():
     candidates = select_ripe_candidates(all_asn4 + all_asn6, limit=128)
     ripe_cache = load_ripe_cache()
     if candidates:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
-            checks = list(pool.map(lambda p: validate_prefix_with_ripe(p, ripe_cache), candidates))
+        # Cache reads happen before parallel requests; cache writes are merged
+        # in the main thread to avoid concurrent mutation of the shared dict.
+        cached_checks = {}
+        pending = []
+        for prefix in candidates:
+            entry = ripe_cache.get(prefix)
+            try:
+                fresh = isinstance(entry, dict) and int(time.time()) - int(entry.get("ts", 0)) < RIPE_CACHE_TTL
+            except (TypeError, ValueError):
+                fresh = False
+            if fresh:
+                cached_checks[prefix] = bool(entry.get("confirmed", False))
+            else:
+                pending.append(prefix)
+
+        def confirm(prefix):
+            data = ripe_prefix_overview(prefix)
+            return bool(data.get("announced") is True or data.get("asns"))
+
+        if pending:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+                results = list(pool.map(confirm, pending))
+            now = int(time.time())
+            for prefix, confirmed in zip(pending, results):
+                ripe_cache[prefix] = {"ts": now, "confirmed": confirmed}
+                cached_checks[prefix] = confirmed
+
         save_ripe_cache(ripe_cache)
-        for prefix, confirmed in zip(candidates, checks):
+        for prefix in candidates:
+            confirmed = cached_checks.get(prefix, False)
             if confirmed:
                 (validated_asn6 if ":" in prefix else validated_asn4).append(prefix)
     atomic(DATA / "asn-confirmed-v4.txt", validated_asn4)
