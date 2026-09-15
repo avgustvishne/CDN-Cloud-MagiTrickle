@@ -38,13 +38,12 @@
 
 ## RU WhiteList
 
-| Набор | IPv4 | IPv6 | Назначение |
+| Подписка | IPv4 | IPv6 | Назначение |
 |---|---|---|---|
-| **RU FULL** | [IPv4](./data/ru-full-v4.txt) | [IPv6](./data/ru-full-v6.txt) | Полный RU whitelist |
-| **RU COMMON** | [IPv4](./data/ru-common-v4.txt) | [IPv6](./data/ru-common-v6.txt) | Компактный RU whitelist |
+| **RU CLEAN** | [IPv4](https://raw.githubusercontent.com/jinndi/geoip-ru-ipset/main/data/ru-no-blocked.txt) | [IPv6](https://raw.githubusercontent.com/jinndi/geoip-ru-ipset/main/data/ru-no-blocked6.txt) | Российские IP без известных заблокированных диапазонов |
 
-**RU FULL** — максимально полный список российских префиксов.  
-**RU COMMON** — компактный вариант для меньшей нагрузки.
+**RU CLEAN** обновляется автоматически upstream-проектом `jinndi/geoip-ru`. 
+
 
 ## Отдельные провайдеры
 
