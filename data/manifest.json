@@ -1,6 +1,6 @@
 {
   "version": 41,
-  "updated": "2026-09-15 11:06:49 UTC",
+  "updated": "2026-09-15 11:17:48 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official",
@@ -152,29 +152,29 @@
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 11591,
-    "ipv6": 4241
+    "ipv4": 11597,
+    "ipv6": 4251
   },
   "audit": [
     {
       "provider": "aws",
-      "ipv4_prefixes": 5289,
-      "ipv6_prefixes": 1492,
+      "ipv4_prefixes": 5294,
+      "ipv6_prefixes": 1491,
       "previous_ipv4_prefixes": 5289,
       "previous_ipv6_prefixes": 1492,
-      "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv4_change_percent": 0.09,
+      "ipv6_change_percent": -0.07,
       "status": "OK",
       "source": "official+RIPEstat",
       "errors": 0
     },
     {
       "provider": "cloudflare",
-      "ipv4_prefixes": 641,
+      "ipv4_prefixes": 642,
       "ipv6_prefixes": 115,
       "previous_ipv4_prefixes": 641,
       "previous_ipv6_prefixes": 115,
-      "ipv4_change_percent": 0.0,
+      "ipv4_change_percent": 0.16,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "official+RIPEstat",
@@ -207,11 +207,11 @@
     {
       "provider": "akamai",
       "ipv4_prefixes": 321,
-      "ipv6_prefixes": 231,
+      "ipv6_prefixes": 232,
       "previous_ipv4_prefixes": 321,
       "previous_ipv6_prefixes": 231,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv6_change_percent": 0.43,
       "status": "OK",
       "source": "RIPEstat",
       "errors": 0
@@ -315,11 +315,11 @@
     {
       "provider": "vultr",
       "ipv4_prefixes": 703,
-      "ipv6_prefixes": 1454,
+      "ipv6_prefixes": 1464,
       "previous_ipv4_prefixes": 703,
       "previous_ipv6_prefixes": 1454,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv6_change_percent": 0.69,
       "status": "OK",
       "source": "RIPEstat",
       "errors": 0
@@ -376,15 +376,15 @@
   "diff": {},
   "providers": {
     "aws": {
-      "ipv4": 5289,
-      "ipv6": 1492,
+      "ipv4": 5294,
+      "ipv6": 1491,
       "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "cloudflare": {
-      "ipv4": 641,
+      "ipv4": 642,
       "ipv6": 115,
       "source": "official+RIPEstat",
       "status": "OK",
@@ -409,7 +409,7 @@
     },
     "akamai": {
       "ipv4": 321,
-      "ipv6": 231,
+      "ipv6": 232,
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
@@ -481,7 +481,7 @@
     },
     "vultr": {
       "ipv4": 703,
-      "ipv6": 1454,
+      "ipv6": 1464,
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
