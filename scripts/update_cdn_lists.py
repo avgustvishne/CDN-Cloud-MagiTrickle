@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 30
+VERSION = 31
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
@@ -80,6 +80,23 @@ def official(name):
         return [item["ip_prefix"] for item in obj.get("prefixes", [])] + [item["ipv6_prefix"] for item in obj.get("ipv6_prefixes", [])]
     if name == "cloudflare":
         return request("https://www.cloudflare.com/ips-v4/").decode().splitlines() + request("https://www.cloudflare.com/ips-v6/").decode().splitlines()
+    if name == "digitalocean":
+        text = request("https://digitalocean.com/geo/google.csv").decode("utf-8-sig")
+        values = []
+        for line in text.splitlines()[1:]:
+            for value in line.split(","):
+                value = value.strip().strip('"')
+                if "/" in value:
+                    values.append(value)
+        return values
+    if name == "oracle":
+        obj = jsonget("https://docs.oracle.com/en-us/iaas/tools/public_ip_ranges.json")
+        values = []
+        for region in obj.get("regions", []):
+            for item in region.get("cidrs", []):
+                if item.get("cidr"):
+                    values.append(item["cidr"])
+        return values
     if name == "scaleway":
         # Combine official Scaleway ranges with live AS12876 announcements.
         return [
@@ -150,14 +167,13 @@ def main():
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
     audit_rows = []
-    seen_asns = set()
     provider_asns = {}
     for name, asns in cfg["providers"].items():
         raw, sources, errors = [], [], []
         unique_asns = []
         for asn in asns:
-            if asn not in seen_asns:
-                seen_asns.add(asn); unique_asns.append(asn)
+            if asn not in unique_asns:
+                unique_asns.append(asn)
             else:
                 errors.append(f"duplicate ASN ignored: AS{asn}")
         provider_asns[name] = unique_asns
@@ -178,17 +194,24 @@ def main():
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
         minimum = MIN_PREFIXES.get(name, MIN_PREFIXES["default"])
         status = "OK"; used_fallback = False
-        suspicious = len(v4) < minimum or len(v4) > MAX_PROVIDER_PREFIXES or len(v6) > MAX_PROVIDER_PREFIXES
-        if prev4 and len(v4) < int(len(prev4) * MIN_CHANGE_RATIO): suspicious = True
-        if prev6 and len(v6) < int(len(prev6) * MIN_CHANGE_RATIO_V6): suspicious = True
-        if suspicious and prev4:
-            v4, v6 = prev4, (prev6 if prev6 else v6); status = "KEEP_OLD"; used_fallback = True
-        elif suspicious and not prev4:
+        suspicious4 = len(v4) < minimum or len(v4) > MAX_PROVIDER_PREFIXES
+        suspicious6 = len(v6) > MAX_PROVIDER_PREFIXES
+        if prev4 and len(v4) < int(len(prev4) * MIN_CHANGE_RATIO): suspicious4 = True
+        if prev6 and len(v6) < int(len(prev6) * MIN_CHANGE_RATIO_V6): suspicious6 = True
+        if suspicious4 and prev4:
+            v4 = prev4; status = "KEEP_OLD"; used_fallback = True
+        if suspicious6 and prev6:
+            v6 = prev6; status = "KEEP_OLD" if status == "OK" else status; used_fallback = True
+        if suspicious4 and not prev4:
             status = "EMPTY" if not v4 else "ANOMALY"
+        if suspicious6 and not prev6 and not v6:
+            status = "EMPTY" if status == "OK" else status
         if errors:
             if prev4 and len(v4) < len(prev4):
-                v4, v6 = prev4, (prev6 if prev6 else v6); status = "KEEP_OLD_PARTIAL"; used_fallback = True
-            elif status == "OK": status = "PARTIAL"
+                v4 = prev4; status = "KEEP_OLD_PARTIAL"; used_fallback = True
+            if prev6 and len(v6) < len(prev6):
+                v6 = prev6; status = "KEEP_OLD_PARTIAL"; used_fallback = True
+            if status == "OK": status = "PARTIAL"
         if rejected4 or rejected6:
             if status == "OK": status = "FILTERED"
         if not used_fallback:
@@ -237,7 +260,8 @@ def main():
 
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
-        "version": VERSION, "updated": now, "ripe_min_peers": min_peers, "sources": ["official", "RIPEstat"],
+        "version": VERSION, "updated": now, "ripe_min_peers": min_peers, "sources": ["official", "RIPEstat", "static"],
+        "engine": "unified-provider-sources-v31",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
@@ -254,7 +278,7 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V30: provider subscriptions + profiles + presets + audit + history + validation + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V31: unified multi-source provider engine + official sources + ASN fallback + anomaly protection + profiles + audit + history + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
     audit_lines = ["Provider,IPv4,IPv6,PreviousIPv4,PreviousIPv6,IPv4Change%,IPv6Change%,Status,Source,Errors"]
