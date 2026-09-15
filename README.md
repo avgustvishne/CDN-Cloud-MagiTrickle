@@ -1,12 +1,17 @@
 # CDN + Cloud MagiTrickle
 
+[![MagiTrickle](https://img.shields.io/badge/MagiTrickle-subscriptions-2ea44f?style=flat-square)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle)
+[![IPv4](https://img.shields.io/badge/IP-v4-0969da?style=flat-square)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle)
+[![IPv6](https://img.shields.io/badge/IP-v6-8250df?style=flat-square)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle)
+
+
 **Автоматические IPv4/IPv6 CIDR- и ASN-подписки CDN и облачных провайдеров для MagiTrickle.**
 
 [🇬🇧 English version](README.en.md)
 
-Готовые подписки для быстрого подключения в MagiTrickle.
+Готовые **IPv4/IPv6 CIDR- и ASN-подписки** для быстрого подключения в MagiTrickle — от компактных профилей до отдельных сетей провайдеров.
 
-## 🚀 Быстрый старт
+## ⚡ Быстрый старт
 
 Выбери готовый профиль или отдельного провайдера и добавь ссылку в MagiTrickle.
 
@@ -18,7 +23,7 @@
 
 > **Совет:** начни с **BALANCED**. FULL — если нужно максимальное покрытие, MINIMAL — если важнее компактность.
 
-## 📦 Специализированные наборы
+## 🧩 Специализированные наборы
 
 | Набор | IPv4 | IPv6 |
 |---|---|---|
@@ -27,12 +32,12 @@
 | **Video** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
 | **VPN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
 
-## 🌐 Все сети
+## 🌍 Все сети
 
 - **IPv4:** [all-cloud-v4.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt)
 - **IPv6:** [all-cloud-v6.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt)
 
-## 🏢 Провайдеры
+## ☁️ Провайдеры
 
 Отдельные IPv4/IPv6-подписки для каждого поддерживаемого провайдера.
 
@@ -90,10 +95,14 @@ ASN удобен, когда нужно получить диапазоны ко
 - **Провайдер** — более широкое покрытие инфраструктуры конкретного провайдера.
 - **ASN** — точечный выбор конкретной автономной системы.
 
-## 🤝 Поддержка
+## ❤️ Поддержка
 
 Если проект оказался полезен, его развитие можно поддержать:
 
 **Поддержать проект:** https://tips.tips/000484125
 
 Спасибо! ❤️
+
+---
+
+<sub>Автоматически генерируемые CIDR-подписки для MagiTrickle. Используйте только необходимые наборы, чтобы не увеличивать размер правил без необходимости.</sub>
