@@ -33,7 +33,7 @@ MIN_CHANGE_RATIO = 0.50
 MIN_CHANGE_RATIO_V6 = 0.35
 MAX_AGGREGATE_PREFIXES = 200000
 MIN_PREFIXLEN = {4: 8, 6: 16}
-MIN_PREFIXES = {"aws": 20, "cloudflare": 5, "akamai": 10, "fastly": 5, "gcore": 10, "backblaze": 1, "bunny": 1, "leaseweb": 1, "upcloud": 1, "ionos": 1, "default": 1}
+MIN_PREFIXES = {"aws": 20, "cloudflare": 5, "akamai": 10, "fastly": 5, "gcore": 10, "backblaze": 1, "bunny": 1, "leaseweb": 1, "upcloud": 1, "ionos": 1, "google": 10, "default": 1}
 
 STATIC = {
     "backblaze": [
