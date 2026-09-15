@@ -8,6 +8,9 @@ on:
       - "data/source-health.json"
       - "scripts/quality_report.py"
       - "scripts/validate_cidrs.py"
+      - "scripts/check_source_freshness.py"
+      - "scripts/check_checksums.py"
+      - "scripts/diff_summary.py"
       - ".github/workflows/data-quality.yml"
   workflow_dispatch:
 
@@ -19,6 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
@@ -26,3 +31,20 @@ jobs:
         run: python scripts/validate_cidrs.py
       - name: Build quality report
         run: python scripts/quality_report.py
+      - name: Check source freshness
+        run: python scripts/check_source_freshness.py
+      - name: Build change summary
+        run: python scripts/diff_summary.py
+      - name: Generate SHA-256 checksums
+        run: python scripts/check_checksums.py
+      - name: Validate generated metadata
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for name in ("quality-report.json","source-freshness.json","change-summary.json"):
+              p=Path("data")/name
+              json.loads(p.read_text(encoding="utf-8"))
+              print("OK",p)
+          print("Quality metadata OK")
+          PY
