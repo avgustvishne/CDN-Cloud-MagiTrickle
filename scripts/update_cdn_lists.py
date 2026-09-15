@@ -29,12 +29,13 @@ TIMEOUT = 30
 RETRY_BASE = 2
 MAX_WORKERS = 8
 CACHE_TTL = 21600
-MAX_PROVIDER_PREFIXES = 50000
+MIN_PROVIDER_PREFIXES = 4000
+MAX_PROVIDER_PREFIXES = 15000
 MIN_CHANGE_RATIO = 0.50
 MIN_CHANGE_RATIO_V6 = 0.35
 MAX_AGGREGATE_PREFIXES = 200000
 MIN_PREFIXLEN = {4: 8, 6: 16}
-MIN_PREFIXES = {"aws": 20, "cloudflare": 5, "akamai": 10, "fastly": 5, "gcore": 10, "backblaze": 1, "bunny": 1, "leaseweb": 1, "upcloud": 1, "ionos": 1, "default": 1}
+MIN_PREFIXES = {"aws": MIN_PROVIDER_PREFIXES, "cloudflare": MIN_PROVIDER_PREFIXES, "akamai": MIN_PROVIDER_PREFIXES, "fastly": MIN_PROVIDER_PREFIXES, "gcore": MIN_PROVIDER_PREFIXES, "backblaze": MIN_PROVIDER_PREFIXES, "bunny": MIN_PROVIDER_PREFIXES, "leaseweb": MIN_PROVIDER_PREFIXES, "upcloud": MIN_PROVIDER_PREFIXES, "ionos": MIN_PROVIDER_PREFIXES, "default": MIN_PROVIDER_PREFIXES}
 
 STATIC = {
     "backblaze": [
@@ -593,7 +594,7 @@ def main():
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
         minimum = MIN_PREFIXES.get(name, MIN_PREFIXES["default"])
         status = "OK"; used_fallback = False
-        suspicious4 = len(v4) < minimum or len(v4) > MAX_PROVIDER_PREFIXES
+        suspicious4 = (len(v4) + len(v6)) < minimum or len(v4) > MAX_PROVIDER_PREFIXES
         suspicious6 = len(v6) > MAX_PROVIDER_PREFIXES
         if prev4 and len(v4) < int(len(prev4) * MIN_CHANGE_RATIO): suspicious4 = True
         if prev6 and len(v6) < int(len(prev6) * MIN_CHANGE_RATIO_V6): suspicious6 = True
@@ -711,14 +712,14 @@ def main():
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
-        "sources": ["official provider feeds", "disposable/cloud-ip-ranges", "ipanalytics/Cloud-Egress-IP-Ranges", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io"],
-        "features": ["source-fusion","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
+        "sources": ["official provider feeds", "disposable/cloud-ip-ranges", "ipanalytics/Cloud-Egress-IP-Ranges", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io", "RussiaFancyLists (independent Russia IP intelligence / validation only)"],
+        "features": ["source-fusion","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","freshness-gates","provider-count-floor","cross-provider-overlap-audit","russiafancy-validation"],
         "engine": "final-v43-wide-source-fusion",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
-        "max_provider_prefixes": MAX_PROVIDER_PREFIXES, "global_only": True,
+        "min_provider_prefixes": MIN_PROVIDER_PREFIXES, "max_provider_prefixes": MAX_PROVIDER_PREFIXES, "global_only": True,
         "min_prefixlen": {"ipv4": MIN_PREFIXLEN[4], "ipv6": MIN_PREFIXLEN[6]},
         "aggregate": {"ipv4": len(all4), "ipv6": len(all6)},
         "audit": audit_rows,
@@ -746,9 +747,17 @@ def main():
             "Cloudflare": source_probe("https://www.cloudflare.com/ips-v4/"),
             "cloud-ip-ranges": source_probe("https://raw.githubusercontent.com/disposable/cloud-ip-ranges/master/txt/aws.txt"),
             "cloud-egress-ip-ranges": source_probe("https://github.com/ipanalytics/Cloud-Egress-IP-Ranges/releases/latest/download/cloud-egress-ip-ranges.json"),
-            "RouteViews": source_probe("https://api.routeviews.org/")
+            "RouteViews": source_probe("https://api.routeviews.org/"), "RussiaFancyLists": source_probe("https://raw.githubusercontent.com/Noktomezo/RussiaFancyLists/main/lists/blacklist/ipsets/full-and-cdn.lst")
         }
     }
+    try:
+        rf = parse_cidr_lines(request("https://raw.githubusercontent.com/Noktomezo/RussiaFancyLists/main/lists/blacklist/ipsets/full-and-cdn.lst"))
+        rf4, _ = nets(rf, 4)
+        atomic(DATA / "russiafancy-cdn-v4.txt", rf4)
+        rf6, _ = nets(rf, 6)
+        atomic(DATA / "russiafancy-cdn-v6.txt", rf6)
+    except Exception as exc:
+        write_text_atomic(DATA / "russiafancy-error.txt", str(exc) + "\n")
     write_text_atomic(SOURCE_HEALTH, json.dumps(health, indent=2, ensure_ascii=False)+"\n")
     audit_lines = ["Provider,IPv4,IPv6,PreviousIPv4,PreviousIPv6,IPv4Change%,IPv6Change%,Status,Source,Errors"]
     audit_lines.extend(
