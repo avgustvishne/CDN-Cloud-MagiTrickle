@@ -127,6 +127,33 @@ def ripe_routing_status(asn):
         return {}
 
 
+RIPE_CACHE_FILE = DATA / "ripe-prefix-cache.json"
+RIPE_CACHE_TTL = 86400
+
+
+def load_ripe_cache():
+    try:
+        if not RIPE_CACHE_FILE.exists():
+            return {}
+        obj = json.loads(RIPE_CACHE_FILE.read_text(encoding="utf-8"))
+        return obj if isinstance(obj, dict) else {}
+    except Exception:
+        return {}
+
+
+def save_ripe_cache(cache):
+    try:
+        atomic_json(RIPE_CACHE_FILE, cache)
+    except Exception:
+        pass
+
+
+def atomic_json(path, obj):
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    tmp.replace(path)
+
+
 def ripe_prefix_overview(prefix):
     """Return RIPEstat's current view for one candidate prefix."""
     url = "https://stat.ripe.net/data/prefix-overview/data.json?" + urllib.parse.urlencode({
@@ -139,15 +166,21 @@ def ripe_prefix_overview(prefix):
         return {}
 
 
-def validate_prefix_with_ripe(prefix):
-    """Confirm a candidate only when RIPEstat explicitly reports it."""
+def validate_prefix_with_ripe(prefix, cache=None):
+    """Confirm a candidate, reusing a 24-hour RIPEstat cache."""
+    now = int(time.time())
+    cache = cache if cache is not None else {}
+    entry = cache.get(prefix)
+    if isinstance(entry, dict) and now - int(entry.get("ts", 0)) < RIPE_CACHE_TTL:
+        return bool(entry.get("confirmed", False))
+
     data = ripe_prefix_overview(prefix)
-    if not data:
-        return False
-    for key in ("announced", "visibility", "bgp_state", "origin"):
-        if key in data and data[key] not in (None, False, "", [], {}):
-            return True
-    return False
+    confirmed = bool(data) and any(
+        key in data and data[key] not in (None, False, "", [], {})
+        for key in ("announced", "visibility", "bgp_state", "origin")
+    )
+    cache[prefix] = {"ts": now, "confirmed": confirmed}
+    return confirmed
 
 
 def select_ripe_candidates(prefixes, limit=128):
@@ -463,9 +496,11 @@ def main():
     validated_asn4 = []
     validated_asn6 = []
     candidates = select_ripe_candidates(all_asn4 + all_asn6, limit=128)
+    ripe_cache = load_ripe_cache()
     if candidates:
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
-            checks = list(pool.map(validate_prefix_with_ripe, candidates))
+            checks = list(pool.map(lambda p: validate_prefix_with_ripe(p, ripe_cache), candidates))
+        save_ripe_cache(ripe_cache)
         for prefix, confirmed in zip(candidates, checks):
             if confirmed:
                 (validated_asn6 if ":" in prefix else validated_asn4).append(prefix)
