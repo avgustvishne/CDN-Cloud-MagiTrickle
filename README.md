@@ -2,7 +2,7 @@
 
 # CDN + Cloud MagiTrickle
 
-**IPv4 / IPv6 CIDR · ASN · CDN · Cloud · Video · VPN**
+**IPv4 / IPv6 CIDR · ASN · CDN · Cloud**
 
 Автоматически генерируемые сетевые подписки для MagiTrickle.
 
@@ -25,8 +25,8 @@
 | ASN-подписки | ✅ |
 | CDN | ✅ |
 | Cloud | ✅ |
-| Video | ✅ |
-| VPN | ✅ |
+| ~~Video~~ | ✅ |
+| ~~VPN~~ | ✅ |
 | MagiTrickle | ✅ |
 
 ## ⚡ Быстрый старт
