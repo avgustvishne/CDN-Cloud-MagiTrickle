@@ -1,0 +1,28 @@
+name: Data Quality
+
+on:
+  push:
+    paths:
+      - "data/**/*.txt"
+      - "data/manifest.json"
+      - "data/source-health.json"
+      - "scripts/quality_report.py"
+      - "scripts/validate_cidrs.py"
+      - ".github/workflows/data-quality.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+      - name: Validate CIDR data
+        run: python scripts/validate_cidrs.py
+      - name: Build quality report
+        run: python scripts/quality_report.py
