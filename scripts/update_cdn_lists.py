@@ -19,7 +19,7 @@ if str(ROOT / "scripts") not in sys.path: sys.path.insert(0, str(ROOT / "scripts
 from policy_engine import apply as apply_policy
 DATA.mkdir(exist_ok=True)
 
-VERSION = 42
+VERSION = 43
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
@@ -484,8 +484,12 @@ def main():
             if status == "OK": status = "PARTIAL"
         if rejected4 or rejected6:
             if status == "OK": status = "FILTERED"
-        if not used_fallback:
-            atomic(old4, v4); atomic(old6, v6)
+        # Persist each address family independently. A fallback in IPv4 must not
+        # prevent a healthy IPv6 refresh (and vice versa).
+        if not suspicious4 or not prev4:
+            atomic(old4, v4)
+        if not suspicious6 or not prev6:
+            atomic(old6, v6)
         diff_info = write_diff(name, old4_raw, list(map(str,v4)), old6_raw, list(map(str,v6)))
         source = "+".join(dict.fromkeys(sources)) or "none"
         all4.extend(v4); all6.extend(v6)
@@ -560,7 +564,7 @@ def main():
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io"],
         "features": ["source-fusion","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
-        "engine": "unified-provider-sources-v42",
+        "engine": "unified-provider-sources-v43",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
