@@ -1,6 +1,6 @@
 {
-  "version": 25,
-  "updated": "2026-09-14 23:04:51 UTC",
+  "version": 29,
+  "updated": "2026-09-15 04:58:41 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official",
@@ -38,21 +38,239 @@
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 11588,
-    "ipv6": 4195
+    "ipv4": 11576,
+    "ipv6": 4240
   },
+  "audit": [
+    {
+      "provider": "aws",
+      "ipv4_prefixes": 5289,
+      "ipv6_prefixes": 1492,
+      "previous_ipv4_prefixes": 5290,
+      "previous_ipv6_prefixes": 1491,
+      "ipv4_change_percent": -0.02,
+      "ipv6_change_percent": 0.07,
+      "status": "OK",
+      "source": "official+RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "cloudflare",
+      "ipv4_prefixes": 641,
+      "ipv6_prefixes": 115,
+      "previous_ipv4_prefixes": 652,
+      "previous_ipv6_prefixes": 114,
+      "ipv4_change_percent": -1.69,
+      "ipv6_change_percent": 0.88,
+      "status": "OK",
+      "source": "official+RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "hetzner",
+      "ipv4_prefixes": 85,
+      "ipv6_prefixes": 6,
+      "previous_ipv4_prefixes": 85,
+      "previous_ipv6_prefixes": 6,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "ovh",
+      "ipv4_prefixes": 631,
+      "ipv6_prefixes": 4,
+      "previous_ipv4_prefixes": 631,
+      "previous_ipv6_prefixes": 4,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "akamai",
+      "ipv4_prefixes": 321,
+      "ipv6_prefixes": 231,
+      "previous_ipv4_prefixes": 321,
+      "previous_ipv6_prefixes": 231,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "digitalocean",
+      "ipv4_prefixes": 196,
+      "ipv6_prefixes": 13,
+      "previous_ipv4_prefixes": 196,
+      "previous_ipv6_prefixes": 13,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "microsoft",
+      "ipv4_prefixes": 937,
+      "ipv6_prefixes": 95,
+      "previous_ipv4_prefixes": 937,
+      "previous_ipv6_prefixes": 95,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "oracle",
+      "ipv4_prefixes": 1194,
+      "ipv6_prefixes": 311,
+      "previous_ipv4_prefixes": 1193,
+      "previous_ipv6_prefixes": 311,
+      "ipv4_change_percent": 0.08,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "alibaba",
+      "ipv4_prefixes": 627,
+      "ipv6_prefixes": 183,
+      "previous_ipv4_prefixes": 626,
+      "previous_ipv6_prefixes": 183,
+      "ipv4_change_percent": 0.16,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "cdn77",
+      "ipv4_prefixes": 187,
+      "ipv6_prefixes": 33,
+      "previous_ipv4_prefixes": 187,
+      "previous_ipv6_prefixes": 33,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "fastly",
+      "ipv4_prefixes": 48,
+      "ipv6_prefixes": 41,
+      "previous_ipv4_prefixes": 48,
+      "previous_ipv6_prefixes": 42,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": -2.38,
+      "status": "OK",
+      "source": "official+RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "melbicom",
+      "ipv4_prefixes": 99,
+      "ipv6_prefixes": 18,
+      "previous_ipv4_prefixes": 99,
+      "previous_ipv6_prefixes": 18,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "buyvm",
+      "ipv4_prefixes": 23,
+      "ipv6_prefixes": 27,
+      "previous_ipv4_prefixes": 23,
+      "previous_ipv6_prefixes": 27,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "vultr",
+      "ipv4_prefixes": 703,
+      "ipv6_prefixes": 1454,
+      "previous_ipv4_prefixes": 702,
+      "previous_ipv6_prefixes": 1410,
+      "ipv4_change_percent": 0.14,
+      "ipv6_change_percent": 3.12,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "contabo",
+      "ipv4_prefixes": 250,
+      "ipv6_prefixes": 2,
+      "previous_ipv4_prefixes": 250,
+      "previous_ipv6_prefixes": 2,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "scaleway",
+      "ipv4_prefixes": 11,
+      "ipv6_prefixes": 1,
+      "previous_ipv4_prefixes": 14,
+      "previous_ipv6_prefixes": 1,
+      "ipv4_change_percent": -21.43,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "official+RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "gcore",
+      "ipv4_prefixes": 572,
+      "ipv6_prefixes": 222,
+      "previous_ipv4_prefixes": 572,
+      "previous_ipv6_prefixes": 222,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "official+RIPEstat",
+      "errors": 0
+    },
+    {
+      "provider": "backblaze",
+      "ipv4_prefixes": 5,
+      "ipv6_prefixes": 1,
+      "previous_ipv4_prefixes": 5,
+      "previous_ipv6_prefixes": 1,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
+      "status": "OK",
+      "source": "static",
+      "errors": 0
+    }
+  ],
   "providers": {
     "aws": {
-      "ipv4": 5290,
-      "ipv6": 1491,
+      "ipv4": 5289,
+      "ipv6": 1492,
       "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "cloudflare": {
-      "ipv4": 652,
-      "ipv6": 114,
+      "ipv4": 641,
+      "ipv6": 115,
       "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
@@ -99,7 +317,7 @@
       "rejected_ipv6": 0
     },
     "oracle": {
-      "ipv4": 1193,
+      "ipv4": 1194,
       "ipv6": 311,
       "source": "RIPEstat",
       "status": "OK",
@@ -107,7 +325,7 @@
       "rejected_ipv6": 0
     },
     "alibaba": {
-      "ipv4": 626,
+      "ipv4": 627,
       "ipv6": 183,
       "source": "RIPEstat",
       "status": "OK",
@@ -124,7 +342,7 @@
     },
     "fastly": {
       "ipv4": 48,
-      "ipv6": 42,
+      "ipv6": 41,
       "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
@@ -147,8 +365,8 @@
       "rejected_ipv6": 0
     },
     "vultr": {
-      "ipv4": 702,
-      "ipv6": 1410,
+      "ipv4": 703,
+      "ipv6": 1454,
       "source": "RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
@@ -163,9 +381,9 @@
       "rejected_ipv6": 0
     },
     "scaleway": {
-      "ipv4": 14,
+      "ipv4": 11,
       "ipv6": 1,
-      "source": "RIPEstat",
+      "source": "official+RIPEstat",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
