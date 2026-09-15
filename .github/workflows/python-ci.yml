@@ -1,0 +1,30 @@
+name: Python CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+      - name: Compile Python
+        run: python -m compileall -q scripts
+      - name: Validate generator syntax and imports
+        run: |
+          python - <<'PY'
+          import ast, pathlib
+          for p in pathlib.Path("scripts").glob("*.py"):
+              ast.parse(p.read_text(encoding="utf-8"), filename=str(p))
+              print("OK", p)
+          PY
