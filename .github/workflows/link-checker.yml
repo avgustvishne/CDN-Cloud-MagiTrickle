@@ -30,7 +30,14 @@ jobs:
                   continue
               urls.update(re.findall(r'https?://[^\s<>")\]]+', s))
 
-          urls={u.rstrip(".,;:\"\'") for u in urls if "stat.ripe.net/data/announced-prefixes/data.json" not in u and "raw.githubusercontent.com" not in u and "avgustvishne.github.io/CDN-Cloud-MagiTrickle" not in u}
+          urls={
+              u.rstrip(".,;:\"'")
+              for u in urls
+              if "{" not in u and "}" not in u
+              and not u.endswith("?")
+              and "raw.githubusercontent.com" not in u
+              and "avgustvishne.github.io/CDN-Cloud-MagiTrickle" not in u
+          }
           # Validate reachability; 401/403/405 are valid responses from servers that reject automated HEAD/GET clients.
           bad=[]
           transient={408,425,429,500,502,503,504}
