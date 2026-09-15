@@ -15,7 +15,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-VERSION = 27
+VERSION = 28
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
@@ -149,6 +149,7 @@ def main():
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
+    audit_rows = []
     seen_asns = set()
     provider_asns = {}
     for name, asns in cfg["providers"].items():
@@ -194,6 +195,15 @@ def main():
             atomic(old4, v4); atomic(old6, v6)
         source = "+".join(dict.fromkeys(sources)) or "none"
         all4.extend(v4); all6.extend(v6)
+        prev4_count, prev6_count = len(prev4), len(prev6)
+        pct4 = None if not prev4_count else round((len(v4) - prev4_count) * 100 / prev4_count, 2)
+        pct6 = None if not prev6_count else round((len(v6) - prev6_count) * 100 / prev6_count, 2)
+        audit_rows.append({
+            "provider": name, "ipv4_prefixes": len(v4), "ipv6_prefixes": len(v6),
+            "previous_ipv4_prefixes": prev4_count, "previous_ipv6_prefixes": prev6_count,
+            "ipv4_change_percent": pct4, "ipv6_change_percent": pct6,
+            "status": status, "source": source, "errors": len(errors),
+        })
         rows.append({"name": name, "ipv4": len(v4), "ipv6": len(v6), "source": source, "status": status, "errors": errors[:10], "rejected_ipv4": rejected4, "rejected_ipv6": rejected6})
         print(f"{name}: v4={len(v4)} v6={len(v6)} {source} {status}")
         if errors: print(f"  warnings: {len(errors)}")
@@ -212,6 +222,7 @@ def main():
         "max_provider_prefixes": MAX_PROVIDER_PREFIXES, "global_only": True,
         "min_prefixlen": {"ipv4": MIN_PREFIXLEN[4], "ipv6": MIN_PREFIXLEN[6]},
         "aggregate": {"ipv4": len(all4), "ipv6": len(all6)},
+        "audit": audit_rows,
         "providers": {row["name"]: {
             "ipv4": row["ipv4"], "ipv6": row["ipv6"], "source": row["source"],
             "status": row["status"], "rejected_ipv4": row["rejected_ipv4"], "rejected_ipv6": row["rejected_ipv6"],
@@ -221,8 +232,14 @@ def main():
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
-    summary = [f"Updated: {now}", "V27: provider subscriptions + official sources + RIPEstat + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
+    summary = [f"Updated: {now}", "V28: provider subscriptions + automatic change audit + official sources + RIPEstat + global filtering + broad-prefix shield + IPv4/IPv6 anomaly protection + duplicate-ASN protection + partial-source detection + retries + atomic writes + SHA256", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
     summary.extend(f"{row['name']},{row['ipv4']},{row['ipv6']},{row['source']},{row['status']},{len(row['errors'])},{row['rejected_ipv4']},{row['rejected_ipv6']}" for row in rows)
     write_text_atomic(DATA / "last-update.txt", "\n".join(summary) + "\n")
+    audit_lines = ["Provider,IPv4,IPv6,PreviousIPv4,PreviousIPv6,IPv4Change%,IPv6Change%,Status,Source,Errors"]
+    audit_lines.extend(
+        f"{r['provider']},{r['ipv4_prefixes']},{r['ipv6_prefixes']},{r['previous_ipv4_prefixes']},{r['previous_ipv6_prefixes']},{r['ipv4_change_percent']},{r['ipv6_change_percent']},{r['status']},{r['source']},{r['errors']}"
+        for r in audit_rows
+    )
+    write_text_atomic(DATA / "audit.csv", "\n".join(audit_lines) + "\n")
 
 if __name__ == "__main__": main()
