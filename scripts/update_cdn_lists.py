@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import datetime
+import concurrent.futures
 import hashlib
 import ipaddress
 import json
@@ -22,6 +23,8 @@ MIN_PEERS = 1
 RETRIES = 5
 TIMEOUT = 30
 RETRY_BASE = 2
+MAX_WORKERS = 8
+CACHE_TTL = 21600
 MAX_PROVIDER_PREFIXES = 50000
 MIN_CHANGE_RATIO = 0.50
 MIN_CHANGE_RATIO_V6 = 0.35
@@ -71,7 +74,19 @@ def discover_asn_notes(cfg):
     # Record configured ASN coverage; discovery is advisory and never mutates providers.json automatically.
     return {name: sorted(set(asns)) for name, asns in cfg["providers"].items()}
     
+def cache_path(url):
+    key = hashlib.sha256(url.encode("utf-8")).hexdigest()
+    cache_dir = DATA / ".cache"
+    cache_dir.mkdir(exist_ok=True)
+    return cache_dir / key
+
 def request(url):
+    cached = cache_path(url)
+    try:
+        if cached.exists() and time.time() - cached.stat().st_mtime < CACHE_TTL:
+            return cached.read_bytes()
+    except OSError:
+        pass
     last = None
     for attempt in range(1, RETRIES + 1):
         try:
@@ -84,6 +99,10 @@ def request(url):
                 data = res.read()
                 if not data:
                     raise RuntimeError("empty response")
+                try:
+                    cached.write_bytes(data)
+                except OSError:
+                    pass
                 return data
         except Exception as exc:
             last = exc
@@ -217,11 +236,19 @@ def main():
             if raw: sources.append("official" if name not in STATIC else "static")
         except Exception as exc:
             errors.append("official:" + str(exc))
-        for asn in unique_asns:
+        def fetch_asn(asn):
             try:
-                raw.extend(ripe(asn, min_peers)); sources.append("RIPEstat")
-            except Exception as exc: errors.append(f"RIPE-AS{asn}:{exc}")
-            time.sleep(0.12)
+                return asn, ripe(asn, min_peers), None
+            except Exception as exc:
+                return asn, [], exc
+        if unique_asns:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(unique_asns))) as pool:
+                results = list(pool.map(fetch_asn, unique_asns))
+            for asn, values, error in results:
+                if error:
+                    errors.append(f"RIPE-AS{asn}:{error}")
+                else:
+                    raw.extend(values); sources.append("RIPEstat")
         old4 = DATA / f"{name}-v4.txt"; old6 = DATA / f"{name}-v6.txt"
         old4_raw, old6_raw = load_old_raw(old4), load_old_raw(old6)
         v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
@@ -298,11 +325,11 @@ def main():
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official", "RIPEstat", "static"],
-        "features": ["source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit"],
+        "features": ["source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
         "engine": "unified-provider-sources-v33",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
-        "retries": RETRIES, "timeout_seconds": TIMEOUT, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
+        "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
         "max_provider_prefixes": MAX_PROVIDER_PREFIXES, "global_only": True,
         "min_prefixlen": {"ipv4": MIN_PREFIXLEN[4], "ipv6": MIN_PREFIXLEN[6]},
