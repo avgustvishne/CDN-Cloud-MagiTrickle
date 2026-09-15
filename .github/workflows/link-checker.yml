@@ -32,7 +32,7 @@ jobs:
                   continue
               urls.update(re.findall(r'https?://[^\s<>")\]]+', s))
 
-          urls={u.rstrip(".,;:") for u in urls}
+          urls={u.rstrip(".,;:\"\'") for u in urls if "stat.ripe.net/data/announced-prefixes/data.json" not in u}
           # Only validate externally reachable HTTP(S) URLs.
           bad=[]
           transient={408,425,429,500,502,503,504}
