@@ -11,6 +11,8 @@ on:
       - "scripts/check_source_freshness.py"
       - "scripts/check_checksums.py"
       - "scripts/diff_summary.py"
+      - "scripts/policy_engine.py"
+      - "config/policy.json"
       - ".github/workflows/data-quality.yml"
   workflow_dispatch:
 
@@ -37,6 +39,8 @@ jobs:
         run: python scripts/diff_summary.py
       - name: Generate SHA-256 checksums
         run: python scripts/check_checksums.py
+      - name: Validate policy configuration
+        run: python scripts/policy_engine.py cloudflare 1.1.1.0/24
       - name: Validate generated metadata
         run: |
           python - <<'PY'
