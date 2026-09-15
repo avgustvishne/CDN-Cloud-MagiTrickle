@@ -190,7 +190,37 @@ def walk_strings(obj):
         for value in obj:
             yield from walk_strings(value)
 
-def official(name):
+def external_ipsets(name, asns):
+    """Optional independent IP-set sources. They are additive, never authoritative."""
+    values = []
+    sources = []
+
+    # sw.ext.io publishes provider-specific ipset files. Use only Cloudflare here,
+    # where the source exposes separate IPv4/IPv6 lists.
+    if name == "cloudflare":
+        for label in ("ipset_full_cf4.list", "ipset_full_cf6.list"):
+            url = "https://sw.ext.io/ipset/" + label
+            try:
+                data = request(url).decode("utf-8", errors="replace")
+                found = []
+                for line in data.splitlines():
+                    value = line.split("#", 1)[0].strip()
+                    if value and "/" in value:
+                        try:
+                            ipaddress.ip_network(value, strict=False)
+                            found.append(value)
+                        except ValueError:
+                            pass
+                if found:
+                    values.extend(found)
+                    sources.append("sw.ext.io")
+            except Exception:
+                pass
+
+    return values, sources
+
+
+def official(name): 
     if name == "aws":
         obj = jsonget("https://ip-ranges.amazonaws.com/ip-ranges.json")
         return [item["ip_prefix"] for item in obj.get("prefixes", [])] + [item["ipv6_prefix"] for item in obj.get("ipv6_prefixes", [])]
@@ -300,6 +330,13 @@ def main():
             if raw: sources.append("official" if name not in STATIC else "static")
         except Exception as exc:
             errors.append("official:" + str(exc))
+
+        try:
+            extra, extra_sources = external_ipsets(name, unique_asns)
+            raw.extend(extra)
+            sources.extend(extra_sources)
+        except Exception as exc:
+            errors.append("external-ipset:" + str(exc))
         def fetch_asn(asn):
             try:
                 return asn, ripe(asn, min_peers), None
@@ -399,8 +436,8 @@ def main():
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
-        "sources": ["official", "RIPEstat", "static"],
-        "features": ["source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
+        "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io"],
+        "features": ["source-fusion","multi-source-asn-discovery","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
         "engine": "unified-provider-sources-v41",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
