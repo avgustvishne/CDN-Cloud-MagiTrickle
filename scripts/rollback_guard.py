@@ -4,7 +4,9 @@ import argparse, json, pathlib, subprocess, sys
 from datetime import datetime, timezone
 
 def files(d):
-    return sorted(pathlib.Path(d).glob("*-v[46].txt"))
+    root = pathlib.Path(d)
+    return sorted(list(root.glob("*-v[46].txt")) + list((root / "presets").glob("*.txt")))
+
 
 def count_text(text):
     return sum(1 for x in text.splitlines() if x.strip())
@@ -51,12 +53,15 @@ def main():
 
     report["guarded"]=bool(report["critical"])
     if report["guarded"]:
-        for rel in report["critical"]:
-            text=previous_text(args.previous_ref,rel)
-            if text is not None:
-                (pathlib.Path(rel)).write_text(text,encoding="utf-8")
+        # Restore the complete generated data tree so provider lists, presets,
+        # manifests and checksums remain mutually consistent.
+        subprocess.run(
+            ["git", "checkout", args.previous_ref, "--", "data"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
         report["restored"]=True
-        report["restored_files"]=report["critical"]
+        report["restored_files"]="data/"
 
     out=pathlib.Path(args.report); out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
