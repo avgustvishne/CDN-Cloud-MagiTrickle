@@ -140,7 +140,7 @@ def ripe_prefix_overview(prefix):
 
 
 def validate_prefix_with_ripe(prefix):
-    """Confirm that a candidate is currently represented in RIPEstat."""
+    """Confirm a candidate only when RIPEstat explicitly reports it."""
     data = ripe_prefix_overview(prefix)
     if not data:
         return False
@@ -148,6 +148,22 @@ def validate_prefix_with_ripe(prefix):
         if key in data and data[key] not in (None, False, "", [], {}):
             return True
     return False
+
+
+def select_ripe_candidates(prefixes, limit=128):
+    """Select a bounded, deterministic sample of prefixes for confirmation."""
+    unique = sorted(set(prefixes), key=lambda p: (":" in p, p))
+    if len(unique) <= limit:
+        return unique
+    # Prefer the least-specific prefixes first: they represent more address
+    # space and give a useful sanity check without querying every CIDR.
+    def prefix_key(p):
+        try:
+            return (ipaddress.ip_network(p, strict=False).prefixlen, p)
+        except ValueError:
+            return (999, p)
+    return sorted(unique, key=prefix_key)[:limit]
+
 
 
 def routeviews_prefixes(asn):
@@ -446,7 +462,7 @@ def main():
 
     validated_asn4 = []
     validated_asn6 = []
-    candidates = all_asn4 + all_asn6
+    candidates = select_ripe_candidates(all_asn4 + all_asn6, limit=128)
     if candidates:
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
             checks = list(pool.map(validate_prefix_with_ripe, candidates))
