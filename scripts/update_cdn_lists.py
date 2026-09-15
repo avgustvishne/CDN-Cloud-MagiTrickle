@@ -11,6 +11,7 @@ import tempfile
 import time
 import urllib.parse
 import urllib.request
+import argparse
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -19,7 +20,7 @@ if str(ROOT / "scripts") not in sys.path: sys.path.insert(0, str(ROOT / "scripts
 from policy_engine import apply as apply_policy
 DATA.mkdir(exist_ok=True)
 
-VERSION = 42
+VERSION = 43
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
@@ -405,6 +406,11 @@ def sha256(path):
     return digest.hexdigest()
 
 def main():
+    parser = argparse.ArgumentParser(description="Build CDN/ASN subscriptions")
+    parser.add_argument("--explain", action="store_true", help="generate per-CIDR policy explanations")
+    parser.add_argument("--skip-confirmation", action="store_true", help="skip optional RIPE prefix confirmation")
+    parser.add_argument("--skip-presets", action="store_true", help="skip preset subscription generation")
+    args = parser.parse_args()
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
@@ -456,10 +462,11 @@ def main():
         old4_raw, old6_raw = load_old_raw(old4), load_old_raw(old6)
         v4, rejected4 = nets(raw, 4); v6, rejected6 = nets(raw, 6)
         v4_raw, v6_raw = list(map(str, v4)), list(map(str, v6))
-        v4_policy, exp4 = apply_policy(name, v4_raw)
-        v6_policy, exp6 = apply_policy(name, v6_raw)
+        v4_policy, exp4 = apply_policy(name, v4_raw, collect_explain=args.explain)
+        v6_policy, exp6 = apply_policy(name, v6_raw, collect_explain=args.explain)
         v4, _ = nets(v4_policy, 4); v6, _ = nets(v6_policy, 6)
-        policy_explain[name] = {"ipv4": exp4, "ipv6": exp6}
+        if args.explain:
+            policy_explain[name] = {"ipv4": exp4, "ipv6": exp6}
 
         prev4 = load_previous(old4, 4); prev6 = load_previous(old6, 6)
         minimum = MIN_PREFIXES.get(name, MIN_PREFIXES["default"])
@@ -507,7 +514,7 @@ def main():
 
     validated_asn4 = []
     validated_asn6 = []
-    candidates = select_ripe_candidates(all_asn4 + all_asn6, limit=128)
+    candidates = [] if args.skip_confirmation else select_ripe_candidates(all_asn4 + all_asn6, limit=128)
     ripe_cache = load_ripe_cache()
     if candidates:
         # Cache reads happen before parallel requests; cache writes are merged
@@ -562,6 +569,8 @@ def main():
     }
     preset_dir = DATA / "presets"
     preset_dir.mkdir(exist_ok=True)
+    if args.skip_presets:
+        presets = {}
     for preset, names in presets.items():
         for version, label in ((4, "v4"), (6, "v6")):
             combined = []
@@ -576,8 +585,8 @@ def main():
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io"],
-        "features": ["source-fusion","multi-source-asn-discovery","ripe-routing-status","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
-        "engine": "unified-provider-sources-v42",
+        "features": ["source-fusion","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache"],
+        "engine": "modular-incremental-v43",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
         "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
@@ -594,7 +603,8 @@ def main():
         } for row in rows},
     }
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
-    write_text_atomic(DATA / "policy-explain.json", json.dumps(policy_explain, indent=2, ensure_ascii=False) + "\n")
+    if args.explain:
+        write_text_atomic(DATA / "policy-explain.json", json.dumps(policy_explain, indent=2, ensure_ascii=False) + "\n")
     checksum_files = sorted(set(DATA.glob("*-v*.txt")) | {DATA / "all-cloud-v4.txt", DATA / "all-cloud-v6.txt", DATA / "asn-all-v4.txt", DATA / "asn-all-v6.txt", DATA / "asn-confirmed-v4.txt", DATA / "asn-confirmed-v6.txt"})
     write_text_atomic(DATA / "checksums.sha256", "\n".join(f"{sha256(path)}  {path.relative_to(ROOT).as_posix()}" for path in checksum_files) + "\n")
     summary = [f"Updated: {now}", f"ALL IPv4: {len(all4)}", f"ALL IPv6: {len(all6)}", f"ALL ASN IPv4: {len(all_asn4)}", f"ALL ASN IPv6: {len(all_asn6)}", "", "Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6"]
