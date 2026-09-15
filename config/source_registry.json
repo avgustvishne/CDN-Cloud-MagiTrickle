@@ -26,5 +26,20 @@
       "vercel": "vercel.txt",
       "azure": "microsoft-azure.txt"
     }
+  },
+  "cloud-egress-ip-ranges": {
+    "url": "https://github.com/ipanalytics/Cloud-Egress-IP-Ranges/releases/latest/download/cloud-egress-ip-ranges.json",
+    "provider_field": "provider",
+    "cidr_field": "cidr",
+    "providers": [
+      "aws",
+      "google",
+      "azure",
+      "oracle",
+      "cloudflare",
+      "fastly",
+      "github",
+      "gitlab"
+    ]
   }
 }
