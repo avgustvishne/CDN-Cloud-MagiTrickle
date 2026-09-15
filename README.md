@@ -82,6 +82,15 @@
 | **Gcore** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v6.txt) |
 | **Backblaze** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v6.txt) |
 
+## 🧩 Все ASN сразу
+
+Если нужны **все адреса, полученные из всех ASN проекта**, без выбора отдельного провайдера:
+
+- **Все ASN IPv4:** [asn-all-v4.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt)
+- **Все ASN IPv6:** [asn-all-v6.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt)
+
+Подписки собираются автоматически из ASN, настроенных в проекте. Дубликаты удаляются, сети агрегируются, IPv4 и IPv6 разделяются.
+
 ## 🔢 ASN-подписки
 
 ASN позволяет выбрать конкретную автономную систему вместо более широкого набора провайдера.
