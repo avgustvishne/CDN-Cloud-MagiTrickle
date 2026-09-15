@@ -3,6 +3,18 @@ name: Python CI
 on:
   push:
     branches: ["main"]
+    paths:
+      - "scripts/**"
+      - "tests/**"
+      - "config/**"
+      - ".github/workflows/**"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/**"
+      - "tests/**"
+      - "config/**"
+      - ".github/workflows/**"
   workflow_dispatch:
 
 permissions:
@@ -17,7 +29,9 @@ jobs:
         with:
           python-version: "3.x"
       - name: Compile Python
-        run: python -m compileall -q scripts
+        run: python -m compileall -q scripts tests
+      - name: Run generator unit tests
+        run: python -m unittest discover -s tests -p "test_*.py" -v
       - name: Validate generator syntax and imports
         run: |
           python - <<'PY'
