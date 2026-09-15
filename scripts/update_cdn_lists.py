@@ -11,11 +11,12 @@ import tempfile
 import time
 import urllib.parse
 import urllib.request
-from policy_engine import apply as apply_policy
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 if str(ROOT / "scripts") not in sys.path: sys.path.insert(0, str(ROOT / "scripts"))
+
+from policy_engine import apply as apply_policy
 DATA.mkdir(exist_ok=True)
 
 VERSION = 41
