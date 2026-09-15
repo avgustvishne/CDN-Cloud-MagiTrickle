@@ -12,7 +12,7 @@ PRESETS.mkdir(parents=True, exist_ok=True)
 PROFILES = {
     "full": None,
     "balanced": ["cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway"],
-    "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
+    "lite": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
 }
 
 def read(name, version):
