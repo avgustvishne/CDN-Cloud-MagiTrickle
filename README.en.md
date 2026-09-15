@@ -19,7 +19,7 @@ Automated network subscriptions for MagiTrickle.
 - IPv4 / IPv6 CIDR
 - ASN subscriptions
 - CDN / Cloud / Video / VPN sets
-- **FULL / BALANCED / LITE** profiles
+- **FULL / BALANCED / MINIMAL** profiles
 - Provider-specific lists
 - Combined **ASN ALL** lists
 - Automatic updates
@@ -33,7 +33,7 @@ If you are not sure which list to use, start with **BALANCED**.
 |---|---|---|---|
 | **FULL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) | Maximum coverage |
 | **BALANCED** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) | Recommended |
-| **LITE** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/lite-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/lite-v6.txt) | Smaller list |
+| **MINIMAL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) | Smallest list |
 
 ## 📦 Specialized sets
 
@@ -48,6 +48,11 @@ If you are not sure which list to use, start with **BALANCED**.
 
 - **ASN ALL IPv4:** [asn-all-v4.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt)
 - **ASN ALL IPv6:** [asn-all-v6.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt)
+
+**ALL-CLOUD IPv4:** [all-cloud-v4.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt)  
+**ALL-CLOUD IPv6:** [all-cloud-v6.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt)
+
+`ALL-CLOUD` is the single deduplicated aggregate of all provider lists. A separate `PROVIDERS ALL` set is intentionally not created to avoid duplicating the same data.
 
 All collected CIDRs are normalized, deduplicated and aggregated. IPv4 and IPv6 are kept separately.
 
