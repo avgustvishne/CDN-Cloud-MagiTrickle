@@ -6,9 +6,7 @@
 
 Ready-to-use **IPv4/IPv6 CIDR subscriptions** for MagiTrickle.
 
-## Quality checks
 
-- `BEST / GOOD / SLOW / BACKUP / BLOCKED / DEAD` — automatic DPI assessment of endpoints.
 
 ## Profiles
 
