@@ -32,6 +32,9 @@ jobs:
           else
             echo '{"status":"UNAVAILABLE","reason":"DPI detector is intentionally not installed on the GitHub runner; run this probe on the target network."}' > data/dpi-health.json
           fi
+      - name: Discover provider ASNs and current prefixes
+        run: |
+          python3 scripts/discover_provider_asns.py
       - name: Build normalized CIDR provenance
         run: |
           mkdir -p data/evidence
