@@ -22,6 +22,8 @@ for url in urls:
     rel = url[len(BASE):].split("?", 1)[0].split("#", 1)[0]
     target = Path(rel)
     local_targets[url] = target.is_file()
+    # A file present in this checkout may be new in the PR and therefore absent
+    # from main until merge. Network validation below handles that publication gap.
     if not target.is_file():
         bad.append((url, f"missing repository file: {rel}"))
 
