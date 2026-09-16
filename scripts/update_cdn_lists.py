@@ -616,6 +616,13 @@ def build_provenance(provider, prefixes, source_records, asn=None, bgp_health=No
 def build_consensus(provider, prefixes, source_prefixes, asns, bgp_health):
     """Create exact per-CIDR evidence without making any source authoritative."""
     normalized = {source_id: set(map(str, values)) for source_id, values in source_prefixes.items()}
+    previous = {}
+    previous_path = DATA / f"{provider}-consensus.json"
+    if previous_path.exists():
+        try:
+            previous = {r.get("cidr"): r for r in json.loads(previous_path.read_text(encoding="utf-8")).get("records", [])}
+        except Exception:
+            previous = {}
     records = []
     for cidr in sorted(set(map(str, prefixes))):
         evidence = [source_id for source_id, values in normalized.items() if cidr in values]
@@ -629,7 +636,7 @@ def build_consensus(provider, prefixes, source_prefixes, asns, bgp_health):
         independent = len(set(evidence) & {"IPVerse", "RIPEstat", "RouteViews", "RIPE RIS", "cdn-ip-database"})
         official = bool(set(evidence) & {"official", "cloud-ip-ranges", "cloud-egress-ip-ranges"})
         score = min(100, 20 + (45 if official else 0) + min(20, independent * 5) + (10 if observed_asns else 0) + (5 if peer_counts and max(peer_counts) >= 2 else 0))
-        records.append({"cidr": cidr, "provider": provider, "sources": sorted(evidence), "source_count": len(evidence), "bgp_observed_asns": observed_asns, "bgp_max_peers": max(peer_counts) if peer_counts else 0, "confidence": score, "first_seen": None, "last_seen": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})
+        records.append({"cidr": cidr, "provider": provider, "sources": sorted(evidence), "source_count": len(evidence), "bgp_observed_asns": observed_asns, "bgp_max_peers": max(peer_counts) if peer_counts else 0, "confidence": score, "first_seen": previous.get(cidr, {}).get("first_seen") or datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "last_seen": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})
     return records
 def write_source_health_registry(registry):
     """Record registry capabilities without treating repository tools as live feeds."""
