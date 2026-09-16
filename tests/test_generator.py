@@ -89,13 +89,12 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertEqual(values, ["1.2.3.0/24", "2001:db8::/32"])
 
     def test_ripe_keeps_bgp_views_separate(self):
-        with patch.object(
+        with patch.dict(
             self.engine.ripe.__globals__,
-            "jsonget",
-            side_effect=[
+            {"jsonget": Mock(side_effect=[
                 {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}},
                 {"data": {"prefixes": ["198.51.100.0/24"]}},
-            ],
+            ])},
         ), patch.object(
             __import__("source_acquisition"),
             "routeviews_prefixes",
