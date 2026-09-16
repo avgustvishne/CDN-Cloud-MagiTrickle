@@ -43,11 +43,20 @@ jobs:
       - name: Generate subscriptions
         run: python scripts/update_cdn_lists.py
 
+      - name: Collect source manifest
+        run: python scripts/fetch_sources.py
+
       - name: Source health gate
         run: python scripts/check_source_health.py
 
       - name: Audit independent source coverage
         run: python scripts/source_audit.py
+
+      - name: Build evidence manifest
+        run: python scripts/build_evidence.py
+
+      - name: Validate generated outputs
+        run: python scripts/validate_outputs.py
 
       - name: Regression gate
         run: python scripts/regression_gate.py /tmp/cdn-old/data data

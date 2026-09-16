@@ -1,0 +1,48 @@
+name: Pipeline maintenance
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * 1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pipeline-maintenance
+  cancel-in-progress: true
+
+jobs:
+  discovery-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+      - name: Discover sources
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/source_discovery.py
+      - name: Audit candidates
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/audit_source_candidates.py
+      - name: Approval gate
+        run: python scripts/source_approval.py
+      - name: Registry proposals
+        run: python scripts/propose_registry_updates.py
+      - name: Validate maintenance artifacts
+        run: |
+          python -m json.tool data/source-candidates.json >/dev/null
+          python -m json.tool data/source-audit-candidates.json >/dev/null
+          python -m json.tool data/source-approval.json >/dev/null
+          python -m json.tool data/source-registry-proposals.json >/dev/null
+      - name: Commit maintenance reports
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source-candidates.json data/source-audit-candidates.json data/source-approval.json data/source-registry-proposals.json
+          git diff --cached --quiet || git commit -m "chore: refresh source intelligence reports"
+          git push
