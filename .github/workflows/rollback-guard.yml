@@ -12,7 +12,7 @@ on:
       - ".github/workflows/rollback-guard.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   guard:
@@ -28,15 +28,12 @@ jobs:
       - name: Check generated datasets
         run: |
           python scripts/rollback_guard.py data --previous-ref HEAD^ --report "$RUNNER_TEMP/rollback-report.json"
-      - name: Commit automatic rollback
-        if: success()
+      - name: Report rollback decision
         run: |
           if git diff --quiet -- data; then
-            echo "No rollback required."
+            echo "Rollback guard: no rollback required."
           else
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data
-            git commit -m "chore: automatic dataset rollback [skip ci]"
-            git push
+            echo "Rollback guard detected a dataset change that would require manual review."
+            git diff --stat -- data
+            exit 1
           fi
