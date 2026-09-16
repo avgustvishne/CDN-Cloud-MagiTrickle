@@ -111,14 +111,16 @@ def request(url):
                     raise RuntimeError("empty response")
                 try:
                     cached.write_bytes(data)
-                except OSError:
-                    pass
+                except OSError as exc:
+                    print(f"[warn] cache write failed for {cached}: {exc}", file=sys.stderr)
                 return data
         except Exception as exc:
             last = exc
             if attempt < RETRIES:
                 time.sleep(RETRY_BASE * attempt)
-    raise last
+    if last is not None:
+        raise last
+    raise RuntimeError(f"request failed without a captured exception: {url}")
 
 def jsonget(url):
     return json.loads(request(url).decode("utf-8"))
@@ -208,8 +210,8 @@ def load_ripe_cache():
 def save_ripe_cache(cache):
     try:
         atomic_json(RIPE_CACHE_FILE, cache)
-    except Exception:
-        pass
+    except Exception as exc:
+        print(f"[warn] failed to save RIPE cache: {exc}", file=sys.stderr)
 
 
 def atomic_json(path, obj):
@@ -310,8 +312,8 @@ def routeviews_prefixes(asn):
                         found.add(item)
                     elif isinstance(item, dict) and item.get("prefix"):
                         found.add(item["prefix"])
-        except Exception:
-            pass
+        except Exception as exc:
+            print(f"[warn] RouteViews fetch failed for AS{asn} AF{af}: {exc}", file=sys.stderr)
         return found
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
@@ -344,8 +346,8 @@ def ripe(asn, min_peers):
                 if isinstance(item, dict) and item.get("prefix"):
                     try:
                         found.add(str(ipaddress.ip_network(item["prefix"], strict=False)))
-                    except ValueError:
-                        pass
+                    except ValueError as exc:
+                        print(f"[warn] invalid RIPEstat prefix for AS{asn}: {item.get('prefix')}: {exc}", file=sys.stderr)
         except Exception:
             pass
         return found
@@ -358,8 +360,8 @@ def ripe(asn, min_peers):
                 if "/" in value:
                     try:
                         found.add(str(ipaddress.ip_network(value, strict=False)))
-                    except ValueError:
-                        pass
+                    except ValueError as exc:
+                        print(f"[warn] invalid RIPE RIS prefix for AS{asn}: {value}: {exc}", file=sys.stderr)
         except Exception as exc:
             print(f"Warning: failed to fetch/parse RIPE RIS prefixes for AS{asn}: {exc}", file=sys.stderr)
         return found
@@ -367,7 +369,8 @@ def ripe(asn, min_peers):
     def fetch_routeviews():
         try:
             return {str(ipaddress.ip_network(value, strict=False)) for value in routeviews_prefixes(asn)}
-        except Exception:
+        except Exception as exc:
+            print(f"[warn] RouteViews normalization failed for AS{asn}: {exc}", file=sys.stderr)
             return set()
 
     funcs = (fetch_ripestat, fetch_ris, fetch_routeviews)
@@ -410,13 +413,13 @@ def external_ipsets(name, asns):
                         try:
                             ipaddress.ip_network(value, strict=False)
                             found.append(value)
-                        except ValueError:
-                            pass
+                        except ValueError as exc:
+                            print(f"[warn] invalid external CIDR for {name}: {value}: {exc}", file=sys.stderr)
                 if found:
                     values.extend(found)
                     sources.append("sw.ext.io")
-            except Exception:
-                pass
+            except Exception as exc:
+                print(f"[warn] external IP set fetch failed for {name} ({label}): {exc}", file=sys.stderr)
 
     return values, sources
 
