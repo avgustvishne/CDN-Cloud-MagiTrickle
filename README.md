@@ -1,50 +1,32 @@
-<p align="center"><img src="docs/assets/hero.svg" alt="CDN-Cloud-MagiTrickle — IPv4, IPv6, ASN, CDN, Cloud, Video and VPN subscriptions" width="100%"></p>
+# CDN-Cloud-MagiTrickle
 
-<div align="center">
+Готовые IP/CIDR-подписки для **MagiTrickle**.
 
-# CDN + Cloud MagiTrickle
+Автоматически обновляются, очищаются от дублей и проходят проверки перед публикацией.
 
-**IPv4 / IPv6 CIDR · ASN · CDN · Cloud · Video · VPN**
+## 🚀 Быстрый старт
 
-Автоматически обновляемые сетевые подписки для MagiTrickle с нормализацией, дедупликацией, provenance и проверками качества источников.
+Если не знаете, что выбрать:
 
-[🇷🇺 Русский](README.md) · [🇬🇧 English](README.en.md)
+**BALANCED** — оптимальный вариант для большинства случаев.
 
-[⚡ Быстрый старт](#-быстрый-старт) · [📦 Профили](#-профили) · [☁️ Провайдеры](#️-провайдеры) · [🔢 ASN](#-asn-подписки) · [🔎 Контроль качества](#-контроль-качества) · [❤️ Поддержка](#️-поддержка)
+### Основные подписки
 
-</div>
+| Профиль | IPv4 | IPv6 |
+|---|---|---|
+| **FULL** | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/dist/FULL.txt) | — |
+| **BALANCED** | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/dist/BALANCED.txt) | — |
+| **MINIMAL** | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/dist/MINIMAL.txt) | — |
 
-## ✨ Что здесь есть
+> Примечание: итоговые `dist/*.txt` формируются автоматически. Отдельные IPv4/IPv6 наборы находятся в `data/presets/`, если они присутствуют в текущей сборке.
 
-- IPv4 и IPv6 CIDR
-- ASN-подписки
-- CDN / Cloud / Video / VPN наборы
-- профили **FULL / BALANCED / MINIMAL**
-- отдельные списки по провайдерам
-- автоматическое обнаружение ASN и актуальных prefix sets
-- нормализация и дедупликация CIDR
-- учёт источников и provenance для сетей
-- контроль перекрытий и безопасная агрегация
-- защита от резкого уменьшения или повреждения источника
-- автоматическая статистика каждого профиля
-- regression gate перед публикацией
-- автоматический [UPDATE_REPORT.md](UPDATE_REPORT.md)
+## 📦 Наборы
 
-## ⚡ Быстрый старт
+- **FULL** — все уникальные CIDR из собранных данных.
+- **BALANCED** — безопасно объединённые сети.
+- **MINIMAL** — максимально компактный вариант без добавления неподтверждённых адресов.
 
-Для обычного использования можно начать с **BALANCED**.
-
-| Профиль | Описание |
-|---|---|
-| **FULL** | Все уникальные нормализованные префиксы из подтверждённых данных; без искусственного лимита количества CIDR |
-| **BALANCED** | Безопасная агрегация CIDR без расширения покрытия |
-| **MINIMAL** | Дополнительное сокращение там, где объединение полностью покрывается исходными сетями |
-
-Профили IPv4/IPv6 и специализированные наборы находятся в каталоге `data/presets/`, а автоматически сгенерированные профили — в `dist/`.
-
-## 📦 Специализированные наборы
-
-Доступны наборы:
+Специализированные наборы:
 
 - **CDN**
 - **Cloud**
@@ -53,133 +35,57 @@
 - **ASN ALL**
 - **ALL-CLOUD**
 
-Они формируются из общего набора данных и проходят дедупликацию. IPv4 и IPv6 обрабатываются отдельно.
-
 ## ☁️ Провайдеры
 
-Для провайдеров поддерживаются отдельные IPv4/IPv6 списки. Полный перечень и настройки сопоставления находятся в [config/providers.json](config/providers.json).
+Готовые списки по провайдерам:
 
-Основные источники могут включать официальные prefix feeds, ASN/BGP-ориентированные данные и поддерживаемые сторонние реестры. Источник не считается доказательством принадлежности всех сетей провайдеру автоматически: ASN discovery используется как evidence, а не как безусловная классификация.
+| Провайдер | IPv4 | IPv6 |
+|---|---|---|
+| AWS | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v6.txt) |
+| Cloudflare | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v6.txt) |
+| Hetzner | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v6.txt) |
+| OVH | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/ovh-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/ovh-v6.txt) |
+| Akamai | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/akamai-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/akamai-v6.txt) |
+| DigitalOcean | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v6.txt) |
+| Microsoft | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/microsoft-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/microsoft-v6.txt) |
+| Oracle | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/oracle-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/oracle-v6.txt) |
+| Alibaba | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/alibaba-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/alibaba-v6.txt) |
+| CDN77 | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v6.txt) |
+| Fastly | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v6.txt) |
+| Melbicom | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/melbicom-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/melbicom-v6.txt) |
+| BuyVM | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v6.txt) |
+| Vultr | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v6.txt) |
+| Contabo | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v6.txt) |
+| Scaleway | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/scaleway-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/scaleway-v6.txt) |
+| Gcore | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v6.txt) |
+| Backblaze | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v6.txt) |
 
-## 🔄 Как обновляются данные
+## 🔢 ASN
 
-Обновление проходит через несколько стадий:
+- [ASN ALL IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt)
+- [ASN ALL IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt)
+- [ALL-CLOUD IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt)
+- [ALL-CLOUD IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt)
 
-```
-SOURCE FETCH
-    ↓
-ASN DISCOVERY
-    ↓
-NORMALIZATION
-    ↓
-DEDUPLICATION
-    ↓
-PROVENANCE
-    ↓
-SOURCE HEALTH
-    ↓
-PROFILE GENERATION
-    ↓
-REGRESSION TEST
-    ↓
-PUBLISH
-```
+## 🔄 Обновление
 
-Для каждого CIDR может сохраняться информация об источнике, типе evidence, времени наблюдения и количестве подтверждающих источников.
+Данные собираются из нескольких источников и автоматически:
 
-## 🧹 Дедупликация и агрегация
+1. проверяются;
+2. нормализуются;
+3. очищаются от дублей;
+4. сопоставляются с ASN/провайдерами;
+5. проходят контроль изменений;
+6. собираются в профили;
+7. публикуются только после успешной проверки.
 
-Одинаковые CIDR не должны дублироваться в итоговых списках.
+Искусственного лимита на количество CIDR нет.
 
-**FULL** сохраняет отдельные подтверждённые префиксы.
+## 📊 Статистика
 
-**BALANCED** использует безопасное CIDR-свёртывание.
-
-**MINIMAL** дополнительно проверяет покрытие перед объединением. Сеть не расширяется только ради уменьшения количества строк.
-
-Искусственных ограничений вроде «не больше 15 000 CIDR на провайдера» нет. Размер итогового списка определяется фактическими данными источников.
-
-## 🔎 Контроль качества
-
-Перед публикацией выполняются автоматические проверки:
-
-- корректность IPv4/IPv6 CIDR;
-- отсутствие дубликатов;
-- контроль аномального уменьшения источников;
-- сравнение с предыдущим результатом;
-- проверка целостности профилей;
-- статистика FULL / BALANCED / MINIMAL;
-- сохранение provenance.
-
-Если источник внезапно возвращает существенно меньше данных, результат может быть помечен как аномальный вместо безусловной замены рабочей базы.
-
-### Статистика
-
-После генерации создаётся:
-
-`dist/profile-stats.json`
-
-В нём есть количество CIDR, IPv4/IPv6 префиксов, количество адресов и изменение покрытия для каждого профиля и провайдера.
-
-### Отчёт обновления
-
-После каждого запуска формируется:
-
-[UPDATE_REPORT.md](UPDATE_REPORT.md)
-
-В нём собраны общая статистика, статистика провайдеров и результаты автоматических проверок.
-
-## 🔢 ASN-подписки
-
-- **ASN ALL:** единый дедуплицированный набор ASN-данных.
-- ASN discovery используется для поиска новых связей «провайдер → ASN → prefixes».
-- Текущие prefix sets дополнительно подтягиваются из поддерживаемого ASN-источника.
-- ASN ownership не является единственным критерием для включения сети в CDN-классификацию.
-
-## 🗂️ Основные каталоги
-
-```
-config/
-├── providers.json
-├── provider_categories.json
-└── ...
-
-scripts/
-├── cidr_engine.py
-├── discover_provider_asns.py
-├── provenance.py
-├── profile_generator.py
-├── regression.py
-├── source_health.py
-└── update_report.py
-
-data/
-├── evidence/
-├── provenance/
-└── health/
-
-dist/
-├── FULL/
-├── BALANCED/
-├── MINIMAL/
-├── FULL.txt
-├── BALANCED.txt
-├── MINIMAL.txt
-└── profile-stats.json
-```
-
-## ⚠️ Важно
-
-Проект предназначен для формирования сетевых списков и маршрутизации. Принадлежность CIDR, актуальность маршрутов и доступность конкретного адреса могут меняться. Поэтому данные регулярно перепроверяются, а результаты источников не следует считать вечной характеристикой сети.
+- [UPDATE_REPORT.md](UPDATE_REPORT.md) — последний отчёт.
+- [profile-stats.json](dist/profile-stats.json) — подробная статистика профилей.
 
 ## ❤️ Поддержка
 
-Если проект оказался полезен, его развитие можно поддержать:
-
-**Поддержать проект:** https://tips.tips/000484125
-
-Спасибо! ❤️
-
----
-
-<sub>Автоматически генерируемые CIDR-подписки для MagiTrickle.</sub>
+[Поддержать проект](https://tips.tips/000484125)
