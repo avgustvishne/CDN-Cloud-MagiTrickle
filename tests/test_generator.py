@@ -89,16 +89,19 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertEqual(values, ["1.2.3.0/24", "2001:db8::/32"])
 
     def test_ripe_keeps_bgp_views_separate(self):
+        def fake_jsonget(url):
+            if "announced-prefixes" in url:
+                return {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}}
+            if "ris-prefixes" in url:
+                return {"data": {"prefixes": ["198.51.100.0/24"]}}
+            raise AssertionError(url)
+
         with patch.dict(
             self.engine.ripe.__globals__,
-            {"jsonget": Mock(side_effect=[
-                {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}},
-                {"data": {"prefixes": ["198.51.100.0/24"]}},
-            ])},
-        ), patch.object(
-            __import__("source_acquisition"),
-            "routeviews_prefixes",
-            return_value=["203.0.113.0/24"],
+            {
+                "jsonget": fake_jsonget,
+                "routeviews_prefixes": lambda asn: ["203.0.113.0/24"],
+            },
         ):
             views = self.engine.ripe("13335", 1)
         self.assertEqual(views["RIPEstat"], ["192.0.2.0/24"])
