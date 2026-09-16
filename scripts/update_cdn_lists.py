@@ -110,8 +110,8 @@ def request(url):
                 if not data:
                     raise RuntimeError("empty response")
                 try:
-                except OSError as exc:
-                    print(f"[warn] cache write failed for {cached}: {exc}", file=sys.stderr)
+                    cached.write_bytes(data)
+                except OSError:
                     pass
                 return data
         except Exception as exc:
