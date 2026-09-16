@@ -50,7 +50,8 @@ class GeneratorUnitTests(unittest.TestCase):
             cache_file = Path(td) / "ripe-prefix-cache.json"
             cache_file.write_text(json.dumps(payload), encoding="utf-8")
             with patch.object(self.engine, "RIPE_CACHE_FILE", cache_file), \
-             patch.object(self.engine.time, "time", return_value=now):
+             patch.object(self.engine.time, "time", return_value=now), \
+             patch.object(self.engine, "RIPE_CACHE_FILE", cache_file):
                 cache = self.engine.load_ripe_cache()
         self.assertEqual(set(cache), {"192.0.2.0/24", "192.0.4.0/24"})
         self.assertTrue(cache["192.0.2.0/24"]["confirmed"])
@@ -64,11 +65,11 @@ class GeneratorUnitTests(unittest.TestCase):
             lookup.assert_not_called()
 
     def test_confirm_accepts_announced_prefix(self):
-        with patch.object(self.engine, "ripe_prefix_overview", return_value={"announced": True, "asns": [13335]}):
+        with patch("source_acquisition.ripe_prefix_overview", return_value={"announced": True, "asns": [13335]}):
             self.assertTrue(self.engine.validate_prefix_with_ripe("192.0.2.0/24", {}))
 
     def test_confirm_rejects_empty_ripe_response(self):
-        with patch.object(self.engine, "ripe_prefix_overview", return_value={}):
+        with patch("source_acquisition.ripe_prefix_overview", return_value={}):
             self.assertFalse(self.engine.validate_prefix_with_ripe("192.0.2.0/24", {}))
 
     def test_address_coverage_is_prefix_count_independent(self):
@@ -84,20 +85,20 @@ class GeneratorUnitTests(unittest.TestCase):
             if url.endswith("ipv6-aggregated.txt"):
                 return b"2001:db8::/32\n"
             raise AssertionError(url)
-        with patch.object(self.engine, "request", side_effect=fake_request):
+        with patch("source_acquisition.request", side_effect=fake_request):
             values = self.engine.ipverse_ranges("13335")
         self.assertEqual(values, ["1.2.3.0/24", "2001:db8::/32"])
 
     def test_ripe_keeps_bgp_views_separate(self):
         with patch.object(
-            self.engine,
+            __import__("source_acquisition"),
             "jsonget",
             side_effect=[
                 {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}},
                 {"data": {"prefixes": ["198.51.100.0/24"]}},
             ],
         ), patch.object(
-            self.engine,
+            __import__("source_acquisition"),
             "routeviews_prefixes",
             return_value=["203.0.113.0/24"],
         ):
