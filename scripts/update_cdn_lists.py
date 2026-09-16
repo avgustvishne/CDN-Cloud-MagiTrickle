@@ -503,6 +503,22 @@ def sha256(path):
             digest.update(chunk)
     return digest.hexdigest()
 
+def source_confidence(sources):
+    """Score independent evidence; official/BGP/RPKI outrank secondary feeds."""
+    weights={"official":100,"bgp_rpki":95,"asn_index":90,"independent":85,"secondary":60,"dns":40}
+    kinds=[s.get("kind","secondary") for s in sources if isinstance(s,dict)]
+    if not kinds: return 0
+    score=max(weights.get(k,50) for k in kinds)
+    independent=len(set(kinds))
+    return min(100, score + min(10, max(0, independent-1)*2))
+
+def build_provenance(provider, prefixes, source_records):
+    records=[]
+    for cidr in sorted(set(prefixes)):
+        matched=[s for s in source_records if cidr in set(s.get("prefixes",[]))]
+        records.append({"cidr":cidr,"provider":provider,"sources":[{"id":s.get("id"),"kind":s.get("kind","secondary"),"observed_at":s.get("observed_at")} for s in matched],"confidence":source_confidence(matched)})
+    return records
+
 def main():
     parser = argparse.ArgumentParser(description="Build CDN/ASN subscriptions")
     parser.add_argument("--explain", action="store_true", help="generate per-CIDR policy explanations")
