@@ -90,7 +90,7 @@ class GeneratorUnitTests(unittest.TestCase):
 
     def test_ripe_keeps_bgp_views_separate(self):
         with patch.object(
-            __import__("source_acquisition"),
+            self.engine.ripe.__globals__,
             "jsonget",
             side_effect=[
                 {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}},
