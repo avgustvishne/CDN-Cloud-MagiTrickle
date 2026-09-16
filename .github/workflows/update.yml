@@ -46,6 +46,9 @@ jobs:
         run: |
           python3 scripts/profile_generator.py
           python3 scripts/validate_profiles.py
+      - name: Generate update report
+        run: |
+          python3 scripts/update_report.py
       - name: Run publication regression gate
         run: |
           python3 scripts/regression.py --current data/provenance/cidr.json --output data/health/regression.json
