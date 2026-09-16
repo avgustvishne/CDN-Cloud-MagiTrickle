@@ -82,5 +82,24 @@
     "refresh": "daily",
     "role": "independent-provider-cross-check",
     "policy": "not-authoritative; never overrides official feeds"
+  },
+  "projectdiscovery-cdncheck": {
+    "repo": "https://github.com/projectdiscovery/cdncheck",
+    "provider_registry": "cmd/generate-index/provider.yaml",
+    "role": "provider-identity-and-cidr-cross-check",
+    "refresh": "on-update",
+    "authority": "secondary"
+  },
+  "taythebot-cdn-ranges": {
+    "repo": "https://github.com/taythebot/cdn-ranges",
+    "role": "independent-cdn-cidr-cross-check",
+    "refresh": "on-update",
+    "authority": "secondary"
+  },
+  "krainium-cdn-fetcher": {
+    "repo": "https://github.com/Krainium/cdn-fetcher",
+    "role": "official-live-provider-fetcher-reference",
+    "refresh": "on-update",
+    "authority": "high-for-supported-providers"
   }
 }
