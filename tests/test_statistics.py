@@ -31,5 +31,18 @@ class StatisticsTests(unittest.TestCase):
     def test_human_count_uses_space_separator(self):
         self.assertEqual(self.stats.human_count(12478), "12 478")
 
+    def test_readme_pattern_compiles_and_matches_raw_links(self):
+        import re
+        pattern = re.compile(
+            r"(\*\*)[0-9][0-9 ]*(?: CIDR)(\*\*\s*·\s*\[(?:IPv4|IPv6)\]\()"
+            r"(https://raw\.githubusercontent\.com/avgustvishne/CDN-Cloud-MagiTrickle/main/(?:data/)?(?:presets/)?([^/)]+\.txt))"
+        )
+        match = pattern.search(
+            "**12 594 CIDR** · [IPv4](https://raw.githubusercontent.com/"
+            "avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt)"
+        )
+        self.assertIsNotNone(match)
+        self.assertEqual(match.group(4), "asn-all-v4.txt")
+
 if __name__ == "__main__":
     unittest.main()
