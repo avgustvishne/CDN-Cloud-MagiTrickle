@@ -358,8 +358,8 @@ def ripe(asn, min_peers):
                         found.add(str(ipaddress.ip_network(value, strict=False)))
                     except ValueError:
                         pass
-        except Exception:
-            pass
+        except Exception as exc:
+            print(f"Warning: failed to fetch/parse RIPE RIS prefixes for AS{asn}: {exc}", file=sys.stderr)
         return found
 
     def fetch_routeviews():
