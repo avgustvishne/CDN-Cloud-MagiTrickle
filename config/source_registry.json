@@ -114,5 +114,16 @@
     "authority": "secondary",
     "license": "CC0-1.0",
     "notes": "Daily BGP-derived aggregated prefixes per ASN; additive cross-check only."
+  },
+  "caida-bgpstream": {
+    "repo": "https://github.com/CAIDA/bgpstream",
+    "live_projects": [
+      "routeviews-stream",
+      "ris-live"
+    ],
+    "role": "independent-real-time-BGP-validation",
+    "refresh": "continuous",
+    "authority": "validation",
+    "notes": "Used as an independent live-BGP validation layer; generator does not depend on a single live stream."
   }
 }
