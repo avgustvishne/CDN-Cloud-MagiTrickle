@@ -145,7 +145,7 @@ class GeneratorUnitTests(unittest.TestCase):
             spec = importlib.util.spec_from_file_location(filename[:-3], path)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-        result, rejected = module.nets(["192.0.2.0/24"], 4)
+        result, rejected = module.nets(["1.2.3.0/24"], 4)
         self.assertEqual(rejected, 0)
         self.assertEqual(result[0].prefixlen, 24)
 
