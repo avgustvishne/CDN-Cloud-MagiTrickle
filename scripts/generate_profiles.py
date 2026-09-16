@@ -17,6 +17,9 @@ PROFILES = {
     "full": PROVIDERS,
     "balanced": ["cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway"],
     "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
+    # Performance profile: high-confidence CDN plus a small set of common edge/VPS networks.
+    # It intentionally excludes the largest catch-all cloud portfolios (AWS, Microsoft, Oracle, Alibaba).
+    "performance": ["cloudflare", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "hetzner", "ovh"],
 }
 
 def read(name, version):
