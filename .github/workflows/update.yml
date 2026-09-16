@@ -32,6 +32,13 @@ jobs:
           else
             echo '{"status":"UNAVAILABLE","reason":"DPI detector is intentionally not installed on the GitHub runner; run this probe on the target network."}' > data/dpi-health.json
           fi
+      - name: Build normalized CIDR provenance
+        run: |
+          mkdir -p data/evidence
+          python3 scripts/provenance.py
+      - name: Validate source health
+        run: |
+          python3 scripts/source_health.py
       - name: Build DPI source registry and quality report
         run: |
           python3 scripts/dpi_sources.py
