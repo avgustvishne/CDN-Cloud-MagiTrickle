@@ -84,10 +84,12 @@ def update_readme(stats):
     text = README.read_text(encoding="utf-8")
     changed = 0
     counts = {pathlib.PurePosixPath(path).name: info["cidr_count"] for path, info in stats["files"].items()}
+
     pattern = re.compile(
-        r"(\*\*)[0-9][0-9 ]*(?: CIDR)(\*\*\s*·\s*\[(?:IPv4|IPv6)\]\()"
-        r"(https://raw\.githubusercontent\.com/avgustvishne/CDN-Cloud-MagiTrickle/main/(?:data/)?(?:presets/)?([^/)]+\.txt))"
+        r"(\\*\\*)[0-9][0-9 ]*(?: CIDR)(\\*\\*\\s*·\\s*\\[(?:IPv4|IPv6)\\]\\()"
+        r"(https://raw\\.githubusercontent\\.com/avgustvishne/CDN-Cloud-MagiTrickle/main/(?:data/)?(?:presets/)?([^/)]+\\.txt))"
     )
+
     def repl(match):
         nonlocal changed
         filename = match.group(4)
@@ -95,10 +97,42 @@ def update_readme(stats):
             return match.group(0)
         changed += 1
         return "{}{} CIDR{}{}".format(match.group(1), human_count(counts[filename]), match.group(2), match.group(3))
+
     text = pattern.sub(repl, text)
+
+    datasets = stats["datasets"]
+    generated_at = stats["generated_at"]
+    block = "\n".join([
+        "<!-- AUTO-STATS:START -->",
+        "## 📊 Актуальная статистика",
+        "",
+        "| Набор | IPv4 | IPv6 |",
+        "|---|---:|---:|",
+        "| **ASN ALL** | **{} CIDR** | **{} CIDR** |".format(human_count(datasets["asn_all"]["ipv4"]), human_count(datasets["asn_all"]["ipv6"])),
+        "| **ALL-CLOUD** | **{} CIDR** | **{} CIDR** |".format(human_count(datasets["all_cloud"]["ipv4"]), human_count(datasets["all_cloud"]["ipv6"])),
+        "",
+        "**Обновлено:** `{} UTC` · [полная статистика](data/statistics.json)".format(generated_at),
+        "",
+        "> Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.",
+        "<!-- AUTO-STATS:END -->",
+    ])
+
+    stats_pattern = re.compile(r"<!-- AUTO-STATS:START -->.*?<!-- AUTO-STATS:END -->", re.DOTALL)
+    if stats_pattern.search(text):
+        new_text = stats_pattern.sub(block, text, count=1)
+        if new_text != text:
+            text = new_text
+            changed += 1
+    else:
+        marker = "## 🔄 Обновление\n"
+        if marker in text:
+            text = text.replace(marker, block + "\n\n" + marker, 1)
+        else:
+            text += "\n\n" + block + "\n"
+        changed += 1
+
     marker = "## 🔄 Обновление\n"
     if marker in text:
-        generated_at = stats["generated_at"]
         line = "Данные и количество CIDR обновляются автоматически после успешной генерации и проверок. Последняя генерация: `{}`. [Машиночитаемая статистика](data/statistics.json).\n\n".format(generated_at)
         start = text.index(marker) + len(marker)
         end = text.find("\n\n", start)
@@ -108,10 +142,10 @@ def update_readme(stats):
         if current != line.rstrip("\n"):
             text = text[:start] + line + text[end + 2:]
             changed += 1
+
     if changed:
         README.write_text(text, encoding="utf-8")
     return changed
-
 def main():
     stats = collect()
     DATA.mkdir(exist_ok=True)
