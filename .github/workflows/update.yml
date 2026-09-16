@@ -68,6 +68,9 @@ jobs:
       - name: Build evidence manifest
         run: python scripts/build_evidence.py
 
+      - name: Build source intelligence report
+        run: python scripts/source_intelligence.py
+
       - name: Validate generated outputs
         run: python scripts/validate_outputs.py
 
@@ -140,6 +143,13 @@ jobs:
           assert audit.get("method", "").startswith("exact merged address-space")
           assert isinstance(audit.get("providers"), list)
           assert isinstance(audit.get("sources"), dict)
+
+          intelligence = json.loads((d / "source-intelligence.json").read_text(encoding="utf-8"))
+          assert intelligence["schema_version"] == 1
+          assert intelligence["policy"]["mutates_subscriptions"] is False
+          assert intelligence["policy"]["source_failure_replaces_data"] is False
+          assert isinstance(intelligence.get("sources"), list)
+          assert isinstance(intelligence.get("providers"), dict)
 
           overlaps = json.loads((d / "provider-overlaps.json").read_text(encoding="utf-8"))
           assert isinstance(overlaps.get("entries"), list)
