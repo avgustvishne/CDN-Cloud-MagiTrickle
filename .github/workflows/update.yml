@@ -153,6 +153,10 @@ jobs:
           assert isinstance(intelligence.get("sources"), list)
           assert isinstance(intelligence.get("providers"), dict)
           assert isinstance(intelligence.get("anomalies"), list)
+          assert isinstance(intelligence.get("prefix_evidence"), list)
+          for evidence in intelligence["prefix_evidence"]:
+              assert evidence["source_count"] == len(evidence["sources"])
+              assert evidence["status"] in {"confirmed", "single_source"}
           for source in intelligence["sources"]:
               assert 0 <= source["reliability_score"] <= 100
 

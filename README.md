@@ -139,3 +139,7 @@ Safety guarantees:
 ### Change confirmation
 
 Large provider changes are cross-checked against independent source types before they are classified as confirmed. A confirmed observation is still **not** allowed to auto-publish a subscription change; existing generation and validation gates remain authoritative. Unconfirmed anomalies remain observation-only.
+
+### Per-prefix evidence
+
+Source intelligence now records evidence for individual prefixes, including normalized CIDR, IP version, contributing source types, and whether at least two independent sources support the prefix. This remains observational and cannot publish or delete subscription entries by itself.
