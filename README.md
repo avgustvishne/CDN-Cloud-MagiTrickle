@@ -1,45 +1,41 @@
-<div align="center">
-
 # CDN-Cloud-MagiTrickle
 
-**Готовые IP/CIDR-подписки для MagiTrickle**
+**Готовые IP/CIDR-подписки для MagiTrickle.**
 
-Автоматически собираемые и очищаемые списки **CDN · Cloud · Video · VPN · ASN**.
+CDN, cloud, video, VPN и ASN-списки с отдельными IPv4/IPv6-подписками.
 
 [![Update](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/workflows/update.yml/badge.svg)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/workflows/update.yml)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle)
 
-**[⬇️ Подписки](#-готовые-подписки)** · **[☁️ Провайдеры](#️-провайдеры)** · **[🔢 ASN](#-asn)**
+## Готовые подписки
 
-</div>
+Если не знаете, что выбрать, начните с **BALANCED**.
 
----
-
-## 🚀 Готовые подписки
-
-> **Не знаете, что выбрать?** Берите **BALANCED**.
-
-| Профиль | Для чего | IPv4 | IPv6 |
-|:---|:---|:---:|:---:|
+| Профиль | Назначение | IPv4 | IPv6 |
+| --- | --- | --- | --- |
 | **FULL** | Максимальный набор | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) |
-| **BALANCED** | Оптимальный размер | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
-| **MINIMAL** | Минимальный список | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) |
+| **BALANCED** | Баланс размера и покрытия | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
+| **MINIMAL** | Компактный список | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) |
 
-### Какой профиль выбрать?
+- **FULL** — максимальное покрытие.
+- **BALANCED** — универсальный вариант.
+- **MINIMAL** — минимальный размер.
 
-- **FULL** — если нужен полный набор адресов.
-- **BALANCED** — если нужен хороший баланс размера и покрытия.
-- **MINIMAL** — если важен максимально компактный список.
+## Специализированные наборы
 
-> Подписки содержат CIDR-префиксы. IPv4 и IPv6 публикуются отдельно.
+| Набор | IPv4 | IPv6 |
+| --- | --- | --- |
+| **CDN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v6.txt) |
+| **CLOUD** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
+| **VIDEO** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
+| **VPN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
 
----
+## Провайдеры
 
-<details>
-<summary>☁️ Провайдеры — открыть списки</summary>
+Прямые Raw-подписки по каждому провайдеру.
 
 | Провайдер | IPv4 | IPv6 |
-|:---|:---:|:---:|
+| --- | --- | --- |
 | AWS | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v6.txt) |
 | Cloudflare | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v6.txt) |
 | Hetzner | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v6.txt) |
@@ -59,22 +55,18 @@
 | Gcore | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v6.txt) |
 | Backblaze | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v6.txt) |
 
-</details>
+Полный набор ASN для каждого провайдера находится в [config/providers.json](config/providers.json).
 
----
-
-## 🔢 ASN
+## ASN
 
 | Набор | IPv4 | IPv6 |
-|:---|:---:|:---:|
+| --- | --- | --- |
 | **ASN ALL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt) |
 | **ALL-CLOUD** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt) |
 
----
+## Использование
 
-## 📋 Использование
-
-Скопируйте **Raw-ссылку** нужного списка и добавьте её в MagiTrickle как источник CIDR.
+Скопируйте Raw-ссылку нужного списка и добавьте её в MagiTrickle как источник CIDR.
 
 Например:
 
@@ -82,24 +74,12 @@
 https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt
 ```
 
----
+## Важно
 
-## ⚠️ Важно
+IP-адреса и маршруты могут меняться. Наличие CIDR в списке не гарантирует доступность конкретного IP в любой момент.
 
-IP-адреса и маршруты могут меняться. Списки предназначены для маршрутизации и регулярно обновляются. Наличие CIDR в списке не гарантирует доступность конкретного IP в любой момент.
+## Поддержка
 
----
+Если проект полезен, его можно поддержать:
 
-## ❤️ Поддержка
-
-Если проект полезен:
-
-**[Поддержать проект](https://tips.tips/000484125)**
-
----
-
-<div align="center">
-
-**CDN-Cloud-MagiTrickle** · IP/CIDR lists for MagiTrickle
-
-</div>
+[Поддержать проект](https://tips.tips/000484125)
