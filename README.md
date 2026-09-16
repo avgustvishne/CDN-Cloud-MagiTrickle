@@ -78,7 +78,7 @@
 ## 📊 Статистика
 
 - [UPDATE_REPORT.md](UPDATE_REPORT.md) — последний отчёт.
-- [profile-stats.json](dist/profile-stats.json) — подробная статистика профилей.
+- [manifest.json](data/manifest.json) и [audit.csv](data/audit.csv) — статистика и результаты обновления.
 
 ## ❤️ Поддержка
 
