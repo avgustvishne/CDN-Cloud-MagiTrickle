@@ -42,6 +42,28 @@ class SourceIntelligenceTests(unittest.TestCase):
         finally:
             self.engine.DATA = old
 
+    def test_reliability_score_is_bounded(self):
+        score = self.engine.reliability_score({
+            "authority": "official",
+            "audit_providers_checked": 2,
+            "new_coverage_ipv4": 10,
+            "new_coverage_ipv6": 0,
+        })
+        self.assertGreaterEqual(score, 0)
+        self.assertLessEqual(score, 100)
+
+    def test_large_provider_change_is_observation_only(self):
+        current = {"providers": {"cloudflare": {"records": 40}}}
+        previous = {"providers": {"cloudflare": {"records": 100}}}
+        rows = self.engine.provider_anomalies(current, previous)
+        self.assertEqual(rows[0]["action"], "observe_only")
+        self.assertEqual(rows[0]["previous_records"], 100)
+
+    def test_small_provider_change_is_not_anomaly(self):
+        current = {"providers": {"cloudflare": {"records": 95}}}
+        previous = {"providers": {"cloudflare": {"records": 100}}}
+        self.assertEqual(self.engine.provider_anomalies(current, previous), [])
+
     def test_prefix_intelligence_counts_sources(self):
         old = self.engine.DATA
         try:

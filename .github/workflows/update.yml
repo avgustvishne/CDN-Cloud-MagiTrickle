@@ -150,6 +150,14 @@ jobs:
           assert intelligence["policy"]["source_failure_replaces_data"] is False
           assert isinstance(intelligence.get("sources"), list)
           assert isinstance(intelligence.get("providers"), dict)
+          assert isinstance(intelligence.get("anomalies"), list)
+          for source in intelligence["sources"]:
+              assert 0 <= source["reliability_score"] <= 100
+
+          history_path = d / "source-intelligence-history.json"
+          assert history_path.exists()
+          history = json.loads(history_path.read_text(encoding="utf-8"))
+          assert isinstance(history, list) and len(history) <= 30
 
           overlaps = json.loads((d / "provider-overlaps.json").read_text(encoding="utf-8"))
           assert isinstance(overlaps.get("entries"), list)

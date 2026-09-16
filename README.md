@@ -124,7 +124,7 @@ IP и маршруты могут меняться, поэтому наличи�
 
 ## Source intelligence
 
-The update pipeline builds `data/source-intelligence.json` as a read-only observability report. It combines source-registry metadata with the existing source audit and per-prefix consensus evidence.
+The update pipeline builds `data/source-intelligence.json` as a read-only observability report. It combines source-registry metadata with the existing source audit and per-prefix consensus evidence. `data/source-intelligence-history.json` keeps the latest 30 snapshots for change tracking.
 
 Safety guarantees:
 
@@ -132,4 +132,6 @@ Safety guarantees:
 - RPKI/validation evidence is informational and never deletes a prefix by itself;
 - generated subscriptions keep their existing stable URLs;
 - publication remains behind the existing regression, validation, checksum and link gates;
-- suspicious source changes are observable before they can affect published lists.
+- suspicious source changes are observable before they can affect published lists;
+- provider prefix-count changes of 50% or more are flagged as `observe_only` anomalies;
+- source reliability is a transparent 0–100 observability metric, not a provider quality ranking.
