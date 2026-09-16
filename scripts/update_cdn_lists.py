@@ -248,8 +248,26 @@ def validate_prefix_with_ripe(prefix, cache=None):
 
 
 def select_ripe_candidates(prefixes, limit=128):
+    print(f"[candidates] normalizing {len(prefixes):,} prefixes", flush=True)
     """Select a bounded, deterministic sample of prefixes for confirmation."""
-    unique = sorted(set(prefixes), key=lambda p: (":" in p, p))
+    normalized = set()
+    for prefix in prefixes:
+        try:
+            if isinstance(prefix, (ipaddress.IPv4Network, ipaddress.IPv6Network)):
+                normalized.add(str(prefix))
+            else:
+                normalized.add(str(ipaddress.ip_network(str(prefix), strict=False)))
+        except (TypeError, ValueError):
+            continue
+    unique = sorted(
+        normalized,
+        key=lambda p: (
+            1 if ":" in p else 0,
+            ipaddress.ip_network(p, strict=False).version,
+            int(ipaddress.ip_network(p, strict=False).network_address),
+            ipaddress.ip_network(p, strict=False).prefixlen,
+        ),
+    )
     if len(unique) <= limit:
         return unique
     # Prefer the least-specific prefixes first: they represent more address
