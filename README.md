@@ -94,6 +94,10 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
+| **FULL** | **17 337 CIDR** | **5 267 CIDR** |
+| **PERFORMANCE** | **1 513 CIDR** | **462 CIDR** |
+| **BALANCED** | **15 189 CIDR** | **4 700 CIDR** |
+| **MINIMAL** | **8 108 CIDR** | **2 770 CIDR** |
 | **ASN ALL** | **12 596 CIDR** | **5 968 CIDR** |
 | **ALL-CLOUD** | **17 337 CIDR** | **5 267 CIDR** |
 
