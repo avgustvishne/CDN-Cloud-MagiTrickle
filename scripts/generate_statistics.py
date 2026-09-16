@@ -101,11 +101,11 @@ def update_readme(stats):
         generated_at = stats["generated_at"]
         line = "Данные и количество CIDR обновляются автоматически после успешной генерации и проверок. Последняя генерация: `{}`. [Машиночитаемая статистика](data/statistics.json).\n\n".format(generated_at)
         start = text.index(marker) + len(marker)
-        end = text.find("\\n\\n", start)
+        end = text.find("\n\n", start)
         if end == -1:
             end = start
         current = text[start:end]
-        if current != line.rstrip("\\n"):
+        if current != line.rstrip("\n"):
             text = text[:start] + line + text[end + 2:]
             changed += 1
     if changed:
