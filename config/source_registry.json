@@ -125,5 +125,32 @@
     "refresh": "continuous",
     "authority": "validation",
     "notes": "Used as an independent live-BGP validation layer; generator does not depend on a single live stream."
+  },
+  "rezmoss-cloud-provider-ip-addresses": {
+    "base": "https://raw.githubusercontent.com/rezmoss/cloud-provider-ip-addresses/main",
+    "refresh": "daily",
+    "role": "independent-provider-cross-check",
+    "artifacts": {
+      "merged_ipv4": "{provider}/{provider}_ips_merged_v4.txt",
+      "merged_all": "{provider}/{provider}_ips_merged.txt",
+      "json": "{provider}/{provider}_ips.json"
+    },
+    "policy": "secondary-evidence-only; never overrides official feeds",
+    "notes": "Daily-updated provider dataset with merged/deduplicated CIDRs; use only stable published artifacts."
+  },
+  "femueller-cloud-ip-ranges": {
+    "repo": "https://github.com/femueller/cloud-ip-ranges",
+    "role": "mature-independent-cross-check",
+    "policy": "validation/reference-only"
+  },
+  "bgpkit-parser": {
+    "repo": "https://github.com/bgpkit/bgpkit-parser",
+    "role": "advanced-BGP-MRT-RIS-RouteViews-evidence-reference",
+    "policy": "validation/evidence-only; no provider CIDR is removed solely on absence"
+  },
+  "routinator": {
+    "repo": "https://github.com/NLnetLabs/routinator",
+    "role": "RPKI-validation-reference",
+    "policy": "RPKI is evidence; INVALID never means automatic deletion"
   }
 }

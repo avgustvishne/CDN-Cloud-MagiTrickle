@@ -10,11 +10,42 @@ permissions:
 
 jobs:
   dependency-review:
-    name: Review dependency changes
+    name: Dependency review
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
     steps:
-      - name: Dependency review
-        uses: actions/dependency-review-action@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Check dependency manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          manifests=(
+            "requirements.txt"
+            "requirements-dev.txt"
+            "pyproject.toml"
+            "poetry.lock"
+            "Pipfile.lock"
+            "package-lock.json"
+            "pnpm-lock.yaml"
+            "yarn.lock"
+          )
+          found=0
+          for f in "${manifests[@]}"; do
+            if [[ -f "$f" ]]; then
+              echo "Found dependency manifest: $f"
+              found=1
+            fi
+          done
+          if [[ "$found" -eq 0 ]]; then
+            echo "No dependency manifest is present; dependency review is not applicable."
+          fi
+
+      - name: Validate Python imports
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q scripts tests

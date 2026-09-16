@@ -1,0 +1,28 @@
+name: Source registry proposal
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  proposal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Build registry proposals
+        run: python scripts/propose_registry_updates.py
+      - name: Validate proposal
+        run: python -m json.tool data/source-registry-proposals.json >/dev/null
+      - name: Publish proposal report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source-registry-proposals.json
+          git diff --cached --quiet || git commit -m "chore: refresh source registry proposals"
+          git push

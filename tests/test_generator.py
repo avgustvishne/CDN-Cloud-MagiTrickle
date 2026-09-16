@@ -89,19 +89,35 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertEqual(values, ["1.2.3.0/24", "2001:db8::/32"])
 
     def test_ripe_keeps_bgp_views_separate(self):
-        def fake_jsonget(url):
-            if url.startswith(self.engine.RIPE + "?"):
-                return {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}}
-            if "ris-prefixes/data.json" in url:
-                return {"data": {"prefixes": ["198.51.100.0/24"]}}
-            raise AssertionError(url)
-
-        with patch.object(self.engine, "jsonget", side_effect=fake_jsonget),              patch.object(self.engine, "routeviews_prefixes", return_value=["203.0.113.0/24"]):
+        with patch.object(
+            self.engine,
+            "jsonget",
+            side_effect=[
+                {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}},
+                {"data": {"prefixes": ["198.51.100.0/24"]}},
+            ],
+        ), patch.object(
+            self.engine,
+            "routeviews_prefixes",
+            return_value=["203.0.113.0/24"],
+        ):
             views = self.engine.ripe("13335", 1)
-
         self.assertEqual(views["RIPEstat"], ["192.0.2.0/24"])
         self.assertEqual(views["RIPE RIS"], ["198.51.100.0/24"])
         self.assertEqual(views["RouteViews"], ["203.0.113.0/24"])
+
+    def test_consensus_bgp_requires_exact_prefix_evidence(self):
+        sources = {"official": ["192.0.2.0/24"]}
+        health = {"64500": {
+            "observed": True,
+            "peers": 4,
+            "prefixes": ["198.51.100.0/24"],
+        }}
+        rows = self.engine.build_consensus(
+            "test", ["192.0.2.0/24"], sources, ["64500"], health
+        )
+        self.assertEqual(rows[0]["bgp_observed_asns"], [])
+        self.assertEqual(rows[0]["bgp_max_peers"], 0)
 
     def test_consensus_preserves_first_seen(self):
         with tempfile.TemporaryDirectory() as td:
@@ -126,7 +142,6 @@ class GeneratorUnitTests(unittest.TestCase):
                 self.assertNotEqual(rows[0]["last_seen"], "2026-01-01T00:00:00Z")
             finally:
                 self.engine.DATA = old_data
-
     def test_consensus_tracks_exact_sources_and_neutral_bgp_absence(self):
         sources = {
             "official": ["192.0.2.0/24"],

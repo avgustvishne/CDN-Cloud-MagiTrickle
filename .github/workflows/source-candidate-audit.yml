@@ -1,0 +1,31 @@
+name: Source candidate audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 7 * * 1"
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Audit discovered repositories
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/audit_source_candidates.py
+      - name: Validate report
+        run: python -m json.tool data/source-audit-candidates.json >/dev/null
+      - name: Commit audit report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source-audit-candidates.json
+          git diff --cached --quiet || git commit -m "chore: refresh source candidate audit"
+          git push
