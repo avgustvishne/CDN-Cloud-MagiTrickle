@@ -250,9 +250,12 @@ def routeviews_prefixes(asn):
 
 
 def ripe(asn, min_peers):
-    """Merge RIPEstat/RIS and RouteViews BGP views; neither is authoritative."""
-    found = set()
-    ripe_ok = False
+    """Fetch independent BGP views separately for exact provenance."""
+    views = {
+        "RIPEstat": set(),
+        "RIPE RIS": set(),
+        "RouteViews": set(),
+    }
 
     query = urllib.parse.urlencode({
         "resource": "AS" + asn,
@@ -261,10 +264,13 @@ def ripe(asn, min_peers):
     })
     try:
         payload = jsonget(RIPE + "?" + query)
-        ripe_ok = True
         for item in payload.get("data", {}).get("prefixes", []):
             if isinstance(item, dict) and item.get("prefix"):
-                found.add(item["prefix"])
+                value = item["prefix"]
+                try:
+                    views["RIPEstat"].add(str(ipaddress.ip_network(value, strict=False)))
+                except ValueError:
+                    pass
     except Exception:
         pass
 
@@ -278,21 +284,24 @@ def ripe(asn, min_peers):
     })
     try:
         ris = jsonget("https://stat.ripe.net/data/ris-prefixes/data.json?" + ris_query)
-        ripe_ok = True
         for value in walk_strings(ris.get("data", {}).get("prefixes", [])):
             if "/" in value:
                 try:
-                    ipaddress.ip_network(value, strict=False)
-                    found.add(value)
+                    views["RIPE RIS"].add(str(ipaddress.ip_network(value, strict=False)))
                 except ValueError:
                     pass
     except Exception:
         pass
 
-    # RouteViews is an independent BGP view. Merge it instead of using it
-    # only as a fallback so a single RIPEstat view can never become authoritative.
-    found.update(routeviews_prefixes(asn))
-    return sorted(found)
+    try:
+        views["RouteViews"].update(
+            str(ipaddress.ip_network(value, strict=False))
+            for value in routeviews_prefixes(asn)
+        )
+    except Exception:
+        pass
+
+    return {source: sorted(values) for source, values in views.items()}
 
 def walk_strings(obj):
     if isinstance(obj, str):
@@ -614,29 +623,86 @@ def build_provenance(provider, prefixes, source_records, asn=None, bgp_health=No
     return records
 
 def build_consensus(provider, prefixes, source_prefixes, asns, bgp_health):
-    """Create exact per-CIDR evidence without making any source authoritative."""
-    normalized = {source_id: set(map(str, values)) for source_id, values in source_prefixes.items()}
+    """Create exact per-CIDR evidence; BGP absence is neutral."""
+    normalized = {}
+    for source_id, values in source_prefixes.items():
+        canonical = set()
+        for value in values:
+            try:
+                canonical.add(str(ipaddress.ip_network(str(value), strict=False)))
+            except ValueError:
+                continue
+        normalized[source_id] = canonical
+
     previous = {}
     previous_path = DATA / f"{provider}-consensus.json"
     if previous_path.exists():
         try:
-            previous = {r.get("cidr"): r for r in json.loads(previous_path.read_text(encoding="utf-8")).get("records", [])}
+            previous = {
+                r.get("cidr"): r for r in json.loads(
+                    previous_path.read_text(encoding="utf-8")
+                ).get("records", [])
+            }
         except Exception:
             previous = {}
+
+    now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     records = []
-    for cidr in sorted(set(map(str, prefixes))):
-        evidence = [source_id for source_id, values in normalized.items() if cidr in values]
-        observed_asns = []
-        peer_counts = []
+    for value in prefixes:
+        try:
+            cidr = str(ipaddress.ip_network(str(value), strict=False))
+        except ValueError:
+            continue
+
+        evidence = sorted(
+            source_id for source_id, values in normalized.items() if cidr in values
+        )
+        bgp_observed_asns = []
+        bgp_peer_counts = []
         for asn in asns:
             row = bgp_health.get(str(asn))
-            if row and row.get("observed"):
-                observed_asns.append(str(asn))
-                peer_counts.append(int(row.get("peers", 0)))
-        independent = len(set(evidence) & {"IPVerse", "RIPEstat", "RouteViews", "RIPE RIS", "cdn-ip-database"})
-        official = bool(set(evidence) & {"official", "cloud-ip-ranges", "cloud-egress-ip-ranges"})
-        score = min(100, 20 + (45 if official else 0) + min(20, independent * 5) + (10 if observed_asns else 0) + (5 if peer_counts and max(peer_counts) >= 2 else 0))
-        records.append({"cidr": cidr, "provider": provider, "sources": sorted(evidence), "source_count": len(evidence), "bgp_observed_asns": observed_asns, "bgp_max_peers": max(peer_counts) if peer_counts else 0, "confidence": score, "first_seen": previous.get(cidr, {}).get("first_seen") or datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "last_seen": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})
+            if not isinstance(row, dict):
+                continue
+            # New validator reports may contain exact observed prefixes.
+            # Without that list, an ASN-level observation is deliberately
+            # NOT attributed to every CIDR.
+            observed_prefixes = set()
+            for prefix in row.get("prefixes", row.get("observed_prefixes", [])) or []:
+                try:
+                    observed_prefixes.add(
+                        str(ipaddress.ip_network(str(prefix), strict=False))
+                    )
+                except ValueError:
+                    continue
+            if cidr in observed_prefixes:
+                bgp_observed_asns.append(str(asn))
+                try:
+                    bgp_peer_counts.append(int(row.get("peers", 0)))
+                except (TypeError, ValueError):
+                    pass
+
+        independent_ids = {"IPVerse", "RIPEstat", "RIPE RIS", "RouteViews", "cdn-ip-database"}
+        independent = len(set(evidence) & independent_ids)
+        official = bool(set(evidence) & {"official", "cloud-ip-ranges", "cloud-egress-ip-ranges", "static"})
+        score = min(
+            100,
+            20
+            + (45 if official else 0)
+            + min(20, independent * 5)
+            + (10 if bgp_observed_asns else 0)
+            + (5 if bgp_peer_counts and max(bgp_peer_counts) >= 2 else 0),
+        )
+        records.append({
+            "cidr": cidr,
+            "provider": provider,
+            "sources": evidence,
+            "source_count": len(evidence),
+            "bgp_observed_asns": bgp_observed_asns,
+            "bgp_max_peers": max(bgp_peer_counts) if bgp_peer_counts else 0,
+            "confidence": score,
+            "first_seen": previous.get(cidr, {}).get("first_seen") or now,
+            "last_seen": now,
+        })
     return records
 def write_source_health_registry(registry):
     """Record registry capabilities without treating repository tools as live feeds."""
@@ -734,27 +800,31 @@ def main():
             errors.append("external-ipset:" + str(exc))
         def fetch_asn(asn):
             try:
-                ripe_values = ripe(asn, min_peers)
+                bgp_views = ripe(asn, min_peers)
                 ipverse_values = ipverse_ranges(asn)
-                return asn, ripe_values, ipverse_values, None
+                return asn, bgp_views, ipverse_values, None
             except Exception as exc:
-                return asn, [], [], exc
+                return asn, {}, [], exc
         if unique_asns:
             with concurrent.futures.ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(unique_asns))) as pool:
                 results = list(pool.map(fetch_asn, unique_asns))
-            for asn, values, ipverse_values, error in results:
+            for asn, bgp_views, ipverse_values, error in results:
                 if error:
                     errors.append(f"RIPE-AS{asn}:{error}")
                 else:
-                    raw.extend(values)
+                    bgp_values = []
+                    for source_id, values in bgp_views.items():
+                        normalized_values = sorted(set(values))
+                        bgp_values.extend(normalized_values)
+                        if normalized_values:
+                            raw.extend(normalized_values)
+                            source_prefixes.setdefault(source_id, []).extend(normalized_values)
+                            sources.append(source_id)
                     raw.extend(ipverse_values)
-                    all_asn4.extend(v for v in values + ipverse_values if "/" in v and ":" not in v)
-                    all_asn6.extend(v for v in values + ipverse_values if ":" in v)
-                    source_prefixes.setdefault("RIPEstat", []).extend(values)
+                    all_asn4.extend(v for v in bgp_values + ipverse_values if "/" in v and ":" not in v)
+                    all_asn6.extend(v for v in bgp_values + ipverse_values if ":" in v)
                     if ipverse_values:
                         source_prefixes.setdefault("IPVerse", []).extend(ipverse_values)
-                    sources.append("RIPEstat")
-                    if ipverse_values:
                         sources.append("IPVerse")
                     routing = ripe_routing_status(asn)
                     if routing:
@@ -912,7 +982,24 @@ def main():
             consensus_index[provider] = {"file": path.name, "cidrs": len(records), "high_confidence": sum(1 for x in records if x.get("confidence", 0) >= 80), "multi_source": sum(1 for x in records if x.get("source_count", 0) >= 2)}
         except Exception:
             continue
-    write_text_atomic(DATA / "consensus.json", json.dumps({"engine": VERSION, "generated_at": now, "model": "multi-source-evidence", "rule": "BGP absence is neutral; a CIDR is never removed solely because a live snapshot did not observe it.", "providers": consensus_index}, indent=2, ensure_ascii=False) + "\n")
+    all_consensus = []
+    for path in sorted(DATA.glob("*-consensus.json")):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            all_consensus.extend(payload.get("records", []))
+        except Exception:
+            continue
+    write_text_atomic(
+        DATA / "consensus.json",
+        json.dumps({
+            "engine": VERSION,
+            "generated_at": now,
+            "model": "multi-source-evidence",
+            "rule": "BGP absence is neutral; a CIDR is never removed solely because a live snapshot did not observe it.",
+            "providers": consensus_index,
+            "records": all_consensus,
+        }, indent=2, ensure_ascii=False) + "\n",
+    )
     write_text_atomic(DATA / "provider-overlaps.json", json.dumps(overlap_report, indent=2, ensure_ascii=False) + "\n")
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     if args.explain:
