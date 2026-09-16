@@ -64,11 +64,11 @@ class GeneratorUnitTests(unittest.TestCase):
             lookup.assert_not_called()
 
     def test_confirm_accepts_announced_prefix(self):
-        with patch("source_acquisition.ripe_prefix_overview", return_value={"announced": True, "asns": [13335]}):
+        with patch.object(self.engine, "ripe_prefix_overview", return_value={"announced": True, "asns": [13335]}):
             self.assertTrue(self.engine.validate_prefix_with_ripe("192.0.2.0/24", {}))
 
     def test_confirm_rejects_empty_ripe_response(self):
-        with patch("source_acquisition.ripe_prefix_overview", return_value={}):
+        with patch.object(self.engine, "ripe_prefix_overview", return_value={}):
             self.assertFalse(self.engine.validate_prefix_with_ripe("192.0.2.0/24", {}))
 
     def test_address_coverage_is_prefix_count_independent(self):
@@ -84,7 +84,7 @@ class GeneratorUnitTests(unittest.TestCase):
             if url.endswith("ipv6-aggregated.txt"):
                 return b"2001:db8::/32\n"
             raise AssertionError(url)
-        with patch("source_acquisition.request", side_effect=fake_request):
+        with patch.object(self.engine, "request", side_effect=fake_request):
             values = self.engine.ipverse_ranges("13335")
         self.assertEqual(values, ["1.2.3.0/24", "2001:db8::/32"])
 
