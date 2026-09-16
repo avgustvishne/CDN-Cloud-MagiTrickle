@@ -113,6 +113,11 @@ jobs:
           assert m["engine"] == "final-v44-source-fusion-ipverse"
           assert m.get("min_provider_prefixes") is None
           assert m.get("max_provider_prefixes") is None
+          audit = json.loads((d / "source-audit.json").read_text(encoding="utf-8"))
+          assert audit.get("method", "").startswith("exact merged address-space")
+          assert isinstance(audit.get("providers"), list)
+          assert isinstance(audit.get("sources"), dict)
+
           overlaps = json.loads((d / "provider-overlaps.json").read_text(encoding="utf-8"))
           assert isinstance(overlaps.get("entries"), list)
           assert overlaps.get("exact_cross_provider_overlaps", 0) >= 0
