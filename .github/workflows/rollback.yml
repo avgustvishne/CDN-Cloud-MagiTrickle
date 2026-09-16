@@ -4,12 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       confirmation:
-        description: 'Type ROLLBACK to restore main from backup/pre-update'
+        description: "Type ROLLBACK to restore main from backup/pre-update"
         required: true
         type: string
-
-permissions:
-  contents: write
 
 concurrency:
   group: production-rollback
@@ -17,15 +14,20 @@ concurrency:
 
 jobs:
   rollback:
+    name: Restore production from backup
     if: ${{ inputs.confirmation == 'ROLLBACK' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      # This job must update only the production branch during an explicit rollback.
+      contents: write
     steps:
       - name: Checkout production
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: main
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Verify rollback backup
         shell: bash
