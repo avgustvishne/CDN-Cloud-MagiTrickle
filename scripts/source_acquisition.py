@@ -14,6 +14,7 @@ import urllib.request
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
 CACHE=DATA/"cache"
+RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 def source_probe(url):
     try:
         data = request(url)
