@@ -82,7 +82,8 @@ def build(data,root):
         safe=provider.lower().replace(" ","-").replace("/","-")
         write(root/"FULL"/(safe+".txt"),raw)
         write(root/"BALANCED"/(safe+".txt"),collapse(raw))
-        minimal=minimalize(raw)\n        write(root/"MINIMAL"/(safe+".txt"),minimal)\n        stats["profiles"].setdefault(provider,{})["FULL"]=profile_stats(raw,raw)\n        stats["profiles"][provider]["BALANCED"]=profile_stats(collapse(raw),raw)\n        stats["profiles"][provider]["MINIMAL"]=profile_stats(minimal,raw)
+        minimal=minimalize(raw)
+        write(root/"MINIMAL"/(safe+".txt"),minimal)\n        stats["profiles"].setdefault(provider,{})["FULL"]=profile_stats(raw,raw)\n        stats["profiles"][provider]["BALANCED"]=profile_stats(collapse(raw),raw)\n        stats["profiles"][provider]["MINIMAL"]=profile_stats(minimal,raw)
     all_raw=[n for ns in data.values() for n in ns]
     write(root/"FULL.txt",sorted(set(all_raw),key=lambda n:(n.version,int(n.network_address),n.prefixlen)))
     all_bal=collapse(all_raw)
