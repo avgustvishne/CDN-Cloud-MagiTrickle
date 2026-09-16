@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "17 */12 * * *"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Generate and validate only; do not commit or push generated data"
+        required: false
+        default: true
+        type: boolean
   push:
     paths:
       - "config/providers.json"
@@ -143,6 +149,7 @@ jobs:
         run: cat data/last-update.txt
 
       - name: Commit generated lists
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run == false }}
         shell: bash
         run: |
           set -e
