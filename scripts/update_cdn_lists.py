@@ -613,6 +613,24 @@ def build_provenance(provider, prefixes, source_records, asn=None, bgp_health=No
         records.append({"cidr":cidr,"provider":provider,"sources":[{"id":s.get("id"),"kind":s.get("kind","secondary"),"observed_at":s.get("observed_at")} for s in matched],"confidence":evidence_confidence(provider, matched, asn, bgp_health or {})})
     return records
 
+def build_consensus(provider, prefixes, source_prefixes, asns, bgp_health):
+    """Create exact per-CIDR evidence without making any source authoritative."""
+    normalized = {source_id: set(map(str, values)) for source_id, values in source_prefixes.items()}
+    records = []
+    for cidr in sorted(set(map(str, prefixes))):
+        evidence = [source_id for source_id, values in normalized.items() if cidr in values]
+        observed_asns = []
+        peer_counts = []
+        for asn in asns:
+            row = bgp_health.get(str(asn))
+            if row and row.get("observed"):
+                observed_asns.append(str(asn))
+                peer_counts.append(int(row.get("peers", 0)))
+        independent = len(set(evidence) & {"IPVerse", "RIPEstat", "RouteViews", "RIPE RIS", "cdn-ip-database"})
+        official = bool(set(evidence) & {"official", "cloud-ip-ranges", "cloud-egress-ip-ranges"})
+        score = min(100, 20 + (45 if official else 0) + min(20, independent * 5) + (10 if observed_asns else 0) + (5 if peer_counts and max(peer_counts) >= 2 else 0))
+        records.append({"cidr": cidr, "provider": provider, "sources": sorted(evidence), "source_count": len(evidence), "bgp_observed_asns": observed_asns, "bgp_max_peers": max(peer_counts) if peer_counts else 0, "confidence": score, "first_seen": None, "last_seen": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})
+    return records
 def write_source_health_registry(registry):
     """Record registry capabilities without treating repository tools as live feeds."""
     rows=[]
@@ -646,6 +664,7 @@ def main():
     provider_asns = {}
     for name, asns in cfg["providers"].items():
         raw, sources, errors = [], [], []
+        source_prefixes = {}
         unique_asns = []
         for asn in asns:
             if asn not in unique_asns:
@@ -655,7 +674,9 @@ def main():
         provider_asns[name] = unique_asns
         try:
             raw = official(name)
-            if raw: sources.append("official" if name not in STATIC else "static")
+            if raw:
+                sources.append("official" if name not in STATIC else "static")
+                source_prefixes["official" if name not in STATIC else "static"] = list(raw)
         except Exception as exc:
             errors.append("official:" + str(exc))
 
@@ -664,6 +685,7 @@ def main():
             if registry_values:
                 raw.extend(registry_values)
                 sources.append("cloud-ip-ranges")
+                source_prefixes["cloud-ip-ranges"] = list(registry_values)
             elif registry_source and registry_source.startswith("stale"):
                 errors.append(registry_source)
             elif registry_source and registry_source.startswith("cloud-ip-ranges:"):
@@ -676,6 +698,7 @@ def main():
             if egress_values:
                 raw.extend(egress_values)
                 sources.append("cloud-egress-ip-ranges")
+                source_prefixes["cloud-egress-ip-ranges"] = list(egress_values)
         except Exception as exc:
             errors.append("cloud-egress:" + str(exc))
 
@@ -690,6 +713,7 @@ def main():
                 if values:
                     raw.extend(values)
                     sources.append(registry_id)
+                    source_prefixes[registry_id] = list(values)
             except Exception as exc:
                 errors.append(registry_id + ":" + str(exc))
 
@@ -697,6 +721,8 @@ def main():
             extra, extra_sources = external_ipsets(name, unique_asns)
             raw.extend(extra)
             sources.extend(extra_sources)
+            for extra_source in extra_sources:
+                source_prefixes.setdefault(extra_source, []).extend(extra)
         except Exception as exc:
             errors.append("external-ipset:" + str(exc))
         def fetch_asn(asn):
@@ -717,6 +743,9 @@ def main():
                     raw.extend(ipverse_values)
                     all_asn4.extend(v for v in values + ipverse_values if "/" in v and ":" not in v)
                     all_asn6.extend(v for v in values + ipverse_values if ":" in v)
+                    source_prefixes.setdefault("RIPEstat", []).extend(values)
+                    if ipverse_values:
+                        source_prefixes.setdefault("IPVerse", []).extend(ipverse_values)
                     sources.append("RIPEstat")
                     if ipverse_values:
                         sources.append("IPVerse")
@@ -768,6 +797,8 @@ def main():
             atomic(old4, v4); atomic(old6, v6)
         diff_info = write_diff(name, old4_raw, list(map(str,v4)), old6_raw, list(map(str,v6)))
         source = "+".join(dict.fromkeys(sources)) or "none"
+        consensus = build_consensus(name, list(v4) + list(v6), source_prefixes, unique_asns, bgp_health)
+        write_text_atomic(DATA / f"{name}-consensus.json", json.dumps({"provider": name, "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "asns": unique_asns, "records": consensus}, indent=2, ensure_ascii=False) + "\n")
         all4.extend(v4); all6.extend(v6)
         prev4_count, prev6_count = len(prev4), len(prev6)
         pct4 = None if not prev4_count else round((len(v4) - prev4_count) * 100 / prev4_count, 2)
