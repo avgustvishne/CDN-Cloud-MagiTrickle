@@ -84,7 +84,10 @@ def update_readme(stats):
     text = README.read_text(encoding="utf-8")
     changed = 0
     counts = {pathlib.PurePosixPath(path).name: info["cidr_count"] for path, info in stats["files"].items()}
-    pattern = re.compile(r"(\\*\\*)[0-9][0-9 ]*(?: CIDR)(\\*\\*\\s*·\\s*\\[(?:IPv4|IPv6)\\]\\()(https://raw\\.githubusercontent\\.com/avgustvishne/CDN-Cloud-MagiTrickle/main/(?:data/)?(?:presets/)?([^/)]+\\.txt))")
+    pattern = re.compile(
+        r"(\*\*)[0-9][0-9 ]*(?: CIDR)(\*\*\s*·\s*\[(?:IPv4|IPv6)\]\()"
+        r"(https://raw\.githubusercontent\.com/avgustvishne/CDN-Cloud-MagiTrickle/main/(?:data/)?(?:presets/)?([^/)]+\.txt))"
+    )
     def repl(match):
         nonlocal changed
         filename = match.group(4)
