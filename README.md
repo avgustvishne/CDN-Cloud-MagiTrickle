@@ -6,19 +6,13 @@
 
 ## 🚀 Быстрый старт
 
-Если не знаете, что выбрать:
-
-**BALANCED** — оптимальный вариант для большинства случаев.
-
-### Основные подписки
+Если не знаете, что выбрать — используйте **BALANCED**.
 
 | Профиль | IPv4 | IPv6 |
 |---|---|---|
-| **FULL** | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/dist/FULL.txt) | — |
-| **BALANCED** | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/dist/BALANCED.txt) | — |
-| **MINIMAL** | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/dist/MINIMAL.txt) | — |
-
-> Примечание: итоговые `dist/*.txt` формируются автоматически. Отдельные IPv4/IPv6 наборы находятся в `data/presets/`, если они присутствуют в текущей сборке.
+| **FULL** | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) |
+| **BALANCED** | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
+| **MINIMAL** | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [Подписка](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) |
 
 ## 📦 Наборы
 
