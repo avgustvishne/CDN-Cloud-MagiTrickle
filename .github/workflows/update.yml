@@ -19,57 +19,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  dpi-health:
-    name: DPI health probe (optional)
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run DPI detector if installed
-        run: |
-          if command -v dpi_detector >/dev/null 2>&1; then
-            python3 scripts/dpi_probe.py --detector dpi_detector --tests 123 --concurrency 20 --allow-fail
-          else
-            echo '{"status":"UNAVAILABLE","reason":"DPI detector is intentionally not installed on the GitHub runner; run this probe on the target network."}' > data/dpi-health.json
-          fi
-      - name: Discover provider ASNs and current prefixes
-        run: |
-          python3 scripts/discover_provider_asns.py
-      - name: Build normalized CIDR provenance
-        run: |
-          mkdir -p data/evidence
-          python3 scripts/provenance.py
-      - name: Validate source health
-        run: |
-          python3 scripts/source_health.py
-      - name: Generate FULL BALANCED MINIMAL profiles
-        run: |
-          python3 scripts/profile_generator.py
-          python3 scripts/validate_profiles.py
-      - name: Generate update report
-        run: |
-          python3 scripts/update_report.py
-      - name: Run publication regression gate
-        run: |
-          python3 scripts/regression.py --current data/provenance/cidr.json --output data/health/regression.json
-      - name: Build DPI source registry and quality report
-        run: |
-          python3 scripts/dpi_sources.py
-          python3 scripts/dpi_quality.py --input data/dpi/observations.json
-      - name: Build DPI matrix and strategy audit
-        run: |
-          python3 scripts/dpi_matrix.py
-          python3 scripts/dpi_strategy_audit.py
-      - name: Upload DPI matrix
-        uses: actions/upload-artifact@v4
-        with:
-          name: dpi-matrix
-          path: data/dpi/
-      - name: Upload DPI health report
-        uses: actions/upload-artifact@v4
-        with:
-          name: dpi-health
-          path: data/dpi-health.json
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 25
@@ -169,6 +118,9 @@ jobs:
           print("Validation OK: syntax, CIDR uniqueness, provider coverage, profiles, checksums and overlap audit")
           PY
 
+      - name: Generate update report
+        run: python scripts/update_report.py
+
       - name: Show summary
         run: cat data/last-update.txt
 
@@ -178,7 +130,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/
+          git add data/ UPDATE_REPORT.md
           if git diff --cached --quiet; then
             echo "No changes."
             exit 0
