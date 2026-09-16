@@ -208,7 +208,9 @@ def ripe(asn, min_peers):
     })
     try:
         payload = jsonget(RIPE + "?" + query)
-        for item in payload.get("data", {}).get("prefixes", []):
+        for item in (payload.get("data", {}).get("prefixes", []) or payload.get("prefixes", [])):
+            if isinstance(item, str):
+                item = {"prefix": item}
             if isinstance(item, dict) and item.get("prefix"):
                 value = item["prefix"]
                 try:
