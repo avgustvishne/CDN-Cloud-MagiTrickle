@@ -40,5 +40,47 @@
       "github",
       "gitlab"
     ]
+  },
+  "cdn-ip-database": {
+    "base": "https://raw.githubusercontent.com/mansourjabin/cdn-ip-database/main/data",
+    "resolved_ipv4": "resolved_ips.json",
+    "resolved_text": "cdn.lst",
+    "sources_catalog": "sources.json",
+    "refresh": "daily",
+    "role": "official-source-catalog-and-cross-check"
+  },
+  "mrkhachaturov-ipranges": {
+    "base": "https://raw.githubusercontent.com/mrkhachaturov/ipranges/main",
+    "refresh": "4h",
+    "role": "independent-public-source-cross-check",
+    "merged_pattern": "{provider}/ipv4_merged.txt",
+    "ipv6_merged_pattern": "{provider}/ipv6_merged.txt"
+  },
+  "asn-index": {
+    "release": "https://github.com/remnawave/asn-index/releases/latest/download/asn-prefixes.json",
+    "refresh": "daily",
+    "role": "ASN-to-prefix-index",
+    "upstream": "ipverse/as-ip-blocks"
+  },
+  "routesentinel": {
+    "repo": "https://github.com/ipanalytics/RouteSentinel",
+    "role": "BGP-route-origin-and-RPKI-validation-reference",
+    "refresh": "daily",
+    "policy": "validation-only-not-primary-provider-source"
+  },
+  "asn-threat-feeds": {
+    "base": "https://dfratiani.github.io/asn-threat-feeds/feeds",
+    "refresh": "automated",
+    "role": "BGP-announced-ASN-cross-check",
+    "patterns": {
+      "ipv4": "as{asn}_ipv4.txt",
+      "ipv6": "as{asn}_ipv6.txt"
+    }
+  },
+  "cloud-provider-ip-addresses": {
+    "repo": "https://github.com/rezmoss/cloud-provider-ip-addresses",
+    "refresh": "daily",
+    "role": "independent-provider-cross-check",
+    "policy": "not-authoritative; never overrides official feeds"
   }
 }
