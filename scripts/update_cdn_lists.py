@@ -240,6 +240,8 @@ def validate_prefix_with_ripe(prefix, cache=None):
             if now - int(entry.get("ts", 0)) < RIPE_CACHE_TTL:
                 return bool(entry.get("confirmed", False))
         except (TypeError, ValueError):
+            # Malformed cache entry (e.g. non-integer ts): treat as cache miss
+            # and continue to refresh from RIPE below.
             pass
 
     data = ripe_prefix_overview(prefix)
