@@ -29,7 +29,6 @@ def main():
     ap.add_argument("--max-drop", type=float, default=0.50)
     ap.add_argument("--min-previous", type=int, default=20)
     ap.add_argument("--report", default="data/rollback-report.json")
-    ap.add_argument("--allow-empty-previous", action="store_true")
     args=ap.parse_args()
 
     cur=pathlib.Path(args.current_dir)
