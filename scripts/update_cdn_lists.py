@@ -338,56 +338,40 @@ def parse_cidr_lines(data):
     return values
 
 def registry_provider_ranges(name, registry_id, spec):
-    """Fetch additive CIDR evidence from registered independent CDN sources."""
-    if registry_id == "cdn-ip-database":
-        base = spec.get("base", "").rstrip("/")
-        filename = spec.get("resolved_ipv4") if True else None
-        url = base + "/" + (filename or "")
-        data = request(url)
-        # Resolve common JSON shapes without assuming provider naming conventions.
-        obj = json.loads(data.decode("utf-8"))
-        wanted = name.lower().replace("_", "-")
-        out = []
-        def walk(obj, provider=None):
-            if isinstance(obj, dict):
-                local_provider = str(obj.get("provider", obj.get("name", provider))).lower()
-                for k,v in obj.items():
-                    if k.lower() in ("provider","name"): continue
-                    walk(v, local_provider)
-            elif isinstance(obj, list):
-                for v in obj: walk(v, provider)
-            elif isinstance(obj, str) and "/" in obj and (provider is None or wanted in provider or provider in wanted):
-                try: ipaddress.ip_network(obj, strict=False); out.append(obj)
-                except ValueError: pass
-        walk(obj)
-        return out
+    """Fetch only explicitly documented, stable hosted artifacts.
 
-    if registry_id == "taythebot-cdn-ranges":
-        # The project publishes provider-specific files in its provider tree.
-        base = "https://raw.githubusercontent.com/taythebot/cdn-ranges/main/provider"
-        candidates = [name, name.replace("-", "_"), name.replace("_", "-")]
-        out=[]
-        for candidate in candidates:
-            for fn in (candidate + ".txt", candidate + ".json"):
+    Repository-only generators (cdn-ranges/cdn-fetcher) are intentionally not
+    scraped by filename guessing. They remain validation/reference sources.
+    """
+    if registry_id != "cdn-ip-database":
+        return []
+    base = spec.get("base", "").rstrip("/")
+    url = base + "/" + spec.get("resolved_ipv4", "resolved_ips.json")
+    obj = json.loads(request(url).decode("utf-8"))
+    wanted = name.lower().replace("_", "-")
+    out = []
+
+    def walk(node, provider=None):
+        if isinstance(node, dict):
+            local = str(node.get("provider", node.get("name", provider))).lower()
+            for key, value in node.items():
+                if key.lower() in ("provider", "name"):
+                    continue
+                walk(value, local)
+        elif isinstance(node, list):
+            for value in node:
+                walk(value, provider)
+        elif isinstance(node, str) and "/" in node:
+            if provider is None or wanted in provider or provider in wanted:
                 try:
-                    out.extend(parse_cidr_lines(request(base + "/" + fn)))
-                except Exception:
+                    ipaddress.ip_network(node, strict=False)
+                    out.append(node)
+                except ValueError:
                     pass
-            if out: break
-        return out
 
-    if registry_id == "krainium-cdn-fetcher":
-        # Use only files generated from official provider APIs.
-        base = "https://raw.githubusercontent.com/Krainium/cdn-fetcher/main/cdn-ranges"
-        candidates=[name, name.replace("_","-"), name.replace("-","_")]
-        out=[]
-        for candidate in candidates:
-            for fn in (candidate+".txt", candidate+"-ipv4.txt"):
-                try: out.extend(parse_cidr_lines(request(base+"/"+fn)))
-                except Exception: pass
-            if out: break
-        return out
-    return []
+    walk(obj)
+    return sorted(set(out))
+
 
 def registry_cloud_ranges(name, registry):
     cloud = registry.get("cloud-ip-ranges", {})
@@ -571,6 +555,21 @@ def build_provenance(provider, prefixes, source_records):
         records.append({"cidr":cidr,"provider":provider,"sources":[{"id":s.get("id"),"kind":s.get("kind","secondary"),"observed_at":s.get("observed_at")} for s in matched],"confidence":source_confidence(matched)})
     return records
 
+def write_source_health_registry(registry):
+    """Record registry capabilities without treating repository tools as live feeds."""
+    rows=[]
+    for source_id, spec in registry.items():
+        rows.append({
+            "id": source_id,
+            "role": spec.get("role", ""),
+            "refresh": spec.get("refresh", ""),
+            "live_fetch_enabled": source_id in {"cloud-ip-ranges","cloud-egress-ip-ranges","cdn-ip-database"},
+            "reference_only": source_id in {"taythebot-cdn-ranges","krainium-cdn-fetcher","projectdiscovery-cdncheck","routesentinel","cloud-provider-ip-addresses"},
+        })
+    write_text_atomic(DATA / "source-registry-health.json",
+        json.dumps({"generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "sources": rows}, indent=2, ensure_ascii=False) + "\n")
+
 def main():
     parser = argparse.ArgumentParser(description="Build CDN/ASN subscriptions")
     parser.add_argument("--explain", action="store_true", help="generate per-CIDR policy explanations")
@@ -579,6 +578,7 @@ def main():
     args = parser.parse_args()
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     registry = load_source_registry()
+    write_source_health_registry(registry)
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
     all_asn4, all_asn6 = [], []
@@ -620,11 +620,11 @@ def main():
         except Exception as exc:
             errors.append("cloud-egress:" + str(exc))
 
-        # Independent CDN registries: additive evidence only.
+        # Independent registries are additive only when they expose a stable,
+        # machine-readable hosted artifact. Repository-only tools are recorded as
+        # references/validators instead of guessing their generated file layout.
         for registry_id, registry_spec in (
             ("cdn-ip-database", registry.get("cdn-ip-database", {})),
-            ("taythebot-cdn-ranges", registry.get("taythebot-cdn-ranges", {})),
-            ("krainium-cdn-fetcher", registry.get("krainium-cdn-fetcher", {})),
         ):
             try:
                 values = registry_provider_ranges(name, registry_id, registry_spec)
