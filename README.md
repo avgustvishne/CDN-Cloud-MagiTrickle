@@ -48,6 +48,20 @@
 | **Video** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
 | **VPN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
 
+## 🧪 DPI-проверка
+
+Проект поддерживает отдельный **DPI health probe** на основе [Runnin4ik/dpi-detector](https://github.com/Runnin4ik/dpi-detector).
+
+Важно: DPI зависит от конкретной сети/оператора и маршрута. Поэтому GitHub Actions не использует результат DPI для приписывания или удаления CIDR у провайдера. DPI-проверка запускается на отдельном probe-host и показывает состояние текущего подключения; результаты сохраняются в `data/dpi-health.json`.
+
+Для локальной проверки:
+
+```bash
+python scripts/dpi_probe.py --detector dpi_detector --tests 123 --concurrency 20
+```
+
+Результаты DPI не подменяют официальные IP feeds, BGP/RIPE и проверки актуальности. Для диагностики стратегии обхода дополнительно можно использовать [zapret/blockcheck](https://github.com/bol-van/zapret), но его также нельзя трактовать как постоянное свойство конкретного CIDR. [dpi-detector](https://github.com/Runnin4ik/dpi-detector) поддерживает batch-режим, собственные domains/tcp16/config и тесты TLS/TCP/HTTP/DNS/16–20 KB. citeturn0search0turn0search1
+
 ## 🔢 Все ASN сразу
 
 - **ASN ALL IPv4:** [asn-all-v4.txt](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt)
