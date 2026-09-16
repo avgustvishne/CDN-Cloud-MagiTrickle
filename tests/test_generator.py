@@ -138,6 +138,17 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertEqual(by_cidr["198.51.100.0/24"]["source_count"], 1)
         self.assertEqual(by_cidr["198.51.100.0/24"]["bgp_observed_asns"], [])
 
+    def test_extracted_helpers_import_and_basic_normalization(self):
+        import importlib.util
+        for filename in ("artifact_store.py", "evidence_store.py", "source_acquisition.py", "normalization.py"):
+            path = ROOT / "scripts" / filename
+            spec = importlib.util.spec_from_file_location(filename[:-3], path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+        result, rejected = module.nets(["192.0.2.0/24"], 4)
+        self.assertEqual(rejected, 0)
+        self.assertEqual(result[0].prefixlen, 24)
+
     def test_generated_cidrs_are_parseable(self):
         data = ROOT / "data"
         for path in (data / "all-cloud-v4.txt", data / "all-cloud-v6.txt",
