@@ -58,6 +58,15 @@ def main():
                 terms=[pname]+aliases
                 if any(norm(t) and (norm(t) in key or key in norm(t)) for t in terms):
                     records.append({"provider":pname,"asn":asn,"handle":current,"source":"projectdiscovery/cdncheck","source_type":"asn_index","match":"cdncheck_registry"})
+    enriched=[]
+    for rec in records:
+        try:
+            obj=json.loads(fetch(BASE.format(asn=rec["asn"])))
+            prefixes=obj.get("prefixes",{})
+            enriched.append({**rec,"prefixes":{"ipv4":prefixes.get("ipv4",[]),"ipv6":prefixes.get("ipv6",[])}})
+        except Exception as e:
+            enriched.append({**rec,"prefixes":{"ipv4":[],"ipv6":[]},"fetch_error":str(e)})
+    records=enriched
     out=pathlib.Path(a.output);out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps({"schema_version":1,"generated_at":datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),"status":"OK","records":records},indent=2,ensure_ascii=False)+"\n")
 if __name__=="__main__":main()
