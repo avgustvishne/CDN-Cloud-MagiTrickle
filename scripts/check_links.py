@@ -11,9 +11,11 @@ README = Path("README.md").read_text(encoding="utf-8")
 BASE = "https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/"
 EVENT = os.environ.get("GITHUB_EVENT_NAME", "")
 HEAD_REF = os.environ.get("GITHUB_HEAD_REF", "")
+REF_NAME = os.environ.get("GITHUB_REF_NAME", "")
+CHECK_REF = HEAD_REF if EVENT == "pull_request" else (REF_NAME if EVENT == "push" and REF_NAME and REF_NAME != "main" else "")
 CHECK_BASE = (
-    f"https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/{HEAD_REF}/"
-    if EVENT == "pull_request" and HEAD_REF else BASE
+    f"https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/{CHECK_REF}/"
+    if CHECK_REF else BASE
 )
 
 urls = sorted(set(re.findall(r'\]\((https://raw\.githubusercontent\.com/[^)]+)\)', README)))
