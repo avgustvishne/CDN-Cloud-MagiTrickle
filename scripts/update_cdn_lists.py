@@ -95,8 +95,8 @@ def request(url):
     try:
         if cached.exists() and time.time() - cached.stat().st_mtime < CACHE_TTL:
             return cached.read_bytes()
-    except OSError:
-        pass
+    except OSError as exc:
+        print(f"[warn] cache read failed for {cached}: {exc}", file=sys.stderr)
     last = None
     for attempt in range(1, RETRIES + 1):
         try:
