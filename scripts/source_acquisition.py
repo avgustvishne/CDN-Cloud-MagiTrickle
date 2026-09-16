@@ -379,7 +379,7 @@ def registry_cloud_ranges(name, registry):
         values = parse_cidr_lines(data)
         import re
         text = data.decode("utf-8", errors="replace")
-        match = re.search(r"^#\\s*last_update:\\s*(\\d{4}-\\d{2}-\\d{2})", text, re.M)
+        match = re.search(r"^#\s*last_update:\s*(\d{4}-\d{2}-\d{2})", text, re.M)
         if match:
             stamp = datetime.datetime.fromisoformat(match.group(1)).replace(tzinfo=datetime.timezone.utc)
             if (datetime.datetime.now(datetime.timezone.utc) - stamp).total_seconds() > 14 * 86400:
