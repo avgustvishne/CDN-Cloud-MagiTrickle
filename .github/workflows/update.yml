@@ -32,6 +32,15 @@ jobs:
           else
             echo '{"status":"UNAVAILABLE","reason":"DPI detector is intentionally not installed on the GitHub runner; run this probe on the target network."}' > data/dpi-health.json
           fi
+      - name: Build DPI matrix and strategy audit
+        run: |
+          python3 scripts/dpi_matrix.py
+          python3 scripts/dpi_strategy_audit.py
+      - name: Upload DPI matrix
+        uses: actions/upload-artifact@v4
+        with:
+          name: dpi-matrix
+          path: data/dpi/
       - name: Upload DPI health report
         uses: actions/upload-artifact@v4
         with:
