@@ -3,6 +3,25 @@
 import hashlib
 import json
 import pathlib
+import os
+import tempfile
+import ipaddress
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+DATA = ROOT / "data"
+DIFF_DIR = DATA / "diff"
+DIFF_DIR.mkdir(parents=True, exist_ok=True)
+
+def nets(values, version):
+    parsed = set()
+    for value in values:
+        try:
+            net = value if isinstance(value, (ipaddress.IPv4Network, ipaddress.IPv6Network)) else ipaddress.ip_network(str(value).strip(), strict=False)
+            if net.version == version:
+                parsed.add(net)
+        except (TypeError, ValueError):
+            continue
+    return sorted(ipaddress.collapse_addresses(parsed), key=lambda n: (int(n.network_address), n.prefixlen)), 0
 
 def load_old_raw(path):
     if not path.exists(): return []
