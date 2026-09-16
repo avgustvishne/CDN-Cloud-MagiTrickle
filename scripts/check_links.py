@@ -13,6 +13,7 @@ BASE = "https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/mai
 urls = sorted(set(re.findall(r'\]\((https://raw\.githubusercontent\.com/[^)]+)\)', README)))
 
 bad = []
+local_targets = {}
 
 # First fail fast on links pointing to files that do not exist in the repository.
 for url in urls:
@@ -20,6 +21,7 @@ for url in urls:
         continue
     rel = url[len(BASE):].split("?", 1)[0].split("#", 1)[0]
     target = Path(rel)
+    local_targets[url] = target.is_file()
     if not target.is_file():
         bad.append((url, f"missing repository file: {rel}"))
 
@@ -51,6 +53,12 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
     for url, status in ex.map(check, urls):
         print(status, url)
         if status not in (200, 206):
+            # During PR validation a newly added subscription may not exist on
+            # main yet. The local checkout is authoritative for that case;
+            # once merged, the same check requires the main Raw URL to respond.
+            if status == 404 and url.startswith(BASE) and local_targets.get(url, False):
+                print(f"LOCAL-ONLY {url} (not published on main yet)")
+                continue
             network_bad.append((url, status))
 
 bad.extend(network_bad)
