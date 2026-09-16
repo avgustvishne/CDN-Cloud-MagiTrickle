@@ -71,6 +71,12 @@ jobs:
       - name: Build source intelligence report
         run: python scripts/source_intelligence.py
 
+      - name: Collect network evidence (BGP, IRR, RPKI)
+        env:
+          MAX_NETWORK_EVIDENCE: "128"
+          NETWORK_EVIDENCE_WORKERS: "8"
+        run: python scripts/network_evidence.py
+
       - name: Validate generated outputs
         run: python scripts/validate_outputs.py
 
@@ -143,6 +149,14 @@ jobs:
           assert audit.get("method", "").startswith("exact merged address-space")
           assert isinstance(audit.get("providers"), list)
           assert isinstance(audit.get("sources"), dict)
+
+          network = json.loads((d / "network-evidence.json").read_text(encoding="utf-8"))
+          assert network["schema_version"] == 1
+          assert network["policy"]["rpki_invalid_deletes_prefix"] is False
+          assert network["policy"]["bgp_absence_deletes_prefix"] is False
+          assert network["policy"]["irr_absence_deletes_prefix"] is False
+          assert network["queried"] <= network["policy"]["max_prefixes"]
+          assert isinstance(network.get("evidence"), list)
 
           intelligence = json.loads((d / "source-intelligence.json").read_text(encoding="utf-8"))
           assert intelligence["schema_version"] == 1
