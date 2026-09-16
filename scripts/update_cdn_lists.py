@@ -571,11 +571,46 @@ def source_confidence(sources):
     independent=len(set(kinds))
     return min(100, score + min(10, max(0, independent-1)*2))
 
-def build_provenance(provider, prefixes, source_records):
+def load_bgpstream_health():
+    """Load the latest optional BGPStream validation report."""
+    path = DATA / "bgpstream-health.json"
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        return {str(row.get("asn")): row for row in payload.get("results", [])}
+    except Exception:
+        return {}
+
+
+def evidence_confidence(provider, cidr_sources, asn, bgp_health):
+    """Combine source evidence without making live BGP a hard deletion rule."""
+    kinds = {s.get("kind", "secondary") for s in cidr_sources if isinstance(s, dict)}
+    score = source_confidence(cidr_sources)
+    if "official" in kinds:
+        score += 2
+    if "asn_index" in kinds:
+        score += 2
+    if "independent" in kinds:
+        score += 2
+    row = bgp_health.get(str(asn))
+    if row:
+        if row.get("observed"):
+            score += 5
+        if int(row.get("peers", 0)) >= 2:
+            score += 3
+        elif int(row.get("peers", 0)) == 0:
+            # A missing observation is neutral: live RIB snapshots are not
+            # complete enough to justify deleting a prefix.
+            score += 0
+    return min(100, score)
+
+
+def build_provenance(provider, prefixes, source_records, asn=None, bgp_health=None):
     records=[]
     for cidr in sorted(set(prefixes)):
         matched=[s for s in source_records if cidr in set(s.get("prefixes",[]))]
-        records.append({"cidr":cidr,"provider":provider,"sources":[{"id":s.get("id"),"kind":s.get("kind","secondary"),"observed_at":s.get("observed_at")} for s in matched],"confidence":source_confidence(matched)})
+        records.append({"cidr":cidr,"provider":provider,"sources":[{"id":s.get("id"),"kind":s.get("kind","secondary"),"observed_at":s.get("observed_at")} for s in matched],"confidence":evidence_confidence(provider, matched, asn, bgp_health or {})})
     return records
 
 def write_source_health_registry(registry):
@@ -601,6 +636,7 @@ def main():
     args = parser.parse_args()
     cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     registry = load_source_registry()
+    bgp_health = load_bgpstream_health()
     write_source_health_registry(registry)
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
