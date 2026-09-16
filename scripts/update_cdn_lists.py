@@ -24,10 +24,12 @@ VERSION = 44
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
-RETRIES = 5
-TIMEOUT = 30
+RETRIES = 2
+TIMEOUT = 15
 RETRY_BASE = 2
 MAX_WORKERS = 8
+# Bound the amount of time one ASN can spend on external source lookups.
+ASN_SOURCE_TIMEOUT = 60
 CACHE_TTL = 21600
 MIN_CHANGE_RATIO = 0.50
 MIN_CHANGE_RATIO_V6 = 0.35
@@ -216,25 +218,22 @@ def select_ripe_candidates(prefixes, limit=128):
 
 
 def ipverse_ranges(asn):
-    """Fetch daily BGP-aggregated prefixes from IPVerse for one ASN.
-    IPVerse is an independent BGP-derived source; it is additive and never
-    replaces official provider feeds or other BGP views.
-    """
-    found = []
+    """Fetch IPVerse IPv4/IPv6 aggregates concurrently; source is additive."""
     base = f"https://raw.githubusercontent.com/ipverse/as-ip-blocks/master/as/{asn}"
-    for filename in ("ipv4-aggregated.txt", "ipv6-aggregated.txt"):
+    def fetch(filename):
         try:
-            data = request(f"{base}/{filename}")
-            found.extend(parse_cidr_lines(data))
+            return parse_cidr_lines(request(f"{base}/{filename}"))
         except Exception:
-            continue
-    return sorted(set(found))
+            return []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+        parts = list(pool.map(fetch, ("ipv4-aggregated.txt", "ipv6-aggregated.txt")))
+    return sorted(set(parts[0] + parts[1]))
 
 
 def routeviews_prefixes(asn):
-    """Fallback BGP source using RouteViews current RIB data."""
-    found = set()
-    for af in (4, 6):
+    """Fetch RouteViews IPv4/IPv6 views concurrently; failures are additive only."""
+    def fetch_af(af):
+        found = set()
         url = f"https://api.routeviews.org/asn/{asn}?af={af}"
         try:
             payload = jsonget(url)
@@ -246,34 +245,21 @@ def routeviews_prefixes(asn):
                         found.add(item["prefix"])
         except Exception:
             pass
+        return found
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(fetch_af, (4, 6)))
+    found = set().union(*results) if results else set()
     return sorted(found)
 
 
 def ripe(asn, min_peers):
-    """Fetch independent BGP views separately for exact provenance."""
-    views = {
-        "RIPEstat": set(),
-        "RIPE RIS": set(),
-        "RouteViews": set(),
-    }
-
+    """Fetch independent BGP views concurrently while preserving provenance."""
     query = urllib.parse.urlencode({
         "resource": "AS" + asn,
         "min_peers_seeing": min_peers,
         "sourceapp": "CDN-Cloud-MagiTrickle",
     })
-    try:
-        payload = jsonget(RIPE + "?" + query)
-        for item in payload.get("data", {}).get("prefixes", []):
-            if isinstance(item, dict) and item.get("prefix"):
-                value = item["prefix"]
-                try:
-                    views["RIPEstat"].add(str(ipaddress.ip_network(value, strict=False)))
-                except ValueError:
-                    pass
-    except Exception:
-        pass
-
     ris_query = urllib.parse.urlencode({
         "resource": "AS" + asn,
         "list_prefixes": "true",
@@ -282,26 +268,49 @@ def ripe(asn, min_peers):
         "noise": "filter",
         "sourceapp": "CDN-Cloud-MagiTrickle",
     })
-    try:
-        ris = jsonget("https://stat.ripe.net/data/ris-prefixes/data.json?" + ris_query)
-        for value in walk_strings(ris.get("data", {}).get("prefixes", [])):
-            if "/" in value:
-                try:
-                    views["RIPE RIS"].add(str(ipaddress.ip_network(value, strict=False)))
-                except ValueError:
-                    pass
-    except Exception:
-        pass
 
-    try:
-        views["RouteViews"].update(
-            str(ipaddress.ip_network(value, strict=False))
-            for value in routeviews_prefixes(asn)
-        )
-    except Exception:
-        pass
+    def fetch_ripestat():
+        found = set()
+        try:
+            payload = jsonget(RIPE + "?" + query)
+            for item in payload.get("data", {}).get("prefixes", []):
+                if isinstance(item, dict) and item.get("prefix"):
+                    try:
+                        found.add(str(ipaddress.ip_network(item["prefix"], strict=False)))
+                    except ValueError:
+                        pass
+        except Exception:
+            pass
+        return found
 
-    return {source: sorted(values) for source, values in views.items()}
+    def fetch_ris():
+        found = set()
+        try:
+            ris = jsonget("https://stat.ripe.net/data/ris-prefixes/data.json?" + ris_query)
+            for value in walk_strings(ris.get("data", {}).get("prefixes", [])):
+                if "/" in value:
+                    try:
+                        found.add(str(ipaddress.ip_network(value, strict=False)))
+                    except ValueError:
+                        pass
+        except Exception:
+            pass
+        return found
+
+    def fetch_routeviews():
+        try:
+            return {str(ipaddress.ip_network(value, strict=False)) for value in routeviews_prefixes(asn)}
+        except Exception:
+            return set()
+
+    funcs = (fetch_ripestat, fetch_ris, fetch_routeviews)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
+        ripestat, ris, routeviews = list(pool.map(lambda fn: fn(), funcs))
+    return {
+        "RIPEstat": sorted(ripestat),
+        "RIPE RIS": sorted(ris),
+        "RouteViews": sorted(routeviews),
+    }
 
 def walk_strings(obj):
     if isinstance(obj, str):
