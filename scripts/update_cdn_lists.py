@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import datetime
 import concurrent.futures
+import contextlib
 import hashlib
 import ipaddress
 import json
@@ -465,11 +466,9 @@ def registry_provider_ranges(name, registry_id, spec):
                 walk(value, provider)
         elif isinstance(node, str) and "/" in node:
             if provider is None or wanted in provider or provider in wanted:
-                try:
+                with contextlib.suppress(ValueError):
                     ipaddress.ip_network(node, strict=False)
                     out.append(node)
-                except ValueError:
-                    pass
 
     walk(obj)
     return sorted(set(out))
