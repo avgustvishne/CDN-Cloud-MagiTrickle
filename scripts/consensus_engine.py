@@ -8,8 +8,10 @@ import ipaddress
 import json
 import pathlib
 
-def build_consensus(provider, prefixes, source_prefixes, asns, bgp_health, data_dir):
+def build_consensus(provider, prefixes, source_prefixes, asns, bgp_health, data_dir=None):
     """Create exact per-CIDR evidence; BGP absence is neutral."""
+    if data_dir is None:
+        data_dir = pathlib.Path(__file__).resolve().parents[1] / "data"
     normalized = {}
     for source_id, values in source_prefixes.items():
         canonical = set()

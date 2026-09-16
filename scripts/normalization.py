@@ -2,6 +2,8 @@
 """Extracted normalization helpers for CDN-Cloud-MagiTrickle."""
 import ipaddress
 
+MIN_PREFIXLEN = {4: 8, 6: 16}
+
 def find_exact_duplicates(values):
     seen = set()
     duplicates = set()
