@@ -1,0 +1,51 @@
+name: BGPStream live validation
+
+on:
+  schedule:
+    - cron: "47 */12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bgpstream-validation
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Run CAIDA BGPStream validation
+        run: |
+          docker pull caida/bgpstream:latest
+          docker run --rm             -v "$PWD:/repo"             caida/bgpstream:latest             python3 /repo/scripts/bgpstream_validate.py --hours 2 --limit 16
+
+      - name: Validate report
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path("data/bgpstream-health.json")
+          x=json.loads(p.read_text())
+          assert x["source"] == "CAIDA BGPStream"
+          assert x["sample_size"] > 0
+          assert isinstance(x["results"], list)
+          print("BGPStream validation report OK")
+          PY
+
+      - name: Commit validation report
+        shell: bash
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/bgpstream-health.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git commit -m "chore: refresh BGPStream validation"
+          git push
