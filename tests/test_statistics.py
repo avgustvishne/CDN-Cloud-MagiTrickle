@@ -31,6 +31,16 @@ class StatisticsTests(unittest.TestCase):
     def test_human_count_uses_space_separator(self):
         self.assertEqual(self.stats.human_count(12478), "12 478")
 
+    def test_extracted_helpers_have_no_implicit_runtime_globals(self):
+        import importlib.util
+        modules = ["artifact_store.py", "evidence_store.py", "source_acquisition.py", "normalization.py"]
+        for filename in modules:
+            path = ROOT / "scripts" / filename
+            spec = importlib.util.spec_from_file_location(filename.replace(".py", ""), path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+        self.assertEqual(module.nets(["192.0.2.0/24"], 4)[0][0].prefixlen, 24)
+
     def test_readme_pattern_compiles_and_matches_raw_links(self):
         import re
         pattern = re.compile(
