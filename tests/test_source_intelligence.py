@@ -52,6 +52,24 @@ class SourceIntelligenceTests(unittest.TestCase):
         self.assertGreaterEqual(score, 0)
         self.assertLessEqual(score, 100)
 
+    def test_confirmation_requires_two_independent_sources(self):
+        current = {"providers": {"cloudflare": {
+            "records": 40, "sources": {"official": 40, "IPVerse": 40}
+        }}}
+        previous = {"providers": {"cloudflare": {"records": 100}}}
+        rows = self.engine.provider_anomalies(current, previous)
+        self.assertEqual(rows[0]["action"], "confirmed_observation")
+        self.assertTrue(rows[0]["confirmation"]["confirmed"])
+
+    def test_unconfirmed_change_stays_observation_only(self):
+        current = {"providers": {"cloudflare": {
+            "records": 40, "sources": {"official": 40}
+        }}}
+        previous = {"providers": {"cloudflare": {"records": 100}}}
+        rows = self.engine.provider_anomalies(current, previous)
+        self.assertEqual(rows[0]["action"], "observe_only")
+        self.assertFalse(rows[0]["confirmation"]["confirmed"])
+
     def test_large_provider_change_is_observation_only(self):
         current = {"providers": {"cloudflare": {"records": 40}}}
         previous = {"providers": {"cloudflare": {"records": 100}}}

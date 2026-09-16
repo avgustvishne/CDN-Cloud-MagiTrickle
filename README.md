@@ -135,3 +135,7 @@ Safety guarantees:
 - suspicious source changes are observable before they can affect published lists;
 - provider prefix-count changes of 50% or more are flagged as `observe_only` anomalies;
 - source reliability is a transparent 0–100 observability metric, not a provider quality ranking.
+
+### Change confirmation
+
+Large provider changes are cross-checked against independent source types before they are classified as confirmed. A confirmed observation is still **not** allowed to auto-publish a subscription change; existing generation and validation gates remain authoritative. Unconfirmed anomalies remain observation-only.
