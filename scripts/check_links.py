@@ -26,8 +26,8 @@ for url in urls:
     rel = url[len(BASE):].split("?", 1)[0].split("#", 1)[0]
     target = Path(rel)
     local_targets[url] = target.is_file()
-    if not target.is_file() and EVENT != "pull_request":
-        bad.append((url, f"missing repository file: {rel}"))
+    if not target.is_file():
+        bad.append((url, f"missing repository file in checkout: {rel}"))
 
 def check(url):
     check_url = CHECK_BASE + url[len(BASE):] if url.startswith(BASE) and CHECK_BASE != BASE else url
