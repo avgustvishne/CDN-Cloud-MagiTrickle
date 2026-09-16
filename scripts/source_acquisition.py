@@ -10,6 +10,24 @@ import subprocess
 import time
 import urllib.parse
 import urllib.request
+import hashlib
+
+VERSION = 44
+UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
+RETRIES = 2
+TIMEOUT = 15
+RETRY_BASE = 2
+CACHE_TTL = 21600
+
+def cache_path(url):
+    key = hashlib.sha256(url.encode("utf-8")).hexdigest()
+    CACHE.mkdir(parents=True, exist_ok=True)
+    return CACHE / key
+
+def atomic_json(path, obj):
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    tmp.replace(path)
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
