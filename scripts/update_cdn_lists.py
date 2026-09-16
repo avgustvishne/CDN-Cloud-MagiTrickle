@@ -526,7 +526,11 @@ def registry_egress_ranges(name, registry):
                     ipaddress.ip_network(str(cidr), strict=False)
                     values.append(str(cidr))
                 except ValueError:
-                    pass
+                    print(
+                        f"warning: skipping invalid CIDR '{cidr}' for provider '{name}' from {url}",
+                        file=sys.stderr,
+                    )
+                    continue
         return values, url
     except Exception as exc:
         return [], "cloud-egress:" + str(exc)
