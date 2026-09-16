@@ -31,6 +31,10 @@ MAX_WORKERS = 8
 CACHE_TTL = 21600
 MIN_CHANGE_RATIO = 0.50
 MIN_CHANGE_RATIO_V6 = 0.35
+# Coverage ratios are the primary shrink guard. Prefix count alone is unsafe
+# because CIDR aggregation can legitimately reduce the number of lines.
+MIN_COVERAGE_RATIO = 0.50
+MIN_COVERAGE_RATIO_V6 = 0.35
 MAX_AGGREGATE_PREFIXES = 200000
 MIN_PREFIXLEN = {4: 8, 6: 16}
 MIN_PREFIXES = {"aws": 1, "cloudflare": 1, "akamai": 1, "fastly": 1, "gcore": 1, "backblaze": 1, "bunny": 1, "leaseweb": 1, "upcloud": 1, "ionos": 1, "default": 1}
@@ -523,6 +527,11 @@ def nets(values, version, global_only=True):
             rejected += 1
     return sorted(ipaddress.collapse_addresses(parsed), key=lambda n: (int(n.network_address), n.prefixlen)), rejected
 
+def address_coverage(networks):
+    """Return total covered addresses without expanding CIDRs."""
+    return sum(int(net.num_addresses) for net in networks)
+
+
 def load_previous(path, version):
     if not path.exists() or path.stat().st_size == 0:
         return []
@@ -697,8 +706,14 @@ def main():
         status = "OK"; used_fallback = False
         suspicious4 = False
         suspicious6 = False
-        if prev4 and len(v4) < int(len(prev4) * MIN_CHANGE_RATIO): suspicious4 = True
-        if prev6 and len(v6) < int(len(prev6) * MIN_CHANGE_RATIO_V6): suspicious6 = True
+        prev4_coverage = address_coverage(prev4)
+        prev6_coverage = address_coverage(prev6)
+        new4_coverage = address_coverage(v4)
+        new6_coverage = address_coverage(v6)
+        if prev4_coverage and new4_coverage < int(prev4_coverage * MIN_COVERAGE_RATIO):
+            suspicious4 = True
+        if prev6_coverage and new6_coverage < int(prev6_coverage * MIN_COVERAGE_RATIO_V6):
+            suspicious6 = True
         if suspicious4 and prev4:
             v4 = prev4; status = "KEEP_OLD"; used_fallback = True
         if suspicious6 and prev6:
@@ -799,11 +814,11 @@ def main():
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official provider feeds", "disposable/cloud-ip-ranges", "ipanalytics/Cloud-Egress-IP-Ranges", "RIPEstat", "RIPE RIS", "RouteViews fallback", "IPVerse as-ip-blocks", "sw.ext.io", "RussiaFancyLists (independent Russia IP intelligence / validation only)"],
-        "features": ["source-fusion","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","freshness-gates","ipverse-cross-check","single-profile-generator","anomaly-protection","cross-provider-overlap-audit","russiafancy-validation"],
+        "features": ["source-fusion","coverage-based-regression-guard","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","freshness-gates","ipverse-cross-check","single-profile-generator","anomaly-protection","cross-provider-overlap-audit","russiafancy-validation"],
         "engine": "final-v44-source-fusion-ipverse",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
-        "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "ipverse": "enabled", "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
+        "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "ipverse": "enabled", "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6, "min_coverage_ratio": MIN_COVERAGE_RATIO, "min_coverage_ratio_v6": MIN_COVERAGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
         "min_provider_prefixes": None, "max_provider_prefixes": None, "global_only": True,
         "min_prefixlen": {"ipv4": MIN_PREFIXLEN[4], "ipv6": MIN_PREFIXLEN[6]},
