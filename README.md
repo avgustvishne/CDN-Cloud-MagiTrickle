@@ -152,7 +152,6 @@ The update pipeline collects bounded observational network evidence through RIPE
 
 Before generated data is committed, an autonomous rollback guard compares the candidate datasets with the current main revision. A drop greater than 50% in an established dataset is held automatically and the commit is not published. This keeps the last known-good revision intact without requiring manual intervention for normal updates.
 
-
 ### Autonomous operation
 
 The scheduled update workflow includes a static automation audit and automatic failure notification. Normal updates run unattended. When a gate fails, the workflow stops and reports the run in GitHub Issues instead of silently publishing a failed candidate. Open automation failures are consolidated into one issue and subsequent failures are added as comments.
