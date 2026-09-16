@@ -49,9 +49,8 @@ class GeneratorUnitTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             cache_file = Path(td) / "ripe-prefix-cache.json"
             cache_file.write_text(json.dumps(payload), encoding="utf-8")
-            with patch.object(self.engine, "RIPE_CACHE_FILE", cache_file), \
-             patch.object(self.engine.time, "time", return_value=now), \
-             patch.object(self.engine, "RIPE_CACHE_FILE", cache_file):
+            with patch("source_acquisition.RIPE_CACHE_FILE", cache_file), \
+             patch.object(self.engine.time, "time", return_value=now):
                 cache = self.engine.load_ripe_cache()
         self.assertEqual(set(cache), {"192.0.2.0/24", "192.0.4.0/24"})
         self.assertTrue(cache["192.0.2.0/24"]["confirmed"])
