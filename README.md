@@ -144,7 +144,6 @@ Large provider changes are cross-checked against independent source types before
 
 Source intelligence now records evidence for individual prefixes, including normalized CIDR, IP version, contributing source types, and whether at least two independent sources support the prefix. This remains observational and cannot publish or delete subscription entries by itself.
 
-
 ### Network evidence (BGP / IRR / RPKI)
 
 The update pipeline collects bounded observational network evidence through RIPEstat for a representative prefix sample. It records BGP announcement/origin data, IRR presence and RPKI validation state. RIPEstat provides routing-status data from RIS collectors and RPKI validity results from its validator. Evidence is advisory: BGP absence, IRR absence, or RPKI INVALID never deletes or replaces a published prefix.
