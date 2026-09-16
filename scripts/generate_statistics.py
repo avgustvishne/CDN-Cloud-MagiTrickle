@@ -93,10 +93,10 @@ def update_readme(stats):
         changed += 1
         return "{}{} CIDR{}{}".format(match.group(1), human_count(counts[filename]), match.group(2), match.group(3))
     text = pattern.sub(repl, text)
-    marker = "## 🔄 Обновление\\n"
+    marker = "## 🔄 Обновление\n"
     if marker in text:
         generated_at = stats["generated_at"]
-        line = "Данные и количество CIDR обновляются автоматически после успешной генерации и проверок. Последняя генерация: `{}`. [Машиночитаемая статистика](data/statistics.json).\\n\\n".format(generated_at)
+        line = "Данные и количество CIDR обновляются автоматически после успешной генерации и проверок. Последняя генерация: `{}`. [Машиночитаемая статистика](data/statistics.json).\n\n".format(generated_at)
         start = text.index(marker) + len(marker)
         end = text.find("\\n\\n", start)
         if end == -1:
@@ -112,7 +112,7 @@ def update_readme(stats):
 def main():
     stats = collect()
     DATA.mkdir(exist_ok=True)
-    STATS.write_text(json.dumps(stats, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+    STATS.write_text(json.dumps(stats, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print("Statistics generated: {}".format(STATS))
     print("README dynamic count updates: {}".format(update_readme(stats)))
 
