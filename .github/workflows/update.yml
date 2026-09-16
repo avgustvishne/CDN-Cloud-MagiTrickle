@@ -96,6 +96,8 @@ jobs:
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
           assert m["global_only"] is True
           assert m["engine"] == "final-v43-wide-source-fusion"
+          assert m.get("min_provider_prefixes") is None
+          assert m.get("max_provider_prefixes") is None
           overlaps = json.loads((d / "provider-overlaps.json").read_text(encoding="utf-8"))
           assert isinstance(overlaps.get("entries"), list)
           assert overlaps.get("exact_cross_provider_overlaps", 0) >= 0
