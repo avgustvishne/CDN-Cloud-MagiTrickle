@@ -1,0 +1,56 @@
+name: Rollback production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type ROLLBACK to restore main from backup/pre-update"
+        required: true
+        type: string
+
+concurrency:
+  group: production-rollback
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    name: Restore production from backup
+    if: ${{ inputs.confirmation == 'ROLLBACK' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # Required to restore the production branch during an explicit rollback.
+    steps:
+      - name: Checkout production
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify rollback backup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin backup/pre-update:refs/remotes/origin/backup/pre-update
+          backup_sha=$(git rev-parse origin/backup/pre-update)
+          main_sha=$(git rev-parse origin/main)
+          test "$backup_sha" != "$main_sha" || {
+            echo "Backup and main already point to the same commit; nothing to roll back."
+            exit 1
+          }
+          echo "Current main: $main_sha"
+          echo "Rollback target: $backup_sha"
+
+      - name: Restore main from backup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --detach origin/backup/pre-update
+          git push --force-with-lease origin HEAD:refs/heads/main
+          echo "Production main restored from backup/pre-update."
+
+      - name: Summary
+        run: |
+          echo "Rollback completed."
+          echo "Target: $(git rev-parse HEAD)"

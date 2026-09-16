@@ -19,6 +19,8 @@ TIMEOUT = 15
 RETRY_BASE = 2
 CACHE_TTL = 21600
 
+RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
+
 def cache_path(url):
     key = hashlib.sha256(url.encode("utf-8")).hexdigest()
     CACHE.mkdir(parents=True, exist_ok=True)
@@ -32,7 +34,6 @@ def atomic_json(path, obj):
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
 CACHE=DATA/"cache"
-RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 def source_probe(url):
     try:
         data = request(url)

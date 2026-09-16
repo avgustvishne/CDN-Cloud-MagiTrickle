@@ -53,22 +53,17 @@ def main():
 
     report["guarded"]=bool(report["critical"])
     if report["guarded"]:
-        # Restore the complete generated data tree so provider lists, presets,
-        # manifests and checksums remain mutually consistent.
-        subprocess.run(
-            ["git", "checkout", args.previous_ref, "--", "data"],
-            check=True,
-            stdout=subprocess.DEVNULL,
-        )
-        report["restored"]=True
-        report["restored_files"]="data/"
+        # Detection happens after publication, so mutating the working tree here
+        # cannot restore the remote branch. Report the breach and fail instead;
+        # the protected rollback workflow restores main from backup/pre-update.
+        report["action"]="manual_rollback_required"
 
     out=pathlib.Path(args.report); out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print("Rollback guard:", "RESTORED" if report["restored"] else ("TRIGGERED" if report["guarded"] else "OK"))
+    print("Rollback guard:", "TRIGGERED" if report["guarded"] else "OK")
     if report["critical"]:
         print("Critical:", ", ".join(report["critical"]))
-    return 0
+    return 1 if report["guarded"] else 0
 
 if __name__=="__main__":
     sys.exit(main())

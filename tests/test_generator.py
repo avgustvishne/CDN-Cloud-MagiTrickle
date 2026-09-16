@@ -49,7 +49,7 @@ class GeneratorUnitTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             cache_file = Path(td) / "ripe-prefix-cache.json"
             cache_file.write_text(json.dumps(payload), encoding="utf-8")
-            with patch("source_acquisition.RIPE_CACHE_FILE", cache_file), \
+            with patch.object(self.engine, "RIPE_CACHE_FILE", cache_file), \
              patch.object(self.engine.time, "time", return_value=now):
                 cache = self.engine.load_ripe_cache()
         self.assertEqual(set(cache), {"192.0.2.0/24", "192.0.4.0/24"})
@@ -64,11 +64,11 @@ class GeneratorUnitTests(unittest.TestCase):
             lookup.assert_not_called()
 
     def test_confirm_accepts_announced_prefix(self):
-        with patch("source_acquisition.ripe_prefix_overview", return_value={"announced": True, "asns": [13335]}):
+        with patch.object(self.engine, "ripe_prefix_overview", return_value={"announced": True, "asns": [13335]}):
             self.assertTrue(self.engine.validate_prefix_with_ripe("192.0.2.0/24", {}))
 
     def test_confirm_rejects_empty_ripe_response(self):
-        with patch("source_acquisition.ripe_prefix_overview", return_value={}):
+        with patch.object(self.engine, "ripe_prefix_overview", return_value={}):
             self.assertFalse(self.engine.validate_prefix_with_ripe("192.0.2.0/24", {}))
 
     def test_address_coverage_is_prefix_count_independent(self):
@@ -84,7 +84,7 @@ class GeneratorUnitTests(unittest.TestCase):
             if url.endswith("ipv6-aggregated.txt"):
                 return b"2001:db8::/32\n"
             raise AssertionError(url)
-        with patch("source_acquisition.request", side_effect=fake_request):
+        with patch.object(self.engine, "request", side_effect=fake_request):
             values = self.engine.ipverse_ranges("13335")
         self.assertEqual(values, ["1.2.3.0/24", "2001:db8::/32"])
 
@@ -104,7 +104,6 @@ class GeneratorUnitTests(unittest.TestCase):
             },
         ):
             views = self.engine.ripe("13335", 1)
-
         self.assertEqual(views["RIPEstat"], ["192.0.2.0/24"])
         self.assertEqual(views["RIPE RIS"], ["198.51.100.0/24"])
         self.assertEqual(views["RouteViews"], ["203.0.113.0/24"])
@@ -122,6 +121,29 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertEqual(rows[0]["bgp_observed_asns"], [])
         self.assertEqual(rows[0]["bgp_max_peers"], 0)
 
+    def test_consensus_preserves_first_seen(self):
+        with tempfile.TemporaryDirectory() as td:
+            old_data = self.engine.DATA
+            try:
+                self.engine.DATA = Path(td)
+                path = self.engine.DATA / "test-consensus.json"
+                path.write_text(json.dumps({
+                    "records": [{
+                        "cidr": "192.0.2.0/24",
+                        "first_seen": "2026-01-01T00:00:00Z"
+                    }]
+                }), encoding="utf-8")
+                rows = self.engine.build_consensus(
+                    "test",
+                    ["192.0.2.0/24"],
+                    {"official": ["192.0.2.0/24"]},
+                    [],
+                    {},
+                )
+                self.assertEqual(rows[0]["first_seen"], "2026-01-01T00:00:00Z")
+                self.assertNotEqual(rows[0]["last_seen"], "2026-01-01T00:00:00Z")
+            finally:
+                self.engine.DATA = old_data
     def test_consensus_tracks_exact_sources_and_neutral_bgp_absence(self):
         sources = {
             "official": ["192.0.2.0/24"],

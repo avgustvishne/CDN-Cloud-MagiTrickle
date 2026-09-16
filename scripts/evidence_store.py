@@ -16,6 +16,7 @@ except ImportError:
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 
+
 def write_text_atomic(path, text):
     path = Path(path)
     fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix="." + path.name + ".")
