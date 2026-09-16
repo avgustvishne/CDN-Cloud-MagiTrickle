@@ -886,7 +886,7 @@ def main():
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
         "sources": ["official provider feeds", "disposable/cloud-ip-ranges", "ipanalytics/Cloud-Egress-IP-Ranges", "RIPEstat", "RIPE RIS", "RouteViews fallback", "IPVerse as-ip-blocks", "sw.ext.io", "RussiaFancyLists (independent Russia IP intelligence / validation only)"],
-        "features": ["source-fusion","coverage-based-regression-guard","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","freshness-gates","ipverse-cross-check","single-profile-generator","anomaly-protection","cross-provider-overlap-audit","russiafancy-validation"],
+        "features": ["source-fusion","coverage-based-regression-guard","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","freshness-gates","ipverse-cross-check","single-profile-generator","consensus-evidence","per-cidr-provenance","anomaly-protection","cross-provider-overlap-audit","russiafancy-validation"],
         "engine": "final-v44-source-fusion-ipverse",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
@@ -903,6 +903,16 @@ def main():
             **({"errors": row["errors"]} if row["errors"] else {})
         } for row in rows},
     }
+    consensus_index = {}
+    for path in sorted(DATA.glob("*-consensus.json")):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            provider = payload.get("provider", path.stem.replace("-consensus", ""))
+            records = payload.get("records", [])
+            consensus_index[provider] = {"file": path.name, "cidrs": len(records), "high_confidence": sum(1 for x in records if x.get("confidence", 0) >= 80), "multi_source": sum(1 for x in records if x.get("source_count", 0) >= 2)}
+        except Exception:
+            continue
+    write_text_atomic(DATA / "consensus.json", json.dumps({"engine": VERSION, "generated_at": now, "model": "multi-source-evidence", "rule": "BGP absence is neutral; a CIDR is never removed solely because a live snapshot did not observe it.", "providers": consensus_index}, indent=2, ensure_ascii=False) + "\n")
     write_text_atomic(DATA / "provider-overlaps.json", json.dumps(overlap_report, indent=2, ensure_ascii=False) + "\n")
     write_text_atomic(DATA / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
     if args.explain:
