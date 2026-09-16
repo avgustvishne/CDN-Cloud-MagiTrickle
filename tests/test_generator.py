@@ -88,6 +88,22 @@ class GeneratorUnitTests(unittest.TestCase):
             values = self.engine.ipverse_ranges("13335")
         self.assertEqual(values, ["1.2.3.0/24", "2001:db8::/32"])
 
+    def test_consensus_tracks_exact_sources_and_neutral_bgp_absence(self):
+        sources = {
+            "official": ["192.0.2.0/24"],
+            "IPVerse": ["192.0.2.0/24", "198.51.100.0/24"],
+            "RIPEstat": ["192.0.2.0/24"],
+        }
+        rows = self.engine.build_consensus(
+            "test", ["192.0.2.0/24", "198.51.100.0/24"],
+            sources, ["64500"], {}
+        )
+        by_cidr = {row["cidr"]: row for row in rows}
+        self.assertEqual(by_cidr["192.0.2.0/24"]["source_count"], 3)
+        self.assertIn("official", by_cidr["192.0.2.0/24"]["sources"])
+        self.assertEqual(by_cidr["198.51.100.0/24"]["source_count"], 1)
+        self.assertEqual(by_cidr["198.51.100.0/24"]["bgp_observed_asns"], [])
+
     def test_generated_cidrs_are_parseable(self):
         data = ROOT / "data"
         for path in (data / "all-cloud-v4.txt", data / "all-cloud-v6.txt",
