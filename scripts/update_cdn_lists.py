@@ -20,7 +20,7 @@ if str(ROOT / "scripts") not in sys.path: sys.path.insert(0, str(ROOT / "scripts
 from policy_engine import apply as apply_policy
 DATA.mkdir(exist_ok=True)
 
-VERSION = 43
+VERSION = 44
 UA = f"CDN-Cloud-MagiTrickle/{VERSION}.0"
 RIPE = "https://stat.ripe.net/data/announced-prefixes/data.json"
 MIN_PEERS = 1
@@ -209,6 +209,22 @@ def select_ripe_candidates(prefixes, limit=128):
             return (999, p)
     return sorted(unique, key=prefix_key)[:limit]
 
+
+
+def ipverse_ranges(asn):
+    """Fetch daily BGP-aggregated prefixes from IPVerse for one ASN.
+    IPVerse is an independent BGP-derived source; it is additive and never
+    replaces official provider feeds or RIPEstat.
+    """
+    found = []
+    base = f"https://raw.githubusercontent.com/ipverse/as-ip-blocks/master/as/{asn}"
+    for filename in ("ipv4-aggregated.txt", "ipv6-aggregated.txt"):
+        try:
+            data = request(f"{base}/{filename}")
+            found.extend(parse_cidr_lines(data))
+        except Exception:
+            continue
+    return sorted(set(found))
 
 
 def routeviews_prefixes(asn):
@@ -642,20 +658,25 @@ def main():
             errors.append("external-ipset:" + str(exc))
         def fetch_asn(asn):
             try:
-                return asn, ripe(asn, min_peers), None
+                ripe_values = ripe(asn, min_peers)
+                ipverse_values = ipverse_ranges(asn)
+                return asn, ripe_values, ipverse_values, None
             except Exception as exc:
-                return asn, [], exc
+                return asn, [], [], exc
         if unique_asns:
             with concurrent.futures.ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(unique_asns))) as pool:
                 results = list(pool.map(fetch_asn, unique_asns))
-            for asn, values, error in results:
+            for asn, values, ipverse_values, error in results:
                 if error:
                     errors.append(f"RIPE-AS{asn}:{error}")
                 else:
                     raw.extend(values)
-                    all_asn4.extend(v for v in values if "/" in v and ":" not in v)
-                    all_asn6.extend(v for v in values if ":" in v)
+                    raw.extend(ipverse_values)
+                    all_asn4.extend(v for v in values + ipverse_values if "/" in v and ":" not in v)
+                    all_asn6.extend(v for v in values + ipverse_values if ":" in v)
                     sources.append("RIPEstat")
+                    if ipverse_values:
+                        sources.append("IPVerse")
                     routing = ripe_routing_status(asn)
                     if routing:
                         sources.append("RIPE routing-status")
@@ -765,39 +786,24 @@ def main():
     if len(all4) > MAX_AGGREGATE_PREFIXES or len(all6) > MAX_AGGREGATE_PREFIXES:
         sys.exit("[FATAL] aggregate prefix count exceeds safety limit")
     atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
-    # Build stable preset subscriptions from generated provider files.
-    presets = {
-        "full": list(cfg["providers"].keys()),
-        "balanced": ["cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway"],
-        "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
-        "cdn": ["cloudflare", "akamai", "fastly", "cdn77", "gcore"],
-        "cloud": ["aws", "cloudflare", "microsoft", "oracle", "alibaba", "digitalocean"],
-        "video": ["cloudflare", "fastly", "akamai", "aws", "microsoft"],
-        "vpn": ["vultr", "buyvm", "ovh", "hetzner", "digitalocean", "gcore", "contabo", "scaleway", "melbicom"],
-    }
-    preset_dir = DATA / "presets"
-    preset_dir.mkdir(exist_ok=True)
-    if args.skip_presets:
-        presets = {}
-    for preset, names in presets.items():
-        for version, label in ((4, "v4"), (6, "v6")):
-            combined = []
-            for name in names:
-                path = DATA / f"{name}-{label}.txt"
-                if path.exists():
-                    combined.extend(path.read_text(encoding="utf-8").splitlines())
-            combined, _ = nets(combined, version)
-            atomic(preset_dir / f"{preset}-{label}.txt", combined)
+    # Profiles have one generator. Keeping this logic in generate_profiles.py
+    # prevents the two engines from drifting apart.
+    if not args.skip_presets:
+        import subprocess
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "generate_profiles.py")],
+            check=True,
+        )
 
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     manifest = {
         "version": VERSION, "updated": now, "ripe_min_peers": min_peers,
-        "sources": ["official provider feeds", "disposable/cloud-ip-ranges", "ipanalytics/Cloud-Egress-IP-Ranges", "RIPEstat", "RIPE RIS", "RouteViews fallback", "sw.ext.io", "RussiaFancyLists (independent Russia IP intelligence / validation only)"],
-        "features": ["source-fusion","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","freshness-gates","anomaly-protection","cross-provider-overlap-audit","russiafancy-validation"],
-        "engine": "final-v43-wide-source-fusion",
+        "sources": ["official provider feeds", "disposable/cloud-ip-ranges", "ipanalytics/Cloud-Egress-IP-Ranges", "RIPEstat", "RIPE RIS", "RouteViews fallback", "IPVerse as-ip-blocks", "sw.ext.io", "RussiaFancyLists (independent Russia IP intelligence / validation only)"],
+        "features": ["source-fusion","multi-source-asn-discovery","ripe-prefix-overview","asn-confirmed-lists","source-health","deduplication","cidr-aggregation","diff","profiles","sha256","asn-audit","parallel-fetch","source-cache","freshness-gates","ipverse-cross-check","single-profile-generator","anomaly-protection","cross-provider-overlap-audit","russiafancy-validation"],
+        "engine": "final-v44-source-fusion-ipverse",
         "provider_asn_counts": {k: len(v) for k, v in provider_asns.items()},
         "provider_asns": provider_asns,
-        "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
+        "retries": RETRIES, "timeout_seconds": TIMEOUT, "max_workers": MAX_WORKERS, "cache_ttl_seconds": CACHE_TTL, "ipverse": "enabled", "min_change_ratio": MIN_CHANGE_RATIO, "min_change_ratio_v6": MIN_CHANGE_RATIO_V6,
         "max_aggregate_prefixes": MAX_AGGREGATE_PREFIXES,
         "min_provider_prefixes": None, "max_provider_prefixes": None, "global_only": True,
         "min_prefixlen": {"ipv4": MIN_PREFIXLEN[4], "ipv6": MIN_PREFIXLEN[6]},
