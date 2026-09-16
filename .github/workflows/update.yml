@@ -42,6 +42,10 @@ jobs:
       - name: Validate source health
         run: |
           python3 scripts/source_health.py
+      - name: Generate FULL BALANCED MINIMAL profiles
+        run: |
+          python3 scripts/profile_generator.py
+          python3 scripts/validate_profiles.py
       - name: Run publication regression gate
         run: |
           python3 scripts/regression.py --current data/provenance/cidr.json --output data/health/regression.json
