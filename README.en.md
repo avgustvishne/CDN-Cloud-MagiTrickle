@@ -11,7 +11,7 @@ CDN, cloud, video, VPN and ASN lists with separate IPv4 and IPv6 feeds.
 
 ## Ready-to-use subscriptions
 
-If you are not sure which list to use, start with **BALANCED**.
+If you are not sure which list to use, start with **BALANCED**. Use **PERFORMANCE** when you want a smaller CDN-focused rule set; use **FULL** for maximum coverage.
 
 | Profile | Purpose | IPv4 | IPv6 |
 | --- | --- | --- | --- |
@@ -22,7 +22,7 @@ If you are not sure which list to use, start with **BALANCED**.
 
 ## Specialized sets
 
-| Set | Contents | IPv4 | IPv6 |
+| Set | IPv4 | IPv6 |
 | --- | --- | --- |
 | **CDN** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v6.txt) |
 | **CLOUD** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
