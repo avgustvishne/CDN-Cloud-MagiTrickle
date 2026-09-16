@@ -61,25 +61,6 @@
 - [ALL-CLOUD IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt)
 - [ALL-CLOUD IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt)
 
-## 🔄 Обновление
-
-Данные собираются из нескольких источников и автоматически:
-
-1. проверяются;
-2. нормализуются;
-3. очищаются от дублей;
-4. сопоставляются с ASN/провайдерами;
-5. проходят контроль изменений;
-6. собираются в профили;
-7. публикуются только после успешной проверки.
-
-Искусственного лимита на количество CIDR нет.
-
-## 📊 Статистика
-
-- [UPDATE_REPORT.md](UPDATE_REPORT.md) — последний отчёт.
-- [manifest.json](data/manifest.json) и [audit.csv](data/audit.csv) — статистика и результаты обновления.
-
 ## ❤️ Поддержка
 
 [Поддержать проект](https://tips.tips/000484125)
