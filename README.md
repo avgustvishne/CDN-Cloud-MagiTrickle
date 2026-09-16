@@ -9,7 +9,7 @@
 
 [![Update](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/workflows/update.yml/badge.svg)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/workflows/update.yml)
 
-[**🚀 FULL**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) · [**⚖️ BALANCED**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) · [**📦 MINIMAL**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt)
+[**🚀 FULL**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) · [**⚡ PERFORMANCE**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v4.txt) · [**⚖️ BALANCED**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) · [**📦 MINIMAL**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt)
 
 </div>
 
@@ -22,6 +22,7 @@
 | Максимальный охват | **FULL** |
 | Большой охват без лишнего объёма | **BALANCED** |
 | Небольшой список | **MINIMAL** |
+| Фокус на скорости/меньшем числе правил | **PERFORMANCE** |
 | Только CDN | **CDN** |
 | Cloud/VPS | **CLOUD** |
 | Video/CDN | **VIDEO** |
@@ -33,6 +34,7 @@
 | Профиль | Назначение | IPv4 | IPv6 |
 |---|---|---|---|
 | **FULL** | Все настроенные провайдеры | **17 337 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | **5 267 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) |
+| **PERFORMANCE** | Фокус на CDN + компактный edge/VPS-набор | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v6.txt) |
 | **BALANCED** | Расширенный набор | **15 189 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | **4 700 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
 | **MINIMAL** | Компактный набор | **8 108 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | **2 770 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) |
 
@@ -85,7 +87,7 @@
 2. Скопируйте её **Raw URL**.
 3. Добавьте URL в MagiTrickle как источник CIDR.
 
-Для большинства пользователей достаточно **FULL**.
+Для начала рекомендуется **BALANCED**. Если важнее минимизировать объём правил, попробуйте **PERFORMANCE** или **MINIMAL**; **FULL** оставляйте для максимального покрытия.
 
 <!-- AUTO-STATS:START -->
 ## 📊 Актуальная статистика
