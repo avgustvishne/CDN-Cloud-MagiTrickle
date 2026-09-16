@@ -60,18 +60,80 @@ def coverage(values,version):
         end=max(end,b)
     return total
 
+def load_current_cidrs():
+    import ipaddress
+    found=set()
+    for p in DATA.glob("*.txt"):
+        if not p.name.endswith(("-v4.txt","-v6.txt")): continue
+        try:
+            for line in p.read_text(encoding="utf-8").splitlines():
+                s=line.strip()
+                if s:
+                    found.add(str(ipaddress.ip_network(s, strict=False)))
+        except Exception:
+            continue
+    return found
+
+def overlap_and_new(candidate_cidrs, current):
+    import ipaddress
+    cand=[ipaddress.ip_network(x, strict=False) for x in candidate_cidrs]
+    cur=[ipaddress.ip_network(x, strict=False) for x in current]
+    total=sum(int(n.num_addresses) for n in cand)
+    overlap=0
+    for n in cand:
+        covered=[]
+        for c in cur:
+            if n.version == c.version and n.overlaps(c):
+                lo=max(int(n.network_address),int(c.network_address))
+                hi=min(int(n.broadcast_address),int(c.broadcast_address))
+                if hi>=lo: covered.append((lo,hi))
+        covered.sort()
+        end=-1
+        for lo,hi in covered:
+            if lo>end+1: overlap += hi-lo+1
+            elif hi>end: overlap += hi-end
+            end=max(end,hi)
+    overlap=min(total,overlap)
+    new=total-overlap
+    return {"total_coverage":total,"overlap_coverage":overlap,"new_coverage":new,
+            "overlap_ratio":round(overlap/total,6) if total else 0,
+            "new_ratio":round(new/total,6) if total else 0}
+
 def main():
     if not DISCOVERY.exists():
         print("source-candidates.json missing"); return 1
     rows=json.loads(DISCOVERY.read_text(encoding="utf-8")).get("candidates",[])
+    current=load_current_cidrs()
     out=[]; errors=[]
     for item in rows[:100]:
-        try: out.append(audit_repo(item["repository"]))
-        except Exception as e: errors.append({"repository":item.get("repository"),"error":str(e)[:300]})
-    out.sort(key=lambda x:(x["ipv4_coverage"]+x["ipv6_coverage"],x["cidr_count"]),reverse=True)
+        try:
+            audit=audit_repo(item["repository"])
+            # Reuse the repository scan to obtain prefixes for coverage comparison.
+            data=get_json("https://api.github.com/repos/"+item["repository"])
+            branch=data.get("default_branch","main")
+            tree=get_json(f"https://api.github.com/repos/{item['repository']}/git/trees/{urllib.parse.quote(branch,safe='')}?recursive=1")
+            paths=[x.get("path","") for x in tree.get("tree",[]) if x.get("type")=="blob"]
+            repo_prefixes=set()
+            for path in [p for p in paths if p.lower().endswith((".txt",".cidr",".list",".csv",".json",".yaml",".yml",".conf")) and any(k in p.lower() for k in ("ip","cidr","prefix","asn","range","cloud","cdn"))][:MAX_FILES]:
+                try:
+                    import base64
+                    obj=get_json(f"https://api.github.com/repos/{item['repository']}/contents/{urllib.parse.quote(path,safe='/')}?ref={urllib.parse.quote(branch)}")
+                    raw=base64.b64decode(obj.get("content","")).decode("utf-8","ignore")
+                    repo_prefixes.update(CIDR_RE.findall(raw))
+                except Exception:
+                    pass
+            audit["comparison"]=overlap_and_new(repo_prefixes,current)
+            audit["audit_status"]="useful-candidate" if audit["comparison"]["new_coverage"] else audit["audit_status"]
+            out.append(audit)
+        except Exception as e:
+            errors.append({"repository":item.get("repository"),"error":str(e)[:300]})
+    out.sort(key=lambda x:(x.get("comparison",{}).get("new_coverage",0),x.get("ipv4_coverage",0)),reverse=True)
     payload={"generated_at":datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-             "policy":{"auto_promote":False,"max_repositories":100,"max_bytes_per_repo":MAX_BYTES},
-             "results":out,"errors":errors}
-    DATA.mkdir(exist_ok=True); OUT.write_text(json.dumps(payload,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
-    print(f"Source candidate audit: {len(out)} audited, {len(errors)} errors")
-if __name__=="__main__": raise SystemExit(main())
+             "policy":{"auto_promote":False,"max_repositories":100,"max_bytes_per_repo":MAX_BYTES,
+                       "comparison":"candidate coverage against current generated CIDR files"},
+             "current_cidr_count":len(current),"results":out,"errors":errors}
+    DATA.mkdir(exist_ok=True)
+    OUT.write_text(json.dumps(payload,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+    print(f"Source candidate audit: {len(out)} audited, {len(errors)} errors; current CIDRs: {len(current)}")
+if __name__=="__main__":
+    raise SystemExit(main())
