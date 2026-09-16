@@ -1,6 +1,6 @@
 # CDN-Cloud-MagiTrickle
 
-**Готовые IP/CIDR-подписки для MagiTrickle.**
+Готовые IP/CIDR-подписки для MagiTrickle.
 
 CDN, cloud, video, VPN и ASN-списки с отдельными IPv4/IPv6-подписками.
 
