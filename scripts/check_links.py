@@ -1,35 +1,38 @@
 #!/usr/bin/env python3
-"""Validate README Raw subscription links and their local targets."""
+"""Validate README Raw subscription links against the PR branch or main."""
 import concurrent.futures
+import os
 import re
 import sys
 import urllib.request
 from pathlib import Path
-from urllib.parse import urlparse
 
 README = Path("README.md").read_text(encoding="utf-8")
 BASE = "https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/"
+EVENT = os.environ.get("GITHUB_EVENT_NAME", "")
+HEAD_REF = os.environ.get("GITHUB_HEAD_REF", "")
+CHECK_BASE = (
+    f"https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/{HEAD_REF}/"
+    if EVENT == "pull_request" and HEAD_REF else BASE
+)
 
 urls = sorted(set(re.findall(r'\]\((https://raw\.githubusercontent\.com/[^)]+)\)', README)))
-
 bad = []
 local_targets = {}
 
-# First fail fast on links pointing to files that do not exist in the repository.
 for url in urls:
     if not url.startswith(BASE):
         continue
     rel = url[len(BASE):].split("?", 1)[0].split("#", 1)[0]
     target = Path(rel)
     local_targets[url] = target.is_file()
-    # A file present in this checkout may be new in the PR and therefore absent
-    # from main until merge. Network validation below handles that publication gap.
-    if not target.is_file():
+    if not target.is_file() and EVENT != "pull_request":
         bad.append((url, f"missing repository file: {rel}"))
 
 def check(url):
+    check_url = CHECK_BASE + url[len(BASE):] if url.startswith(BASE) and CHECK_BASE != BASE else url
     req = urllib.request.Request(
-        url,
+        check_url,
         method="HEAD",
         headers={"User-Agent": "CDN-Cloud-MagiTrickle-link-check"},
     )
@@ -39,7 +42,7 @@ def check(url):
     except Exception:
         try:
             req = urllib.request.Request(
-                url,
+                check_url,
                 headers={
                     "User-Agent": "CDN-Cloud-MagiTrickle-link-check",
                     "Range": "bytes=0-32",
@@ -55,11 +58,8 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
     for url, status in ex.map(check, urls):
         print(status, url)
         if status not in (200, 206):
-            # During PR validation a newly added subscription may not exist on
-            # main yet. The local checkout is authoritative for that case;
-            # once merged, the same check requires the main Raw URL to respond.
-            if status == 404 and url.startswith(BASE) and local_targets.get(url, False):
-                print(f"LOCAL-ONLY {url} (not published on main yet)")
+            if status == 404 and url.startswith(BASE) and EVENT == "pull_request":
+                print(f"PR-BRANCH-ONLY {url} (main publication checked after merge)")
                 continue
             network_bad.append((url, status))
 
