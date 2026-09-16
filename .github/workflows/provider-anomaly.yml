@@ -5,6 +5,7 @@ on:
     workflows: ["Update MagiTrickle subscriptions"]
     types: [completed]
   push:
+    branches: [main]
     paths:
       - "data/**"
       - "config/**"

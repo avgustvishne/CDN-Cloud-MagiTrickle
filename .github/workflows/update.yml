@@ -1,15 +1,21 @@
 name: Update MagiTrickle subscriptions
+# Full validation pipeline; generated data is committed only after all gates pass.
 
 on:
   schedule:
     - cron: "17 */12 * * *"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Generate and validate only; do not commit or push generated data"
+        required: false
+        default: true
+        type: boolean
   push:
     paths:
       - "config/providers.json"
       - "config/source_registry.json"
       - "scripts/**"
-      - ".github/workflows/update.yml"
 
 permissions:
   contents: write
@@ -34,6 +40,13 @@ jobs:
       - name: Run generator unit tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
 
+      - name: Create automatic rollback backup
+        if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
+        shell: bash
+        run: |
+          set -e
+          git push origin "HEAD:refs/heads/backup/pre-update"
+          echo "Rollback backup updated to $(git rev-parse HEAD)"
       - name: Snapshot current subscriptions
         run: |
           rm -rf /tmp/cdn-old
@@ -101,6 +114,7 @@ jobs:
               assert not (d / obsolete).exists(), f"obsolete file remains: {obsolete}"
           required_profiles = [
               "full-v4.txt", "full-v6.txt",
+              "performance-v4.txt", "performance-v6.txt",
               "balanced-v4.txt", "balanced-v6.txt",
               "minimal-v4.txt", "minimal-v6.txt",
               "cdn-v4.txt", "cdn-v6.txt",
@@ -156,16 +170,20 @@ jobs:
       - name: Generate update report
         run: python scripts/update_report.py
 
+      - name: Generate automatic CIDR statistics
+        run: python scripts/generate_statistics.py
+
       - name: Show summary
         run: cat data/last-update.txt
 
       - name: Commit generated lists
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run == false }}
         shell: bash
         run: |
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ UPDATE_REPORT.md
+          git add data/ README.md UPDATE_REPORT.md
           if git diff --cached --quiet; then
             echo "No changes."
             exit 0
@@ -178,9 +196,9 @@ jobs:
               exit 0
             fi
 
-            echo "Push was not a fast-forward; refreshing main (attempt ${attempt})."
-            git fetch origin main
-            git rebase origin/main || {
+            echo "Push was not a fast-forward; refreshing ${GITHUB_REF_NAME} (attempt ${attempt})."
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}" || {
               git rebase --abort || true
               echo "Rebase failed on attempt ${attempt}."
               sleep $((attempt * 2))
