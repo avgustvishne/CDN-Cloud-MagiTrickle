@@ -34,8 +34,20 @@ jobs:
       - name: Run generator unit tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
 
+      - name: Snapshot current subscriptions
+        run: |
+          rm -rf /tmp/cdn-old
+          mkdir -p /tmp/cdn-old
+          cp -a data/. /tmp/cdn-old/
+
       - name: Generate subscriptions
         run: python scripts/update_cdn_lists.py
+
+      - name: Source health gate
+        run: python scripts/check_source_health.py
+
+      - name: Regression gate
+        run: python scripts/regression_gate.py /tmp/cdn-old/data data
 
       - name: Generate change summary
         run: python scripts/diff_summary.py
@@ -117,6 +129,12 @@ jobs:
           # lines inside a single subscription and must not be silently deleted.
           print("Validation OK: syntax, CIDR uniqueness, provider coverage, profiles, checksums and overlap audit")
           PY
+
+      - name: Validate generated data with shared validator
+        run: python scripts/validate_subscriptions.py
+
+      - name: Check README subscription links
+        run: python scripts/check_links.py
 
       - name: Generate update report
         run: python scripts/update_report.py
