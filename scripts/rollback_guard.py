@@ -15,6 +15,7 @@ def count_file(path):
     return count_text(path.read_text(encoding="utf-8", errors="replace"))
 
 def previous_text(ref, relpath):
+
     try:
         r=subprocess.run(["git","show",f"{ref}:{relpath}"],text=True,capture_output=True,check=True)
         return r.stdout
@@ -28,6 +29,7 @@ def main():
     ap.add_argument("--max-drop", type=float, default=0.50)
     ap.add_argument("--min-previous", type=int, default=20)
     ap.add_argument("--report", default="data/rollback-report.json")
+    ap.add_argument("--allow-empty-previous", action="store_true")
     args=ap.parse_args()
 
     cur=pathlib.Path(args.current_dir)
