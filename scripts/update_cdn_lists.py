@@ -579,7 +579,7 @@ def write_source_health_registry(registry):
             "id": source_id,
             "role": spec.get("role", ""),
             "refresh": spec.get("refresh", ""),
-            "live_fetch_enabled": source_id in {"cloud-ip-ranges","cloud-egress-ip-ranges","cdn-ip-database"},
+            "live_fetch_enabled": source_id in {"cloud-ip-ranges","cloud-egress-ip-ranges","cdn-ip-database","ipverse-as-ip-blocks"},
             "reference_only": source_id in {"taythebot-cdn-ranges","krainium-cdn-fetcher","projectdiscovery-cdncheck","routesentinel","cloud-provider-ip-addresses"},
         })
     write_text_atomic(DATA / "source-registry-health.json",
@@ -833,7 +833,7 @@ def main():
             "Cloudflare": source_probe("https://www.cloudflare.com/ips-v4/"),
             "cloud-ip-ranges": source_probe("https://raw.githubusercontent.com/disposable/cloud-ip-ranges/master/txt/aws.txt"),
             "cloud-egress-ip-ranges": source_probe("https://github.com/ipanalytics/Cloud-Egress-IP-Ranges/releases/latest/download/cloud-egress-ip-ranges.json"),
-            "RouteViews": source_probe("https://api.routeviews.org/"), "RussiaFancyLists": source_probe("https://raw.githubusercontent.com/Noktomezo/RussiaFancyLists/main/lists/blacklist/ipsets/full-and-cdn.lst")
+            "RouteViews": source_probe("https://api.routeviews.org/"), "IPVerse": source_probe("https://raw.githubusercontent.com/ipverse/as-ip-blocks/master/as/13335/ipv4-aggregated.txt"), "RussiaFancyLists": source_probe("https://raw.githubusercontent.com/Noktomezo/RussiaFancyLists/main/lists/blacklist/ipsets/full-and-cdn.lst")
         }
     }
     try:
