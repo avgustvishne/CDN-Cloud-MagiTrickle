@@ -46,6 +46,9 @@ jobs:
       - name: Source health gate
         run: python scripts/check_source_health.py
 
+      - name: Audit independent source coverage
+        run: python scripts/source_audit.py
+
       - name: Regression gate
         run: python scripts/regression_gate.py /tmp/cdn-old/data data
 
