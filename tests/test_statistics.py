@@ -39,7 +39,7 @@ class StatisticsTests(unittest.TestCase):
             spec = importlib.util.spec_from_file_location(filename.replace(".py", ""), path)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-        self.assertEqual(module.nets(["192.0.2.0/24"], 4)[0][0].prefixlen, 24)
+        self.assertEqual(module.nets(["1.2.3.0/24"], 4)[0][0].prefixlen, 24)
 
     def test_readme_pattern_compiles_and_matches_raw_links(self):
         import re
