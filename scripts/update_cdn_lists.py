@@ -1016,6 +1016,8 @@ def main():
             confirmed = cached_checks.get(prefix, False)
             if confirmed:
                 (validated_asn6 if ":" in prefix else validated_asn4).append(prefix)
+    validated_asn4 = sorted(validated_asn4, key=lambda p: (int(ipaddress.ip_network(p, strict=False).network_address), ipaddress.ip_network(p, strict=False).prefixlen))
+    validated_asn6 = sorted(validated_asn6, key=lambda p: (int(ipaddress.ip_network(p, strict=False).network_address), ipaddress.ip_network(p, strict=False).prefixlen))
     atomic(DATA / "asn-confirmed-v4.txt", validated_asn4)
     atomic(DATA / "asn-confirmed-v6.txt", validated_asn6)
     atomic(DATA / "asn-all-v4.txt", all_asn4)
