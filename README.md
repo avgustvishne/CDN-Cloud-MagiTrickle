@@ -33,19 +33,19 @@
 
 | Профиль | Назначение | IPv4 | IPv6 |
 |---|---|---|---|
-| **FULL** | Все настроенные провайдеры | **17 337 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | **5 267 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) |
-| **PERFORMANCE** | Фокус на CDN и минимальный набор правил | **1 513 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v4.txt) | **462 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v6.txt) |
-| **BALANCED** | Расширенный набор | **15 189 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | **4 700 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
-| **MINIMAL** | Компактный набор | **8 108 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | **2 770 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) |
+| **FULL** | Все настроенные провайдеры | **17 335 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | **5 308 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) |
+| **PERFORMANCE** | Фокус на CDN и минимальный набор правил | **1 511 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v4.txt) | **461 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v6.txt) |
+| **BALANCED** | Расширенный набор | **15 187 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | **4 741 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
+| **MINIMAL** | Компактный набор | **8 108 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | **2 810 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) |
 
 ### Специализированные
 
 | Набор | IPv4 | IPv6 |
 |---|---|---|
-| **CDN** | **1 861 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) | **706 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v6.txt) |
-| **CLOUD** | **8 980 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | **2 351 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
-| **VIDEO** | **7 342 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | **2 117 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
-| **VPN** | **8 104 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | **2 603 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
+| **CDN** | **1 861 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) | **712 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v6.txt) |
+| **CLOUD** | **8 981 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | **2 352 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
+| **VIDEO** | **7 344 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | **2 124 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
+| **VPN** | **8 100 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | **2 637 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
 
 ## 🌐 Провайдеры
 
@@ -78,8 +78,8 @@
 
 | Набор | Назначение | IPv4 | IPv6 |
 |---|---|---|---|
-| **ASN ALL** | Все собранные ASN-маршруты | **12 596 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) | **5 968 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt) |
-| **ALL-CLOUD** | Объединение провайдеров | **17 337 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt) | **5 267 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt) |
+| **ASN ALL** | Все собранные ASN-маршруты | **12 593 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) | **6 011 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt) |
+| **ALL-CLOUD** | Объединение провайдеров | **17 335 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt) | **5 308 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt) |
 
 ## 🛠️ Как использовать
 
@@ -94,21 +94,21 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
-| **FULL** | **17 337 CIDR** | **5 267 CIDR** |
-| **PERFORMANCE** | **1 513 CIDR** | **462 CIDR** |
-| **BALANCED** | **15 189 CIDR** | **4 700 CIDR** |
-| **MINIMAL** | **8 108 CIDR** | **2 770 CIDR** |
-| **ASN ALL** | **12 596 CIDR** | **5 968 CIDR** |
-| **ALL-CLOUD** | **17 337 CIDR** | **5 267 CIDR** |
+| **FULL** | **17 335 CIDR** | **5 308 CIDR** |
+| **PERFORMANCE** | **1 511 CIDR** | **461 CIDR** |
+| **BALANCED** | **15 187 CIDR** | **4 741 CIDR** |
+| **MINIMAL** | **8 108 CIDR** | **2 810 CIDR** |
+| **ASN ALL** | **12 593 CIDR** | **6 011 CIDR** |
+| **ALL-CLOUD** | **17 335 CIDR** | **5 308 CIDR** |
 
-**Обновлено:** `2026-09-16T16:53:56Z` · [полная статистика](data/statistics.json)
+**Обновлено:** `2026-09-16T19:39:40Z` · [полная статистика](data/statistics.json)
 
 > Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
 
 ## 🔄 Обновление
 
-Данные и количество CIDR обновляются автоматически после успешной генерации и проверок. Последняя генерация: `2026-09-16T16:53:56Z`. [Машиночитаемая статистика](data/statistics.json).
+Данные и количество CIDR обновляются автоматически после успешной генерации и проверок. Последняя генерация: `2026-09-16T19:39:40Z`. [Машиночитаемая статистика](data/statistics.json).
 
 Перед публикацией данные проходят:
 **сбор → нормализацию → удаление дублей → агрегацию CIDR → проверки**.
