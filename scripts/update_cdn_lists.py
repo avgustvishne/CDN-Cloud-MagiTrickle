@@ -12,6 +12,10 @@ import time
 import urllib.parse
 import urllib.request
 import argparse
+try:
+    import duckdb
+except ImportError:
+    duckdb = None
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -719,6 +723,32 @@ def write_source_health_registry(registry):
         json.dumps({"generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "sources": rows}, indent=2, ensure_ascii=False) + "\n")
 
+
+def export_consensus_duckdb(records, audit_rows):
+    """Optional analytical cache; public JSON/TXT remain authoritative."""
+    if duckdb is None:
+        return False
+    path = DATA / "consensus.duckdb"
+    con = duckdb.connect(str(path))
+    try:
+        con.execute("CREATE TABLE IF NOT EXISTS prefixes (cidr VARCHAR, provider VARCHAR, source_count INTEGER, confidence INTEGER, first_seen VARCHAR, last_seen VARCHAR)")
+        con.execute("CREATE TABLE IF NOT EXISTS prefix_sources (cidr VARCHAR, provider VARCHAR, source VARCHAR, observed_at VARCHAR)")
+        con.execute("CREATE TABLE IF NOT EXISTS generation_audit (provider VARCHAR, ipv4_prefixes BIGINT, ipv6_prefixes BIGINT, previous_ipv4_prefixes BIGINT, previous_ipv6_prefixes BIGINT, ipv4_change_percent DOUBLE, ipv6_change_percent DOUBLE, status VARCHAR, source VARCHAR, errors INTEGER, recorded_at VARCHAR)")
+        con.execute("DELETE FROM prefixes")
+        con.execute("DELETE FROM prefix_sources")
+        con.execute("DELETE FROM generation_audit")
+        con.executemany("INSERT INTO prefixes VALUES (?, ?, ?, ?, ?, ?)", [(r.get("cidr"), r.get("provider"), int(r.get("source_count",0)), int(r.get("confidence",0)), r.get("first_seen"), r.get("last_seen")) for r in records])
+        source_rows=[]
+        for r in records:
+            for source in r.get("sources",[]): source_rows.append((r.get("cidr"), r.get("provider"), source, r.get("last_seen")))
+        if source_rows: con.executemany("INSERT INTO prefix_sources VALUES (?, ?, ?, ?)", source_rows)
+        now=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        con.executemany("INSERT INTO generation_audit VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [(r["provider"],r["ipv4_prefixes"],r["ipv6_prefixes"],r["previous_ipv4_prefixes"],r["previous_ipv6_prefixes"],r["ipv4_change_percent"],r["ipv6_change_percent"],r["status"],r["source"],r["errors"],now) for r in audit_rows])
+        con.commit()
+        return True
+    finally:
+        con.close()
+
 def main():
     parser = argparse.ArgumentParser(description="Build CDN/ASN subscriptions")
     parser.add_argument("--explain", action="store_true", help="generate per-CIDR policy explanations")
@@ -989,12 +1019,14 @@ def main():
             all_consensus.extend(payload.get("records", []))
         except Exception:
             continue
+    duckdb_enabled = export_consensus_duckdb(all_consensus, audit_rows)
     write_text_atomic(
         DATA / "consensus.json",
         json.dumps({
             "engine": VERSION,
             "generated_at": now,
             "model": "multi-source-evidence",
+            "duckdb_enabled": duckdb_enabled,
             "rule": "BGP absence is neutral; a CIDR is never removed solely because a live snapshot did not observe it.",
             "providers": consensus_index,
             "records": all_consensus,
