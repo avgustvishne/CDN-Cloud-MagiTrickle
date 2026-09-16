@@ -121,3 +121,16 @@ IP и маршруты могут меняться, поэтому наличи�
 ## ❤️ Поддержка
 
 [Поддержать проект](https://tips.tips/000484125)
+
+
+## Source intelligence
+
+The update pipeline builds `data/source-intelligence.json` as a read-only observability report. It combines source-registry metadata with the existing source audit and per-prefix consensus evidence.
+
+Safety guarantees:
+
+- source outages and disagreements never replace published CIDR data;
+- RPKI/validation evidence is informational and never deletes a prefix by itself;
+- generated subscriptions keep their existing stable URLs;
+- publication remains behind the existing regression, validation, checksum and link gates;
+- suspicious source changes are observable before they can affect published lists.
