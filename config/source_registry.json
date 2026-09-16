@@ -71,7 +71,8 @@
   "asn-threat-feeds": {
     "base": "https://dfratiani.github.io/asn-threat-feeds",
     "refresh": "automated",
-    "role": "BGP-announced-ASN-cross-check",    "patterns": {
+    "role": "BGP-announced-ASN-cross-check",
+    "patterns": {
       "ipv4": "as{asn}_ipv4.txt",
       "ipv6": "as{asn}_ipv6.txt",
       "all": "as{asn}_all.txt"
@@ -101,5 +102,17 @@
     "role": "official-live-provider-fetcher-reference",
     "refresh": "on-update",
     "authority": "high-for-supported-providers"
+  },
+  "ipverse-as-ip-blocks": {
+    "base": "https://raw.githubusercontent.com/ipverse/as-ip-blocks/master/as",
+    "refresh": "daily",
+    "role": "independent-BGP-ASN-prefix-source",
+    "formats": [
+      "ipv4-aggregated.txt",
+      "ipv6-aggregated.txt"
+    ],
+    "authority": "secondary",
+    "license": "CC0-1.0",
+    "notes": "Daily BGP-derived aggregated prefixes per ASN; additive cross-check only."
   }
 }
