@@ -133,7 +133,7 @@ def update_readme(stats):
 
     marker = "## 🔄 Обновление\n"
     if marker in text:
-        line = "Данные и количество CIDR обновляются автоматически после успешной генерации и проверок. Последняя генерация: `{}`. [Машиночитаемая статистика](data/statistics.json).\n\n".format(generated_at)
+        line = "\nДанные и количество CIDR обновляются автоматически после успешной генерации и проверок. Последняя генерация: `{}`. [Машиночитаемая статистика](data/statistics.json).\n\n".format(generated_at)
         start = text.index(marker) + len(marker)
         end = text.find("\n\n", start)
         if end == -1:
