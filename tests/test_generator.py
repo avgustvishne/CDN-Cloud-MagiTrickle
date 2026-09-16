@@ -90,9 +90,9 @@ class GeneratorUnitTests(unittest.TestCase):
 
     def test_ripe_keeps_bgp_views_separate(self):
         def fake_jsonget(url):
-            if "announced-prefixes" in url:
+            if url.startswith(self.engine.ripe.__globals__["RIPE"]):
                 return {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}}
-            if "ris-prefixes" in url:
+            if "ris-prefixes/data.json" in url:
                 return {"data": {"prefixes": ["198.51.100.0/24"]}}
             raise AssertionError(url)
 
@@ -104,6 +104,7 @@ class GeneratorUnitTests(unittest.TestCase):
             },
         ):
             views = self.engine.ripe("13335", 1)
+
         self.assertEqual(views["RIPEstat"], ["192.0.2.0/24"])
         self.assertEqual(views["RIPE RIS"], ["198.51.100.0/24"])
         self.assertEqual(views["RouteViews"], ["203.0.113.0/24"])
