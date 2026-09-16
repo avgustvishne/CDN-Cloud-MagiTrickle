@@ -148,6 +148,8 @@ jobs:
           assert intelligence["schema_version"] == 1
           assert intelligence["policy"]["mutates_subscriptions"] is False
           assert intelligence["policy"]["source_failure_replaces_data"] is False
+          assert intelligence["change_policy"]["min_confirming_sources"] == 2
+          assert intelligence["change_policy"]["confirmed_changes_are_not_auto_published"] is True
           assert isinstance(intelligence.get("sources"), list)
           assert isinstance(intelligence.get("providers"), dict)
           assert isinstance(intelligence.get("anomalies"), list)
