@@ -82,6 +82,26 @@ class SourceIntelligenceTests(unittest.TestCase):
         previous = {"providers": {"cloudflare": {"records": 100}}}
         self.assertEqual(self.engine.provider_anomalies(current, previous), [])
 
+    def test_prefix_evidence_normalizes_and_confirms_prefix(self):
+        old = self.engine.DATA
+        try:
+            with tempfile.TemporaryDirectory() as td:
+                self.engine.DATA = Path(td)
+                (self.engine.DATA / "example-consensus.json").write_text(
+                    json.dumps({"records": [
+                        {"cidr": "1.2.3.0/24", "sources": ["official", "IPVerse"]},
+                        {"cidr": "2001:db8::/32", "sources": ["official"]},
+                    ]}),
+                    encoding="utf-8",
+                )
+                rows = self.engine.prefix_evidence()
+                self.assertEqual(rows[0]["prefix"], "1.2.3.0/24")
+                self.assertEqual(rows[0]["status"], "confirmed")
+                self.assertEqual(rows[1]["version"], 6)
+                self.assertEqual(rows[1]["status"], "single_source")
+        finally:
+            self.engine.DATA = old
+
     def test_prefix_intelligence_counts_sources(self):
         old = self.engine.DATA
         try:
