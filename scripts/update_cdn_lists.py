@@ -593,7 +593,7 @@ def main():
         minimum = MIN_PREFIXES.get(name, MIN_PREFIXES["default"])
         status = "OK"; used_fallback = False
         suspicious4 = False
-        suspicious6 = len(v6) > MAX_PROVIDER_PREFIXES
+        suspicious6 = False
         if prev4 and len(v4) < int(len(prev4) * MIN_CHANGE_RATIO): suspicious4 = True
         if prev6 and len(v6) < int(len(prev6) * MIN_CHANGE_RATIO_V6): suspicious6 = True
         if suspicious4 and prev4:
