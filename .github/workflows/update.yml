@@ -35,6 +35,9 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Autonomous workflow audit
+        run: python scripts/autonomous_audit.py
+
       - name: Compile Python
         run: python -m compileall -q scripts tests
 
