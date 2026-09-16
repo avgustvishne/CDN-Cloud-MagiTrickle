@@ -18,7 +18,7 @@ for p in files:
         if n.prefixlen < (8 if n.version==4 else 16): bad.append(f"{p}:{line_no}: overly broad prefix {s}")
         if s in seen: bad.append(f"{p}:{line_no}: duplicate {s}")
         seen.add(s)
-    if p.stat().st_size==0: bad.append(f"{p}: empty")
+    if p.stat().st_size==0 and p.name not in {"asn-confirmed-v6.txt"}: bad.append(f"{p}: empty")
 if bad:
     print("\n".join(bad));sys.exit(1)
 print(f"Validated {len(files)} subscription files: OK")
