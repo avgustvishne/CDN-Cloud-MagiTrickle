@@ -122,7 +122,6 @@ IP и маршруты могут меняться, поэтому наличи�
 
 [Поддержать проект](https://tips.tips/000484125)
 
-
 ## Source intelligence
 
 The update pipeline builds `data/source-intelligence.json` as a read-only observability report. It combines source-registry metadata with the existing source audit and per-prefix consensus evidence.
