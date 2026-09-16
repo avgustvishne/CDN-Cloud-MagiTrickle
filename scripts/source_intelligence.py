@@ -109,6 +109,37 @@ def prefix_intelligence():
     return rows
 
 
+
+def prefix_evidence():
+    """Build per-prefix evidence without changing published datasets."""
+    result = []
+    for path in sorted(DATA.glob("*-consensus.json")):
+        try:
+            records = json.loads(path.read_text(encoding="utf-8")).get("records", [])
+        except (OSError, json.JSONDecodeError):
+            continue
+        provider = path.name[:-len("-consensus.json")]
+        for row in records:
+            if not isinstance(row, dict):
+                continue
+            cidr = row.get("cidr") or row.get("prefix")
+            if not cidr:
+                continue
+            try:
+                network = ipaddress.ip_network(str(cidr), strict=False)
+            except ValueError:
+                continue
+            sources = sorted({str(x) for x in row.get("sources", []) if x})
+            result.append({
+                "provider": provider,
+                "prefix": str(network),
+                "version": network.version,
+                "source_count": len(sources),
+                "sources": sources,
+                "status": "confirmed" if len(sources) >= MIN_CONFIRMING_SOURCES else "single_source",
+            })
+    return result
+
 def reliability_score(status):
     """Compute a transparent source reliability score from observed signals only."""
     checked = status.get("audit_providers_checked", 0) or 0
@@ -184,6 +215,7 @@ def main():
         "sources": source_status(registry, audit),
         "providers": consensus_summary(),
         "prefix_intelligence": prefix_intelligence(),
+        "prefix_evidence": prefix_evidence(),
         "change_policy": {
             "min_confirming_sources": MIN_CONFIRMING_SOURCES,
             "confirmed_changes_are_not_auto_published": True,
