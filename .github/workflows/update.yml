@@ -37,8 +37,8 @@ jobs:
       - name: Snapshot current subscriptions
         run: |
           rm -rf /tmp/cdn-old
-          mkdir -p /tmp/cdn-old
-          cp -a data/. /tmp/cdn-old/
+          mkdir -p /tmp/cdn-old/data
+          cp -a data/. /tmp/cdn-old/data/
 
       - name: Generate subscriptions
         run: python scripts/update_cdn_lists.py
