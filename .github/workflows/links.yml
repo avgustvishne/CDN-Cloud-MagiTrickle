@@ -1,0 +1,25 @@
+name: Check subscription links
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+      - "data/**"
+  workflow_dispatch:
+  schedule:
+    - cron: "43 4 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+      - name: Check README Raw links
+        run: python scripts/check_links.py
