@@ -1098,11 +1098,8 @@ def main():
     try:
         rf = parse_cidr_lines(request("https://raw.githubusercontent.com/Noktomezo/RussiaFancyLists/main/lists/blacklist/ipsets/full-and-cdn.lst"))
         rf4, _ = nets(rf, 4)
-        atomic(DATA / "russiafancy-cdn-v4.txt", rf4)
         rf6, _ = nets(rf, 6)
-        atomic(DATA / "russiafancy-cdn-v6.txt", rf6)
     except Exception as exc:
-        write_text_atomic(DATA / "russiafancy-error.txt", str(exc) + "\n")
     write_text_atomic(SOURCE_HEALTH, json.dumps(health, indent=2, ensure_ascii=False)+"\n")
     audit_lines = ["Provider,IPv4,IPv6,PreviousIPv4,PreviousIPv6,IPv4Change%,IPv6Change%,Status,Source,Errors"]
     audit_lines.extend(
