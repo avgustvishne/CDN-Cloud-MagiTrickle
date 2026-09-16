@@ -15,6 +15,7 @@ def count_file(path):
     return count_text(path.read_text(encoding="utf-8", errors="replace"))
 
 def previous_text(ref, relpath):
+
     try:
         r=subprocess.run(["git","show",f"{ref}:{relpath}"],text=True,capture_output=True,check=True)
         return r.stdout

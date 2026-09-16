@@ -147,3 +147,7 @@ Source intelligence now records evidence for individual prefixes, including norm
 ### Network evidence (BGP / IRR / RPKI)
 
 The update pipeline collects bounded observational network evidence through RIPEstat for a representative prefix sample. It records BGP announcement/origin data, IRR presence and RPKI validation state. RIPEstat provides routing-status data from RIS collectors and RPKI validity results from its validator. Evidence is advisory: BGP absence, IRR absence, or RPKI INVALID never deletes or replaces a published prefix.
+
+### Autonomous publication safety
+
+Before generated data is committed, an autonomous rollback guard compares the candidate datasets with the current main revision. A drop greater than 50% in an established dataset is held automatically and the commit is not published. This keeps the last known-good revision intact without requiring manual intervention for normal updates.
