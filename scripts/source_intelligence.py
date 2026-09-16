@@ -17,6 +17,7 @@ OUTPUT = DATA / "source-intelligence.json"
 HISTORY = DATA / "source-intelligence-history.json"
 HISTORY_LIMIT = 30
 ANOMALY_RATIO = 0.50
+MIN_CONFIRMING_SOURCES = 2
 
 
 def utc_now():
@@ -126,6 +127,18 @@ def load_history():
         return []
 
 
+def confirmation_for_provider(provider, current, previous):
+    """Return whether a large change has independent source confirmation."""
+    row = current.get("providers", {}).get(provider, {})
+    sources = row.get("sources", {})
+    independent = [name for name, count in sources.items() if count > 0]
+    return {
+        "confirmed": len(independent) >= MIN_CONFIRMING_SOURCES,
+        "independent_sources": sorted(independent),
+        "required_sources": MIN_CONFIRMING_SOURCES,
+    }
+
+
 def provider_anomalies(current, previous):
     """Flag large provider prefix-count changes; never mutate published data."""
     if not previous:
@@ -144,7 +157,8 @@ def provider_anomalies(current, previous):
                 "previous_records": before,
                 "current_records": after,
                 "change_ratio": round(ratio, 4),
-                "action": "observe_only",
+                "action": "confirmed_observation" if confirmation_for_provider(provider, current, previous)["confirmed"] else "observe_only",
+                "confirmation": confirmation_for_provider(provider, current, previous),
             })
     return result
 
@@ -170,6 +184,10 @@ def main():
         "sources": source_status(registry, audit),
         "providers": consensus_summary(),
         "prefix_intelligence": prefix_intelligence(),
+        "change_policy": {
+            "min_confirming_sources": MIN_CONFIRMING_SOURCES,
+            "confirmed_changes_are_not_auto_published": True,
+        },
         "anomalies": provider_anomalies(
             {"providers": consensus_summary()},
             previous,
