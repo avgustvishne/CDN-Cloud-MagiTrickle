@@ -71,6 +71,23 @@ class GeneratorUnitTests(unittest.TestCase):
         with patch.object(self.engine, "ripe_prefix_overview", return_value={}):
             self.assertFalse(self.engine.validate_prefix_with_ripe("192.0.2.0/24", {}))
 
+    def test_address_coverage_is_prefix_count_independent(self):
+        broad = [ipaddress.ip_network("192.0.2.0/24")]
+        split = [ipaddress.ip_network(f"192.0.2.{i}/32") for i in range(256)]
+        self.assertEqual(self.engine.address_coverage(broad), self.engine.address_coverage(split))
+        self.assertEqual(self.engine.address_coverage(broad), 256)
+
+    def test_ipverse_ranges_merges_ipv4_and_ipv6_sources(self):
+        def fake_request(url):
+            if url.endswith("ipv4-aggregated.txt"):
+                return b"1.2.3.0/24\n1.2.3.0/24\n"
+            if url.endswith("ipv6-aggregated.txt"):
+                return b"2001:db8::/32\n"
+            raise AssertionError(url)
+        with patch.object(self.engine, "request", side_effect=fake_request):
+            values = self.engine.ipverse_ranges("13335")
+        self.assertEqual(values, ["1.2.3.0/24", "2001:db8::/32"])
+
     def test_generated_cidrs_are_parseable(self):
         data = ROOT / "data"
         for path in (data / "all-cloud-v4.txt", data / "all-cloud-v6.txt",
