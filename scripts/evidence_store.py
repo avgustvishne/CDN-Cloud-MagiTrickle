@@ -40,7 +40,7 @@ def source_confidence(sources):
 
 def load_bgpstream_health():
     """Load the latest optional BGPStream validation report."""
-    path = DATA / "bgpstream-health.json"
+    path = Path(__file__).resolve().parents[1] / "data" / "bgpstream-health.json"
     if not path.exists():
         return {}
     try:
