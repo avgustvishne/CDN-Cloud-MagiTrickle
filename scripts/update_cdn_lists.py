@@ -218,7 +218,7 @@ def select_ripe_candidates(prefixes, limit=128):
 def ipverse_ranges(asn):
     """Fetch daily BGP-aggregated prefixes from IPVerse for one ASN.
     IPVerse is an independent BGP-derived source; it is additive and never
-    replaces official provider feeds or RIPEstat.
+    replaces official provider feeds or other BGP views.
     """
     found = []
     base = f"https://raw.githubusercontent.com/ipverse/as-ip-blocks/master/as/{asn}"
@@ -250,7 +250,7 @@ def routeviews_prefixes(asn):
 
 
 def ripe(asn, min_peers):
-    """Merge RIPEstat BGP views and use RouteViews as a fallback."""
+    """Merge RIPEstat/RIS and RouteViews BGP views; neither is authoritative."""
     found = set()
     ripe_ok = False
 
@@ -289,11 +289,9 @@ def ripe(asn, min_peers):
     except Exception:
         pass
 
-    # Only use the third-party source when RIPEstat did not return data.
-    # This avoids replacing a healthy RIPE result with a different BGP view.
-    if not found or not ripe_ok:
-        found.update(routeviews_prefixes(asn))
-
+    # RouteViews is an independent BGP view. Merge it instead of using it
+    # only as a fallback so a single RIPEstat view can never become authoritative.
+    found.update(routeviews_prefixes(asn))
     return sorted(found)
 
 def walk_strings(obj):
