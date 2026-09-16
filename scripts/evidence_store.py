@@ -116,7 +116,10 @@ def export_consensus_duckdb(records, audit_rows):
         con.executemany("INSERT INTO prefixes VALUES (?, ?, ?, ?, ?, ?)", [(r.get("cidr"), r.get("provider"), int(r.get("source_count",0)), int(r.get("confidence",0)), r.get("first_seen"), r.get("last_seen")) for r in records])
         source_rows=[]
         for r in records:
-            for source in r.get("sources",[]): source_rows.append((r.get("cidr"), r.get("provider"), source, r.get("last_seen")))
+            for source in r.get("sources",[]):
+                source_id = source.get("id") if isinstance(source, dict) else source
+                observed_at = source.get("observed_at") if isinstance(source, dict) else r.get("last_seen")
+                source_rows.append((r.get("cidr"), r.get("provider"), str(source_id or ""), observed_at))
         if source_rows: con.executemany("INSERT INTO prefix_sources VALUES (?, ?, ?, ?)", source_rows)
         now=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         con.executemany("INSERT INTO generation_audit VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [(r["provider"],r["ipv4_prefixes"],r["ipv6_prefixes"],r["previous_ipv4_prefixes"],r["previous_ipv6_prefixes"],r["ipv4_change_percent"],r["ipv6_change_percent"],r["status"],r["source"],r["errors"],now) for r in audit_rows])
