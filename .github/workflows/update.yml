@@ -40,6 +40,13 @@ jobs:
       - name: Run generator unit tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
 
+      - name: Create automatic rollback backup
+        if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
+        shell: bash
+        run: |
+          set -e
+          git push origin "HEAD:refs/heads/backup/pre-update"
+          echo "Rollback backup updated to $(git rev-parse HEAD)"
       - name: Snapshot current subscriptions
         run: |
           rm -rf /tmp/cdn-old
