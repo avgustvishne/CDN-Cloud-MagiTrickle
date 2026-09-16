@@ -14,6 +14,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 REGISTRY = ROOT / "config" / "source_registry.json"
 OUTPUT = DATA / "source-intelligence.json"
+HISTORY = DATA / "source-intelligence-history.json"
+HISTORY_LIMIT = 30
+ANOMALY_RATIO = 0.50
 
 
 def utc_now():
@@ -105,11 +108,56 @@ def prefix_intelligence():
     return rows
 
 
+def reliability_score(status):
+    """Compute a transparent source reliability score from observed signals only."""
+    checked = status.get("audit_providers_checked", 0) or 0
+    coverage = (status.get("new_coverage_ipv4", 0) or 0) + (status.get("new_coverage_ipv6", 0) or 0)
+    authority = str(status.get("authority", "")).lower()
+    authority_score = 1.0 if authority in {"official", "primary"} else 0.75 if authority else 0.5
+    activity_score = 1.0 if checked > 0 and coverage >= 0 else 0.5
+    return round((authority_score * 0.55 + activity_score * 0.45) * 100, 2)
+
+
+def load_history():
+    try:
+        payload = json.loads(HISTORY.read_text(encoding="utf-8"))
+        return payload if isinstance(payload, list) else []
+    except (OSError, json.JSONDecodeError):
+        return []
+
+
+def provider_anomalies(current, previous):
+    """Flag large provider prefix-count changes; never mutate published data."""
+    if not previous:
+        return []
+    old = previous.get("providers", {})
+    result = []
+    for provider, row in current.get("providers", {}).items():
+        before = old.get(provider, {}).get("records")
+        after = row.get("records")
+        if not isinstance(before, int) or not isinstance(after, int) or before <= 0:
+            continue
+        ratio = abs(after - before) / before
+        if ratio >= ANOMALY_RATIO:
+            result.append({
+                "provider": provider,
+                "previous_records": before,
+                "current_records": after,
+                "change_ratio": round(ratio, 4),
+                "action": "observe_only",
+            })
+    return result
+
+
 def main():
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     audit_path = DATA / "source-audit.json"
     audit = json.loads(audit_path.read_text(encoding="utf-8")) if audit_path.exists() else {}
     now = utc_now()
+    rows = source_status(registry, audit)
+    for row in rows:
+        row["reliability_score"] = reliability_score(row)
+    previous = load_history()[-1] if load_history() else None
     payload = {
         "schema_version": 1,
         "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -122,7 +170,22 @@ def main():
         "sources": source_status(registry, audit),
         "providers": consensus_summary(),
         "prefix_intelligence": prefix_intelligence(),
+        "anomalies": provider_anomalies(
+            {"providers": consensus_summary()},
+            previous,
+        ),
     }
+    history = load_history()
+    history.append({
+        "generated_at": payload["generated_at"],
+        "providers": payload["providers"],
+        "source_count": len(payload["sources"]),
+        "anomaly_count": len(payload["anomalies"]),
+    })
+    HISTORY.write_text(
+        json.dumps(history[-HISTORY_LIMIT:], indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
     OUTPUT.write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
