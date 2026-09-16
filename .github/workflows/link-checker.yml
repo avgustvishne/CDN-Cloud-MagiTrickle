@@ -21,8 +21,11 @@ jobs:
           import pathlib, re, subprocess, sys, time
 
           urls=set()
+          extensions={".md",".json",".yml",".yaml"}
           for p in pathlib.Path(".").rglob("*"):
               if not p.is_file() or ".git" in p.parts or "data" in p.parts:
+                  continue
+              if p.suffix.lower() not in extensions:
                   continue
               try:
                   s=p.read_text(encoding="utf-8")
