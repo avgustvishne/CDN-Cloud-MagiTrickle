@@ -754,7 +754,8 @@ def build_consensus(provider, prefixes, source_prefixes, asns, bgp_health):
                 try:
                     bgp_peer_counts.append(int(row.get("peers", 0)))
                 except (TypeError, ValueError):
-                    pass
+                    # Ignore malformed peer counts from external data sources.
+                    continue
 
         independent_ids = {"IPVerse", "RIPEstat", "RIPE RIS", "RouteViews", "cdn-ip-database"}
         independent = len(set(evidence) & independent_ids)
