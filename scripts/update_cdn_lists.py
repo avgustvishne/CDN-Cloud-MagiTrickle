@@ -122,6 +122,52 @@ def request(url):
 def jsonget(url):
     return json.loads(request(url).decode("utf-8"))
 
+def source_family(source):
+    """Map evidence channels to an independence family for confidence scoring."""
+    families = {
+        "official": "official",
+        "IPVerse": "ipverse",
+        "RIPEstat": "ripe",
+        "RIPE RIS": "ripe",
+        "RIS-Live": "ripe",
+        "RouteViews": "routeviews",
+        "RouteViews BMP": "routeviews",
+        "BGPStream": "bgpstream",
+        "HE BGP": "he",
+        "CDNCheck": "cdncheck",
+        "RussiaFancyLists": "community",
+        "static": "static",
+    }
+    return families.get(source, source.lower().replace(" ", "_"))
+
+
+def independent_source_families(sources):
+    return sorted({source_family(s) for s in sources if s})
+
+
+def evidence_score(sources, bgp_peers=0):
+    """Score evidence without counting correlated RIPE/RouteViews channels twice."""
+    families = independent_source_families(sources)
+    score = 0
+    if "official" in families:
+        score += 40
+    if "ipverse" in families:
+        score += 20
+    if "ripe" in families:
+        score += 10
+    if "routeviews" in families:
+        score += 10
+    if "he" in families:
+        score += 10
+    if "cdncheck" in families:
+        score += 5
+    if "community" in families:
+        score += 5
+    if bgp_peers >= 2:
+        score += 5
+    return min(100, score)
+
+
 def ripe_routing_status(asn):
     """Return current RIPEstat routing status for an ASN."""
     url = "https://stat.ripe.net/data/routing-status/data.json?" + urllib.parse.urlencode({
@@ -310,6 +356,8 @@ def ripe(asn, min_peers):
         "RIPEstat": sorted(ripestat),
         "RIPE RIS": sorted(ris),
         "RouteViews": sorted(routeviews),
+        # Live RIS/RouteViews and CAIDA BGPStream remain evidence channels.
+        # They are populated by the validation layer when available.
     }
 
 def walk_strings(obj):
