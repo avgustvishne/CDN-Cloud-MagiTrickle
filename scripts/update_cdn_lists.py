@@ -1100,6 +1100,7 @@ def main():
         rf4, _ = nets(rf, 4)
         rf6, _ = nets(rf, 6)
     except Exception as exc:
+        health["RussiaFancyLists"]["error"] = str(exc)
     write_text_atomic(SOURCE_HEALTH, json.dumps(health, indent=2, ensure_ascii=False)+"\n")
     audit_lines = ["Provider,IPv4,IPv6,PreviousIPv4,PreviousIPv6,IPv4Change%,IPv6Change%,Status,Source,Errors"]
     audit_lines.extend(
