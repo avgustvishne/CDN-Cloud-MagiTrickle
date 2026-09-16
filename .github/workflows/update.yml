@@ -16,7 +16,6 @@ on:
       - "config/providers.json"
       - "config/source_registry.json"
       - "scripts/**"
-      - ".github/workflows/update.yml"
 
 permissions:
   contents: write
@@ -196,9 +195,9 @@ jobs:
               exit 0
             fi
 
-            echo "Push was not a fast-forward; refreshing main (attempt ${attempt})."
-            git fetch origin main
-            git rebase origin/main || {
+            echo "Push was not a fast-forward; refreshing ${GITHUB_REF_NAME} (attempt ${attempt})."
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}" || {
               git rebase --abort || true
               echo "Rebase failed on attempt ${attempt}."
               sleep $((attempt * 2))
