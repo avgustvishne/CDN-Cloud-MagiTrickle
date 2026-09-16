@@ -19,6 +19,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  dpi-health:
+    name: DPI health probe (optional)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run DPI detector if installed
+        run: |
+          if command -v dpi_detector >/dev/null 2>&1; then
+            python3 scripts/dpi_probe.py --detector dpi_detector --tests 123 --concurrency 20 --allow-fail
+          else
+            echo '{"status":"UNAVAILABLE","reason":"DPI detector is intentionally not installed on the GitHub runner; run this probe on the target network."}' > data/dpi-health.json
+          fi
+      - name: Upload DPI health report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dpi-health
+          path: data/dpi-health.json
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 25
