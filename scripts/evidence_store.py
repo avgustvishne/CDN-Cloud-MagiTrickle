@@ -4,6 +4,28 @@ import datetime
 import json
 import pathlib
 import ipaddress
+import os
+import tempfile
+from pathlib import Path
+
+try:
+    import duckdb
+except ImportError:
+    duckdb = None
+
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "data"
+
+def write_text_atomic(path, text):
+    path = Path(path)
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix="." + path.name + ".")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(text)
+        os.replace(tmp, path)
+    finally:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
 
 def source_confidence(sources):
     """Score independent evidence; official/BGP/RPKI outrank secondary feeds."""
