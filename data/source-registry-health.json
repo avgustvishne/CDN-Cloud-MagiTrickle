@@ -1,0 +1,124 @@
+{
+  "generated_at": "2026-09-16T11:23:32Z",
+  "sources": [
+    {
+      "id": "cloud-ip-ranges",
+      "role": "",
+      "refresh": "",
+      "live_fetch_enabled": true,
+      "reference_only": false
+    },
+    {
+      "id": "cloud-egress-ip-ranges",
+      "role": "",
+      "refresh": "",
+      "live_fetch_enabled": true,
+      "reference_only": false
+    },
+    {
+      "id": "cdn-ip-database",
+      "role": "official-source-catalog-and-cross-check",
+      "refresh": "daily",
+      "live_fetch_enabled": true,
+      "reference_only": false
+    },
+    {
+      "id": "mrkhachaturov-ipranges",
+      "role": "independent-public-source-cross-check",
+      "refresh": "4h",
+      "live_fetch_enabled": false,
+      "reference_only": false
+    },
+    {
+      "id": "asn-index",
+      "role": "ASN-to-prefix-index",
+      "refresh": "daily",
+      "live_fetch_enabled": false,
+      "reference_only": false
+    },
+    {
+      "id": "routesentinel",
+      "role": "BGP-route-origin-and-RPKI-validation-reference",
+      "refresh": "daily",
+      "live_fetch_enabled": false,
+      "reference_only": true
+    },
+    {
+      "id": "asn-threat-feeds",
+      "role": "BGP-announced-ASN-cross-check",
+      "refresh": "automated",
+      "live_fetch_enabled": false,
+      "reference_only": false
+    },
+    {
+      "id": "cloud-provider-ip-addresses",
+      "role": "independent-provider-cross-check",
+      "refresh": "daily",
+      "live_fetch_enabled": false,
+      "reference_only": true
+    },
+    {
+      "id": "projectdiscovery-cdncheck",
+      "role": "provider-identity-and-cidr-cross-check",
+      "refresh": "on-update",
+      "live_fetch_enabled": false,
+      "reference_only": true
+    },
+    {
+      "id": "taythebot-cdn-ranges",
+      "role": "independent-cdn-cidr-cross-check",
+      "refresh": "on-update",
+      "live_fetch_enabled": false,
+      "reference_only": true
+    },
+    {
+      "id": "krainium-cdn-fetcher",
+      "role": "official-live-provider-fetcher-reference",
+      "refresh": "on-update",
+      "live_fetch_enabled": false,
+      "reference_only": true
+    },
+    {
+      "id": "ipverse-as-ip-blocks",
+      "role": "independent-BGP-ASN-prefix-source",
+      "refresh": "daily",
+      "live_fetch_enabled": true,
+      "reference_only": false
+    },
+    {
+      "id": "caida-bgpstream",
+      "role": "independent-real-time-BGP-validation",
+      "refresh": "continuous",
+      "live_fetch_enabled": false,
+      "reference_only": false
+    },
+    {
+      "id": "rezmoss-cloud-provider-ip-addresses",
+      "role": "independent-provider-cross-check",
+      "refresh": "daily",
+      "live_fetch_enabled": false,
+      "reference_only": false
+    },
+    {
+      "id": "femueller-cloud-ip-ranges",
+      "role": "mature-independent-cross-check",
+      "refresh": "",
+      "live_fetch_enabled": false,
+      "reference_only": false
+    },
+    {
+      "id": "bgpkit-parser",
+      "role": "advanced-BGP-MRT-RIS-RouteViews-evidence-reference",
+      "refresh": "",
+      "live_fetch_enabled": false,
+      "reference_only": false
+    },
+    {
+      "id": "routinator",
+      "role": "RPKI-validation-reference",
+      "refresh": "",
+      "live_fetch_enabled": false,
+      "reference_only": false
+    }
+  ]
+}

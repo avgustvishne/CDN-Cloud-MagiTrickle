@@ -1,17 +1,24 @@
 {
-  "version": 43,
-  "updated": "2026-09-15 11:23:05 UTC",
+  "version": 44,
+  "updated": "2026-09-16 11:40:59 UTC",
   "ripe_min_peers": 1,
   "sources": [
-    "official",
+    "official provider feeds",
+    "disposable/cloud-ip-ranges",
+    "ipanalytics/Cloud-Egress-IP-Ranges",
     "RIPEstat",
     "RIPE RIS",
     "RouteViews fallback",
-    "sw.ext.io"
+    "IPVerse as-ip-blocks",
+    "sw.ext.io",
+    "RussiaFancyLists (independent Russia IP intelligence / validation only)"
   ],
   "features": [
     "source-fusion",
+    "coverage-based-regression-guard",
     "multi-source-asn-discovery",
+    "ripe-prefix-overview",
+    "asn-confirmed-lists",
     "source-health",
     "deduplication",
     "cidr-aggregation",
@@ -20,18 +27,26 @@
     "sha256",
     "asn-audit",
     "parallel-fetch",
-    "source-cache"
+    "source-cache",
+    "freshness-gates",
+    "ipverse-cross-check",
+    "single-profile-generator",
+    "consensus-evidence",
+    "per-cidr-provenance",
+    "anomaly-protection",
+    "cross-provider-overlap-audit",
+    "russiafancy-validation"
   ],
-  "engine": "final-v43-wide-source-fusion",
+  "engine": "final-v44-source-fusion-ipverse",
   "provider_asn_counts": {
-    "aws": 2,
+    "aws": 4,
     "cloudflare": 11,
     "hetzner": 4,
     "ovh": 3,
-    "akamai": 11,
-    "digitalocean": 8,
-    "microsoft": 6,
-    "oracle": 3,
+    "akamai": 36,
+    "digitalocean": 10,
+    "microsoft": 11,
+    "oracle": 6,
     "alibaba": 4,
     "cdn77": 1,
     "fastly": 1,
@@ -45,8 +60,10 @@
   },
   "provider_asns": {
     "aws": [
+      "8987",
+      "14618",
       "16509",
-      "14618"
+      "214101"
     ],
     "cloudflare": [
       "13335",
@@ -73,40 +90,75 @@
       "199949"
     ],
     "akamai": [
-      "16625",
-      "20940",
       "12222",
+      "16625",
+      "16702",
+      "17204",
       "18680",
       "18717",
+      "20189",
+      "20940",
+      "21342",
+      "21399",
       "22207",
+      "23454",
+      "23455",
       "23903",
+      "24319",
+      "26008",
+      "31107",
+      "31108",
+      "31109",
+      "31110",
+      "31377",
+      "31984",
       "32787",
+      "33905",
+      "34164",
+      "34850",
+      "35204",
+      "35993",
       "35994",
+      "36029",
       "36183",
-      "63949"
+      "39836",
+      "43639",
+      "63949",
+      "200005",
+      "393560"
     ],
     "digitalocean": [
       "14061",
+      "46652",
       "133165",
-      "394362",
-      "393406",
       "135340",
       "201229",
       "202018",
-      "202109"
+      "202109",
+      "393406",
+      "394362",
+      "394996"
     ],
     "microsoft": [
+      "3598",
+      "5761",
+      "6584",
+      "8068",
+      "8069",
+      "8070",
       "8075",
       "12076",
       "54489",
-      "3598",
-      "6584",
-      "8068"
+      "58593",
+      "62540"
     ],
     "oracle": [
-      "31898",
+      "14544",
       "23871",
-      "39648"
+      "31898",
+      "33517",
+      "39648",
+      "46558"
     ],
     "alibaba": [
       "37963",
@@ -142,130 +194,134 @@
     ],
     "backblaze": []
   },
-  "retries": 5,
-  "timeout_seconds": 30,
+  "retries": 2,
+  "timeout_seconds": 15,
   "max_workers": 8,
   "cache_ttl_seconds": 21600,
+  "ipverse": "enabled",
   "min_change_ratio": 0.5,
   "min_change_ratio_v6": 0.35,
+  "min_coverage_ratio": 0.5,
+  "min_coverage_ratio_v6": 0.35,
   "max_aggregate_prefixes": 200000,
-  "max_provider_prefixes": 50000,
+  "min_provider_prefixes": null,
+  "max_provider_prefixes": null,
   "global_only": true,
   "min_prefixlen": {
     "ipv4": 8,
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 11647,
-    "ipv6": 4251
+    "ipv4": 17334,
+    "ipv6": 5278
   },
   "audit": [
     {
       "provider": "aws",
-      "ipv4_prefixes": 5294,
-      "ipv6_prefixes": 1491,
+      "ipv4_prefixes": 5342,
+      "ipv6_prefixes": 1533,
       "previous_ipv4_prefixes": 5294,
       "previous_ipv6_prefixes": 1491,
-      "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv4_change_percent": 0.91,
+      "ipv6_change_percent": 2.82,
       "status": "OK",
-      "source": "official+RIPEstat",
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "cloudflare",
-      "ipv4_prefixes": 692,
-      "ipv6_prefixes": 115,
-      "previous_ipv4_prefixes": 642,
+      "ipv4_prefixes": 746,
+      "ipv6_prefixes": 165,
+      "previous_ipv4_prefixes": 692,
       "previous_ipv6_prefixes": 115,
-      "ipv4_change_percent": 7.79,
-      "ipv6_change_percent": 0.0,
+      "ipv4_change_percent": 7.8,
+      "ipv6_change_percent": 43.48,
       "status": "OK",
-      "source": "official+sw.ext.io+RIPEstat",
+      "source": "official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "hetzner",
-      "ipv4_prefixes": 85,
-      "ipv6_prefixes": 6,
+      "ipv4_prefixes": 3849,
+      "ipv6_prefixes": 392,
       "previous_ipv4_prefixes": 85,
       "previous_ipv6_prefixes": 6,
-      "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv4_change_percent": 4428.24,
+      "ipv6_change_percent": 6433.33,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "ovh",
-      "ipv4_prefixes": 631,
-      "ipv6_prefixes": 4,
+      "ipv4_prefixes": 2578,
+      "ipv6_prefixes": 394,
       "previous_ipv4_prefixes": 631,
       "previous_ipv6_prefixes": 4,
-      "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv4_change_percent": 308.56,
+      "ipv6_change_percent": 9750.0,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "akamai",
-      "ipv4_prefixes": 321,
-      "ipv6_prefixes": 232,
+      "ipv4_prefixes": 350,
+      "ipv6_prefixes": 245,
       "previous_ipv4_prefixes": 321,
       "previous_ipv6_prefixes": 232,
-      "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv4_change_percent": 9.03,
+      "ipv6_change_percent": 5.6,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "digitalocean",
-      "ipv4_prefixes": 199,
+      "ipv4_prefixes": 232,
       "ipv6_prefixes": 14,
       "previous_ipv4_prefixes": 199,
       "previous_ipv6_prefixes": 14,
-      "ipv4_change_percent": 0.0,
+      "ipv4_change_percent": 16.58,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "official+RIPEstat",
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "microsoft",
-      "ipv4_prefixes": 937,
-      "ipv6_prefixes": 95,
+      "ipv4_prefixes": 987,
+      "ipv6_prefixes": 134,
       "previous_ipv4_prefixes": 937,
       "previous_ipv6_prefixes": 95,
-      "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv4_change_percent": 5.34,
+      "ipv6_change_percent": 41.05,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "oracle",
       "ipv4_prefixes": 1206,
-      "ipv6_prefixes": 311,
+      "ipv6_prefixes": 325,
       "previous_ipv4_prefixes": 1206,
       "previous_ipv6_prefixes": 311,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
-      "status": "OK",
-      "source": "official+RIPEstat",
-      "errors": 0
+      "ipv6_change_percent": 4.5,
+      "status": "KEEP_OLD_PARTIAL",
+      "source": "official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
+      "errors": 1
     },
     {
       "provider": "alibaba",
-      "ipv4_prefixes": 627,
-      "ipv6_prefixes": 183,
+      "ipv4_prefixes": 666,
+      "ipv6_prefixes": 197,
       "previous_ipv4_prefixes": 627,
       "previous_ipv6_prefixes": 183,
-      "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv4_change_percent": 6.22,
+      "ipv6_change_percent": 7.65,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
@@ -277,7 +333,7 @@
       "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
@@ -289,7 +345,7 @@
       "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "official+RIPEstat",
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "errors": 0
     },
     {
@@ -301,7 +357,7 @@
       "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
@@ -313,19 +369,19 @@
       "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "vultr",
       "ipv4_prefixes": 703,
-      "ipv6_prefixes": 1464,
+      "ipv6_prefixes": 1548,
       "previous_ipv4_prefixes": 703,
       "previous_ipv6_prefixes": 1464,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.0,
+      "ipv6_change_percent": 5.74,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "errors": 0
     },
     {
@@ -337,7 +393,7 @@
       "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "RIPEstat",
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
@@ -349,19 +405,19 @@
       "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "official+RIPEstat",
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "gcore",
-      "ipv4_prefixes": 572,
+      "ipv4_prefixes": 532,
       "ipv6_prefixes": 222,
       "previous_ipv4_prefixes": 572,
       "previous_ipv6_prefixes": 222,
-      "ipv4_change_percent": 0.0,
+      "ipv4_change_percent": -6.99,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "official+RIPEstat",
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
@@ -373,80 +429,83 @@
       "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "static",
+      "source": "static+cloud-ip-ranges",
       "errors": 0
     }
   ],
   "diff": {},
   "providers": {
     "aws": {
-      "ipv4": 5294,
-      "ipv6": 1491,
-      "source": "official+RIPEstat",
+      "ipv4": 5342,
+      "ipv6": 1533,
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "cloudflare": {
-      "ipv4": 692,
-      "ipv6": 115,
-      "source": "official+sw.ext.io+RIPEstat",
+      "ipv4": 746,
+      "ipv6": 165,
+      "source": "official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "hetzner": {
-      "ipv4": 85,
-      "ipv6": 6,
-      "source": "RIPEstat",
+      "ipv4": 3849,
+      "ipv6": 392,
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "ovh": {
-      "ipv4": 631,
-      "ipv6": 4,
-      "source": "RIPEstat",
+      "ipv4": 2578,
+      "ipv6": 394,
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "akamai": {
-      "ipv4": 321,
-      "ipv6": 232,
-      "source": "RIPEstat",
+      "ipv4": 350,
+      "ipv6": 245,
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "digitalocean": {
-      "ipv4": 199,
+      "ipv4": 232,
       "ipv6": 14,
-      "source": "official+RIPEstat",
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "microsoft": {
-      "ipv4": 937,
-      "ipv6": 95,
-      "source": "RIPEstat",
+      "ipv4": 987,
+      "ipv6": 134,
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "oracle": {
       "ipv4": 1206,
-      "ipv6": 311,
-      "source": "official+RIPEstat",
-      "status": "OK",
+      "ipv6": 325,
+      "source": "official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
+      "status": "KEEP_OLD_PARTIAL",
       "rejected_ipv4": 0,
-      "rejected_ipv6": 0
+      "rejected_ipv6": 0,
+      "errors": [
+        "cloud-ip-ranges:HTTP Error 404: Not Found"
+      ]
     },
     "alibaba": {
-      "ipv4": 627,
-      "ipv6": 183,
-      "source": "RIPEstat",
+      "ipv4": 666,
+      "ipv6": 197,
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -454,7 +513,7 @@
     "cdn77": {
       "ipv4": 187,
       "ipv6": 33,
-      "source": "RIPEstat",
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -462,7 +521,7 @@
     "fastly": {
       "ipv4": 48,
       "ipv6": 41,
-      "source": "official+RIPEstat",
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -470,7 +529,7 @@
     "melbicom": {
       "ipv4": 99,
       "ipv6": 18,
-      "source": "RIPEstat",
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -478,15 +537,15 @@
     "buyvm": {
       "ipv4": 23,
       "ipv6": 27,
-      "source": "RIPEstat",
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "vultr": {
       "ipv4": 703,
-      "ipv6": 1464,
-      "source": "RIPEstat",
+      "ipv6": 1548,
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -494,7 +553,7 @@
     "contabo": {
       "ipv4": 250,
       "ipv6": 2,
-      "source": "RIPEstat",
+      "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -502,15 +561,15 @@
     "scaleway": {
       "ipv4": 11,
       "ipv6": 1,
-      "source": "official+RIPEstat",
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "gcore": {
-      "ipv4": 572,
+      "ipv4": 532,
       "ipv6": 222,
-      "source": "official+RIPEstat",
+      "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -518,7 +577,7 @@
     "backblaze": {
       "ipv4": 5,
       "ipv6": 1,
-      "source": "static",
+      "source": "static+cloud-ip-ranges",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
