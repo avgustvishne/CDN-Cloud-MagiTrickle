@@ -1,10 +1,16 @@
 name: Check subscription links
 
 on:
+  push:
+    paths:
+      - "README.md"
+      - "data/**"
+      - "scripts/check_links.py"
   pull_request:
     paths:
       - "README.md"
       - "data/**"
+      - "scripts/check_links.py"
   workflow_dispatch:
   schedule:
     - cron: "43 4 * * *"
