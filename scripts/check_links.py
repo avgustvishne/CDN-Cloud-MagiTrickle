@@ -50,7 +50,7 @@ network_bad = []
 with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
     for url, status in ex.map(check, urls):
         print(status, url)
-        if status != 200:
+        if status not in (200, 206):
             network_bad.append((url, status))
 
 bad.extend(network_bad)
