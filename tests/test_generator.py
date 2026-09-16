@@ -64,11 +64,11 @@ class GeneratorUnitTests(unittest.TestCase):
             lookup.assert_not_called()
 
     def test_confirm_accepts_announced_prefix(self):
-        with patch.object(self.engine, "ripe_prefix_overview", return_value={"announced": True, "asns": [13335]}):
+        with patch("source_acquisition.ripe_prefix_overview", return_value={"announced": True, "asns": [13335]}):
             self.assertTrue(self.engine.validate_prefix_with_ripe("192.0.2.0/24", {}))
 
     def test_confirm_rejects_empty_ripe_response(self):
-        with patch.object(self.engine, "ripe_prefix_overview", return_value={}):
+        with patch("source_acquisition.ripe_prefix_overview", return_value={}):
             self.assertFalse(self.engine.validate_prefix_with_ripe("192.0.2.0/24", {}))
 
     def test_address_coverage_is_prefix_count_independent(self):
@@ -84,22 +84,24 @@ class GeneratorUnitTests(unittest.TestCase):
             if url.endswith("ipv6-aggregated.txt"):
                 return b"2001:db8::/32\n"
             raise AssertionError(url)
-        with patch.object(self.engine, "request", side_effect=fake_request):
+        with patch("source_acquisition.request", side_effect=fake_request):
             values = self.engine.ipverse_ranges("13335")
         self.assertEqual(values, ["1.2.3.0/24", "2001:db8::/32"])
 
     def test_ripe_keeps_bgp_views_separate(self):
-        with patch.object(
-            self.engine,
-            "jsonget",
-            side_effect=[
-                {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}},
-                {"data": {"prefixes": ["198.51.100.0/24"]}},
-            ],
-        ), patch.object(
-            self.engine,
-            "routeviews_prefixes",
-            return_value=["203.0.113.0/24"],
+        def fake_jsonget(url):
+            if url.startswith(self.engine.ripe.__globals__["RIPE"]):
+                return {"data": {"prefixes": [{"prefix": "192.0.2.0/24"}]}}
+            if "ris-prefixes/data.json" in url:
+                return {"data": {"prefixes": ["198.51.100.0/24"]}}
+            raise AssertionError(url)
+
+        with patch.dict(
+            self.engine.ripe.__globals__,
+            {
+                "jsonget": fake_jsonget,
+                "routeviews_prefixes": lambda asn: ["203.0.113.0/24"],
+            },
         ):
             views = self.engine.ripe("13335", 1)
         self.assertEqual(views["RIPEstat"], ["192.0.2.0/24"])
@@ -157,6 +159,17 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertIn("official", by_cidr["192.0.2.0/24"]["sources"])
         self.assertEqual(by_cidr["198.51.100.0/24"]["source_count"], 1)
         self.assertEqual(by_cidr["198.51.100.0/24"]["bgp_observed_asns"], [])
+
+    def test_extracted_helpers_import_and_basic_normalization(self):
+        import importlib.util
+        for filename in ("artifact_store.py", "evidence_store.py", "source_acquisition.py", "normalization.py"):
+            path = ROOT / "scripts" / filename
+            spec = importlib.util.spec_from_file_location(filename[:-3], path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+        result, rejected = module.nets(["1.2.3.0/24"], 4)
+        self.assertEqual(rejected, 0)
+        self.assertEqual(result[0].prefixlen, 24)
 
     def test_generated_cidrs_are_parseable(self):
         data = ROOT / "data"
