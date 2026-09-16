@@ -42,6 +42,9 @@ jobs:
       - name: Validate source health
         run: |
           python3 scripts/source_health.py
+      - name: Run publication regression gate
+        run: |
+          python3 scripts/regression.py --current data/provenance/cidr.json --output data/health/regression.json
       - name: Build DPI source registry and quality report
         run: |
           python3 scripts/dpi_sources.py
