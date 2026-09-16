@@ -7,7 +7,7 @@ Provider names are matched conservatively against ASN handle/description.
 import argparse,datetime,json,pathlib,re,urllib.request
 
 BASE="https://raw.githubusercontent.com/ipverse/as-ip-blocks/master/as/{asn}/aggregated.json"
-INDEX="https://raw.githubusercontent.com/ipverse/as-ip-blocks/master/asns.json"
+INDEX="https://raw.githubusercontent.com/projectdiscovery/cdncheck/main/cmd/generate-index/provider.yaml"
 
 def fetch(url):
     req=urllib.request.Request(url,headers={"User-Agent":"CDN-Cloud-MagiTrickle/1.0"})
@@ -27,22 +27,37 @@ def main():
         providers=obj.get("providers",obj) if isinstance(obj,dict) else obj
     # Fallback to names already known by the generator.
     if not providers: providers={"cloudflare":{}, "fastly":{}, "gcore":{}, "akamai":{}, "cloudfront":{}, "digitalocean":{}, "hetzner":{}, "ovh":{}, "scaleway":{}}
-    try:index=json.loads(fetch(INDEX))
+    try:
+        raw=fetch(INDEX).decode("utf-8")
     except Exception as e:
         pathlib.Path(a.output).parent.mkdir(parents=True,exist_ok=True)
-        pathlib.Path(a.output).write_text(json.dumps({"status":"UNAVAILABLE","error":str(e)},indent=2)+"\n")
+        pathlib.Path(a.output).write_text(json.dumps({"status":"UNAVAILABLE","error":str(e)},indent=2)+"\\n")
         return 0
-    records=[]
-    items=index.get("asns",index) if isinstance(index,dict) else index
-    if isinstance(items,dict): items=[dict(v,asn=k) if isinstance(v,dict) else {"asn":k,"handle":str(v)} for k,v in items.items()]
-    for item in items if isinstance(items,list) else []:
-        asn=str(item.get("asn","")).replace("AS","")
-        text=norm(" ".join(str(item.get(k,"")) for k in ("handle","name","description","org","organization")))
-        for provider,meta in providers.items():
-            aliases=meta.get("aliases",[]) if isinstance(meta,dict) else []
-            terms=[provider]+aliases
-            if any(norm(t) and norm(t) in text for t in terms):
-                records.append({"provider":provider,"asn":asn,"handle":item.get("handle"),"description":item.get("description"),"source":"ipverse/as-ip-blocks","source_type":"asn_index","match":"name_or_handle"})
+    # cdncheck's provider.yaml is the maintained seed registry. Extract ASN
+    # declarations conservatively, then let ipverse supply current prefixes.
+    current=None
+    section=None
+    wanted={norm(k):k for k in providers}
+    for line in raw.splitlines():
+        if not line or line[0].isspace() is False and not line.startswith(" "):
+            m=re.match(r"^([A-Za-z0-9_ .()/-]+):\\s*$",line)
+            if m:
+                current=m.group(1).strip()
+                section=None
+            elif line.strip() in ("asn:","cidr:","urls:"):
+                section=line.strip()[:-1]
+            continue
+        s=line.strip()
+        if s=="asn:":
+            section="asn"; continue
+        if section=="asn" and s.startswith("- AS"):
+            asn=s[2:].strip()
+            key=norm(current or "")
+            for pk,pname in wanted.items():
+                aliases=providers[pname].get("aliases",[]) if isinstance(providers[pname],dict) else []
+                terms=[pname]+aliases
+                if any(norm(t) and (norm(t) in key or key in norm(t)) for t in terms):
+                    records.append({"provider":pname,"asn":asn,"handle":current,"source":"projectdiscovery/cdncheck","source_type":"asn_index","match":"cdncheck_registry"})
     out=pathlib.Path(a.output);out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps({"schema_version":1,"generated_at":datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),"status":"OK","records":records},indent=2,ensure_ascii=False)+"\n")
 if __name__=="__main__":main()
