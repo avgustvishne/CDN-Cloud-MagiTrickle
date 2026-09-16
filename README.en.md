@@ -1,6 +1,6 @@
 # CDN-Cloud-MagiTrickle
 
-**IPv4/IPv6 CIDR subscriptions for MagiTrickle.**
+IPv4/IPv6 CIDR subscriptions for MagiTrickle.
 
 CDN, cloud, video, VPN and ASN lists with separate IPv4 and IPv6 feeds.
 
