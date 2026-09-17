@@ -142,17 +142,20 @@ def evidence_for(row):
         try:
             origins.append(int(origin))
         except (TypeError, ValueError):
+            # A malformed primary origin is non-fatal; other origin evidence is still usable.
             pass
     for item in consistency.get("origins") or []:
         if isinstance(item, dict):
             try:
                 origins.append(int(item.get("origin")))
             except (TypeError, ValueError):
+                # Ignore one malformed origin entry without discarding the remaining evidence.
                 pass
         elif isinstance(item, (int, str)):
             try:
                 origins.append(int(item))
             except (TypeError, ValueError):
+                # Ignore one malformed scalar origin without failing the whole prefix.
                 pass
     origins = sorted(set(origins))
     result["bgp"]["origins"] = [f"AS{x}" for x in origins]
