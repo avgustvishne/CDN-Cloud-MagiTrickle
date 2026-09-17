@@ -52,6 +52,18 @@ If you are not sure which list to use, start with **BALANCED**. Use **PERFORMANC
 | Gcore | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v6.txt) |
 | Backblaze | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v6.txt) |
 
+## Service domain subscriptions
+
+Dedicated domain feeds are available for services. They are generated automatically from the service registry every 12 hours. DNS-resolved addresses are evidence only and are not published as exclusive service IP routes.
+
+| Service | Domains | State |
+| --- | --- | --- |
+| **Telegram** | [Raw](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/services/telegram-domains.txt) | `domain_ready` |
+| **WhatsApp** | [Raw](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/services/whatsapp-domains.txt) | `domain_ready` |
+| **Signal** | [Raw](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/services/signal-domains.txt) | `domain_ready` |
+
+Machine-readable report: [**service-intelligence.json**](data/service-intelligence.json). The service registry uses official service documentation as its source of truth.
+
 ## ASN
 
 **ASN ALL and FULL are different datasets.** They overlap, but they are not copies. `ASN ALL` is built from collected ASN routes, while `FULL` combines all configured provider lists.
