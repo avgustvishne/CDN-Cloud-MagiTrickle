@@ -9,9 +9,16 @@ import sys
 from datetime import datetime, timezone
 
 
+# These files are bounded validation samples, not published subscription
+# datasets. Their membership is intentionally allowed to change between runs
+# as the deterministic confirmation sample moves with the source population.
+VALIDATION_ONLY = {"asn-confirmed-v4.txt", "asn-confirmed-v6.txt"}
+
+
 def files(d):
     root = pathlib.Path(d)
-    return sorted(list(root.glob("*-v[46].txt")) + list((root / "presets").glob("*.txt")))
+    generated = list(root.glob("*-v[46].txt")) + list((root / "presets").glob("*.txt"))
+    return sorted(path for path in generated if path.name not in VALIDATION_ONLY)
 
 
 def parse_networks(text):
