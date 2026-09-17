@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "source_of_truth": "official-service-documentation",
+    "external_lists_are_evidence_only": true,
+    "resolved_ips_are_evidence_only": true,
+    "shared_infrastructure_requires_review": true
+  },
+  "services": {
+    "telegram": {
+      "category": "messaging",
+      "domains": [
+        "api.telegram.org",
+        "core.telegram.org",
+        "fragment.com",
+        "k.t.me",
+        "t.me",
+        "telegram.dog",
+        "telegram.me",
+        "telegram.org",
+        "telesco.pe",
+        "translations.telegram.org",
+        "web.t.me",
+        "web.telegram.org",
+        "z.t.me"
+      ],
+      "ports": [443],
+      "official_sources": [
+        "https://core.telegram.org/api/config",
+        "https://core.telegram.org/cdn"
+      ]
+    },
+    "whatsapp": {
+      "category": "messaging",
+      "domains": [
+        "api.whatsapp.com",
+        "g-fallback.whatsapp.net",
+        "g.whatsapp.net",
+        "media.whatsapp.com",
+        "web.whatsapp.com",
+        "whatsapp.com",
+        "whatsapp.net"
+      ],
+      "ports": [80, 443, 5222, 587],
+      "official_sources": [
+        "https://faq.whatsapp.com/1299035810920553",
+        "https://github.com/WhatsApp/proxy"
+      ]
+    },
+    "signal": {
+      "category": "messaging",
+      "domains": [
+        "signal.art",
+        "signal.group",
+        "signal.link",
+        "signal.me",
+        "signal.org",
+        "signal.tube",
+        "sfu.voip.signal.org",
+        "turn3.voip.signal.org"
+      ],
+      "ports": [443, 3478, 10000],
+      "official_sources": [
+        "https://support.signal.org/hc/ru/articles/360007320291"
+      ]
+    }
+  }
+}
