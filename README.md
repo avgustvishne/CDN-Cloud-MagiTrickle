@@ -44,7 +44,9 @@
 
 Готовые IPv4/IPv6-подписки для основных CDN и cloud-провайдеров:
 
-**AWS · Cloudflare · Hetzner · OVH · Akamai · DigitalOcean · Microsoft · Oracle · Alibaba · CDN77 · Fastly · Melbicom · BuyVM · Vultr · Contabo · Scaleway · Gcore · Backblaze**
+### Провайдеры
+
+AWS · Cloudflare · Hetzner · OVH · Akamai · DigitalOcean · Microsoft · Oracle · Alibaba · CDN77 · Fastly · Melbicom · BuyVM · Vultr · Contabo · Scaleway · Gcore · Backblaze
 
 Полный список и ссылки: [**`data/`**](data/) · [**`config/providers.json`**](config/providers.json)
 
