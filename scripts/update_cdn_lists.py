@@ -1,25 +1,17 @@
 #!/usr/bin/env python3
-"""Stable entry point for the MagiTrickle generator.
+"""Stable generator entry point with balanced IPv4/IPv6 candidate selection.
 
-The implementation remains intact in ``update_cdn_lists_impl.py``. This small
-entry point owns the candidate-selection policy so it can be changed and
-regression-tested without rewriting the large generator body.
+The large, existing generator body is kept byte-for-byte in
+``update_cdn_lists_impl.py``. It is executed in this module's namespace so the
+historical helper API and monkey-patching behavior remain unchanged.
 """
-import ipaddress
-import pathlib
-import sys
+from pathlib import Path
 
-ROOT = pathlib.Path(__file__).resolve().parents[1]
-SCRIPTS = ROOT / "scripts"
-if str(SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS))
-
-import update_cdn_lists_impl as _impl
-
-# Preserve the historical module API used by tests and helper scripts.
-globals().update(
-    {name: value for name, value in vars(_impl).items() if not name.startswith("__")}
-)
+_SOURCE = Path(__file__).with_name("update_cdn_lists_impl.py")
+_ORIGINAL_NAME = __name__
+__name__ = "_update_cdn_lists_impl_runtime"
+exec(compile(_SOURCE.read_text(encoding="utf-8"), str(_SOURCE), "exec"), globals())
+__name__ = _ORIGINAL_NAME
 
 
 def select_ripe_candidates(prefixes, limit=128):
@@ -81,9 +73,5 @@ def select_ripe_candidates(prefixes, limit=128):
     )
 
 
-_impl.select_ripe_candidates = select_ripe_candidates
-main = _impl.main
-
-
-if __name__ == "__main__":
+if _ORIGINAL_NAME == "__main__":
     raise SystemExit(main())
