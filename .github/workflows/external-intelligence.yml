@@ -1,0 +1,103 @@
+name: External source intelligence
+
+on:
+  schedule:
+    - cron: "47 */12 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "config/source_registry.json"
+      - "scripts/external_intelligence.py"
+      - "tests/test_external_intelligence.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: magitrickle-external-intelligence
+  cancel-in-progress: true
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Compile and test
+        run: |
+          python -m compileall -q scripts tests
+          python -m unittest tests.test_external_intelligence -v
+
+      - name: Collect external intelligence
+        run: python scripts/external_intelligence.py
+
+      - name: Validate report
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path("data/external-source-intelligence.json")
+          payload = json.loads(p.read_text(encoding="utf-8"))
+          assert payload["schema_version"] == 1
+          assert payload["policy"]["mutates_subscriptions"] is False
+          assert payload["policy"]["external_ip_lists_are_evidence_only"] is True
+          assert payload["policy"]["external_domains_are_evidence_only"] is True
+          assert payload["policy"]["raw_external_lists_stored"] is False
+          sources = payload["sources"]
+          assert len(sources) == 8
+          assert all(row["status"] in {"OK", "ERROR"} for row in sources)
+          successful = [row for row in sources if row["status"] == "OK"]
+          assert len(successful) >= 6, f"too many external feeds failed: {len(sources) - len(successful)}"
+          assert all(row["entries"] > 0 for row in successful), "successful feed has no parsed entries"
+          for row in successful:
+              assert len(row["sha256"]) == 64
+              if row["type"] == "ip":
+                  assert set(row["metrics"]) == {"4", "6"}
+                  for family in ("4", "6"):
+                      assert row["metrics"][family]["prefixes"] >= 0
+                      assert row["metrics"][family]["coverage_ips"] >= 0
+                      assert row["metrics"][family]["overlap_full_ips"] >= 0
+                      assert row["metrics"][family]["overlap_performance_ips"] >= 0
+          assert payload["domain_consensus"]["unique_domains_across_successful_feeds"] >= 0
+          assert payload["domain_consensus"]["domains_seen_in_at_least_two_feeds"] >= 0
+          print(f"Validated {len(successful)}/{len(sources)} external feeds")
+          PY
+
+      - name: Commit report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/external-source-intelligence.json
+          if git diff --cached --quiet; then
+            echo "No external intelligence changes."
+            exit 0
+          fi
+          git commit -m "chore: refresh external source intelligence"
+
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Push succeeded on attempt ${attempt}."
+              exit 0
+            fi
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}" || {
+              git rebase --abort || true
+              sleep $((attempt * 2))
+              continue
+            }
+          done
+          echo "Unable to publish external intelligence report after 5 attempts."
+          exit 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
