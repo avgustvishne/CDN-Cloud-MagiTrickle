@@ -23,8 +23,9 @@ REQUIRED = {
     "conditional publish": 'git commit -m "chore: update provider subscriptions"',
 }
 STATUS_REQUIRED = {
-    "status workflow trigger": "workflow_run:",
+    "status schedule": "schedule:",
     "status generator": "python scripts/status_report.py",
+    "status actions read": "actions: read",
     "status write permission": "contents: write",
     "status schema validation": "Validate status schema",
     "status publication": "Commit status",
