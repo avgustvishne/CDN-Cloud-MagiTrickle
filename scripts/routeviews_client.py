@@ -17,7 +17,8 @@ MAX_ATTEMPTS = 4
 BACKOFF_BASE = 2.0
 MAX_RETRY_AFTER = 30.0
 
-_lock = threading.Lock()
+_request_lock = threading.Lock()
+_cache_lock = threading.Lock()
 _last_request_at = 0.0
 _cache = {}
 
@@ -51,7 +52,7 @@ def _fetch(asn):
     url = BASE_URL.format(asn=asn)
     last_error = None
     for attempt in range(1, MAX_ATTEMPTS + 1):
-        with _lock:
+        with _request_lock:
             _throttle()
             try:
                 request = urllib.request.Request(
@@ -94,27 +95,33 @@ def routeviews_prefixes(asn):
     RouteViews documents the unfiltered /asn/{ASN} endpoint as returning both
     IPv4 and IPv6 prefixes. Fetching it once per ASN avoids the previous
     two-request-per-ASN burst that frequently triggered HTTP 429 responses.
+
+    The cache lock deliberately covers the fetch as well as the cache lookup.
+    Callers can query the same ASN concurrently without producing duplicate
+    network requests before the first result reaches the cache.
     """
     key = str(asn)
-    if key in _cache:
-        return list(_cache[key])
-    try:
-        payload = _fetch(key)
-    except Exception as exc:
-        print(f"[warn] RouteViews fetch failed for AS{key}: {exc}", flush=True)
-        _cache[key] = tuple()
-        return []
+    with _cache_lock:
+        if key in _cache:
+            return list(_cache[key])
+        try:
+            payload = _fetch(key)
+        except Exception as exc:
+            print(f"[warn] RouteViews fetch failed for AS{key}: {exc}", flush=True)
+            _cache[key] = tuple()
+            return []
 
-    found = set()
-    for item in payload:
-        value = item if isinstance(item, str) else item.get("prefix") if isinstance(item, dict) else None
-        if isinstance(value, str) and "/" in value:
-            found.add(value)
-    result = tuple(sorted(found))
-    _cache[key] = result
-    return list(result)
+        found = set()
+        for item in payload:
+            value = item if isinstance(item, str) else item.get("prefix") if isinstance(item, dict) else None
+            if isinstance(value, str) and "/" in value:
+                found.add(value)
+        result = tuple(sorted(found))
+        _cache[key] = result
+        return list(result)
 
 
 def clear_cache():
     """Clear the process-local cache; intended for tests."""
-    _cache.clear()
+    with _cache_lock:
+        _cache.clear()
