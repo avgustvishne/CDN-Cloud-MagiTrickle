@@ -56,10 +56,14 @@ jobs:
           cat /tmp/status-context >> "$GITHUB_OUTPUT"
 
       - name: Generate status files
+        env:
+          PUBLICATION: ${{ steps.context.outputs.publication }}
+          FAILED_RUN: ${{ steps.context.outputs.failed_run }}
         run: |
+          set -euo pipefail
           python scripts/status_report.py \
-            --publication "${{ steps.context.outputs.publication }}" \
-            --failed-run "${{ steps.context.outputs.failed_run }}"
+            --publication "$PUBLICATION" \
+            --failed-run "$FAILED_RUN"
 
       - name: Validate status schema
         run: |
