@@ -1,6 +1,6 @@
 {
   "version": 44,
-  "updated": "2026-09-17 15:48:07 UTC",
+  "updated": "2026-09-17 15:20:11 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official provider feeds",
@@ -213,17 +213,17 @@
   },
   "aggregate": {
     "ipv4": 17342,
-    "ipv6": 5246
+    "ipv6": 5251
   },
   "audit": [
     {
       "provider": "aws",
       "ipv4_prefixes": 5345,
-      "ipv6_prefixes": 1532,
+      "ipv6_prefixes": 1534,
       "previous_ipv4_prefixes": 5345,
       "previous_ipv6_prefixes": 1534,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": -0.13,
+      "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
@@ -375,11 +375,11 @@
     {
       "provider": "vultr",
       "ipv4_prefixes": 703,
-      "ipv6_prefixes": 1510,
+      "ipv6_prefixes": 1513,
       "previous_ipv4_prefixes": 703,
-      "previous_ipv6_prefixes": 1513,
+      "previous_ipv6_prefixes": 1519,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": -0.2,
+      "ipv6_change_percent": -0.39,
       "status": "OK",
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "errors": 0
@@ -437,7 +437,7 @@
   "providers": {
     "aws": {
       "ipv4": 5345,
-      "ipv6": 1532,
+      "ipv6": 1534,
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
@@ -544,7 +544,7 @@
     },
     "vultr": {
       "ipv4": 703,
-      "ipv6": 1510,
+      "ipv6": 1513,
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "status": "OK",
       "rejected_ipv4": 0,
