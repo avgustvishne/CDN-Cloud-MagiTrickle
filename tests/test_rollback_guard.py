@@ -1,9 +1,13 @@
 import unittest
 
-from scripts.rollback_guard import VALIDATION_ONLY, address_coverage, dataset_metrics, files
+from scripts.rollback_guard import VALIDATION_ONLY, address_coverage, dataset_metrics
 
 
 class RollbackCoverageTests(unittest.TestCase):
+    def test_coverage_uses_union_not_prefix_count(self):
+        text = "10.0.0.0/25\n10.0.0.128/25\n"
+        self.assertEqual(address_coverage(text, 4), 256)
+
     def test_validation_samples_are_excluded_from_guard(self):
         self.assertEqual(
             VALIDATION_ONLY,
