@@ -69,7 +69,7 @@ Machine-readable report: [**service-intelligence.json**](data/service-intelligen
 **ASN ALL and FULL are different datasets.** They overlap, but they are not copies. `ASN ALL` is built from collected ASN routes, while `FULL` combines all configured provider lists.
 
 | Set | Contents | IPv4 | IPv6 |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | **ASN ALL** | Collected ASN routes | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt) |
 | **ALL-CLOUD** | Union of all configured providers | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt) |
 
