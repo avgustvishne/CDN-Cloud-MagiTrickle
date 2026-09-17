@@ -56,6 +56,15 @@ def git_sha() -> str:
         return "unknown"
 
 
+def last_known_good_commit() -> str:
+    for ref in ("refs/remotes/origin/backup/pre-update", "refs/heads/backup/pre-update"):
+        try:
+            return subprocess.check_output(["git", "rev-parse", ref], cwd=ROOT, text=True).strip()
+        except (OSError, subprocess.CalledProcessError):
+            continue
+    return "unknown"
+
+
 def source_summary() -> dict[str, Any]:
     health = load_json("source-health.json", {})
     audit = load_json("source-audit.json", {})
@@ -134,6 +143,7 @@ def build_status(args: argparse.Namespace) -> dict[str, Any]:
         "publication": args.publication,
         "generated_at": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "source_commit": git_sha(),
+        "last_known_good_commit": last_known_good_commit(),
         "last_update": read_timestamp(),
         "engine": manifest.get("engine", "unknown") if isinstance(manifest, dict) else "unknown",
         "aggregate": manifest.get("aggregate", {}) if isinstance(manifest, dict) else {},
@@ -162,7 +172,8 @@ def render_markdown(status: dict[str, Any]) -> str:
         f"**Публикация:** `{status['publication']}`  ",
         f"**Последнее обновление данных:** `{status['last_update']}`  ",
         f"**Отчёт сформирован:** `{status['generated_at']}`  ",
-        f"**Исходный commit:** `{status['source_commit']}`",
+        f"**Исходный commit:** `{status['source_commit']}`  ",
+        f"**Последний известный рабочий commit:** `{status['last_known_good_commit']}`",
         "",
         "## Данные",
         "",
