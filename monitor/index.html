@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CDN-Cloud-MagiTrickle — Dashboard</title>
+  <style>
+    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0d1117;color:#e6edf3;font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:1180px;margin:auto;padding:28px 20px 48px}h1{margin:0 0 6px;font-size:28px}h2{margin:28px 0 14px;font-size:19px}.muted{color:#8b949e}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:16px}.value{font-size:25px;font-weight:700;margin-top:6px}.healthy{color:#3fb950}.degraded{color:#d29922}.down,.hold{color:#f85149}.unknown{color:#8b949e}.bar{height:8px;background:#21262d;border-radius:99px;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;width:0;background:#3fb950}.table-wrap{overflow:auto;border:1px solid #30363d;border-radius:12px}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:11px 13px;border-bottom:1px solid #21262d;text-align:left;white-space:nowrap}.table th{color:#8b949e;font-weight:600;background:#161b22}.table tr:last-child td{border-bottom:0}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}.pill{display:inline-block;padding:5px 10px;border-radius:999px;background:#21262d}.links a{color:#58a6ff;text-decoration:none;margin-right:14px}.links a:hover{text-decoration:underline}.error{padding:16px;background:#2d1117;border:1px solid #f85149;border-radius:10px}.footer{margin-top:28px;color:#8b949e;font-size:13px}@media(max-width:600px){main{padding:20px 12px}h1{font-size:23px}.table th,.table td{padding:9px}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div><h1>🌐 CDN-Cloud-MagiTrickle</h1><div class="muted">Автономный Dashboard · состояние подписок и провайдеров</div></div>
+    <div id="overall" class="pill">Загрузка…</div>
+  </div>
+
+  <h2>📊 Состояние</h2>
+  <section class="grid" id="summary"></section>
+  <div id="coverage"></div>
+
+  <h2>🏢 Провайдеры</h2>
+  <div class="table-wrap"><table class="table"><thead><tr><th>Провайдер</th><th>Статус</th><th>Задержка</th><th>HTTP</th></tr></thead><tbody id="providers"><tr><td colspan="4" class="muted">Загрузка…</td></tr></tbody></table></div>
+
+  <h2>🔐 Публикация и контроль</h2>
+  <section class="grid" id="controls"></section>
+
+  <h2>🔗 Ссылки</h2>
+  <div class="links"><a href="../STATUS.md">STATUS.md</a><a href="../README.md">README</a><a href="https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions">GitHub Actions</a></div>
+  <div class="footer" id="updated">Обновление…</div>
+</main>
+<script>
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const statusIcon=s=>({healthy:'🟢',degraded:'🟡',down:'🔴',unknown:'⚪',hold:'⛔',published:'🟢',validated:'🟡'}[s]||'⚪');
+const card=(label,value,cls='')=>`<div class="card"><div class="muted">${esc(label)}</div><div class="value ${cls}">${value}</div></div>`;
+async function get(path){const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json()}
+async function load(){
+  const [m,s]=await Promise.all([get('../data/monitor.json'),get('../data/status.json').catch(()=>null)]);
+  const c=m.counts||{};
+  const total=Object.values(c).reduce((a,b)=>a+b,0);
+  const good=(c.healthy||0)+(c.degraded||0);
+  document.getElementById('overall').innerHTML=`${statusIcon((s&&s.status)||'healthy')} ${esc((s&&s.status)||'healthy')}`;
+  document.getElementById('summary').innerHTML=[card('Провайдеров',total),card('🟢 Доступны',c.healthy||0,'healthy'),card('🟡 Проблемы',c.degraded||0,'degraded'),card('🔴 Недоступны',c.down||0,'down'),card('⚪ Не проверены',c.unknown||0,'unknown')].join('');
+  document.getElementById('coverage').innerHTML=`<div class="card"><div class="muted">Успешная проверка провайдеров</div><div class="bar"><i style="width:${total?Math.round(good/total*100):0}%"></i></div><div class="muted" style="margin-top:7px">${total?Math.round(good/total*100):0}% · ${good} из ${total}</div></div>`;
+  document.getElementById('providers').innerHTML=(m.providers||[]).map(x=>{const st=x.status||'unknown';return `<tr><td>${esc(x.provider)}</td><td class="${st}">${statusIcon(st)} ${esc(st)}</td><td>${x.latency_ms==null?'—':esc(x.latency_ms)+' ms'}</td><td>${esc(x.http_status||'—')}</td></tr>`}).join('')||'<tr><td colspan="4" class="muted">Нет данных</td></tr>';
+  const n=s&&s.network_evidence||{};const src=s&&s.sources||{};const pub=(s&&s.publication)||'unknown';
+  document.getElementById('controls').innerHTML=[card('Публикация',statusIcon(pub)+' '+esc(pub),pub==='held'?'hold':''),card('IPv4',esc(s?.cidr?.ipv4??'—')),card('IPv6',esc(s?.cidr?.ipv6??'—')),card('Источники',esc(src.total??'—')),card('BGP/IRR/RPKI',`${esc(n.queried??0)} / ${esc(n.valid??0)}`),card('Rollback',esc(s?.rollback?.state??'—'),s?.rollback?.state==='hold'?'hold':'')].join('');
+  document.getElementById('updated').textContent='Проверка провайдеров: '+new Date(m.generated_at).toLocaleString()+(s?.generated_at?' · Статус: '+new Date(s.generated_at).toLocaleString():'');
+}
+load().catch(e=>{document.getElementById('summary').innerHTML=`<div class="error">Не удалось загрузить данные Dashboard. ${esc(e.message)}</div>`;document.getElementById('updated').textContent='Ошибка загрузки данных';});
+</script>
+</body>
+</html>
