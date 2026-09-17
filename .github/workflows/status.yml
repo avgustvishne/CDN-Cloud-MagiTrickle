@@ -35,7 +35,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          run_json="$(gh run list --workflow update.yml --limit 10 --json databaseId,status,conclusion,htmlUrl,event,headSha,createdAt,updatedAt)"
+          run_json="$(gh run list --workflow update.yml --limit 10 --json databaseId,status,conclusion,url,event,headSha,createdAt,updatedAt)"
           printf '%s\n' "$run_json" > /tmp/update-runs.json
           python - <<'PY'
           import json
@@ -52,7 +52,7 @@ jobs:
               failed = ""
           else:
               publication = "held"
-              failed = f"{latest.get('htmlUrl', '')} (conclusion: {latest.get('conclusion', 'unknown')}, run: {latest.get('databaseId', 'unknown')})"
+              failed = f"{latest.get('url', '')} (conclusion: {latest.get('conclusion', 'unknown')}, run: {latest.get('databaseId', 'unknown')})"
           Path("/tmp/status-context").write_text(
               f"publication={publication}\nfailed_run={failed}\n", encoding="utf-8"
           )
