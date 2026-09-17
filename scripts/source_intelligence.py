@@ -2,7 +2,8 @@
 """Build a safe, read-only source-intelligence report.
 
 This layer never changes published CIDR files. It summarizes source freshness,
-independent-source coverage, consensus evidence and provider-level anomalies.
+independent-source coverage, consensus evidence, exact address-space coverage
+and provider-level anomalies.
 """
 import datetime as dt
 import ipaddress
@@ -56,6 +57,24 @@ def source_status(registry, audit):
     return rows
 
 
+def network_coverage(records, version):
+    """Return exact union size for consensus records in one IP family."""
+    networks = []
+    for row in records:
+        if not isinstance(row, dict):
+            continue
+        value = row.get("cidr") or row.get("prefix")
+        if not value:
+            continue
+        try:
+            network = ipaddress.ip_network(str(value), strict=False)
+        except ValueError:
+            continue
+        if network.version == version:
+            networks.append(network)
+    return sum(network.num_addresses for network in ipaddress.collapse_addresses(networks)) if networks else 0
+
+
 def consensus_summary():
     providers = {}
     for path in sorted(DATA.glob("*-consensus.json")):
@@ -76,6 +95,10 @@ def consensus_summary():
         provider = path.name[:-len("-consensus.json")]
         providers[provider] = {
             "records": len(records),
+            "coverage": {
+                "ipv4": network_coverage(records, 4),
+                "ipv6": network_coverage(records, 6),
+            },
             "sources": dict(sorted(source_counts.items())),
             "mean_confidence": round(sum(confidence) / len(confidence), 2) if confidence else 0,
             "high_confidence_percent": round(
@@ -109,7 +132,6 @@ def prefix_intelligence():
     return rows
 
 
-
 def prefix_evidence():
     """Build per-prefix evidence without changing published datasets."""
     result = []
@@ -139,6 +161,7 @@ def prefix_evidence():
                 "status": "confirmed" if len(sources) >= MIN_CONFIRMING_SOURCES else "single_source",
             })
     return result
+
 
 def reliability_score(status):
     """Compute a transparent source reliability score from observed signals only."""
@@ -171,25 +194,49 @@ def confirmation_for_provider(provider, current, previous):
 
 
 def provider_anomalies(current, previous):
-    """Flag large provider prefix-count changes; never mutate published data."""
+    """Flag large provider changes by count or exact address-space coverage."""
     if not previous:
         return []
     old = previous.get("providers", {})
     result = []
     for provider, row in current.get("providers", {}).items():
-        before = old.get(provider, {}).get("records")
+        old_row = old.get(provider, {})
+        before = old_row.get("records")
         after = row.get("records")
         if not isinstance(before, int) or not isinstance(after, int) or before <= 0:
             continue
-        ratio = abs(after - before) / before
-        if ratio >= ANOMALY_RATIO:
+
+        count_ratio = abs(after - before) / before
+        old_coverage = old_row.get("coverage", {})
+        current_coverage = row.get("coverage", {})
+        family_changes = {}
+        coverage_anomaly = False
+        for version in ("ipv4", "ipv6"):
+            previous_coverage = old_coverage.get(version)
+            current_value = current_coverage.get(version)
+            if not isinstance(previous_coverage, int) or not isinstance(current_value, int) or previous_coverage <= 0:
+                continue
+            ratio = current_value / previous_coverage
+            drop = max(0, 1 - ratio)
+            family_changes[version] = {
+                "previous": previous_coverage,
+                "current": current_value,
+                "ratio": round(ratio, 6),
+                "drop_percent": round(drop * 100, 2),
+            }
+            coverage_anomaly = coverage_anomaly or drop >= ANOMALY_RATIO
+
+        if count_ratio >= ANOMALY_RATIO or coverage_anomaly:
+            confirmation = confirmation_for_provider(provider, current, previous)
             result.append({
                 "provider": provider,
                 "previous_records": before,
                 "current_records": after,
-                "change_ratio": round(ratio, 4),
-                "action": "confirmed_observation" if confirmation_for_provider(provider, current, previous)["confirmed"] else "observe_only",
-                "confirmation": confirmation_for_provider(provider, current, previous),
+                "change_ratio": round(count_ratio, 4),
+                "coverage_changes": family_changes,
+                "trigger": "coverage" if coverage_anomaly else "prefix_count",
+                "action": "confirmed_observation" if confirmation["confirmed"] else "observe_only",
+                "confirmation": confirmation,
             })
     return result
 
@@ -202,9 +249,11 @@ def main():
     rows = source_status(registry, audit)
     for row in rows:
         row["reliability_score"] = reliability_score(row)
-    previous = load_history()[-1] if load_history() else None
+    previous_history = load_history()
+    previous = previous_history[-1] if previous_history else None
+    providers = consensus_summary()
     payload = {
-        "schema_version": 1,
+        "schema_version": 2,
         "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "policy": {
             "mode": "observational",
@@ -212,23 +261,25 @@ def main():
             "source_failure_replaces_data": False,
             "rpki_invalid_deletes_prefix": False,
         },
-        "sources": source_status(registry, audit),
-        "providers": consensus_summary(),
+        "sources": rows,
+        "providers": providers,
         "prefix_intelligence": prefix_intelligence(),
         "prefix_evidence": prefix_evidence(),
         "change_policy": {
             "min_confirming_sources": MIN_CONFIRMING_SOURCES,
             "confirmed_changes_are_not_auto_published": True,
+            "anomaly_ratio": ANOMALY_RATIO,
+            "coverage_metric": "exact_union_address_space",
         },
         "anomalies": provider_anomalies(
-            {"providers": consensus_summary()},
+            {"providers": providers},
             previous,
         ),
     }
-    history = load_history()
+    history = previous_history
     history.append({
         "generated_at": payload["generated_at"],
-        "providers": payload["providers"],
+        "providers": providers,
         "source_count": len(payload["sources"]),
         "anomaly_count": len(payload["anomalies"]),
     })
@@ -237,12 +288,12 @@ def main():
         encoding="utf-8",
     )
     OUTPUT.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
     print(
         f"Source intelligence: {len(payload['sources'])} sources, "
-        f"{len(payload['providers'])} providers"
+        f"{len(payload['providers'])} providers, "
+        f"{len(payload['anomalies'])} anomalies"
     )
 
 
