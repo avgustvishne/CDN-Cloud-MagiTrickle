@@ -81,7 +81,8 @@ def collapse(values, version):
 
 def address_space_coverage(values, version):
     """Return exact union coverage in addresses after input normalization."""
-    return sum(net.num_addresses for net in _valid_networks(values, version))
+    networks = _valid_networks(values, version)
+    return sum(net.num_addresses for net in ipaddress.collapse_addresses(networks))
 
 
 def validate_coverage_preserved(source, result, version):
