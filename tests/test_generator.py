@@ -32,11 +32,10 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(len(first), len(set(first)))
 
-    def test_select_ripe_candidates_prefers_less_specific_prefixes(self):
-        values = ["192.0.2.0/28", "192.0.0.0/8", "192.0.2.0/24", "2001:db8::/32"]
+    def test_select_ripe_candidates_balances_families(self):
+        values = ["192.0.0.0/8", "192.0.2.0/24", "192.0.2.0/28", "2001:db8::/32"]
         result = self.engine.select_ripe_candidates(values, limit=2)
-        self.assertEqual(result[0], "192.0.0.0/8")
-        self.assertEqual(result[1], "192.0.2.0/24")
+        self.assertEqual(result, ["192.0.0.0/8", "2001:db8::/32"])
 
     def test_load_ripe_cache_prunes_old_and_invalid_entries(self):
         now = 2_000_000_000
@@ -144,6 +143,7 @@ class GeneratorUnitTests(unittest.TestCase):
                 self.assertNotEqual(rows[0]["last_seen"], "2026-01-01T00:00:00Z")
             finally:
                 self.engine.DATA = old_data
+
     def test_consensus_tracks_exact_sources_and_neutral_bgp_absence(self):
         sources = {
             "official": ["192.0.2.0/24"],
@@ -161,7 +161,6 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertEqual(by_cidr["198.51.100.0/24"]["bgp_observed_asns"], [])
 
     def test_extracted_helpers_import_and_basic_normalization(self):
-        import importlib.util
         for filename in ("artifact_store.py", "evidence_store.py", "source_acquisition.py", "normalization.py"):
             path = ROOT / "scripts" / filename
             spec = importlib.util.spec_from_file_location(filename[:-3], path)
