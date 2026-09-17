@@ -34,7 +34,7 @@
 ### Основные подписки
 
 | Профиль | IPv4 | IPv6 |
-|---|---|---|
+|---|---:|---:|
 | **FULL** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) |
 | **BALANCED** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
 | **PERFORMANCE** | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v6.txt) |
@@ -49,6 +49,18 @@
 AWS · Cloudflare · Hetzner · OVH · Akamai · DigitalOcean · Microsoft · Oracle · Alibaba · CDN77 · Fastly · Melbicom · BuyVM · Vultr · Contabo · Scaleway · Gcore · Backblaze
 
 Полный список и ссылки: [**`data/`**](data/) · [**`config/providers.json`**](config/providers.json)
+
+## 💬 Сервисы
+
+Отдельные доменные подписки для сервисов. Они формируются автоматически из реестра сервисов и обновляются каждые 12 часов. DNS-адреса используются только как evidence и не публикуются как эксклюзивные IP-маршруты.
+
+| Сервис | Домены | Состояние |
+|---|---|---|
+| **Telegram** | [Raw](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/services/telegram-domains.txt) | `domain_ready` |
+| **WhatsApp** | [Raw](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/services/whatsapp-domains.txt) | `domain_ready` |
+| **Signal** | [Raw](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/services/signal-domains.txt) | `domain_ready` |
+
+Машиночитаемый отчёт: [**service-intelligence.json**](data/service-intelligence.json). Источник истины для списка доменов — официальная документация соответствующего сервиса.
 
 ## 🔗 ASN
 
