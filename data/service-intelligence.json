@@ -1,0 +1,446 @@
+{
+  "engine": "service-intelligence-v1",
+  "policy": {
+    "external_lists_are_evidence_only": true,
+    "resolved_ips_are_evidence_only": true,
+    "shared_infrastructure_requires_review": true,
+    "source_of_truth": "official-service-documentation"
+  },
+  "schema_version": 1,
+  "services": {
+    "signal": {
+      "category": "messaging",
+      "confidence": 96.25,
+      "domains": [
+        "sfu.voip.signal.org",
+        "signal.art",
+        "signal.group",
+        "signal.link",
+        "signal.me",
+        "signal.org",
+        "signal.tube",
+        "turn3.voip.signal.org"
+      ],
+      "official_sources": [
+        "https://support.signal.org/hc/ru/articles/360007320291"
+      ],
+      "ports": [
+        443,
+        3478,
+        10000
+      ],
+      "resolution": {
+        "domains": {
+          "sfu.voip.signal.org": {
+            "errors": [],
+            "ipv4": [
+              "34.117.136.13"
+            ],
+            "ipv6": [
+              "2600:1901:0:e149::"
+            ]
+          },
+          "signal.art": {
+            "errors": [],
+            "ipv4": [
+              "104.21.91.110",
+              "172.67.215.248"
+            ],
+            "ipv6": [
+              "2606:4700:3033::ac43:d7f8",
+              "2606:4700:3037::6815:5b6e"
+            ]
+          },
+          "signal.group": {
+            "errors": [],
+            "ipv4": [
+              "104.18.26.114",
+              "104.18.27.114"
+            ],
+            "ipv6": [
+              "2606:4700::6812:1a72",
+              "2606:4700::6812:1b72"
+            ]
+          },
+          "signal.link": {
+            "errors": [],
+            "ipv4": [
+              "104.18.22.243",
+              "104.18.23.243"
+            ],
+            "ipv6": [
+              "2606:4700::6812:16f3",
+              "2606:4700::6812:17f3"
+            ]
+          },
+          "signal.me": {
+            "errors": [],
+            "ipv4": [
+              "104.18.16.203",
+              "104.18.17.203"
+            ],
+            "ipv6": [
+              "2606:4700::6812:10cb",
+              "2606:4700::6812:11cb"
+            ]
+          },
+          "signal.org": {
+            "errors": [],
+            "ipv4": [
+              "104.18.10.47",
+              "104.18.11.47"
+            ],
+            "ipv6": [
+              "2606:4700::6812:a2f",
+              "2606:4700::6812:b2f"
+            ]
+          },
+          "signal.tube": {
+            "errors": [],
+            "ipv4": [
+              "104.18.18.175",
+              "104.18.19.175"
+            ],
+            "ipv6": [
+              "2606:4700::6812:12af",
+              "2606:4700::6812:13af"
+            ]
+          },
+          "turn3.voip.signal.org": {
+            "errors": [
+              "ipv4: gaierror",
+              "ipv6: gaierror"
+            ],
+            "ipv4": [],
+            "ipv6": []
+          }
+        },
+        "ipv4": [
+          "104.18.10.47",
+          "104.18.11.47",
+          "104.18.16.203",
+          "104.18.17.203",
+          "104.18.18.175",
+          "104.18.19.175",
+          "104.18.22.243",
+          "104.18.23.243",
+          "104.18.26.114",
+          "104.18.27.114",
+          "104.21.91.110",
+          "172.67.215.248",
+          "34.117.136.13"
+        ],
+        "ipv6": [
+          "2600:1901:0:e149::",
+          "2606:4700:3033::ac43:d7f8",
+          "2606:4700:3037::6815:5b6e",
+          "2606:4700::6812:10cb",
+          "2606:4700::6812:11cb",
+          "2606:4700::6812:12af",
+          "2606:4700::6812:13af",
+          "2606:4700::6812:16f3",
+          "2606:4700::6812:17f3",
+          "2606:4700::6812:1a72",
+          "2606:4700::6812:1b72",
+          "2606:4700::6812:a2f",
+          "2606:4700::6812:b2f"
+        ],
+        "resolved_domain_ratio": 0.875
+      },
+      "routing": {
+        "domain_ready": true,
+        "ip_ready": false,
+        "reason": "DNS addresses are volatile and may be shared across services"
+      },
+      "shared_infrastructure": {
+        "detected": false,
+        "ips": [],
+        "policy": "evidence-only; do not publish shared IPs as exclusive service routes"
+      }
+    },
+    "telegram": {
+      "category": "messaging",
+      "confidence": 100.0,
+      "domains": [
+        "api.telegram.org",
+        "core.telegram.org",
+        "fragment.com",
+        "k.t.me",
+        "t.me",
+        "telegram.dog",
+        "telegram.me",
+        "telegram.org",
+        "telesco.pe",
+        "translations.telegram.org",
+        "web.t.me",
+        "web.telegram.org",
+        "z.t.me"
+      ],
+      "official_sources": [
+        "https://core.telegram.org/api/config",
+        "https://core.telegram.org/cdn"
+      ],
+      "ports": [
+        443
+      ],
+      "resolution": {
+        "domains": {
+          "api.telegram.org": {
+            "errors": [],
+            "ipv4": [
+              "149.154.166.110"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          },
+          "core.telegram.org": {
+            "errors": [],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          },
+          "fragment.com": {
+            "errors": [],
+            "ipv4": [
+              "104.20.26.203",
+              "172.66.170.24"
+            ],
+            "ipv6": [
+              "2606:4700:10::6814:1acb",
+              "2606:4700:10::ac42:aa18"
+            ]
+          },
+          "k.t.me": {
+            "errors": [],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          },
+          "t.me": {
+            "errors": [],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          },
+          "telegram.dog": {
+            "errors": [
+              "ipv6: gaierror"
+            ],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": []
+          },
+          "telegram.me": {
+            "errors": [],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          },
+          "telegram.org": {
+            "errors": [],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          },
+          "telesco.pe": {
+            "errors": [
+              "ipv6: gaierror"
+            ],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": []
+          },
+          "translations.telegram.org": {
+            "errors": [],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          },
+          "web.t.me": {
+            "errors": [],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          },
+          "web.telegram.org": {
+            "errors": [],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          },
+          "z.t.me": {
+            "errors": [],
+            "ipv4": [
+              "149.154.167.99"
+            ],
+            "ipv6": [
+              "2001:67c:4e8:f004::9"
+            ]
+          }
+        },
+        "ipv4": [
+          "104.20.26.203",
+          "149.154.166.110",
+          "149.154.167.99",
+          "172.66.170.24"
+        ],
+        "ipv6": [
+          "2001:67c:4e8:f004::9",
+          "2606:4700:10::6814:1acb",
+          "2606:4700:10::ac42:aa18"
+        ],
+        "resolved_domain_ratio": 1.0
+      },
+      "routing": {
+        "domain_ready": true,
+        "ip_ready": false,
+        "reason": "DNS addresses are volatile and may be shared across services"
+      },
+      "shared_infrastructure": {
+        "detected": false,
+        "ips": [],
+        "policy": "evidence-only; do not publish shared IPs as exclusive service routes"
+      }
+    },
+    "whatsapp": {
+      "category": "messaging",
+      "confidence": 95.71,
+      "domains": [
+        "api.whatsapp.com",
+        "g-fallback.whatsapp.net",
+        "g.whatsapp.net",
+        "media.whatsapp.com",
+        "web.whatsapp.com",
+        "whatsapp.com",
+        "whatsapp.net"
+      ],
+      "official_sources": [
+        "https://faq.whatsapp.com/1299035810920553",
+        "https://github.com/WhatsApp/proxy"
+      ],
+      "ports": [
+        80,
+        443,
+        587,
+        5222
+      ],
+      "resolution": {
+        "domains": {
+          "api.whatsapp.com": {
+            "errors": [],
+            "ipv4": [
+              "57.145.3.32"
+            ],
+            "ipv6": [
+              "2a03:2880:f37e:120:face:b00c:0:167"
+            ]
+          },
+          "g-fallback.whatsapp.net": {
+            "errors": [],
+            "ipv4": [
+              "157.240.241.61"
+            ],
+            "ipv6": [
+              "2a03:2880:f212:1c4:face:b00c:0:7260"
+            ]
+          },
+          "g.whatsapp.net": {
+            "errors": [],
+            "ipv4": [
+              "57.145.3.33"
+            ],
+            "ipv6": [
+              "2a03:2880:f37e:121:face:b00c:0:7260"
+            ]
+          },
+          "media.whatsapp.com": {
+            "errors": [
+              "ipv4: gaierror",
+              "ipv6: gaierror"
+            ],
+            "ipv4": [],
+            "ipv6": []
+          },
+          "web.whatsapp.com": {
+            "errors": [],
+            "ipv4": [
+              "57.145.3.32"
+            ],
+            "ipv6": [
+              "2a03:2880:f37e:120:face:b00c:0:167"
+            ]
+          },
+          "whatsapp.com": {
+            "errors": [],
+            "ipv4": [
+              "57.144.253.32"
+            ],
+            "ipv6": [
+              "2a03:2880:f37e:120:face:b00c:0:167"
+            ]
+          },
+          "whatsapp.net": {
+            "errors": [],
+            "ipv4": [
+              "57.144.253.32"
+            ],
+            "ipv6": [
+              "2a03:2880:f381:120:face:b00c:0:167"
+            ]
+          }
+        },
+        "ipv4": [
+          "157.240.241.61",
+          "57.144.253.32",
+          "57.145.3.32",
+          "57.145.3.33"
+        ],
+        "ipv6": [
+          "2a03:2880:f212:1c4:face:b00c:0:7260",
+          "2a03:2880:f37e:120:face:b00c:0:167",
+          "2a03:2880:f37e:121:face:b00c:0:7260",
+          "2a03:2880:f381:120:face:b00c:0:167"
+        ],
+        "resolved_domain_ratio": 0.8571
+      },
+      "routing": {
+        "domain_ready": true,
+        "ip_ready": false,
+        "reason": "DNS addresses are volatile and may be shared across services"
+      },
+      "shared_infrastructure": {
+        "detected": false,
+        "ips": [],
+        "policy": "evidence-only; do not publish shared IPs as exclusive service routes"
+      }
+    }
+  },
+  "shared_ips": {}
+}
