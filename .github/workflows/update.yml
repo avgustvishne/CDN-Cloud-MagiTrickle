@@ -218,9 +218,14 @@ jobs:
       - name: Autonomous publication safety gate
         env:
           MAX_DATASET_DROP: "0.50"
+          MAX_DATASET_COVERAGE_DROP: "0.50"
         run: |
           set -e
-          python scripts/rollback_guard.py data --previous-ref HEAD --max-drop "$MAX_DATASET_DROP" --report data/rollback-report.json
+          python scripts/rollback_guard.py data \
+            --previous-ref HEAD \
+            --max-drop "$MAX_DATASET_DROP" \
+            --max-coverage-drop "$MAX_DATASET_COVERAGE_DROP" \
+            --report data/rollback-report.json
           python - <<'PY'
           import json, pathlib
           p = pathlib.Path("data/rollback-report.json")
