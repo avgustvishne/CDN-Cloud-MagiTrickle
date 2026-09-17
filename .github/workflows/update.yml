@@ -19,7 +19,6 @@ on:
 
 permissions:
   contents: write
-  issues: write
 
 concurrency:
   group: magitrickle-subscriptions
@@ -208,8 +207,6 @@ jobs:
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
 
-          # Cross-provider overlaps are audited separately; they are not duplicate
-          # lines inside a single subscription and must not be silently deleted.
           print("Validation OK: syntax, CIDR uniqueness, provider coverage, profiles, checksums and overlap audit")
           PY
 
@@ -246,20 +243,20 @@ jobs:
 
       - name: Autonomous failure notification
         if: ${{ failure() }}
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          set -e
-          title="🤖 MagiTrickle automation failure"
-          body="$(printf 'Automated update failed.\n\nRun: https://github.com/%s/actions/runs/%s\nCommit: %s\nWorkflow: %s\n\nThe previous published revision was not intentionally replaced by this failure.' "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" "$GITHUB_SHA" "$GITHUB_WORKFLOW")"
-          existing="$(gh issue list --state open --search "in:title $title" --json number --jq '.[0].number' | head -n1 || true)"
-          if [ -n "$existing" ]; then
-            gh issue comment "$existing" --body "$body"
-          else
-            gh issue create --title "$title" --body "$body" --label "automation"
-          fi
+          set -euo pipefail
+          {
+            echo "## 🤖 MagiTrickle automation failure"
+            echo
+            echo "The automated update failed. Generated data was not intentionally published by this failed run."
+            echo
+            echo "- **Run:** https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo "- **Commit:** \`${GITHUB_SHA}\`"
+            echo "- **Workflow:** \`${GITHUB_WORKFLOW}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Failure details written to GitHub Actions Summary."
+
       - name: Show summary
         run: cat data/last-update.txt
 
