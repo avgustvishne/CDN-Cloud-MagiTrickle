@@ -6,6 +6,13 @@ entry point owns the candidate-selection policy so it can be changed and
 regression-tested without rewriting the large generator body.
 """
 import ipaddress
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+SCRIPTS = ROOT / "scripts"
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
 
 import update_cdn_lists_impl as _impl
 
