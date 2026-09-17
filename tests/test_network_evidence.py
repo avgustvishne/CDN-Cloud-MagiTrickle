@@ -3,6 +3,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "network_evidence.py"
@@ -51,7 +52,6 @@ class NetworkEvidenceTests(unittest.TestCase):
             "provider": "example",
             "prefix": "1.2.3.0/24",
         }
-        # Avoid network access: validate the deterministic shape produced by the collector.
         prefix = self.engine.validate_prefix(row["prefix"])
         self.assertEqual(prefix, "1.2.3.0/24")
         result = {
@@ -64,6 +64,35 @@ class NetworkEvidenceTests(unittest.TestCase):
         self.assertIn("bgp", result)
         self.assertIn("irr", result)
         self.assertIn("rpki", result)
+
+    def test_candidate_selection_keeps_ipv6_coverage(self):
+        rows = [
+            {"provider": "v4", "prefix": f"1.0.{i}.0/24"} for i in range(200)
+        ] + [
+            {"provider": "v6", "prefix": f"2001:db8:{i}::/48"} for i in range(200)
+        ]
+        selected = self.engine.select_evidence_candidates(rows, 20)
+        self.assertEqual(len(selected), 20)
+        self.assertTrue(any(":" in row["prefix"] for row in selected))
+        self.assertTrue(any(":" not in row["prefix"] for row in selected))
+
+    def test_rpki_call_includes_prefix_and_asn(self):
+        calls = []
+
+        def fake_api(endpoint, resource, extra=None):
+            calls.append((endpoint, resource, extra))
+            if endpoint == "prefix-routing-consistency":
+                return {"in_bgp": True, "in_whois": True, "irr_sources": [], "origins": [13335]}
+            return {"status": "valid"}
+
+        with patch.object(self.engine, "api", side_effect=fake_api):
+            result = self.engine.evidence_for({"provider": "cloudflare", "prefix": "1.2.3.0/24"})
+
+        self.assertEqual(result["rpki"]["statuses"], [{"asn": "AS13335", "status": "valid"}])
+        self.assertEqual(
+            calls[1],
+            ("rpki-validation", 13335, {"prefix": "1.2.3.0/24"}),
+        )
 
 
 if __name__ == "__main__":
