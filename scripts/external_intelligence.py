@@ -169,6 +169,7 @@ def fetch_feed(feed_id, spec, profiles):
             "bytes": len(raw),
             "sha256": digest,
             "entries": len(values),
+            "_domains": values,
             "checked_at": started.strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
     except Exception as exc:
@@ -195,15 +196,10 @@ def main():
     results.sort(key=lambda row: row["id"])
 
     successful_domains = {}
-    domain_sets = {}
     for row in results:
         if row["status"] != "OK" or row["type"] != "domain":
             continue
-        try:
-            domain_sets[row["id"]] = set(parse_domains(fetch(row["url"])))
-        except Exception:
-            continue
-        for domain in domain_sets[row["id"]]:
+        for domain in row.pop("_domains", []):
             successful_domains.setdefault(domain, set()).add(row["id"])
 
     multi_source_domains = sum(1 for sources in successful_domains.values() if len(sources) >= 2)
