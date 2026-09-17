@@ -1,19 +1,360 @@
 {
   "schema_version": 1,
-  "status": "degraded",
-  "publication": "validated",
-  "generated_at": "unknown",
-  "source_commit": "unknown",
-  "last_known_good_commit": "unknown",
-  "last_update": "2026-09-16T19:39:40Z",
-  "engine": "unknown",
-  "aggregate": {"ipv4": 17335, "ipv6": 5308},
-  "providers": {"count": 18, "items": []},
-  "sources": {"total": 0, "healthy": 0, "failed": 0, "audited_providers": 0, "checked_at": "unknown"},
-  "network_evidence": {"queried": 0, "confirmed": 0, "statuses": {}},
-  "changes": {},
-  "rollback": {"guarded": false, "report_present": false},
-  "checksums": {"available": false},
-  "warnings": ["Initial dashboard snapshot; awaiting the first automated status generation."],
-  "last_failed_run": null
+  "status": "healthy",
+  "publication": "held",
+  "generated_at": "2026-09-17T11:07:41Z",
+  "source_commit": "df72bab25ec156f9aa92ab0e9c0eacc00495d7fc",
+  "last_known_good_commit": "910c02198b13cf913606727aea4c85faf583695b",
+  "last_update": "Updated: 2026-09-16 19:39:06 UTC\nALL IPv4: 17335\nALL IPv6: 5308\nALL ASN IPv4: 12593\nALL ASN IPv6: 6011\n\nProvider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6\naws,5345,1534,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\ncloudflare,747,165,official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\nhetzner,3847,392,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\novh,2578,394,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\nakamai,350,251,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\ndigitalocean,232,14,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\nmicrosoft,987,134,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\noracle,1206,324,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,KEEP_OLD_PARTIAL,1,0,0\nalibaba,666,197,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\ncdn77,187,33,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\nfastly,49,41,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0\nmelbicom,99,18,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\nbuyvm,23,27,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\nvultr,703,1571,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0\ncontabo,250,2,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\nscaleway,11,1,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\ngcore,530,223,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0\nbackblaze,5,1,static+cloud-ip-ranges,OK,0,0,0",
+  "engine": "final-v44-source-fusion-ipverse",
+  "aggregate": {
+    "ipv4": 17335,
+    "ipv6": 5308
+  },
+  "providers": {
+    "count": 18,
+    "items": [
+      {
+        "provider": "akamai",
+        "ipv4": 350,
+        "ipv6": 251,
+        "total": 601
+      },
+      {
+        "provider": "alibaba",
+        "ipv4": 666,
+        "ipv6": 197,
+        "total": 863
+      },
+      {
+        "provider": "aws",
+        "ipv4": 5345,
+        "ipv6": 1534,
+        "total": 6879
+      },
+      {
+        "provider": "backblaze",
+        "ipv4": 5,
+        "ipv6": 1,
+        "total": 6
+      },
+      {
+        "provider": "buyvm",
+        "ipv4": 23,
+        "ipv6": 27,
+        "total": 50
+      },
+      {
+        "provider": "cdn77",
+        "ipv4": 187,
+        "ipv6": 33,
+        "total": 220
+      },
+      {
+        "provider": "cloudflare",
+        "ipv4": 747,
+        "ipv6": 165,
+        "total": 912
+      },
+      {
+        "provider": "contabo",
+        "ipv4": 250,
+        "ipv6": 2,
+        "total": 252
+      },
+      {
+        "provider": "digitalocean",
+        "ipv4": 232,
+        "ipv6": 14,
+        "total": 246
+      },
+      {
+        "provider": "fastly",
+        "ipv4": 49,
+        "ipv6": 41,
+        "total": 90
+      },
+      {
+        "provider": "gcore",
+        "ipv4": 530,
+        "ipv6": 223,
+        "total": 753
+      },
+      {
+        "provider": "hetzner",
+        "ipv4": 3847,
+        "ipv6": 392,
+        "total": 4239
+      },
+      {
+        "provider": "melbicom",
+        "ipv4": 99,
+        "ipv6": 18,
+        "total": 117
+      },
+      {
+        "provider": "microsoft",
+        "ipv4": 987,
+        "ipv6": 134,
+        "total": 1121
+      },
+      {
+        "provider": "oracle",
+        "ipv4": 1206,
+        "ipv6": 311,
+        "total": 1517
+      },
+      {
+        "provider": "ovh",
+        "ipv4": 2578,
+        "ipv6": 394,
+        "total": 2972
+      },
+      {
+        "provider": "scaleway",
+        "ipv4": 11,
+        "ipv6": 1,
+        "total": 12
+      },
+      {
+        "provider": "vultr",
+        "ipv4": 703,
+        "ipv6": 1571,
+        "total": 2274
+      }
+    ]
+  },
+  "sources": {
+    "total": 8,
+    "healthy": 8,
+    "failed": 0,
+    "audited_providers": 54,
+    "checked_at": "2026-09-16 19:39:06 UTC"
+  },
+  "network_evidence": {
+    "queried": 0,
+    "confirmed": 0,
+    "statuses": {}
+  },
+  "changes": {
+    "akamai-v4.txt": {
+      "added": 350,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "akamai-v6.txt": {
+      "added": 251,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "alibaba-v4.txt": {
+      "added": 666,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "alibaba-v6.txt": {
+      "added": 197,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "all-cloud-v4.txt": {
+      "added": 17335,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "all-cloud-v6.txt": {
+      "added": 5308,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "asn-all-v4.txt": {
+      "added": 12593,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "asn-all-v6.txt": {
+      "added": 6011,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "asn-confirmed-v4.txt": {
+      "added": 70,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "asn-confirmed-v6.txt": {
+      "added": 0,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "aws-v4.txt": {
+      "added": 5345,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "aws-v6.txt": {
+      "added": 1534,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "backblaze-v4.txt": {
+      "added": 5,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "backblaze-v6.txt": {
+      "added": 1,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "buyvm-v4.txt": {
+      "added": 23,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "buyvm-v6.txt": {
+      "added": 27,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "cdn77-v4.txt": {
+      "added": 187,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "cdn77-v6.txt": {
+      "added": 33,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "cloudflare-v4.txt": {
+      "added": 747,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "cloudflare-v6.txt": {
+      "added": 165,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "contabo-v4.txt": {
+      "added": 250,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "contabo-v6.txt": {
+      "added": 2,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "digitalocean-v4.txt": {
+      "added": 232,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "digitalocean-v6.txt": {
+      "added": 14,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "fastly-v4.txt": {
+      "added": 49,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "fastly-v6.txt": {
+      "added": 41,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "gcore-v4.txt": {
+      "added": 530,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "gcore-v6.txt": {
+      "added": 223,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "hetzner-v4.txt": {
+      "added": 3847,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "hetzner-v6.txt": {
+      "added": 392,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "melbicom-v4.txt": {
+      "added": 99,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "melbicom-v6.txt": {
+      "added": 18,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "microsoft-v4.txt": {
+      "added": 987,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "microsoft-v6.txt": {
+      "added": 134,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "oracle-v4.txt": {
+      "added": 1206,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "oracle-v6.txt": {
+      "added": 311,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "ovh-v4.txt": {
+      "added": 2578,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "ovh-v6.txt": {
+      "added": 394,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "scaleway-v4.txt": {
+      "added": 11,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "scaleway-v6.txt": {
+      "added": 1,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "vultr-v4.txt": {
+      "added": 703,
+      "removed": 0,
+      "unchanged": 0
+    },
+    "vultr-v6.txt": {
+      "added": 1571,
+      "removed": 0,
+      "unchanged": 0
+    }
+  },
+  "rollback": {
+    "guarded": false,
+    "report_present": false
+  },
+  "checksums": {
+    "available": true
+  },
+  "warnings": [],
+  "last_failed_run": "https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/runs/35214020189 (conclusion: failure, run: 35214020189)"
 }
