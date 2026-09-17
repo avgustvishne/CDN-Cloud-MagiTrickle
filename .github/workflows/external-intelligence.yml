@@ -53,7 +53,7 @@ jobs:
           assert payload["policy"]["external_domains_are_evidence_only"] is True
           assert payload["policy"]["raw_external_lists_stored"] is False
           sources = payload["sources"]
-          assert len(sources) == 8
+          assert len(sources) == 9
           assert all(row["status"] in {"OK", "ERROR"} for row in sources)
           successful = [row for row in sources if row["status"] == "OK"]
           assert len(successful) >= 6, f"too many external feeds failed: {len(sources) - len(successful)}"
