@@ -198,8 +198,6 @@ jobs:
               assert p.exists(), rel
               assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
 
-          # Cross-provider overlaps are audited separately; they are not duplicate
-          # lines inside a single subscription and must not be silently deleted.
           print("Validation OK: syntax, CIDR uniqueness, provider coverage, profiles, checksums and overlap audit")
           PY
 
@@ -229,6 +227,9 @@ jobs:
       - name: Generate automatic CIDR statistics
         run: python scripts/generate_statistics.py
 
+      - name: Generate status dashboard
+        run: python scripts/generate_dashboard.py
+
       - name: Autonomous failure notification
         if: ${{ failure() }}
         env:
@@ -254,7 +255,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ README.md UPDATE_REPORT.md
+          git add data/ README.md UPDATE_REPORT.md STATUS.md
           if git diff --cached --quiet; then
             echo "No changes."
             exit 0
@@ -266,7 +267,6 @@ jobs:
               echo "Push succeeded on attempt ${attempt}."
               exit 0
             fi
-
             echo "Push was not a fast-forward; refreshing ${GITHUB_REF_NAME} (attempt ${attempt})."
             git fetch origin "${GITHUB_REF_NAME}"
             git rebase "origin/${GITHUB_REF_NAME}" || {
@@ -276,6 +276,5 @@ jobs:
               continue
             }
           done
-
           echo "Unable to push generated data after 5 attempts."
           exit 1
