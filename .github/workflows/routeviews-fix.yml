@@ -26,7 +26,7 @@ jobs:
               Path("scripts/source_acquisition.py"),
           ]
           replacement = "from routeviews_client import routeviews_prefixes\n\n"
-          pattern = re.compile(r"^def routeviews_prefixes\\(asn\\):.*?(?=^def [A-Za-z_]\\w*\\(", re.M | re.S)
+          pattern = re.compile(r"^def routeviews_prefixes\(asn\):.*?(?=^def [A-Za-z_]\w*\(", re.M | re.S)
           changed = []
           for path in files:
               text = path.read_text(encoding="utf-8")
@@ -37,10 +37,7 @@ jobs:
                   continue
               path.write_text(new_text, encoding="utf-8")
               changed.append(str(path))
-          if changed:
-              print("Patched:", ", ".join(changed))
-          else:
-              print("Already patched")
+          print("Patched:" if changed else "Already patched", ", ".join(changed))
           PY
 
           python -m py_compile scripts/update_cdn_lists.py scripts/source_acquisition.py scripts/routeviews_client.py tests/test_routeviews_client.py
