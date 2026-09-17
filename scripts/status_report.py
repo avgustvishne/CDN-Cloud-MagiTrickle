@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a concise human and machine-readable repository status.
-
-The report is derived only from generated repository artifacts. Missing optional
-artifacts are reported as unknown instead of making the status generator fail.
-"""
+"""Generate a concise human and machine-readable repository status."""
 from __future__ import annotations
 
 import argparse
@@ -55,9 +51,7 @@ def read_timestamp() -> str:
 
 def git_sha() -> str:
     try:
-        return subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
-        ).strip()
+        return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     except (OSError, subprocess.CalledProcessError):
         return "unknown"
 
@@ -65,14 +59,18 @@ def git_sha() -> str:
 def source_summary() -> dict[str, Any]:
     health = load_json("source-health.json", {})
     audit = load_json("source-audit.json", {})
-    sources = health.get("sources", []) if isinstance(health, dict) else []
-    healthy = sum(1 for item in sources if str(item.get("status", "")).lower() in {"ok", "healthy", "pass", "passed"})
-    failed = sum(1 for item in sources if str(item.get("status", "")).lower() in {"fail", "failed", "error", "unhealthy"})
+    source_map = health.get("sources", {}) if isinstance(health, dict) else {}
+    if not isinstance(source_map, dict):
+        source_map = {}
+    healthy = sum(1 for item in source_map.values() if isinstance(item, dict) and item.get("ok") is True)
+    failed = sum(1 for item in source_map.values() if isinstance(item, dict) and item.get("ok") is False)
+    audited = audit.get("providers", []) if isinstance(audit, dict) else []
     return {
-        "total": len(sources),
+        "total": len(source_map),
         "healthy": healthy,
         "failed": failed,
-        "audited_providers": len(audit.get("providers", [])) if isinstance(audit, dict) else 0,
+        "audited_providers": len(audited) if isinstance(audited, list) else 0,
+        "checked_at": health.get("checked_at", "unknown") if isinstance(health, dict) else "unknown",
     }
 
 
@@ -83,6 +81,8 @@ def network_summary() -> dict[str, Any]:
     evidence = report.get("evidence", [])
     statuses: dict[str, int] = {}
     for item in evidence if isinstance(evidence, list) else []:
+        if not isinstance(item, dict):
+            continue
         status = str(item.get("status", "unknown"))
         statuses[status] = statuses.get(status, 0) + 1
     return {
@@ -98,9 +98,9 @@ def provider_summary() -> list[dict[str, Any]]:
         if path.name in {"all-cloud-v4.txt", "asn-all-v4.txt", "asn-confirmed-v4.txt"}:
             continue
         name = path.name.removesuffix("-v4.txt")
-        v4_total, v4, _ = count_cidrs(path)
+        _, v4, _ = count_cidrs(path)
         _, _, v6 = count_cidrs(DATA / f"{name}-v6.txt")
-        rows.append({"provider": name, "ipv4": v4, "ipv6": v6, "total": v4_total + v6})
+        rows.append({"provider": name, "ipv4": v4, "ipv6": v6, "total": v4 + v6})
     return rows
 
 
@@ -111,42 +111,38 @@ def build_status(args: argparse.Namespace) -> dict[str, Any]:
     source = source_summary()
     network = network_summary()
     providers = provider_summary()
+    checksum_available = (DATA / "checksums.sha256").exists()
     warnings: list[str] = []
 
     if source["failed"]:
         warnings.append(f"{source['failed']} source(s) reported failure")
     if rollback.get("guarded"):
         warnings.append("publication was held by the rollback guard")
-    if not (DATA / "checksums.sha256").exists():
+    if not checksum_available:
         warnings.append("checksums are unavailable")
 
-    publication = args.publication
-    overall = "healthy"
     if rollback.get("guarded"):
         overall = "hold"
     elif warnings:
         overall = "degraded"
+    else:
+        overall = "healthy"
 
     return {
         "schema_version": 1,
         "status": overall,
-        "publication": publication,
+        "publication": args.publication,
         "generated_at": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "source_commit": git_sha(),
         "last_update": read_timestamp(),
-        "engine": manifest.get("engine", "unknown"),
-        "aggregate": manifest.get("aggregate", {}),
-        "providers": {
-            "count": len(providers),
-            "items": providers,
-        },
+        "engine": manifest.get("engine", "unknown") if isinstance(manifest, dict) else "unknown",
+        "aggregate": manifest.get("aggregate", {}) if isinstance(manifest, dict) else {},
+        "providers": {"count": len(providers), "items": providers},
         "sources": source,
         "network_evidence": network,
-        "changes": summary.get("datasets", {}),
-        "rollback": {
-            "guarded": bool(rollback.get("guarded", False)),
-            "report_present": bool(rollback),
-        },
+        "changes": summary.get("datasets", {}) if isinstance(summary, dict) else {},
+        "rollback": {"guarded": bool(rollback.get("guarded", False)), "report_present": bool(rollback)},
+        "checksums": {"available": checksum_available},
         "warnings": warnings,
         "last_failed_run": args.failed_run or None,
     }
@@ -181,7 +177,7 @@ def render_markdown(status: dict[str, Any]) -> str:
         "## Проверки",
         "",
         f"- Rollback guard: **{'HOLD' if rollback['guarded'] else 'PASS'}**",
-        f"- Checksums: **{'available' if rollback['report_present'] else 'not reported'}**",
+        f"- Checksums: **{'available' if status['checksums']['available'] else 'unavailable'}**",
     ]
     warnings = status.get("warnings", [])
     if warnings:
@@ -200,10 +196,12 @@ def main() -> None:
     parser.add_argument("--publication", choices=("published", "validated", "dry-run", "held"), default="validated")
     parser.add_argument("--failed-run", default="")
     args = parser.parse_args()
-
     status = build_status(args)
-    (ROOT / args.output_json).write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    (ROOT / args.output_md).write_text(render_markdown(status), encoding="utf-8")
+    json_path = ROOT / args.output_json
+    md_path = ROOT / args.output_md
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    md_path.write_text(render_markdown(status), encoding="utf-8")
 
 
 if __name__ == "__main__":
