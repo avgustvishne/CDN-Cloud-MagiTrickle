@@ -237,6 +237,7 @@ jobs:
 
       - name: Autonomous failure notification
         if: ${{ failure() }}
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
