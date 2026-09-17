@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - ".github/workflows/service-intelligence.yml"
       - "config/services.json"
       - "scripts/service_intelligence.py"
       - "tests/test_service_intelligence.py"
