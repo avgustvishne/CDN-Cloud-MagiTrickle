@@ -1,6 +1,6 @@
 {
   "version": 44,
-  "updated": "2026-09-17 14:54:53 UTC",
+  "updated": "2026-09-17 15:20:11 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official provider feeds",
@@ -213,7 +213,7 @@
   },
   "aggregate": {
     "ipv4": 17342,
-    "ipv6": 5257
+    "ipv6": 5251
   },
   "audit": [
     {
@@ -232,9 +232,9 @@
       "provider": "cloudflare",
       "ipv4_prefixes": 748,
       "ipv6_prefixes": 165,
-      "previous_ipv4_prefixes": 747,
+      "previous_ipv4_prefixes": 748,
       "previous_ipv6_prefixes": 165,
-      "ipv4_change_percent": 0.13,
+      "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -244,9 +244,9 @@
       "provider": "hetzner",
       "ipv4_prefixes": 3851,
       "ipv6_prefixes": 392,
-      "previous_ipv4_prefixes": 3847,
+      "previous_ipv4_prefixes": 3851,
       "previous_ipv6_prefixes": 392,
-      "ipv4_change_percent": 0.1,
+      "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -256,9 +256,9 @@
       "provider": "ovh",
       "ipv4_prefixes": 2579,
       "ipv6_prefixes": 394,
-      "previous_ipv4_prefixes": 2578,
+      "previous_ipv4_prefixes": 2579,
       "previous_ipv6_prefixes": 394,
-      "ipv4_change_percent": 0.04,
+      "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -268,9 +268,9 @@
       "provider": "akamai",
       "ipv4_prefixes": 352,
       "ipv6_prefixes": 251,
-      "previous_ipv4_prefixes": 350,
+      "previous_ipv4_prefixes": 352,
       "previous_ipv6_prefixes": 251,
-      "ipv4_change_percent": 0.57,
+      "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -316,12 +316,12 @@
       "provider": "alibaba",
       "ipv4_prefixes": 667,
       "ipv6_prefixes": 197,
-      "previous_ipv4_prefixes": 666,
+      "previous_ipv4_prefixes": 667,
       "previous_ipv6_prefixes": 197,
-      "ipv4_change_percent": 0.15,
+      "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
-      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse",
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
@@ -340,9 +340,9 @@
       "provider": "fastly",
       "ipv4_prefixes": 48,
       "ipv6_prefixes": 41,
-      "previous_ipv4_prefixes": 49,
+      "previous_ipv4_prefixes": 48,
       "previous_ipv6_prefixes": 41,
-      "ipv4_change_percent": -2.04,
+      "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse",
@@ -375,11 +375,11 @@
     {
       "provider": "vultr",
       "ipv4_prefixes": 703,
-      "ipv6_prefixes": 1519,
+      "ipv6_prefixes": 1513,
       "previous_ipv4_prefixes": 703,
-      "previous_ipv6_prefixes": 1571,
+      "previous_ipv6_prefixes": 1519,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": -3.31,
+      "ipv6_change_percent": -0.39,
       "status": "OK",
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "errors": 0
@@ -505,7 +505,7 @@
     "alibaba": {
       "ipv4": 667,
       "ipv6": 197,
-      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse",
+      "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
@@ -544,7 +544,7 @@
     },
     "vultr": {
       "ipv4": 703,
-      "ipv6": 1519,
+      "ipv6": 1513,
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "status": "OK",
       "rejected_ipv4": 0,
