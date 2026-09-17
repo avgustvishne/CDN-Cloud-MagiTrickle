@@ -1,3 +1,4 @@
+import concurrent.futures
 import json
 import unittest
 from unittest.mock import patch
@@ -31,6 +32,14 @@ class RouteViewsClientTests(unittest.TestCase):
         mocked.assert_called_once()
         self.assertIn("/asn/13335", mocked.call_args.args[0].full_url)
         self.assertNotIn("?af=", mocked.call_args.args[0].full_url)
+
+    def test_concurrent_same_asn_is_fetched_once(self):
+        with patch.object(routeviews_client.urllib.request, "urlopen", return_value=FakeResponse()) as mocked:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+                results = list(pool.map(routeviews_client.routeviews_prefixes, ["13335"] * 8))
+
+        self.assertTrue(all(result == results[0] for result in results))
+        mocked.assert_called_once()
 
 
 if __name__ == "__main__":
