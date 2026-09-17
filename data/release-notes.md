@@ -1,16 +1,17 @@
 # Subscription update — v44
 
-Generated: 2026-09-17 15:20:11 UTC
+Generated: 2026-09-17 15:48:07 UTC
 
 - Aggregate IPv4: **17,342**
-- Aggregate IPv6: **5,251**
+- Aggregate IPv6: **5,246**
 
 ## Changes
 
 | Provider | IPv4 (+ / -) | IPv6 (+ / -) |
 |---|---:|---:|
+| aws | +0 / -0 | +1 / -3 |
 | oracle | +0 / -0 | +14 / -0 |
-| vultr | +0 / -0 | +8 / -14 |
+| vultr | +0 / -0 | +9 / -12 |
 
 ## Safety
 

@@ -2,18 +2,24 @@
   "provider": "aws",
   "added": {
     "ipv4": 0,
-    "ipv6": 0
+    "ipv6": 1
   },
   "removed": {
     "ipv4": 0,
-    "ipv6": 0
+    "ipv6": 3
   },
   "sample_added": {
     "ipv4": [],
-    "ipv6": []
+    "ipv6": [
+      "2605:9cc0:c00::/45"
+    ]
   },
   "sample_removed": {
     "ipv4": [],
-    "ipv6": []
+    "ipv6": [
+      "2605:9cc0:c01::/48",
+      "2605:9cc0:c03::/48",
+      "2605:9cc0:c04::/46"
+    ]
   }
 }
