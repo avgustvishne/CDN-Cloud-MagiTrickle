@@ -13,10 +13,21 @@ DEFAULT_PRESETS = DATA / "presets"
 CFG = json.loads((ROOT / "config" / "providers.json").read_text(encoding="utf-8"))
 PROVIDERS = sorted(CFG["providers"])
 
+# Main profiles are deliberately different in scope:
+# FULL      = every configured provider, maximum coverage.
+# BALANCED  = broad cloud/CDN/VPS coverage without the largest catch-all pools.
+# PERFORMANCE = focused edge/CDN/VPS sources for a smaller routing set.
+# MINIMAL   = compact, high-value edge/VPS set.
 PROFILES = {
     "full": PROVIDERS,
-    "performance": ["cloudflare", "fastly", "cdn77", "gcore"],
-    "balanced": ["cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore", "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway"],
+    "performance": [
+        "cloudflare", "akamai", "fastly", "cdn77", "gcore",
+        "digitalocean", "hetzner", "ovh",
+    ],
+    "balanced": [
+        "cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore",
+        "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway",
+    ],
     "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
 }
 
@@ -27,25 +38,63 @@ SPECIAL = {
     "vpn": ["vultr", "buyvm", "ovh", "hetzner", "digitalocean", "gcore", "contabo", "scaleway", "melbicom"],
 }
 
+
+def _validate_profile_config():
+    """Fail early if a profile references an unknown provider."""
+    known = set(PROVIDERS)
+    for profile, selected in {**PROFILES, **SPECIAL}.items():
+        unknown = sorted(set(selected) - known)
+        if unknown:
+            raise ValueError(f"profile {profile!r} references unknown providers: {unknown}")
+
+
+_validate_profile_config()
+
+
 def read(name, version, data_dir=DATA):
     path = pathlib.Path(data_dir) / f"{name}-v{version}.txt"
     if not path.exists():
         return []
     return path.read_text(encoding="utf-8").splitlines()
 
-def collapse(values, version):
+
+def _valid_networks(values, version):
+    """Normalize source prefixes using the same safety rules as generation."""
     networks = set()
+    minimum_prefix = 8 if version == 4 else 16
     for value in values:
         try:
-            net = ipaddress.ip_network(value.strip(), strict=False)
-            if net.version == version and net.is_global and net.prefixlen >= (8 if version == 4 else 16):
+            net = value if isinstance(value, (ipaddress.IPv4Network, ipaddress.IPv6Network)) else ipaddress.ip_network(value.strip(), strict=False)
+            if net.version == version and net.is_global and net.prefixlen >= minimum_prefix:
                 networks.add(net)
-        except ValueError:
+        except (AttributeError, TypeError, ValueError):
             continue
+    return networks
+
+
+def collapse(values, version):
     return sorted(
-        ipaddress.collapse_addresses(networks),
+        ipaddress.collapse_addresses(_valid_networks(values, version)),
         key=lambda n: (int(n.network_address), n.prefixlen),
     )
+
+
+def address_space_coverage(values, version):
+    """Return exact union coverage in addresses after input normalization."""
+    networks = _valid_networks(values, version)
+    return sum(net.num_addresses for net in ipaddress.collapse_addresses(networks))
+
+
+def validate_coverage_preserved(source, result, version):
+    """Ensure CIDR aggregation changes representation, never address-space coverage."""
+    input_coverage = address_space_coverage(source, version)
+    output_coverage = address_space_coverage(result, version)
+    if input_coverage != output_coverage:
+        raise RuntimeError(
+            f"coverage changed for IPv{version}: input={input_coverage}, output={output_coverage}"
+        )
+    return input_coverage
+
 
 def atomic(path, values):
     path = pathlib.Path(path)
@@ -59,26 +108,24 @@ def atomic(path, values):
         if os.path.exists(tmp):
             os.unlink(tmp)
 
+
 def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=DATA):
     """Generate all public profiles and return their prefix counts."""
     output_dir = pathlib.Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     counts = {}
     for profile, selected in {**PROFILES, **SPECIAL}.items():
+        names = PROVIDERS if profile == "full" else selected
         for version in (4, 6):
-            source = []
-            names = PROVIDERS if profile == "full" else selected
-            if profile == "full":
-                source = read("all-cloud", version, data_dir)
-            else:
-                for name in names:
-                    source.extend(read(name, version, data_dir))
+            source = read("all-cloud", version, data_dir) if profile == "full" else [value for name in names for value in read(name, version, data_dir)]
             result = collapse(source, version)
             if not result:
                 raise RuntimeError(f"empty profile: {profile}-v{version}")
+            validate_coverage_preserved(source, result, version)
             atomic(output_dir / f"{profile}-v{version}.txt", result)
             counts[f"{profile}-v{version}"] = len(result)
     return counts
+
 
 if __name__ == "__main__":
     for name, count in generate_profiles().items():
