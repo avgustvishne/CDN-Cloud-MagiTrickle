@@ -21,23 +21,18 @@ jobs:
           from pathlib import Path
           import re
 
-          files = [
-              Path("scripts/update_cdn_lists.py"),
-              Path("scripts/source_acquisition.py"),
-          ]
+          files = [Path("scripts/update_cdn_lists.py"), Path("scripts/source_acquisition.py")]
           replacement = "from routeviews_client import routeviews_prefixes\n\n"
-          pattern = re.compile(r"^def routeviews_prefixes\(asn\):.*?(?=^def [A-Za-z_]\w*\(", re.M | re.S)
+          pattern = re.compile(r"^def routeviews_prefixes\(asn\):.*?(?=^def [A-Za-z_]\w*\([^)]*\):)", re.M | re.S)
           changed = []
           for path in files:
               text = path.read_text(encoding="utf-8")
               new_text, count = pattern.subn(replacement, text, count=1)
               if count != 1:
                   raise SystemExit(f"expected exactly one routeviews_prefixes function in {path}, found {count}")
-              if new_text == text:
-                  continue
               path.write_text(new_text, encoding="utf-8")
               changed.append(str(path))
-          print("Patched:" if changed else "Already patched", ", ".join(changed))
+          print("Patched:", ", ".join(changed))
           PY
 
           python -m py_compile scripts/update_cdn_lists.py scripts/source_acquisition.py scripts/routeviews_client.py tests/test_routeviews_client.py
