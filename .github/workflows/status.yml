@@ -98,4 +98,22 @@ jobs:
             exit 0
           fi
           git commit -m "chore: update autonomous status"
-          git push origin HEAD:main
+
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              echo "Status push succeeded on attempt ${attempt}."
+              exit 0
+            fi
+
+            echo "Main advanced during status publication; rebasing attempt ${attempt}."
+            git fetch origin main
+            git rebase origin/main || {
+              git rebase --abort || true
+              echo "Status rebase failed on attempt ${attempt}."
+              sleep $((attempt * 2))
+              continue
+            }
+          done
+
+          echo "Unable to publish status after 5 attempts."
+          exit 1

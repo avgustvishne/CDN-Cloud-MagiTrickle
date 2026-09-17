@@ -31,6 +31,13 @@ def now():
 
 
 def api(endpoint, resource, extra=None):
+    """Call RIPEstat with endpoint-specific parameters.
+
+    Most endpoints use ``resource`` for the primary object. RPKI validation is
+    different: ``resource`` is the ASN and ``prefix`` is a separate required
+    parameter. Keeping the common parameter here while allowing explicit
+    overrides prevents accidentally dropping required endpoint parameters.
+    """
     params = {"resource": resource, "sourceapp": SOURCEAPP}
     if extra:
         params.update(extra)
@@ -55,6 +62,53 @@ def validate_prefix(value):
         return str(ipaddress.ip_network(value, strict=False))
     except ValueError:
         return None
+
+
+def select_evidence_candidates(rows, limit):
+    """Select a deterministic, family-balanced evidence sample.
+
+    A plain lexical first-N selection is biased toward IPv4 and can leave IPv6
+    completely untested. Split the budget between address families whenever
+    both are available, then prefer least-specific prefixes within each family.
+    """
+    unique = {}
+    for row in rows:
+        prefix = validate_prefix(row.get("prefix", ""))
+        if prefix and prefix not in unique:
+            unique[prefix] = row
+
+    candidates = list(unique.items())
+    v4 = [(p, row) for p, row in candidates if ":" not in p]
+    v6 = [(p, row) for p, row in candidates if ":" in p]
+
+    def sort_key(item):
+        prefix = item[0]
+        network = ipaddress.ip_network(prefix, strict=False)
+        return (network.prefixlen, int(network.network_address), prefix)
+
+    v4.sort(key=sort_key)
+    v6.sort(key=sort_key)
+
+    if len(v4) + len(v6) <= limit:
+        return [row for _, row in sorted(candidates, key=sort_key)]
+
+    if v4 and v6:
+        v6_budget = min(len(v6), max(1, limit // 2))
+        v4_budget = min(len(v4), limit - v6_budget)
+        remaining = limit - v4_budget - v6_budget
+        if remaining:
+            extra_v4 = min(remaining, len(v4) - v4_budget)
+            v4_budget += extra_v4
+            remaining -= extra_v4
+        if remaining:
+            v6_budget += min(remaining, len(v6) - v6_budget)
+        selected = v4[:v4_budget] + v6[:v6_budget]
+    elif v4:
+        selected = v4[:limit]
+    else:
+        selected = v6[:limit]
+
+    return [row for _, row in sorted(selected, key=sort_key)]
 
 
 def evidence_for(row):
@@ -88,24 +142,27 @@ def evidence_for(row):
         try:
             origins.append(int(origin))
         except (TypeError, ValueError):
+            # A malformed primary origin is non-fatal; other origin evidence is still usable.
             pass
     for item in consistency.get("origins") or []:
         if isinstance(item, dict):
             try:
                 origins.append(int(item.get("origin")))
             except (TypeError, ValueError):
+                # Ignore one malformed origin entry without discarding the remaining evidence.
                 pass
         elif isinstance(item, (int, str)):
             try:
                 origins.append(int(item))
-            except ValueError:
+            except (TypeError, ValueError):
+                # Ignore one malformed scalar origin without failing the whole prefix.
                 pass
     origins = sorted(set(origins))
     result["bgp"]["origins"] = [f"AS{x}" for x in origins]
 
     rpki = []
     for asn in origins[:8]:
-        data = api("rpki-validation", prefix, {"resource": asn})
+        data = api("rpki-validation", asn, {"prefix": prefix})
         if "_error" not in data:
             rpki.append({
                 "asn": f"AS{asn}",
@@ -123,16 +180,12 @@ def evidence_for(row):
 
 def main():
     intelligence = json.loads(INPUT.read_text(encoding="utf-8"))
-    candidates = intelligence.get("prefix_evidence", [])
-    unique = {}
-    for row in candidates:
-        prefix = validate_prefix(row.get("prefix", ""))
-        if prefix and prefix not in unique:
-            unique[prefix] = row
-    selected = [unique[key] for key in sorted(unique)[:MAX_PREFIXES]]
+    candidates = select_evidence_candidates(
+        intelligence.get("prefix_evidence", []), MAX_PREFIXES
+    )
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as pool:
-        results = list(pool.map(evidence_for, selected))
+        results = list(pool.map(evidence_for, candidates))
 
     payload = {
         "schema_version": 1,

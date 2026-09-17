@@ -1,4 +1,4 @@
-name: BGPStream live validation
+name: BGPKIT live validation
 
 on:
   schedule:
@@ -9,37 +9,48 @@ permissions:
   contents: write
 
 concurrency:
-  group: bgpstream-validation
+  group: bgp-validation
   cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
 
-      - name: Run CAIDA BGPStream validation
+      - name: Install current BGPKIT stack
         run: |
-          docker pull caida/bgpstream:latest
-          docker run --rm             -v "$PWD:/repo"             caida/bgpstream:latest             python3 /repo/scripts/bgpstream_validate.py --hours 2 --limit 16
+          set -euo pipefail
+          python3 -m venv /tmp/bgpkit-venv
+          /tmp/bgpkit-venv/bin/python -m pip install --disable-pip-version-check --no-cache-dir \
+            "pybgpkit==0.8.0"
+
+      - name: Run BGPKIT validation
+        run: |
+          set -euo pipefail
+          /tmp/bgpkit-venv/bin/python scripts/bgpstream_validate.py --hours 0.5 --limit 12 --files 12
 
       - name: Validate report
         run: |
-          python - <<'PY'
-          import json, pathlib
-          p=pathlib.Path("data/bgpstream-health.json")
-          x=json.loads(p.read_text())
-          assert x["source"] == "CAIDA BGPStream"
+          python3 - <<'PY'
+          import json
+          import pathlib
+          p = pathlib.Path("data/bgpstream-health.json")
+          x = json.loads(p.read_text(encoding="utf-8"))
+          assert x["source"] == "BGPKIT Broker + BGPKIT Parser"
+          assert x["record_type"] == "updates"
           assert x["sample_size"] > 0
+          assert x["files_parsed"] > 0
+          assert x["elements_observed"] >= 0
           assert isinstance(x["results"], list)
-          print("BGPStream validation report OK")
+          print("BGPKIT validation report OK")
           PY
 
       - name: Commit validation report
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/bgpstream-health.json
@@ -47,5 +58,5 @@ jobs:
             echo "No changes."
             exit 0
           fi
-          git commit -m "chore: refresh BGPStream validation"
+          git commit -m "chore: refresh BGPKIT validation"
           git push
