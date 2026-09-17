@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "47 */12 * * *"
+  workflow_run:
+    workflows: ["Update MagiTrickle subscriptions"]
+    types: [completed]
 
 permissions:
   actions: read
@@ -15,6 +18,7 @@ concurrency:
 
 jobs:
   status:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
