@@ -169,15 +169,19 @@ jobs:
           assert isinstance(network.get("evidence"), list)
 
           intelligence = json.loads((d / "source-intelligence.json").read_text(encoding="utf-8"))
-          assert intelligence["schema_version"] == 1
+          assert intelligence["schema_version"] == 2
           assert intelligence["policy"]["mutates_subscriptions"] is False
           assert intelligence["policy"]["source_failure_replaces_data"] is False
           assert intelligence["change_policy"]["min_confirming_sources"] == 2
           assert intelligence["change_policy"]["confirmed_changes_are_not_auto_published"] is True
+          assert intelligence["change_policy"]["coverage_metric"] == "exact_union_address_space"
           assert isinstance(intelligence.get("sources"), list)
           assert isinstance(intelligence.get("providers"), dict)
           assert isinstance(intelligence.get("anomalies"), list)
           assert isinstance(intelligence.get("prefix_evidence"), list)
+          for provider, item in intelligence["providers"].items():
+              assert set(item["coverage"]) == {"ipv4", "ipv6"}, provider
+              assert all(isinstance(item["coverage"][family], int) and item["coverage"][family] >= 0 for family in ("ipv4", "ipv6"))
           for evidence in intelligence["prefix_evidence"]:
               assert evidence["source_count"] == len(evidence["sources"])
               assert evidence["status"] in {"confirmed", "single_source"}
@@ -218,9 +222,14 @@ jobs:
       - name: Autonomous publication safety gate
         env:
           MAX_DATASET_DROP: "0.50"
+          MAX_DATASET_COVERAGE_DROP: "0.50"
         run: |
           set -e
-          python scripts/rollback_guard.py data --previous-ref HEAD --max-drop "$MAX_DATASET_DROP" --report data/rollback-report.json
+          python scripts/rollback_guard.py data \
+            --previous-ref HEAD \
+            --max-drop "$MAX_DATASET_DROP" \
+            --max-coverage-drop "$MAX_DATASET_COVERAGE_DROP" \
+            --report data/rollback-report.json
           python - <<'PY'
           import json, pathlib
           p = pathlib.Path("data/rollback-report.json")

@@ -42,6 +42,25 @@ class SourceIntelligenceTests(unittest.TestCase):
         finally:
             self.engine.DATA = old
 
+    def test_consensus_summary_calculates_exact_family_coverage(self):
+        old = self.engine.DATA
+        try:
+            with tempfile.TemporaryDirectory() as td:
+                self.engine.DATA = Path(td)
+                (self.engine.DATA / "example-consensus.json").write_text(
+                    json.dumps({"records": [
+                        {"cidr": "1.2.3.0/25", "sources": ["official"]},
+                        {"cidr": "1.2.3.128/25", "sources": ["IPVerse"]},
+                        {"cidr": "2001:db8::/33", "sources": ["official"]},
+                    ]}),
+                    encoding="utf-8",
+                )
+                row = self.engine.consensus_summary()["example"]
+                self.assertEqual(row["coverage"]["ipv4"], 256)
+                self.assertEqual(row["coverage"]["ipv6"], 2**95)
+        finally:
+            self.engine.DATA = old
+
     def test_reliability_score_is_bounded(self):
         score = self.engine.reliability_score({
             "authority": "official",
@@ -76,6 +95,22 @@ class SourceIntelligenceTests(unittest.TestCase):
         rows = self.engine.provider_anomalies(current, previous)
         self.assertEqual(rows[0]["action"], "observe_only")
         self.assertEqual(rows[0]["previous_records"], 100)
+
+    def test_coverage_change_triggers_anomaly_even_when_count_is_stable(self):
+        current = {"providers": {"cloudflare": {
+            "records": 100,
+            "coverage": {"ipv4": 50, "ipv6": 100},
+            "sources": {"official": 100, "IPVerse": 100},
+        }}}
+        previous = {"providers": {"cloudflare": {
+            "records": 100,
+            "coverage": {"ipv4": 100, "ipv6": 100},
+        }}}
+        rows = self.engine.provider_anomalies(current, previous)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["trigger"], "coverage")
+        self.assertEqual(rows[0]["coverage_changes"]["ipv4"]["drop_percent"], 50.0)
+        self.assertEqual(rows[0]["action"], "confirmed_observation")
 
     def test_small_provider_change_is_not_anomaly(self):
         current = {"providers": {"cloudflare": {"records": 95}}}
