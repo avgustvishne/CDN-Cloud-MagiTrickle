@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 """Stable entry point for the MagiTrickle generator.
 
-The implementation lives in ``update_cdn_lists_impl.py`` so the candidate
-selection policy can be kept small, testable, and independent of the large
-generator body.
+The implementation remains intact in ``update_cdn_lists_impl.py``. This small
+entry point owns the candidate-selection policy so it can be changed and
+regression-tested without rewriting the large generator body.
 """
 import ipaddress
 
 import update_cdn_lists_impl as _impl
+
+# Preserve the historical module API used by tests and helper scripts.
+globals().update(
+    {name: value for name, value in vars(_impl).items() if not name.startswith("__")}
+)
 
 
 def select_ripe_candidates(prefixes, limit=128):
