@@ -20,6 +20,7 @@ REQUIRED = {
     "rollback guard": "python scripts/rollback_guard.py",
     "network evidence": "python scripts/network_evidence.py",
     "failure notification": "Autonomous failure notification",
+    "failure summary": "GITHUB_STEP_SUMMARY",
     "conditional publish": 'git commit -m "chore: update provider subscriptions"',
 }
 STATUS_REQUIRED = {
@@ -34,6 +35,7 @@ FORBIDDEN = {
     "force push": "git push --force",
     "hard reset": "git reset --hard",
     "unconditional destructive cleanup": "rm -rf data/",
+    "issues write permission": "issues: write",
 }
 
 missing = [name for name, token in REQUIRED.items() if token not in TEXT]
