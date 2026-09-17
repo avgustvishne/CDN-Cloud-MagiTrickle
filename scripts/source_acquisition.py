@@ -194,24 +194,7 @@ def ipverse_ranges(asn):
 
 
 
-def routeviews_prefixes(asn):
-    """Fallback BGP source using RouteViews current RIB data."""
-    found = set()
-    for af in (4, 6):
-        url = f"https://api.routeviews.org/asn/{asn}?af={af}"
-        try:
-            payload = jsonget(url)
-            if isinstance(payload, list):
-                for item in payload:
-                    if isinstance(item, str) and "/" in item:
-                        found.add(item)
-                    elif isinstance(item, dict) and item.get("prefix"):
-                        found.add(item["prefix"])
-        except Exception:
-            pass
-    return sorted(found)
-
-
+from routeviews_client import routeviews_prefixes
 
 def ripe(asn, min_peers):
     """Fetch independent BGP views separately for exact provenance."""

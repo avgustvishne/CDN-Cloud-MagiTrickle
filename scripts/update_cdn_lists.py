@@ -299,28 +299,7 @@ def ipverse_ranges(asn):
     return sorted(set(parts[0] + parts[1]))
 
 
-def routeviews_prefixes(asn):
-    """Fetch RouteViews IPv4/IPv6 views concurrently; failures are additive only."""
-    def fetch_af(af):
-        found = set()
-        url = f"https://api.routeviews.org/asn/{asn}?af={af}"
-        try:
-            payload = jsonget(url)
-            if isinstance(payload, list):
-                for item in payload:
-                    if isinstance(item, str) and "/" in item:
-                        found.add(item)
-                    elif isinstance(item, dict) and item.get("prefix"):
-                        found.add(item["prefix"])
-        except Exception as exc:
-            print(f"[warn] RouteViews fetch failed for AS{asn} AF{af}: {exc}", file=sys.stderr)
-        return found
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
-        results = list(pool.map(fetch_af, (4, 6)))
-    found = set().union(*results) if results else set()
-    return sorted(found)
-
+from routeviews_client import routeviews_prefixes
 
 def ripe(asn, min_peers):
     """Fetch independent BGP views concurrently while preserving provenance."""

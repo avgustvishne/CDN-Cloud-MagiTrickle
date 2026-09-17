@@ -1,0 +1,97 @@
+name: Publish MagiTrickle status
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "47 */12 * * *"
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: magitrickle-status
+  cancel-in-progress: true
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Inspect latest update run
+        id: context
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          run_json="$(gh run list --workflow update.yml --limit 10 --json databaseId,status,conclusion,htmlUrl,event,headSha,createdAt,updatedAt)"
+          printf '%s\n' "$run_json" > /tmp/update-runs.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          runs = json.loads(Path("/tmp/update-runs.json").read_text(encoding="utf-8"))
+          completed = [r for r in runs if r.get("status") == "completed"]
+          latest = completed[0] if completed else None
+          if latest is None:
+              publication = "validated"
+              failed = ""
+          elif latest.get("conclusion") == "success":
+              publication = "published" if latest.get("event") != "workflow_dispatch" else "validated"
+              failed = ""
+          else:
+              publication = "held"
+              failed = f"{latest.get('htmlUrl', '')} (conclusion: {latest.get('conclusion', 'unknown')}, run: {latest.get('databaseId', 'unknown')})"
+          Path("/tmp/status-context").write_text(
+              f"publication={publication}\nfailed_run={failed}\n", encoding="utf-8"
+          )
+          PY
+          cat /tmp/status-context >> "$GITHUB_OUTPUT"
+
+      - name: Generate status files
+        env:
+          PUBLICATION: ${{ steps.context.outputs.publication }}
+          FAILED_RUN: ${{ steps.context.outputs.failed_run }}
+        run: |
+          set -euo pipefail
+          python scripts/status_report.py \
+            --publication "$PUBLICATION" \
+            --failed-run "$FAILED_RUN"
+
+      - name: Validate status schema
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          status = json.loads(Path("data/status.json").read_text(encoding="utf-8"))
+          assert status["schema_version"] == 1
+          assert status["status"] in {"healthy", "degraded", "hold"}
+          assert status["publication"] in {"published", "validated", "dry-run", "held"}
+          assert isinstance(status["providers"]["items"], list)
+          assert isinstance(status["sources"]["total"], int)
+          assert isinstance(status["network_evidence"]["queried"], int)
+          assert Path("STATUS.md").stat().st_size > 0
+          print("Status schema: PASS")
+          PY
+
+      - name: Commit status
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add STATUS.md data/status.json
+          if git diff --cached --quiet; then
+            echo "Status unchanged."
+            exit 0
+          fi
+          git commit -m "chore: update autonomous status"
+          git push origin HEAD:main
