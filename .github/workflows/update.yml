@@ -48,9 +48,15 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
         shell: bash
         run: |
-          set -e
-          git push origin "HEAD:refs/heads/backup/pre-update"
+          set -euo pipefail
+          backup_ref="refs/heads/backup/pre-update"
+          git fetch origin "$backup_ref" || true
+          if git show-ref --verify --quiet "refs/remotes/origin/backup/pre-update"; then
+            git update-ref refs/heads/backup/pre-update "refs/remotes/origin/backup/pre-update"
+          fi
+          git push origin "HEAD:${backup_ref}" --force-with-lease
           echo "Rollback backup updated to $(git rev-parse HEAD)"
+
       - name: Snapshot current subscriptions
         run: |
           rm -rf /tmp/cdn-old
@@ -231,6 +237,7 @@ jobs:
 
       - name: Autonomous failure notification
         if: ${{ failure() }}
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
