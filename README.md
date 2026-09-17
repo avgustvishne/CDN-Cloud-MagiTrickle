@@ -62,6 +62,22 @@ AWS · Cloudflare · Hetzner · OVH · Akamai · DigitalOcean · Microsoft · Or
 
 Машиночитаемый отчёт: [**service-intelligence.json**](data/service-intelligence.json). Источник истины для списка доменов — официальная документация соответствующего сервиса.
 
+## 🧠 Внешняя разведка источников
+
+Проект дополнительно проверяет внешние списки как **evidence/cross-check**, но не использует их для автоматического изменения опубликованных провайдерских подписок.
+
+Проверяются 8 независимых внешних лент:
+
+- Antifilter IP и Community IP;
+- Antifilter Domain и Community Domain;
+- Re:filter IP и Domain;
+- ItDogInfo GeoBlock domains;
+- независимый агрегат CDN/hosting CIDR.
+
+Каждые 12 часов workflow сохраняет только метаданные: количество записей, SHA-256 источника, точное IPv4/IPv6-покрытие и пересечение с `FULL`/`PERFORMANCE`. Сырые внешние списки в репозиторий не копируются. Ошибка внешнего источника не заменяет и не удаляет рабочие данные проекта.
+
+Машиночитаемый отчёт: [**external-source-intelligence.json**](data/external-source-intelligence.json) · реестр источников: [**source_registry.json**](config/source_registry.json).
+
 ## 🔗 ASN
 
 [**ASN ALL — IPv4**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) · [**ASN ALL — IPv6**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt)
