@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -20,9 +21,9 @@ class ExternalIntelligenceTests(unittest.TestCase):
         cls.engine = load_module()
 
     def test_parse_cidrs_normalizes_and_deduplicates(self):
-        data = b"10.0.0.1/32\n10.0.0.0/24 # comment\nnot-cidr\n2001:db8::1/128\n"
+        data = b"10.0.0.1/32\n10.0.0.0/24 # comment\n10.0.0.0/24\nnot-cidr\n2001:db8::1/128\n"
         values = self.engine.parse_cidrs(data)
-        self.assertEqual(values, ["10.0.0.0/24", "2001:db8::1/128"])
+        self.assertEqual(values, ["10.0.0.0/24", "10.0.0.1/32", "2001:db8::1/128"])
 
     def test_parse_domains_accepts_raw_and_common_rule_forms(self):
         data = b"Example.COM\n*.cdn.example.com\nDOMAIN-SUFFIX,foo.example\n# comment\ninvalid_domain\n"
@@ -54,6 +55,13 @@ class ExternalIntelligenceTests(unittest.TestCase):
         self.assertEqual(metrics["4"]["overlap_performance_ips"], 128)
         self.assertEqual(metrics["6"]["coverage_ips"], 2**80)
         self.assertEqual(metrics["6"]["overlap_full_ips"], 2**80)
+
+    def test_registry_declares_eight_evidence_only_feeds(self):
+        registry = json.loads((ROOT / "config/source_registry.json").read_text(encoding="utf-8"))
+        block = registry["external-intelligence"]
+        self.assertEqual(len(block["feeds"]), 8)
+        self.assertEqual(block["policy"], "evidence-only; never mutates provider subscriptions")
+        self.assertEqual({item["type"] for item in block["feeds"].values()}, {"ip", "domain"})
 
     def test_generated_profile_missing_files_is_safe(self):
         old = self.engine.DATA
