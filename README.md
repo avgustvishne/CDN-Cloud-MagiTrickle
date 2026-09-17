@@ -41,7 +41,7 @@
 ### Специализированные
 
 | Набор | IPv4 | IPv6 |
-|---|---|---|
+|---|---:|---:|
 | **CDN** | **1 861 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) | **712 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v6.txt) |
 | **CLOUD** | **8 981 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | **2 352 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
 | **VIDEO** | **7 344 CIDR** · [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | **2 124 CIDR** · [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
@@ -121,37 +121,3 @@ IP и маршруты могут меняться, поэтому наличи�
 ## ❤️ Поддержка
 
 [Поддержать проект](https://tips.tips/000484125)
-
-## Source intelligence
-
-The update pipeline builds `data/source-intelligence.json` as a read-only observability report. It combines source-registry metadata with the existing source audit and per-prefix consensus evidence. `data/source-intelligence-history.json` keeps the latest 30 snapshots for change tracking.
-
-Safety guarantees:
-
-- source outages and disagreements never replace published CIDR data;
-- RPKI/validation evidence is informational and never deletes a prefix by itself;
-- generated subscriptions keep their existing stable URLs;
-- publication remains behind the existing regression, validation, checksum and link gates;
-- suspicious source changes are observable before they can affect published lists;
-- provider prefix-count changes of 50% or more are flagged as `observe_only` anomalies;
-- source reliability is a transparent 0–100 observability metric, not a provider quality ranking.
-
-### Change confirmation
-
-Large provider changes are cross-checked against independent source types before they are classified as confirmed. A confirmed observation is still **not** allowed to auto-publish a subscription change; existing generation and validation gates remain authoritative. Unconfirmed anomalies remain observation-only.
-
-### Per-prefix evidence
-
-Source intelligence now records evidence for individual prefixes, including normalized CIDR, IP version, contributing source types, and whether at least two independent sources support the prefix. This remains observational and cannot publish or delete subscription entries by itself.
-
-### Network evidence (BGP / IRR / RPKI)
-
-The update pipeline collects bounded observational network evidence through RIPEstat for a representative prefix sample. It records BGP announcement/origin data, IRR presence and RPKI validation state. RIPEstat provides routing-status data from RIS collectors and RPKI validity results from its validator. Evidence is advisory: BGP absence, IRR absence, or RPKI INVALID never deletes or replaces a published prefix.
-
-### Autonomous publication safety
-
-Before generated data is committed, an autonomous rollback guard compares the candidate datasets with the current main revision. A drop greater than 50% in an established dataset is held automatically and the commit is not published. This keeps the last known-good revision intact without requiring manual intervention for normal updates.
-
-### Autonomous operation
-
-The scheduled update workflow includes a static automation audit and automatic failure notification. Normal updates run unattended. When a gate fails, the workflow stops and reports the run in GitHub Issues instead of silently publishing a failed candidate. Open automation failures are consolidated into one issue and subsequent failures are added as comments.
