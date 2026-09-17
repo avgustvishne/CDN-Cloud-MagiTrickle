@@ -33,10 +33,19 @@ jobs:
                   continue
               urls.update(re.findall(r'https?://[^\s<>")\]]+', s))
 
+          def is_unresolved_template(url):
+              """Return true for URLs containing unresolved shell/template placeholders."""
+              return bool(
+                  "{" in url
+                  or "}" in url
+                  or re.search(r'%(?:[a-zA-Z]|\([^)]*\)[a-zA-Z])', url)
+                  or re.search(r'\$[A-Za-z_][A-Za-z0-9_]*', url)
+              )
+
           urls={
               u.rstrip(".,;:\"'")
               for u in urls
-              if "{" not in u and "}" not in u
+              if not is_unresolved_template(u)
               and not u.endswith("?")
               and "stat.ripe.net/data/" not in u
               and "raw.githubusercontent.com" not in u
