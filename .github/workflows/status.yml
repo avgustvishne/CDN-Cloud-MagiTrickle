@@ -31,6 +31,7 @@ jobs:
         shell: bash
         env:
           EVENT_NAME: ${{ github.event_name }}
+          UPDATE_EVENT: ${{ github.event.workflow_run.event }}
           CONCLUSION: ${{ github.event.workflow_run.conclusion }}
           RUN_ID: ${{ github.event.workflow_run.id }}
           RUN_URL: ${{ github.event.workflow_run.html_url }}
@@ -39,11 +40,11 @@ jobs:
           publication="validated"
           failed_run=""
           if [ "$EVENT_NAME" = "workflow_run" ]; then
-            if [ "$CONCLUSION" = "success" ]; then
-              publication="published"
-            else
+            if [ "$CONCLUSION" != "success" ]; then
               publication="held"
               failed_run="$RUN_URL (conclusion: $CONCLUSION, run: $RUN_ID)"
+            elif [ "$UPDATE_EVENT" != "workflow_dispatch" ]; then
+              publication="published"
             fi
           fi
           echo "publication=$publication" >> "$GITHUB_OUTPUT"
