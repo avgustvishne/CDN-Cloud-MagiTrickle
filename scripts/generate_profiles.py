@@ -21,37 +21,14 @@ PROVIDERS = sorted(CFG["providers"])
 PROFILES = {
     "full": PROVIDERS,
     "performance": [
-        "cloudflare",
-        "akamai",
-        "fastly",
-        "cdn77",
-        "gcore",
-        "digitalocean",
-        "hetzner",
-        "ovh",
+        "cloudflare", "akamai", "fastly", "cdn77", "gcore",
+        "digitalocean", "hetzner", "ovh",
     ],
     "balanced": [
-        "cloudflare",
-        "aws",
-        "akamai",
-        "fastly",
-        "cdn77",
-        "gcore",
-        "digitalocean",
-        "microsoft",
-        "hetzner",
-        "ovh",
-        "vultr",
-        "scaleway",
+        "cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore",
+        "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway",
     ],
-    "minimal": [
-        "cloudflare",
-        "akamai",
-        "fastly",
-        "vultr",
-        "hetzner",
-        "ovh",
-    ],
+    "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
 }
 
 SPECIAL = {
@@ -87,7 +64,7 @@ def _valid_networks(values, version):
     minimum_prefix = 8 if version == 4 else 16
     for value in values:
         try:
-            net = ipaddress.ip_network(value.strip(), strict=False)
+            net = value if isinstance(value, (ipaddress.IPv4Network, ipaddress.IPv6Network)) else ipaddress.ip_network(value.strip(), strict=False)
             if net.version == version and net.is_global and net.prefixlen >= minimum_prefix:
                 networks.add(net)
         except (AttributeError, TypeError, ValueError):
@@ -113,8 +90,7 @@ def validate_coverage_preserved(source, result, version):
     output_coverage = address_space_coverage(result, version)
     if input_coverage != output_coverage:
         raise RuntimeError(
-            f"coverage changed for IPv{version}: "
-            f"input={input_coverage}, output={output_coverage}"
+            f"coverage changed for IPv{version}: input={input_coverage}, output={output_coverage}"
         )
     return input_coverage
 
@@ -140,12 +116,7 @@ def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=
     for profile, selected in {**PROFILES, **SPECIAL}.items():
         names = PROVIDERS if profile == "full" else selected
         for version in (4, 6):
-            source = []
-            if profile == "full":
-                source = read("all-cloud", version, data_dir)
-            else:
-                for name in names:
-                    source.extend(read(name, version, data_dir))
+            source = read("all-cloud", version, data_dir) if profile == "full" else [value for name in names for value in read(name, version, data_dir)]
             result = collapse(source, version)
             if not result:
                 raise RuntimeError(f"empty profile: {profile}-v{version}")
