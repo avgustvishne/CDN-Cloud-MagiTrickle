@@ -159,14 +159,46 @@
     "authority": "secondary",
     "policy": "evidence-only; never mutates provider subscriptions",
     "feeds": {
-      "antifilter-ip": {"type": "ip", "url": "https://antifilter.download/list/allyouneed.lst", "description": "Antifilter summarized IP/subnet feed"},
-      "antifilter-community-ip": {"type": "ip", "url": "https://community.antifilter.download/list/community.lst", "description": "Community Antifilter IP/prefix feed"},
-      "antifilter-domain": {"type": "domain", "url": "https://antifilter.download/list/domains.lst", "description": "Antifilter domain feed"},
-      "antifilter-community-domain": {"type": "domain", "url": "https://community.antifilter.download/list/domains.lst", "description": "Community Antifilter domain feed"},
-      "refilter-ip": {"type": "ip", "url": "https://raw.githubusercontent.com/1andrevich/Re-filter-lists/main/ipsum.lst", "description": "Re:filter summarized IP feed"},
-      "refilter-domain": {"type": "domain", "url": "https://raw.githubusercontent.com/1andrevich/Re-filter-lists/main/domains_all.lst", "description": "Re:filter domain feed"},
-      "itdog-geoblock-domain": {"type": "domain", "url": "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Categories/geoblock.lst", "description": "ItDogInfo GeoBlock domain intelligence"},
-      "cdn-ip-ranges-all": {"type": "ip", "url": "https://raw.githubusercontent.com/123jjck/cdn-ip-ranges/main/all/all_plain.txt", "description": "Independent broad CDN/hosting aggregate"},
+      "antifilter-ip": {
+        "type": "ip",
+        "url": "https://antifilter.download/list/allyouneed.lst",
+        "description": "Antifilter summarized IP/subnet feed"
+      },
+      "antifilter-community-ip": {
+        "type": "ip",
+        "url": "https://community.antifilter.download/list/community.lst",
+        "description": "Community Antifilter IP/prefix feed"
+      },
+      "antifilter-domain": {
+        "type": "domain",
+        "url": "https://antifilter.download/list/domains.lst",
+        "description": "Antifilter domain feed"
+      },
+      "antifilter-community-domain": {
+        "type": "domain",
+        "url": "https://community.antifilter.download/list/domains.lst",
+        "description": "Community Antifilter domain feed"
+      },
+      "refilter-ip": {
+        "type": "ip",
+        "url": "https://raw.githubusercontent.com/1andrevich/Re-filter-lists/main/ipsum.lst",
+        "description": "Re:filter summarized IP feed"
+      },
+      "refilter-domain": {
+        "type": "domain",
+        "url": "https://raw.githubusercontent.com/1andrevich/Re-filter-lists/main/domains_all.lst",
+        "description": "Re:filter domain feed"
+      },
+      "itdog-geoblock-domain": {
+        "type": "domain",
+        "url": "https://raw.githubusercontent.com/itdoginfo/allow-domains/refs/heads/main/Categories/geoblock.lst",
+        "description": "ItDogInfo GeoBlock domain intelligence"
+      },
+      "cdn-ip-ranges-all": {
+        "type": "ip",
+        "url": "https://raw.githubusercontent.com/123jjck/cdn-ip-ranges/main/all/all_plain.txt",
+        "description": "Independent broad CDN/hosting aggregate"
+      },
       "russia-whitelist-geoip": {
         "type": "ip",
         "urls": [
@@ -174,7 +206,11 @@
           "https://raw.githubusercontent.com/vahellame/russia-whitelist-geoip/main/data/vk",
           "https://raw.githubusercontent.com/vahellame/russia-whitelist-geoip/main/data/yandex"
         ],
-        "categories": ["other", "vk", "yandex"],
+        "categories": [
+          "other",
+          "vk",
+          "yandex"
+        ],
         "description": "Filtered IPv4 ranges from Russian whitelist routing data; evidence-only and never provider ownership"
       }
     }
