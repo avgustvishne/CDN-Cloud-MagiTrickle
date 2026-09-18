@@ -125,6 +125,24 @@ Russia Whitelist GeoIP учитывается только как внешнее
 
 Если состав профилей меняется намеренно, версия политики профилей увеличивается отдельно — автоматический anomaly-gate не блокирует ожидаемое изменение.
 
+## 🌐 ISP ASN context
+
+The repository can keep a small, optional ISP ASN context for user-network DPI evidence.
+
+Current configured network ASN:
+
+- **AS12389 — Rostelecom (RU)**
+
+This context is stored in `config/isp_profiles.json` and is copied into the sanitized `data/dpi-intelligence.json` as `network_context`. It is **not** treated as a CDN/cloud provider and does not by itself qualify or promote any prefix.
+
+The distinction is:
+
+`ISP ASN → network context`  
+`provider ASN / organization → CDN or cloud provider classification`  
+`dpi-ch checks → qualification evidence`
+
+GitHub Actions does not infer the user's ISP from its own runner network. The configured ASN is explicit context for the local DPI workflow.
+
 ## 🧪 DPI-qualified расширение профилей
 
 Основные профили могут расширяться только после проверки **реального сетевого пути пользователя** через [**hyperion-cs/dpi-checkers**](https://github.com/hyperion-cs/dpi-checkers).
