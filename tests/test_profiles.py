@@ -20,11 +20,25 @@ class ProfileTests(unittest.TestCase):
     def setUpClass(cls):
         cls.engine = load_generator()
 
-    def test_performance_uses_intended_focused_provider_set(self):
-        selected = set(self.engine.PROFILES["performance"])
-        self.assertEqual(
-            selected,
-            {
+    def test_profiles_have_intended_scope(self):
+        expected = {
+            "minimal": {
+                "cloudflare",
+                "akamai",
+                "fastly",
+                "cdn77",
+                "gcore",
+            },
+            "performance": {
+                "cloudflare",
+                "akamai",
+                "fastly",
+                "cdn77",
+                "gcore",
+                "digitalocean",
+                "scaleway",
+            },
+            "balanced": {
                 "cloudflare",
                 "akamai",
                 "fastly",
@@ -33,10 +47,24 @@ class ProfileTests(unittest.TestCase):
                 "digitalocean",
                 "hetzner",
                 "ovh",
+                "vultr",
+                "scaleway",
             },
+        }
+        for profile, providers in expected.items():
+            self.assertEqual(set(self.engine.PROFILES[profile]), providers)
+
+        self.assertTrue(
+            set(self.engine.PROFILES["minimal"])
+            < set(self.engine.PROFILES["performance"])
+            < set(self.engine.PROFILES["balanced"])
         )
-        for excluded in ("aws", "microsoft", "oracle", "alibaba"):
-            self.assertNotIn(excluded, selected)
+        for profile in ("minimal", "performance", "balanced"):
+            selected = set(self.engine.PROFILES[profile])
+            self.assertNotIn("aws", selected)
+            self.assertNotIn("microsoft", selected)
+            self.assertNotIn("oracle", selected)
+            self.assertNotIn("alibaba", selected)
 
     def test_profile_provider_names_are_valid(self):
         known = set(self.engine.PROVIDERS)
