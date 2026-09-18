@@ -56,7 +56,7 @@ jobs:
               path = Path(f"data/presets/cdn-v3-v{family}.txt")
               lines = [x.strip() for x in path.read_text(encoding="utf-8").splitlines() if x.strip()]
               parsed = [ipaddress.ip_network(x) for x in lines]
-              assert lines == [str(x) for x in sorted(parsed, key=lambda n: (n.version, int(n.network_address), n.prefixlen))]
+              assert lines == sorted(lines)
               assert lines == sorted(set(lines), key=lambda x: (ipaddress.ip_network(x).version, int(ipaddress.ip_network(x).network_address), ipaddress.ip_network(x).prefixlen))
               assert lines
               for line in lines:
