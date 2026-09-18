@@ -131,15 +131,15 @@ class ProfileTests(unittest.TestCase):
             # FULL cannot accidentally depend on that aggregate.
             for index, provider in enumerate(self.engine.PROVIDERS, start=1):
                 (data / f"{provider}-v4.txt").write_text(
-                    f"8.8.{index}.0/24\n8.8.{index}.0/24\n", encoding="utf-8"
+                    f"1.1.{index}.0/24\n1.1.{index}.0/24\n", encoding="utf-8"
                 )
                 (data / f"{provider}-v6.txt").write_text(
-                    f"2001:4860:{index:x}::/48\n2001:4860:{index:x}::/48\n",
+                    f"2606:4700:{index:x}::/48\n2606:4700:{index:x}::/48\n",
                     encoding="utf-8",
                 )
             (data / "all-cloud-v4.txt").write_text("9.9.9.0/24\n", encoding="utf-8")
             (data / "all-cloud-v6.txt").write_text(
-                "2001:4860:ffff::/48\n", encoding="utf-8"
+                "2606:4700:ffff::/48\n", encoding="utf-8"
             )
 
             counts = self.engine.generate_profiles(output_dir=out, data_dir=data)
@@ -150,8 +150,8 @@ class ProfileTests(unittest.TestCase):
             self.assertNotIn("9.9.9.0/24", full_v4)
             self.assertNotIn("2001:4860:ffff::/48", full_v6)
             for index in range(1, len(self.engine.PROVIDERS) + 1):
-                self.assertIn(f"8.8.{index}.0/24", full_v4)
-                self.assertIn(f"2001:4860:{index:x}::/48", full_v6)
+                self.assertIn(f"1.1.{index}.0/24", full_v4)
+                self.assertIn(f"2606:4700:{index:x}::/48", full_v6)
 
             report = json.loads((data / "profile-intelligence.json").read_text(encoding="utf-8"))
             self.assertEqual(report["schema_version"], 1)
