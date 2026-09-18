@@ -119,6 +119,13 @@ jobs:
                       assert item["is_superset"] is True
                   previous = item
 
+          stable = report["stability_profile"]["profiles"]
+          for family in (4, 6):
+              item = stable[f"stable-v{family}"]
+              assert item["bootstrap"] in {True, False}
+              assert item["previous_coverage_ips"] >= item["retained_coverage_ips"]
+              if not item["bootstrap"]:
+                  assert item["retention_coverage_ratio"] is not None
           print("Profile intelligence: PASS")
           PY
 
@@ -192,6 +199,7 @@ jobs:
               "performance-v4.txt", "performance-v6.txt",
               "balanced-v4.txt", "balanced-v6.txt",
               "minimal-v4.txt", "minimal-v6.txt",
+              "stable-v4.txt", "stable-v6.txt",
               "cdn-v4.txt", "cdn-v6.txt",
               "cloud-v4.txt", "cloud-v6.txt",
               "video-v4.txt", "video-v6.txt",

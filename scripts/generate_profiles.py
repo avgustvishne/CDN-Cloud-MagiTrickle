@@ -19,6 +19,7 @@ PROVIDERS = sorted(CFG["providers"])
 # expected and establishes a fresh baseline for subsequent updates.
 PROFILE_POLICY_VERSION = 3
 PROFILE_ORDER = ("minimal", "performance", "balanced", "full")
+STABILITY_PROFILE = "stable"
 ANOMALY_LIMITS = {
     "count_min_ratio": 0.25,
     "count_max_ratio": 4.0,
@@ -147,6 +148,39 @@ def is_coverage_subset(subset, superset, version):
     """Return True when every address in subset is also in superset."""
     subset_coverage = address_space_coverage(subset, version)
     return subset_coverage == intersection_coverage(subset, superset, version)
+
+
+def profile_stability_metrics(current, previous, version=4):
+    """Measure how much of the previous published profile remains present."""
+    current_coverage = address_space_coverage(current, version)
+    if not previous:
+        return {
+            "previous_prefixes": 0,
+            "retained_prefixes": 0,
+            "retention_ratio": None,
+            "previous_coverage_ips": 0,
+            "retained_coverage_ips": 0,
+            "retention_coverage_ratio": None,
+            "bootstrap": True,
+        }
+    previous_coverage = address_space_coverage(previous, version)
+    retained_coverage = intersection_coverage(current, previous, version)
+    retained_prefixes = len(collapse(
+        _intersect_networks(current, previous, version), version
+    ))
+    return {
+        "previous_prefixes": len(collapse(previous, version)),
+        "retained_prefixes": retained_prefixes,
+        "retention_ratio": (
+            retained_coverage / current_coverage if current_coverage else 0
+        ),
+        "previous_coverage_ips": previous_coverage,
+        "retained_coverage_ips": retained_coverage,
+        "retention_coverage_ratio": (
+            retained_coverage / previous_coverage if previous_coverage else 0
+        ),
+        "bootstrap": False,
+    }
 
 
 def profile_metrics(current, previous=None, version=4):
@@ -344,6 +378,9 @@ def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=
     counts = {}
     profile_data = {name: {} for name in PROFILE_ORDER}
     provider_map = {}
+    previous_full = {
+        version: read("full", version, data_dir) for version in (4, 6)
+    }
 
     for profile, selected in {**PROFILES, **SPECIAL}.items():
         names = PROVIDERS if profile == "full" else list(selected)
@@ -370,7 +407,33 @@ def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=
             if profile in PROFILE_ORDER:
                 profile_data[profile][version] = result
 
+    # STABLE is deliberately derived from two consecutive FULL snapshots.
+    # It never contains an address that is absent from the current FULL set.
+    # On the first generation there is no baseline, so it bootstraps to FULL.
+    stable_metrics = {}
+    for version in (4, 6):
+        current_full = profile_data["full"][version]
+        baseline = previous_full[version]
+        stable = collapse(
+            current_full if not baseline else _intersect_networks(
+                current_full, baseline, version
+            ),
+            version,
+        )
+        if not stable:
+            raise RuntimeError(f"empty profile: {STABILITY_PROFILE}-v{version}")
+        atomic(output_dir / f"{STABILITY_PROFILE}-v{version}.txt", stable)
+        counts[f"{STABILITY_PROFILE}-v{version}"] = len(stable)
+        stable_metrics[f"{STABILITY_PROFILE}-v{version}"] = profile_stability_metrics(
+            current_full, baseline, version
+        )
+
     report = build_profile_intelligence(profile_data, provider_map, data_dir)
+    report["stability_profile"] = {
+        "name": STABILITY_PROFILE,
+        "definition": "current FULL intersected with previous FULL; bootstrap uses current FULL",
+        "profiles": stable_metrics,
+    }
     atomic(
         data_dir / "profile-intelligence.json",
         [json.dumps(report, ensure_ascii=False, indent=2) + "\n"],
