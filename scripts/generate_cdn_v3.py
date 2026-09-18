@@ -85,7 +85,7 @@ def normalize(values):
         except ValueError:
             continue
     return sorted(
-        ipaddress.collapse_addresses(parsed),
+        sorted(set(parsed),
         key=lambda n: (n.version, int(n.network_address), n.prefixlen),
     )
 
@@ -120,7 +120,7 @@ def main():
         if not values:
             raise RuntimeError(f"empty CDN v3 source: {item['id']}")
         all_values.update(values)
-        source_report.append({"id": item["id"], "mode": item["mode"], "raw_prefixes": len(values)})
+        source_report.append({"id": item["id"], "mode": item["mode"], "raw_prefixes": len(values), "_values": values})
 
     normalized = normalize(all_values)
     if not normalized:
@@ -136,11 +136,7 @@ def main():
         atomic(OUTPUT / f"cdn-v3-v{version}.txt", "\n".join(map(str, result)) + "\n")
 
     for row in source_report:
-        provider_values = load_provider(
-            row["id"],
-            next(item["mode"] for item in providers if item["id"] == row["id"]),
-            next((item.get("asn") for item in providers if item["id"] == row["id"]), None),
-        )
+        provider_values = row.pop("_values")
         row["ipv4_prefixes"] = sum(ipaddress.ip_network(v).version == 4 for v in provider_values)
         row["ipv6_prefixes"] = sum(ipaddress.ip_network(v).version == 6 for v in provider_values)
 
