@@ -104,7 +104,7 @@ jobs:
 
           report = json.loads(pathlib.Path("data/profile-intelligence.json").read_text(encoding="utf-8"))
           assert report["schema_version"] == 1
-          assert report["policy_version"] == 2
+          assert report["policy_version"] == 3
           assert report["anomalies"] == []
 
           order = ("minimal", "performance", "balanced", "full")
