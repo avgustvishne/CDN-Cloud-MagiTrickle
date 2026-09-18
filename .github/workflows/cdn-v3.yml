@@ -1,0 +1,93 @@
+name: CDN v3 subscriptions
+
+on:
+  schedule:
+    - cron: "31 */12 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "config/cdn_v3.json"
+      - "scripts/generate_cdn_v3.py"
+      - "tests/test_cdn_v3.py"
+      - ".github/workflows/cdn-v3.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: magitrickle-cdn-v3
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+      - name: Compile and test
+        run: |
+          python -m compileall -q scripts tests
+          python -m unittest discover -s tests -p "test_cdn_v3.py" -v
+      - name: Generate CDN v3
+        run: python scripts/generate_cdn_v3.py
+      - name: Validate CDN v3
+        run: |
+          python - <<'PY'
+          import ipaddress
+          import json
+          from pathlib import Path
+          config = json.loads(Path("config/cdn_v3.json").read_text(encoding="utf-8"))
+          report = json.loads(Path("data/cdn-v3-sources.json").read_text(encoding="utf-8"))
+          assert report["schema_version"] == 1
+          assert report["policy"]["include_general_cloud"] is False
+          assert report["policy"]["include_vps_only"] is False
+          names = {item["id"] for item in config["providers"]}
+          assert {"cloudflare", "akamai", "fastly", "cdn77", "gcore", "bunny", "cachefly"} <= names
+          for family in (4, 6):
+              path = Path(f"data/presets/cdn-v3-v{family}.txt")
+              lines = [x.strip() for x in path.read_text(encoding="utf-8").splitlines() if x.strip()]
+              parsed = [ipaddress.ip_network(x) for x in lines]
+              assert lines == [str(x) for x in sorted(parsed, key=lambda n: (n.version, int(n.network_address), n.prefixlen))]
+              assert lines == sorted(set(lines), key=lambda x: (ipaddress.ip_network(x).version, int(ipaddress.ip_network(x).network_address), ipaddress.ip_network(x).prefixlen))
+              assert lines
+              for line in lines:
+                  net = ipaddress.ip_network(line)
+                  assert net.version == family
+                  assert net.is_global
+                  assert net.prefixlen >= (8 if family == 4 else 16)
+          print("CDN v3 validation: PASS")
+          PY
+      - name: Commit CDN v3
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/presets/cdn-v3-v4.txt data/presets/cdn-v3-v6.txt data/cdn-v3-sources.json
+          if git diff --cached --quiet; then
+            echo "No CDN v3 changes."
+            exit 0
+          fi
+          git commit -m "chore: refresh CDN v3 subscription"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Push succeeded on attempt ${attempt}."
+              exit 0
+            fi
+            git fetch origin "${GITHUB_REF_NAME}"
+            git rebase "origin/${GITHUB_REF_NAME}" || {
+              git rebase --abort || true
+              sleep $((attempt * 2))
+              continue
+            }
+          done
+          echo "Unable to publish CDN v3 after 5 attempts."
+          exit 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
