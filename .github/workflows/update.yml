@@ -65,6 +65,32 @@ jobs:
       - name: Generate subscriptions
         run: python scripts/update_cdn_lists.py
 
+      - name: Validate profile intelligence
+        run: |
+          python - <<'PY'
+          import json
+          import pathlib
+
+          report = json.loads(pathlib.Path("data/profile-intelligence.json").read_text(encoding="utf-8"))
+          assert report["schema_version"] == 1
+          assert report["policy_version"] == 2
+          assert report["anomalies"] == []
+
+          order = ("minimal", "performance", "balanced", "full")
+          for family in (4, 6):
+              previous = None
+              for name in order:
+                  item = report["profiles"][f"{name}-v{family}"]
+                  assert item["prefixes"] > 0
+                  assert item["coverage_ips"] > 0
+                  assert item["coverage_per_prefix"] > 0
+                  if previous is not None:
+                      assert item["is_superset"] is True
+                  previous = item
+
+          print("Profile intelligence: PASS")
+          PY
+
       - name: Collect source manifest
         run: python scripts/fetch_sources.py
 
