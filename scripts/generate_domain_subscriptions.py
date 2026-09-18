@@ -5,7 +5,6 @@ Only domains present in at least two successful external domain feeds are
 published. This is a derived routing list, not provider-ownership evidence.
 """
 import concurrent.futures
-import ipaddress
 import json
 import pathlib
 import re
