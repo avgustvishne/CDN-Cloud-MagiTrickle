@@ -22,9 +22,9 @@
 | Нужно | Профиль |
 |---|---|
 | Максимальное покрытие | **FULL** |
-| Хороший баланс покрытия и размера | **BALANCED** |
-| Минимальный объём правил | **MINIMAL** |
-| CDN с упором на скорость | **PERFORMANCE** |
+| Широкое покрытие без hyperscale-пулов | **BALANCED** |
+| Только базовый набор CDN | **MINIMAL** |
+| CDN + компактный edge/cloud набор | **PERFORMANCE** |
 | Только CDN | [**CDN**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) |
 | Cloud/VPS | [**CLOUD**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) |
 | Video/CDN | [**VIDEO**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) |
