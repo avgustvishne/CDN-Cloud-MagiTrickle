@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "include_general_cloud": false,
+    "include_vps_only": false,
+    "include_dns_resolved_ips": false,
+    "provider_ownership_inference": false,
+    "minimum_prefixlen": {
+      "ipv4": 8,
+      "ipv6": 16
+    }
+  },
+  "providers": [
+    {
+      "id": "cloudflare",
+      "mode": "existing-provider"
+    },
+    {
+      "id": "akamai",
+      "mode": "existing-provider"
+    },
+    {
+      "id": "fastly",
+      "mode": "existing-provider"
+    },
+    {
+      "id": "cdn77",
+      "mode": "existing-provider"
+    },
+    {
+      "id": "gcore",
+      "mode": "existing-provider"
+    },
+    {
+      "id": "bunny",
+      "mode": "ipverse-asn",
+      "asn": "200325"
+    },
+    {
+      "id": "cachefly",
+      "mode": "official"
+    }
+  ]
+}
