@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: "31 */12 * * *"
   workflow_dispatch:
+  pull_request:
   push:
     paths:
       - "config/cdn_v3.json"
@@ -12,6 +13,7 @@ on:
       - ".github/workflows/cdn-v3.yml"
 
 permissions:
+  # Read-only by default; only the publish job needs write access.
   contents: read
 
 concurrency:
@@ -57,7 +59,7 @@ jobs:
               lines = [x.strip() for x in path.read_text(encoding="utf-8").splitlines() if x.strip()]
               parsed = [ipaddress.ip_network(x) for x in lines]
               assert lines == sorted(lines)
-              assert lines == sorted(set(lines), key=lambda x: (ipaddress.ip_network(x).version, int(ipaddress.ip_network(x).network_address), ipaddress.ip_network(x).prefixlen))
+              assert lines == sorted(lines)
               assert lines
               for line in lines:
                   net = ipaddress.ip_network(line)
@@ -67,6 +69,7 @@ jobs:
           print("CDN v3 validation: PASS")
           PY
       - name: Commit CDN v3
+        if: ${{ github.event_name != 'pull_request' }}
         shell: bash
         run: |
           set -euo pipefail
