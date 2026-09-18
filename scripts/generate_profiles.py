@@ -379,7 +379,7 @@ def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=
     profile_data = {name: {} for name in PROFILE_ORDER}
     provider_map = {}
     previous_full = {
-        version: read("full", version, data_dir) for version in (4, 6)
+        version: read("full", version, output_dir) for version in (4, 6)
     }
 
     for profile, selected in {**PROFILES, **SPECIAL}.items():
