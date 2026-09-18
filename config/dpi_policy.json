@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "source": "hyperion-cs/dpi-checkers",
+  "checker": "dpi-ch",
+  "max_age_hours": 72,
+  "qualification": {
+    "alive": ["OK", "OK_CUSTOM_HTTP"],
+    "tcp1620": ["OK"],
+    "siberian": ["OK"],
+    "require_all_samples_in_prefix_to_pass": true
+  },
+  "candidates": {
+    "performance": ["hetzner", "ovh"],
+    "balanced": ["melbicom", "buyvm", "contabo"]
+  }
+}
