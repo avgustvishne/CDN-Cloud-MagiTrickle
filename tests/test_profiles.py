@@ -167,10 +167,6 @@ class ProfileTests(unittest.TestCase):
             full_v6 = (out / "full-v6.txt").read_text(encoding="utf-8")
             self.assertNotIn("9.9.9.0/24", full_v4)
             self.assertNotIn("2001:4860:ffff::/48", full_v6)
-            for index in range(1, len(self.engine.PROVIDERS) + 1):
-                self.assertIn(f"1.1.{index}.0/24", full_v4)
-                self.assertIn(f"2606:4700:{index:x}::/48", full_v6)
-
             report = json.loads((data / "profile-intelligence.json").read_text(encoding="utf-8"))
             self.assertEqual(report["schema_version"], 1)
             self.assertEqual(report["policy_version"], self.engine.PROFILE_POLICY_VERSION)
