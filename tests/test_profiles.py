@@ -143,8 +143,26 @@ class ProfileTests(unittest.TestCase):
             )
 
             counts = self.engine.generate_profiles(output_dir=out, data_dir=data)
-            self.assertEqual(counts["full-v4"], len(self.engine.PROVIDERS))
-            self.assertEqual(counts["full-v6"], len(self.engine.PROVIDERS))
+            # Adjacent prefixes may be legitimately re-aggregated, so assert
+            # exact address-space coverage rather than raw prefix count.
+            self.assertEqual(counts["full-v4"], len(self.engine.collapse(
+                [f"1.1.{index}.0/24" for index in range(1, len(self.engine.PROVIDERS) + 1)], 4
+            )))
+            self.assertEqual(counts["full-v6"], len(self.engine.collapse(
+                [f"2606:4700:{index:x}::/48" for index in range(1, len(self.engine.PROVIDERS) + 1)], 6
+            )))
+            self.assertEqual(
+                self.engine.address_space_coverage(
+                    (out / "full-v4.txt").read_text(encoding="utf-8").splitlines(), 4
+                ),
+                len(self.engine.PROVIDERS) * 256,
+            )
+            self.assertEqual(
+                self.engine.address_space_coverage(
+                    (out / "full-v6.txt").read_text(encoding="utf-8").splitlines(), 6
+                ),
+                len(self.engine.PROVIDERS) * 2**80,
+            )
             full_v4 = (out / "full-v4.txt").read_text(encoding="utf-8")
             full_v6 = (out / "full-v6.txt").read_text(encoding="utf-8")
             self.assertNotIn("9.9.9.0/24", full_v4)
