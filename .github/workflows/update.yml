@@ -56,6 +56,37 @@ jobs:
           git push origin "HEAD:${backup_ref}" --force-with-lease
           echo "Rollback backup updated to $(git rev-parse HEAD)"
 
+      - name: Validate DPI evidence
+        run: |
+          python - <<'PY'
+          import ipaddress
+          import json
+          import pathlib
+          from datetime import datetime, timezone
+
+          path = pathlib.Path("data/dpi-intelligence.json")
+          if not path.exists():
+              print("DPI evidence: not configured; no candidate promotion.")
+              raise SystemExit(0)
+
+          report = json.loads(path.read_text(encoding="utf-8"))
+          assert report["schema_version"] == 1
+          assert report["status"] == "ready"
+          checked = datetime.fromisoformat(report["checked_at"].replace("Z", "+00:00"))
+          age = datetime.now(timezone.utc) - checked.astimezone(timezone.utc)
+          assert 0 <= age.total_seconds() <= 72 * 3600, "DPI evidence is stale"
+          cfg = json.loads(pathlib.Path("config/dpi_policy.json").read_text(encoding="utf-8"))
+          candidates = {name for values in cfg["candidates"].values() for name in values}
+          for provider, item in report.get("qualified_prefixes", {}).items():
+              assert provider in candidates, f"unexpected DPI candidate: {provider}"
+              prefixes = item.get("ipv4", [])
+              assert len(prefixes) == len(set(prefixes))
+              for prefix in prefixes:
+                  network = ipaddress.ip_network(prefix, strict=False)
+                  assert network.version == 4 and network.is_global
+          print("DPI evidence: PASS")
+          PY
+
       - name: Snapshot current subscriptions
         run: |
           rm -rf /tmp/cdn-old

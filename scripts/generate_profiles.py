@@ -5,6 +5,7 @@ import json
 import os
 import pathlib
 import tempfile
+from datetime import datetime, timezone
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -16,7 +17,7 @@ PROVIDERS = sorted(CFG["providers"])
 # Increment this when the intentional profile composition changes. A policy
 # version change tells the anomaly gate that the resulting size change is
 # expected and establishes a fresh baseline for subsequent updates.
-PROFILE_POLICY_VERSION = 2
+PROFILE_POLICY_VERSION = 3
 PROFILE_ORDER = ("minimal", "performance", "balanced", "full")
 ANOMALY_LIMITS = {
     "count_min_ratio": 0.25,
@@ -30,6 +31,10 @@ ANOMALY_LIMITS = {
 # BALANCED   = core CDN + major hosting providers, without hyperscale catch-all pools.
 # PERFORMANCE= core CDN + a small edge/cloud set for a compact routing list.
 # MINIMAL    = core CDN only; no general cloud or VPS-only providers.
+DPI_POLICY = json.loads((ROOT / "config" / "dpi_policy.json").read_text(encoding="utf-8"))
+DPI_CANDIDATES = DPI_POLICY["candidates"]
+DPI_MAX_AGE_HOURS = int(DPI_POLICY.get("max_age_hours", 72))
+
 PROFILES = {
     "full": PROVIDERS,
     "balanced": [
@@ -259,6 +264,61 @@ def build_profile_intelligence(profile_data, provider_map, data_dir=DATA):
     return report
 
 
+
+def _load_dpi_report(data_dir):
+    """Load fresh user-network dpi-ch evidence, if available."""
+    path = pathlib.Path(data_dir) / "dpi-intelligence.json"
+    if not path.exists():
+        return None
+    try:
+        report = json.loads(path.read_text(encoding="utf-8"))
+        if report.get("schema_version") != 1 or report.get("status") != "ready":
+            return None
+        checked_at = report.get("checked_at")
+        if not checked_at:
+            return None
+        checked = datetime.fromisoformat(str(checked_at).replace("Z", "+00:00"))
+        age = datetime.now(timezone.utc) - checked.astimezone(timezone.utc)
+        if age.total_seconds() < 0 or age.total_seconds() > DPI_MAX_AGE_HOURS * 3600:
+            return None
+        return report
+    except (OSError, ValueError, TypeError):
+        return None
+
+
+def _intersect_networks(values, allowed, version):
+    """Return only the exact address-space intersection with qualified CIDRs."""
+    sources = _valid_networks(values, version)
+    gates = _valid_networks(allowed, version)
+    result = set()
+    for source in sources:
+        for gate in gates:
+            if not source.overlaps(gate):
+                continue
+            start = max(int(source.network_address), int(gate.network_address))
+            end = min(int(source.broadcast_address), int(gate.broadcast_address))
+            if start <= end:
+                first = ipaddress.ip_address(start)
+                last = ipaddress.ip_address(end)
+                result.update(ipaddress.summarize_address_range(first, last))
+    return sorted(result, key=lambda n: (int(n.network_address), n.prefixlen))
+
+
+def _qualified_candidates(profile, version, data_dir):
+    """Return DPI-qualified prefixes for profile-specific expansion."""
+    if version != 4:
+        return {}
+    report = _load_dpi_report(data_dir)
+    if not report:
+        return {}
+    qualified = report.get("qualified_prefixes", {})
+    selected = {}
+    for provider in DPI_CANDIDATES.get(profile, []):
+        values = qualified.get(provider, {}).get("ipv4", [])
+        if values:
+            selected[provider] = values
+    return selected
+
 def atomic(path, values):
     path = pathlib.Path(path)
     text = "\n".join(map(str, values)) + ("\n" if values else "")
@@ -282,15 +342,21 @@ def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=
     provider_map = {}
 
     for profile, selected in {**PROFILES, **SPECIAL}.items():
-        names = PROVIDERS if profile == "full" else selected
+        names = PROVIDERS if profile == "full" else list(selected)
+        qualified_candidates = _qualified_candidates(profile, 4, data_dir) if profile in PROFILE_ORDER else {}
         if profile in PROFILE_ORDER:
+            names.extend(provider for provider in qualified_candidates if provider not in names)
             provider_map[profile] = list(names)
         for version in (4, 6):
-            source = (
-                read("all-cloud", version, data_dir)
-                if profile == "full"
-                else [value for name in names for value in read(name, version, data_dir)]
-            )
+            if profile == "full":
+                source = read("all-cloud", version, data_dir)
+            else:
+                source = []
+                for name in names:
+                    values = read(name, version, data_dir)
+                    if name in qualified_candidates and version == 4:
+                        values = _intersect_networks(values, qualified_candidates[name], version)
+                    source.extend(values)
             result = collapse(source, version)
             if not result:
                 raise RuntimeError(f"empty profile: {profile}-v{version}")

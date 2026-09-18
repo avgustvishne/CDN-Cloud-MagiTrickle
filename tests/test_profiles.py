@@ -153,6 +153,70 @@ class ProfileTests(unittest.TestCase):
                 for name in self.engine.PROFILE_ORDER:
                     self.assertTrue(report["profiles"][f"{name}-v{family}"]["is_superset"] if name != "minimal" else True)
 
+    def test_dpi_qualified_candidates_are_promoted_only_with_fresh_evidence(self):
+        from datetime import datetime, timezone
+
+        with tempfile.TemporaryDirectory() as td:
+            data = Path(td) / "data"
+            out = data / "presets"
+            data.mkdir()
+
+            base = {
+                "cloudflare": "1.1.1.0/24",
+                "akamai": "1.1.2.0/24",
+                "fastly": "1.1.3.0/24",
+                "cdn77": "1.1.4.0/24",
+                "gcore": "1.1.5.0/24",
+                "digitalocean": "1.1.6.0/24",
+                "scaleway": "1.1.7.0/24",
+                "hetzner": "2.2.2.0/24",
+                "ovh": "3.3.3.0/24",
+                "melbicom": "4.4.4.0/24",
+                "buyvm": "5.5.5.0/24",
+                "contabo": "6.6.6.0/24",
+                "vultr": "7.7.7.0/24",
+            }
+            for provider in self.engine.PROVIDERS:
+                value = base.get(provider, "9.9.9.0/24")
+                (data / f"{provider}-v4.txt").write_text(value + "\n", encoding="utf-8")
+                (data / f"{provider}-v6.txt").write_text(
+                    "2001:4860:4801::/48\n", encoding="utf-8"
+                )
+
+            all_v4 = "\n".join(sorted(set(base.values()) | {"9.9.9.0/24"})) + "\n"
+            (data / "all-cloud-v4.txt").write_text(all_v4, encoding="utf-8")
+            (data / "all-cloud-v6.txt").write_text("2001:4860:4801::/48\n", encoding="utf-8")
+
+            now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+            report = {
+                "schema_version": 1,
+                "status": "ready",
+                "checked_at": now,
+                "qualified_prefixes": {
+                    "hetzner": {"ipv4": ["2.2.2.0/24"]},
+                    "ovh": {"ipv4": ["3.3.3.0/24"]},
+                    "melbicom": {"ipv4": ["4.4.4.0/24"]},
+                    "buyvm": {"ipv4": ["5.5.5.0/24"]},
+                    "contabo": {"ipv4": ["6.6.6.0/24"]},
+                },
+            }
+            (data / "dpi-intelligence.json").write_text(
+                json.dumps(report), encoding="utf-8"
+            )
+
+            self.engine.generate_profiles(output_dir=out, data_dir=data)
+
+            performance = (out / "performance-v4.txt").read_text(encoding="utf-8")
+            balanced = (out / "balanced-v4.txt").read_text(encoding="utf-8")
+            minimal = (out / "minimal-v4.txt").read_text(encoding="utf-8")
+            self.assertIn("2.2.2.0/24", performance)
+            self.assertIn("3.3.3.0/24", performance)
+            self.assertIn("4.4.4.0/24", balanced)
+            self.assertIn("5.5.5.0/24", balanced)
+            self.assertIn("6.6.6.0/24", balanced)
+            self.assertNotIn("2.2.2.0/24", minimal)
+            self.assertNotIn("4.4.4.0/24", minimal)
+
     def test_anomaly_gate_detects_large_unexpected_change(self):
         with tempfile.TemporaryDirectory() as td:
             data = Path(td)
