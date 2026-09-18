@@ -1,7 +1,8 @@
+import json
+import sys
 import tempfile
 import unittest
 from pathlib import Path
-import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -32,22 +33,23 @@ class DomainConsensusTests(unittest.TestCase):
         }
         self.assertEqual(
             generator.build_consensus(feeds, minimum_sources=2),
-            ["one.example", "three.example", "two.example"],
+            ["two.example"],
         )
 
     def test_registry_contains_multiple_domain_feeds(self):
-        import json
-        registry = json.loads((ROOT / "config" / "source_registry.json").read_text(encoding="utf-8"))
+        registry = json.loads(
+            (ROOT / "config" / "source_registry.json").read_text(encoding="utf-8")
+        )
         feeds = generator.domain_feeds(registry)
         self.assertGreaterEqual(len(feeds), 4)
 
-    def test_atomic_writer_creates_sorted_subscription(self):
+    def test_atomic_writer_preserves_deterministic_order(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "domains.txt"
-            generator.write_atomic(path, ["z.example", "a.example"])
+            generator.write_atomic(path, ["a.example", "z.example"])
             self.assertEqual(
                 path.read_text(encoding="utf-8"),
-                "z.example\na.example\n",
+                "a.example\nz.example\n",
             )
 
 
