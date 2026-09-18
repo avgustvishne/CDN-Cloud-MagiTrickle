@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -99,6 +100,26 @@ class ProfileTests(unittest.TestCase):
                 self.engine.validate_coverage_preserved(values, result, version),
             )
 
+    def test_intersection_and_subset_are_exact(self):
+        left = ["8.8.8.0/24"]
+        right = ["8.8.8.0/25", "1.1.1.0/24"]
+        self.assertEqual(
+            self.engine.intersection_coverage(left, right, 4),
+            128,
+        )
+        self.assertTrue(self.engine.is_coverage_subset(right[:1], left, 4))
+        self.assertFalse(self.engine.is_coverage_subset(right, left, 4))
+
+    def test_profile_metrics_report_incremental_coverage(self):
+        previous = ["8.8.8.0/24"]
+        current = ["8.8.8.0/23"]
+        metrics = self.engine.profile_metrics(current, previous, 4)
+        self.assertEqual(metrics["prefixes"], 1)
+        self.assertEqual(metrics["coverage_ips"], 512)
+        self.assertEqual(metrics["overlap_ips"], 256)
+        self.assertEqual(metrics["new_coverage_ips"], 256)
+        self.assertTrue(metrics["is_superset"])
+
     def test_profile_generation_keeps_ipv4_ipv6_separate_and_deduplicated(self):
         with tempfile.TemporaryDirectory() as td:
             data = Path(td) / "data"
@@ -124,6 +145,42 @@ class ProfileTests(unittest.TestCase):
                 (out / "performance-v6.txt").read_text(encoding="utf-8"),
                 "2001:4860:4801::/48\n",
             )
+            report = json.loads((data / "profile-intelligence.json").read_text(encoding="utf-8"))
+            self.assertEqual(report["schema_version"], 1)
+            self.assertEqual(report["policy_version"], self.engine.PROFILE_POLICY_VERSION)
+            self.assertEqual(report["anomalies"], [])
+            for family in (4, 6):
+                for name in self.engine.PROFILE_ORDER:
+                    self.assertTrue(report["profiles"][f"{name}-v{family}"]["is_superset"] if name != "minimal" else True)
+
+    def test_anomaly_gate_detects_large_unexpected_change(self):
+        with tempfile.TemporaryDirectory() as td:
+            data = Path(td)
+            previous = {
+                "schema_version": 1,
+                "policy_version": self.engine.PROFILE_POLICY_VERSION,
+                "profiles": {
+                    f"{name}-v4": {"prefixes": 100, "coverage_ips": 1000}
+                    for name in self.engine.PROFILE_ORDER
+                },
+            }
+            (data / "profile-intelligence.json").write_text(
+                json.dumps(previous),
+                encoding="utf-8",
+            )
+            profile_data = {
+                name: {
+                    4: [f"8.8.{index}.0/24" for index in range(10)],
+                    6: ["2001:4860:4801::/48"],
+                }
+                for name in self.engine.PROFILE_ORDER
+            }
+            with self.assertRaises(RuntimeError):
+                self.engine.build_profile_intelligence(
+                    profile_data,
+                    {name: list(self.engine.PROFILES[name]) for name in self.engine.PROFILE_ORDER},
+                    data,
+                )
 
 
 if __name__ == "__main__":
