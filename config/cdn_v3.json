@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "name": "CDN v3",
+  "description": "Conservative CDN-only routing set for Mihomo; no general cloud/VPS pools.",
+  "providers": [
+    {
+      "id": "cloudflare",
+      "mode": "existing-provider",
+      "source": "config/providers.json + generated cloudflare-v4/v6"
+    },
+    {
+      "id": "akamai",
+      "mode": "existing-provider",
+      "source": "config/providers.json + generated akamai-v4/v6"
+    },
+    {
+      "id": "fastly",
+      "mode": "existing-provider",
+      "source": "config/providers.json + generated fastly-v4/v6"
+    },
+    {
+      "id": "cdn77",
+      "mode": "existing-provider",
+      "source": "config/providers.json + generated cdn77-v4/v6"
+    },
+    {
+      "id": "gcore",
+      "mode": "existing-provider",
+      "source": "config/providers.json + generated gcore-v4/v6"
+    },
+    {
+      "id": "bunny",
+      "mode": "ipverse-asn",
+      "asn": "200325",
+      "source": "https://raw.githubusercontent.com/ipverse/as-ip-blocks/master/as/200325/ipv4-aggregated.txt + ipv6-aggregated.txt"
+    },
+    {
+      "id": "cachefly",
+      "mode": "official",
+      "source": "https://cachefly.cachefly.net/ips/cdn.txt"
+    }
+  ],
+  "policy": {
+    "include_general_cloud": false,
+    "include_vps_only": false,
+    "include_dns_resolved_ips": false,
+    "provider_ownership_inference": false,
+    "minimum_prefixlen": {
+      "ipv4": 8,
+      "ipv6": 16
+    }
+  }
+}
