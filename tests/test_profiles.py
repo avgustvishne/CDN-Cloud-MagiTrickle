@@ -125,33 +125,59 @@ class ProfileTests(unittest.TestCase):
             data = Path(td) / "data"
             out = data / "presets"
             data.mkdir()
-            for provider in self.engine.PROVIDERS:
+
+            # Give every configured provider a distinct prefix. The stale
+            # ALL-CLOUD fixture deliberately contains a different prefix so
+            # FULL cannot accidentally depend on that aggregate.
+            for index, provider in enumerate(self.engine.PROVIDERS, start=1):
                 (data / f"{provider}-v4.txt").write_text(
-                    "1.1.1.0/24\n1.1.1.0/24\n", encoding="utf-8"
+                    f"1.1.{index}.0/24\n1.1.{index}.0/24\n", encoding="utf-8"
                 )
                 (data / f"{provider}-v6.txt").write_text(
-                    "2001:4860:4801::/48\n2001:4860:4801::/48\n", encoding="utf-8"
+                    f"2606:4700:{index:x}::/48\n2606:4700:{index:x}::/48\n",
+                    encoding="utf-8",
                 )
-            (data / "all-cloud-v4.txt").write_text("1.1.1.0/24\n", encoding="utf-8")
-            (data / "all-cloud-v6.txt").write_text("2001:4860:4801::/48\n", encoding="utf-8")
+            (data / "all-cloud-v4.txt").write_text("9.9.9.0/24\n", encoding="utf-8")
+            (data / "all-cloud-v6.txt").write_text(
+                "2606:4700:ffff::/48\n", encoding="utf-8"
+            )
+
             counts = self.engine.generate_profiles(output_dir=out, data_dir=data)
-            self.assertEqual(counts["full-v4"], 1)
-            self.assertEqual(counts["full-v6"], 1)
+            # Adjacent prefixes may be legitimately re-aggregated, so assert
+            # exact address-space coverage rather than raw prefix count.
+            self.assertEqual(counts["full-v4"], len(self.engine.collapse(
+                [f"1.1.{index}.0/24" for index in range(1, len(self.engine.PROVIDERS) + 1)], 4
+            )))
+            self.assertEqual(counts["full-v6"], len(self.engine.collapse(
+                [f"2606:4700:{index:x}::/48" for index in range(1, len(self.engine.PROVIDERS) + 1)], 6
+            )))
             self.assertEqual(
-                (out / "performance-v4.txt").read_text(encoding="utf-8"),
-                "1.1.1.0/24\n",
+                self.engine.address_space_coverage(
+                    (out / "full-v4.txt").read_text(encoding="utf-8").splitlines(), 4
+                ),
+                len(self.engine.PROVIDERS) * 256,
             )
             self.assertEqual(
-                (out / "performance-v6.txt").read_text(encoding="utf-8"),
-                "2001:4860:4801::/48\n",
+                self.engine.address_space_coverage(
+                    (out / "full-v6.txt").read_text(encoding="utf-8").splitlines(), 6
+                ),
+                len(self.engine.PROVIDERS) * 2**80,
             )
+            full_v4 = (out / "full-v4.txt").read_text(encoding="utf-8")
+            full_v6 = (out / "full-v6.txt").read_text(encoding="utf-8")
+            self.assertNotIn("9.9.9.0/24", full_v4)
+            self.assertNotIn("2001:4860:ffff::/48", full_v6)
             report = json.loads((data / "profile-intelligence.json").read_text(encoding="utf-8"))
             self.assertEqual(report["schema_version"], 1)
             self.assertEqual(report["policy_version"], self.engine.PROFILE_POLICY_VERSION)
             self.assertEqual(report["anomalies"], [])
             for family in (4, 6):
                 for name in self.engine.PROFILE_ORDER:
-                    self.assertTrue(report["profiles"][f"{name}-v{family}"]["is_superset"] if name != "minimal" else True)
+                    self.assertTrue(
+                        report["profiles"][f"{name}-v{family}"]["is_superset"]
+                        if name != "minimal"
+                        else True
+                    )
 
     def test_dpi_qualified_candidates_are_promoted_only_with_fresh_evidence(self):
         from datetime import datetime, timezone

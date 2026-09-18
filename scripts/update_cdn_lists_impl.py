@@ -19,6 +19,7 @@ DATA = ROOT / "data"
 if str(ROOT / "scripts") not in sys.path: sys.path.insert(0, str(ROOT / "scripts"))
 
 from policy_engine import apply as apply_policy
+from generate_profiles import ALL_CLOUD_PROVIDERS
 DATA.mkdir(exist_ok=True)
 
 VERSION = 44
@@ -794,6 +795,7 @@ def main():
     write_source_health_registry(registry)
     min_peers = int(cfg.get("min_peers_seeing", MIN_PEERS))
     all4, all6, rows = [], [], []
+    all_cloud4, all_cloud6 = [], []
     all_asn4, all_asn6 = [], []
     audit_rows = []
     policy_explain = {}
@@ -940,6 +942,9 @@ def main():
         consensus = build_consensus(name, list(v4) + list(v6), source_prefixes, unique_asns, bgp_health)
         write_text_atomic(DATA / f"{name}-consensus.json", json.dumps({"provider": name, "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "asns": unique_asns, "records": consensus}, indent=2, ensure_ascii=False) + "\n")
         all4.extend(v4); all6.extend(v6)
+        if name in ALL_CLOUD_PROVIDERS:
+            all_cloud4.extend(v4)
+            all_cloud6.extend(v6)
         prev4_count, prev6_count = len(prev4), len(prev6)
         pct4 = None if not prev4_count else round((len(v4) - prev4_count) * 100 / prev4_count, 2)
         pct6 = None if not prev6_count else round((len(v6) - prev6_count) * 100 / prev6_count, 2)
@@ -1005,9 +1010,12 @@ def main():
     atomic(DATA / "asn-all-v4.txt", all_asn4)
     atomic(DATA / "asn-all-v6.txt", all_asn6)
     if not all4: sys.exit("[FATAL] no aggregate IPv4")
+    if not all_cloud4: sys.exit("[FATAL] no ALL-CLOUD IPv4")
     if len(all4) > MAX_AGGREGATE_PREFIXES or len(all6) > MAX_AGGREGATE_PREFIXES:
         sys.exit("[FATAL] aggregate prefix count exceeds safety limit")
-    atomic(DATA / "all-cloud-v4.txt", all4); atomic(DATA / "all-cloud-v6.txt", all6)
+    if len(all_cloud4) > MAX_AGGREGATE_PREFIXES or len(all_cloud6) > MAX_AGGREGATE_PREFIXES:
+        sys.exit("[FATAL] ALL-CLOUD prefix count exceeds safety limit")
+    atomic(DATA / "all-cloud-v4.txt", all_cloud4); atomic(DATA / "all-cloud-v6.txt", all_cloud6)
     # Profiles have one generator. Keeping this logic in generate_profiles.py
     # prevents the two engines from drifting apart.
     if not args.skip_presets:

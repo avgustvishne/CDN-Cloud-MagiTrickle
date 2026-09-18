@@ -57,6 +57,10 @@ SPECIAL = {
     "vpn": ["vultr", "buyvm", "ovh", "hetzner", "digitalocean", "gcore", "contabo", "scaleway", "melbicom"],
 }
 
+# ALL-CLOUD is a dedicated cloud-provider aggregate. FULL is intentionally
+# broader and is built from every configured provider file below.
+ALL_CLOUD_PROVIDERS = tuple(SPECIAL["cloud"])
+
 
 def _validate_profile_config():
     """Fail early if a profile references an unknown provider."""
@@ -348,15 +352,15 @@ def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=
             names.extend(provider for provider in qualified_candidates if provider not in names)
             provider_map[profile] = list(names)
         for version in (4, 6):
-            if profile == "full":
-                source = read("all-cloud", version, data_dir)
-            else:
-                source = []
-                for name in names:
-                    values = read(name, version, data_dir)
-                    if name in qualified_candidates and version == 4:
-                        values = _intersect_networks(values, qualified_candidates[name], version)
-                    source.extend(values)
+            # FULL is the union of every configured provider. It must not use
+            # the ALL-CLOUD aggregate, because ALL-CLOUD intentionally covers
+            # only the dedicated cloud-provider set.
+            source = []
+            for name in names:
+                values = read(name, version, data_dir)
+                if name in qualified_candidates and version == 4:
+                    values = _intersect_networks(values, qualified_candidates[name], version)
+                source.extend(values)
             result = collapse(source, version)
             if not result:
                 raise RuntimeError(f"empty profile: {profile}-v{version}")
