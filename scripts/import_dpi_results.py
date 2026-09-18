@@ -16,7 +16,35 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 CONFIG = ROOT / "config" / "providers.json"
 POLICY = ROOT / "config" / "dpi_policy.json"
+ISP_PROFILES = ROOT / "config" / "isp_profiles.json"
 DEFAULT_OUTPUT = DATA / "dpi-intelligence.json"
+
+
+def load_isp_context():
+    """Load optional user-network ASN context without affecting provider classification."""
+    if not ISP_PROFILES.exists():
+        return {"enabled": False, "asns": []}
+    try:
+        value = json.loads(ISP_PROFILES.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"enabled": False, "asns": []}
+    if not isinstance(value, dict) or value.get("schema_version") != 1:
+        return {"enabled": False, "asns": []}
+    entries = []
+    for item in value.get("asns", []):
+        if not isinstance(item, dict):
+            continue
+        try:
+            asn = int(item["asn"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if asn > 0:
+            entries.append({
+                "asn": asn,
+                "name": str(item.get("name", "")),
+                "country": str(item.get("country", "")),
+            })
+    return {"enabled": bool(value.get("enabled", False)), "asns": entries}
 
 cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
 policy = json.loads(POLICY.read_text(encoding="utf-8"))
@@ -91,6 +119,7 @@ def main():
     raw_bytes = args.input.read_bytes()
     raw = json.loads(raw_bytes)
     qualification = policy["qualification"]
+    isp_context = load_isp_context()
     candidates = {
         name
         for names in policy["candidates"].values()
@@ -176,6 +205,7 @@ def main():
         "source_sha256": digest,
         "qualification": qualification,
         "candidates": policy["candidates"],
+        "network_context": isp_context,
         "qualified_prefixes": {
             provider: {"ipv4": values}
             for provider, values in sorted(qualified.items())
