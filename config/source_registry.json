@@ -198,6 +198,20 @@
         "type": "ip",
         "url": "https://raw.githubusercontent.com/123jjck/cdn-ip-ranges/main/all/all_plain.txt",
         "description": "Independent broad CDN/hosting aggregate"
+      },
+      "russia-whitelist-geoip": {
+        "type": "ip",
+        "urls": [
+          "https://raw.githubusercontent.com/vahellame/russia-whitelist-geoip/main/data/other",
+          "https://raw.githubusercontent.com/vahellame/russia-whitelist-geoip/main/data/vk",
+          "https://raw.githubusercontent.com/vahellame/russia-whitelist-geoip/main/data/yandex"
+        ],
+        "categories": [
+          "other",
+          "vk",
+          "yandex"
+        ],
+        "description": "Filtered IPv4 ranges from Russian whitelist routing data; evidence-only and never provider ownership"
       }
     }
   }

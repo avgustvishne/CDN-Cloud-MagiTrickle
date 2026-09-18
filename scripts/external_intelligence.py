@@ -145,14 +145,25 @@ def ip_metrics(values, profiles):
 def fetch_feed(feed_id, spec, profiles):
     started = dt.datetime.now(dt.timezone.utc)
     try:
-        raw = fetch(spec["url"])
-        digest = hashlib.sha256(raw).hexdigest()
+        urls = spec.get("urls") or [spec["url"]]
+        chunks = [fetch(url) for url in urls]
+        raw = b"\n".join(chunks)
+        digest = hashlib.sha256(b"".join(url.encode() + b"\0" + chunk for url, chunk in zip(urls, chunks))).hexdigest()
         if spec["type"] == "ip":
-            values = parse_cidrs(raw)
-            return {
+            parsed_by_category = {}
+            if spec.get("categories"):
+                for category, chunk in zip(spec["categories"], chunks):
+                    parsed_by_category[category] = parse_cidrs(chunk)
+                values = sorted(
+                    set().union(*(set(items) for items in parsed_by_category.values())),
+                    key=lambda x: (":" in x, ipaddress.ip_network(x)),
+                )
+            else:
+                values = parse_cidrs(raw)
+            row = {
                 "id": feed_id,
                 "type": "ip",
-                "url": spec["url"],
+                "url": urls[0] if len(urls) == 1 else urls,
                 "status": "OK",
                 "bytes": len(raw),
                 "sha256": digest,
@@ -160,11 +171,17 @@ def fetch_feed(feed_id, spec, profiles):
                 "metrics": ip_metrics(values, profiles),
                 "checked_at": started.strftime("%Y-%m-%dT%H:%M:%SZ"),
             }
+            if parsed_by_category:
+                row["categories"] = {
+                    category: {"prefixes": len(items), "coverage_ips": coverage(items, 4)}
+                    for category, items in parsed_by_category.items()
+                }
+            return row
         values = parse_domains(raw)
         return {
             "id": feed_id,
             "type": "domain",
-            "url": spec["url"],
+            "url": urls[0] if len(urls) == 1 else urls,
             "status": "OK",
             "bytes": len(raw),
             "sha256": digest,
@@ -176,7 +193,7 @@ def fetch_feed(feed_id, spec, profiles):
         return {
             "id": feed_id,
             "type": spec.get("type", "unknown"),
-            "url": spec.get("url", ""),
+            "url": spec.get("url") or spec.get("urls", []),
             "status": "ERROR",
             "error": str(exc)[:500],
             "checked_at": started.strftime("%Y-%m-%dT%H:%M:%SZ"),

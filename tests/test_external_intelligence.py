@@ -56,12 +56,20 @@ class ExternalIntelligenceTests(unittest.TestCase):
         self.assertEqual(metrics["6"]["coverage_ips"], 2**80)
         self.assertEqual(metrics["6"]["overlap_full_ips"], 2**80)
 
-    def test_registry_declares_eight_evidence_only_feeds(self):
+    def test_registry_declares_nine_evidence_only_feeds(self):
         registry = json.loads((ROOT / "config/source_registry.json").read_text(encoding="utf-8"))
         block = registry["external-intelligence"]
-        self.assertEqual(len(block["feeds"]), 8)
+        self.assertEqual(len(block["feeds"]), 9)
         self.assertEqual(block["policy"], "evidence-only; never mutates provider subscriptions")
         self.assertEqual({item["type"] for item in block["feeds"].values()}, {"ip", "domain"})
+
+    def test_russia_whitelist_source_is_multi_part_and_ipv4_only(self):
+        registry = json.loads((ROOT / "config/source_registry.json").read_text(encoding="utf-8"))
+        source = registry["external-intelligence"]["feeds"]["russia-whitelist-geoip"]
+        self.assertEqual(source["type"], "ip")
+        self.assertEqual(source["categories"], ["other", "vk", "yandex"])
+        self.assertEqual(len(source["urls"]), 3)
+        self.assertTrue(all("/data/" in url for url in source["urls"]))
 
     def test_generated_profile_missing_files_is_safe(self):
         old = self.engine.DATA
