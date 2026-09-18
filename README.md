@@ -25,11 +25,21 @@
 | Хороший баланс покрытия и размера | **BALANCED** |
 | Минимальный объём правил | **MINIMAL** |
 | CDN с упором на скорость | **PERFORMANCE** |
-| Только CDN | [**CDN**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) |
+| Только CDN | [**CDN v3**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v3-v4.txt) |
 | Cloud/VPS | [**CLOUD**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) |
 | Video/CDN | [**VIDEO**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) |
 | VPN/VPS | [**VPN**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) |
 | Все собранные ASN | [**ASN ALL**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) |
+
+### CDN v3 — отдельная CDN-подписка
+
+**CDN v3** предназначена именно для CDN/edge-маршрутизации в Mihomo и не расширяет набор обычными cloud/VPS-пулами. В основу входят Cloudflare, Akamai, Fastly, CDN77 и Gcore; дополнительно проверяются Bunny CDN (AS200325 через IPVerse) и CacheFly (официальный CIDR feed). Общие AWS/Azure/Oracle/VPS-диапазоны сюда намеренно не добавляются. Это отдельная подписка и она не меняет FULL/BALANCED/PERFORMANCE/MINIMAL.
+
+| Семейство | IPv4 | IPv6 |
+|---|---|---|
+| **CDN v3** | [Raw](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v3-v4.txt) | [Raw](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v3-v6.txt) |
+
+Отчёт источников: [**cdn-v3-sources.json**](data/cdn-v3-sources.json) · политика: [**cdn_v3.json**](config/cdn_v3.json).
 
 ### Основные подписки
 
