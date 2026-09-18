@@ -31,7 +31,7 @@ class CdnV3Tests(unittest.TestCase):
         result = generator.normalize(values)
         self.assertEqual(
             [str(n) for n in result],
-            ["23.235.32.0/20", "2400:52e0:1::/48"],
+            ["23.235.32.0/20", "23.235.32.0/21", "2400:52e0:1::/48"],
         )
 
     def test_coverage_is_preserved(self):
