@@ -65,12 +65,16 @@ def domain_feeds(registry):
 def collect(feeds):
     def one(item):
         feed_id, spec = item
-        urls = spec.get("urls") or [spec["url"]]
-        chunks = [fetch(url) for url in urls]
-        domains = set()
-        for chunk in chunks:
-            domains.update(parse_domains(chunk))
-        return feed_id, domains
+        try:
+            urls = spec.get("urls") or [spec["url"]]
+            chunks = [fetch(url) for url in urls]
+            domains = set()
+            for chunk in chunks:
+                domains.update(parse_domains(chunk))
+            return feed_id, domains
+        except Exception as exc:
+            print(f"Domain feed failed: {feed_id}: {exc}")
+            return feed_id, set()
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=min(8, max(1, len(feeds)))) as pool:
         results = list(pool.map(one, sorted(feeds.items())))
