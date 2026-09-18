@@ -84,7 +84,7 @@ def normalize(values):
                 parsed.append(net)
         except ValueError:
             continue
-    return sorted(set(parsed), key=lambda n: (n.version, int(n.network_address), n.prefixlen))
+    return sorted(set(parsed), key=str)
 
 
 def coverage(values):
