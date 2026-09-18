@@ -151,6 +151,8 @@ class ProfileTests(unittest.TestCase):
             self.assertEqual(counts["full-v6"], len(self.engine.collapse(
                 [f"2606:4700:{index:x}::/48" for index in range(1, len(self.engine.PROVIDERS) + 1)], 6
             )))
+            self.assertEqual(counts["stable-v4"], counts["full-v4"])
+            self.assertEqual(counts["stable-v6"], counts["full-v6"])
             self.assertEqual(
                 self.engine.address_space_coverage(
                     (out / "full-v4.txt").read_text(encoding="utf-8").splitlines(), 4
@@ -178,6 +180,43 @@ class ProfileTests(unittest.TestCase):
                         if name != "minimal"
                         else True
                     )
+
+    def test_stable_profile_keeps_only_previous_full_coverage(self):
+        with tempfile.TemporaryDirectory() as td:
+            data = Path(td) / "data"
+            out = data / "presets"
+            data.mkdir()
+
+            for provider in self.engine.PROVIDERS:
+                (data / f"{provider}-v4.txt").write_text(
+                    "8.8.8.0/24\n", encoding="utf-8"
+                )
+                (data / f"{provider}-v6.txt").write_text(
+                    "2001:4860:4860::/48\n", encoding="utf-8"
+                )
+
+            out.mkdir()
+            (out / "full-v4.txt").write_text(
+                "8.8.8.0/24\n9.9.9.0/24\n", encoding="utf-8"
+            )
+            (out / "full-v6.txt").write_text(
+                "2001:4860:4860::/48\n2606:4700::/48\n", encoding="utf-8"
+            )
+
+            counts = self.engine.generate_profiles(output_dir=out, data_dir=data)
+            stable4 = (out / "stable-v4.txt").read_text(encoding="utf-8")
+            stable6 = (out / "stable-v6.txt").read_text(encoding="utf-8")
+            self.assertEqual(stable4, "8.8.8.0/24\n")
+            self.assertEqual(stable6, "2001:4860:4860::/48\n")
+            self.assertEqual(counts["stable-v4"], 1)
+            self.assertEqual(counts["stable-v6"], 1)
+
+            report = json.loads((data / "profile-intelligence.json").read_text(encoding="utf-8"))
+            self.assertFalse(report["stability_profile"]["profiles"]["stable-v4"]["bootstrap"])
+            self.assertEqual(
+                report["stability_profile"]["profiles"]["stable-v4"]["retention_coverage_ratio"],
+                0.5,
+            )
 
     def test_dpi_qualified_candidates_are_promoted_only_with_fresh_evidence(self):
         from datetime import datetime, timezone
