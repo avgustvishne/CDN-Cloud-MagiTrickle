@@ -64,6 +64,10 @@
 | **BALANCED** | Balance of size and coverage | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
 | **MINIMAL** | Compact provider set | [IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) |
 
+## ☁️ ALL-CLOUD и FULL
+
+**FULL** включает все настроенные провайдеры. **ALL-CLOUD** — только выделенный набор облачных провайдеров (AWS, Cloudflare, Microsoft, Oracle, Alibaba и DigitalOcean). Эти наборы специально различаются.
+
 ## 🛠️ Как использовать
 
 1. Выберите нужный профиль.
