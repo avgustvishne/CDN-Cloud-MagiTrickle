@@ -13,22 +13,24 @@ DEFAULT_PRESETS = DATA / "presets"
 CFG = json.loads((ROOT / "config" / "providers.json").read_text(encoding="utf-8"))
 PROVIDERS = sorted(CFG["providers"])
 
-# Main profiles are deliberately different in scope:
-# FULL      = every configured provider, maximum coverage.
-# BALANCED  = broad cloud/CDN/VPS coverage without the largest catch-all pools.
-# PERFORMANCE = focused edge/CDN/VPS sources for a smaller routing set.
-# MINIMAL   = compact, high-value edge/VPS set.
+# Main profiles have deliberately separated scopes:
+# FULL       = every configured provider, maximum coverage.
+# BALANCED   = core CDN + major hosting providers, without hyperscale catch-all pools.
+# PERFORMANCE= core CDN + a small edge/cloud set for a compact routing list.
+# MINIMAL    = core CDN only; no general cloud or VPS-only providers.
 PROFILES = {
     "full": PROVIDERS,
+    "balanced": [
+        "cloudflare", "akamai", "fastly", "cdn77", "gcore",
+        "digitalocean", "hetzner", "ovh", "vultr", "scaleway",
+    ],
     "performance": [
         "cloudflare", "akamai", "fastly", "cdn77", "gcore",
-        "digitalocean", "hetzner", "ovh",
+        "digitalocean", "scaleway",
     ],
-    "balanced": [
-        "cloudflare", "aws", "akamai", "fastly", "cdn77", "gcore",
-        "digitalocean", "microsoft", "hetzner", "ovh", "vultr", "scaleway",
+    "minimal": [
+        "cloudflare", "akamai", "fastly", "cdn77", "gcore",
     ],
-    "minimal": ["cloudflare", "akamai", "fastly", "vultr", "hetzner", "ovh"],
 }
 
 SPECIAL = {
