@@ -31,7 +31,7 @@ for path in sorted(DIFF.glob("*.json")):
         )
 
 lines = [
-    f"# Subscription update — v{manifest.get('version', '?')}",
+    f"## Subscription update — v{manifest.get('version', '?')}",
     "",
     f"Generated: {manifest.get('updated', datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC'))}",
     "",
