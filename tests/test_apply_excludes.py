@@ -36,6 +36,8 @@ class SubtractTests(unittest.TestCase):
 class ProcessFileTests(unittest.TestCase):
     def setUp(self):
         self.mod=load_module()
+    def net(self, s):
+        return ipaddress.ip_network(s, strict=False)
     def test_process_file_rewrites(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/"example-v4.txt"
