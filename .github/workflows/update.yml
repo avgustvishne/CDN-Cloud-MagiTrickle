@@ -96,6 +96,28 @@ jobs:
       - name: Generate subscriptions
         run: python scripts/update_cdn_lists.py
 
+      - name: Apply custom excludes
+        run: python scripts/apply_excludes.py
+
+      - name: Refresh profiles and checksums after excludes
+        run: |
+          python scripts/generate_profiles.py
+          python - <<'PY'
+          import hashlib
+          import pathlib
+          root = pathlib.Path(".")
+          data = root / "data"
+          files = sorted(set(data.glob("*-v*.txt")) | {
+              data / "all-cloud-v4.txt", data / "all-cloud-v6.txt",
+              data / "asn-all-v4.txt", data / "asn-all-v6.txt",
+              data / "asn-confirmed-v4.txt", data / "asn-confirmed-v6.txt",
+          })
+          (data / "checksums.sha256").write_text(
+              "\n".join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(root).as_posix()}" for p in files) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
       - name: Validate profile intelligence
         run: |
           python - <<'PY'
@@ -332,16 +354,24 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ README.md UPDATE_REPORT.md
+          git add data/ README.md UPDATE_REPORT.md CHANGELOG.md
           if git diff --cached --quiet; then
             echo "No changes."
             exit 0
           fi
           git commit -m "chore: update provider subscriptions"
 
+          tag="data-$(date -u +%Y%m%d-%H%M)"
+
           for attempt in 1 2 3 4 5; do
             if git push; then
               echo "Push succeeded on attempt ${attempt}."
+              if git tag -a "$tag" -m "Automated subscription update $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+                 && git push origin "$tag"; then
+                echo "Tagged as ${tag}."
+              else
+                echo "::warning::Could not create/push tag ${tag}; data was published successfully regardless."
+              fi
               exit 0
             fi
 
