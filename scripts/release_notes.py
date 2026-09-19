@@ -9,6 +9,10 @@ DATA = ROOT / "data"
 DIFF = DATA / "diff"
 MANIFEST = DATA / "manifest.json"
 OUT = DATA / "release-notes.md"
+CHANGELOG = ROOT / "CHANGELOG.md"
+CHANGELOG_HEADER = "# Changelog\n\nAutomated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`."
+CHANGELOG_SEPARATOR = "\n\n---\n\n"
+CHANGELOG_MAX_ENTRIES = 200
 
 manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 rows = []
@@ -27,7 +31,7 @@ for path in sorted(DIFF.glob("*.json")):
         )
 
 lines = [
-    f"# Subscription update — v{manifest.get('version', '?')}",
+    f"## Subscription update — v{manifest.get('version', '?')}",
     "",
     f"Generated: {manifest.get('updated', datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC'))}",
     "",
@@ -58,3 +62,19 @@ lines += [
 ]
 OUT.write_text("\n".join(lines), encoding="utf-8")
 print(f"Wrote {OUT}")
+
+def prepend_changelog(entry_text, max_entries=CHANGELOG_MAX_ENTRIES):
+    entry_text = entry_text.strip()
+    body = ""
+    if CHANGELOG.exists():
+        existing = CHANGELOG.read_text(encoding="utf-8")
+        _, _, body = existing.partition("\n\n")
+    old_entries = [e for e in body.split(CHANGELOG_SEPARATOR) if e.strip()] if body else []
+    entries = ([entry_text] + old_entries)[:max_entries]
+    CHANGELOG.write_text(CHANGELOG_HEADER + "\n\n" + CHANGELOG_SEPARATOR.join(entries) + "\n", encoding="utf-8")
+
+if rows:
+    prepend_changelog("\n".join(lines))
+    print(f"Updated {CHANGELOG}")
+else:
+    print("No provider changes; CHANGELOG.md left untouched")

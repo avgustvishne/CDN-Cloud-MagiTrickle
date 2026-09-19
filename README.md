@@ -11,7 +11,11 @@
 
 [**🚀 ПОЛНАЯ**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) · [**⚡ ПРОИЗВОДИТЕЛЬНОСТЬ**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v4.txt) · [**⚖️ СБАЛАНСИРОВАННАЯ**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) · [**📦 МИНИМАЛЬНАЯ**](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt)
 
-[📊 Статус](STATUS.md) · [📁 Все подписки](data/) · [⚙️ Провайдеры](config/providers.json)
+[📊 Статус](STATUS.md) · [📁 Все подписки](data/) · [⚙️ Провайдеры](config/providers.json) · [📝 История изменений](CHANGELOG.md)
+
+## 🚫 Свои исключения
+
+Если тебе нужно убрать конкретную подсеть из всех генерируемых списков, добавь её в [`config/custom-exclude.txt`](config/custom-exclude.txt) — по одной CIDR на строку, `#` для комментариев. При следующем обновлении подсеть будет вычтена из всех провайдерских файлов и пресетов автоматически.
 
 </div>
 
