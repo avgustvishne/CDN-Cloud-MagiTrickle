@@ -33,7 +33,7 @@ class RegressionGateTests(unittest.TestCase):
             self.write(
                 old,
                 "presets/balanced-v4.txt",
-                "10.0.0.0/8\n192.0.2.0/24\n",
+                "10.0.0.0/8\n128.0.0.0/1\n",
             )
             self.write(new, "cloudflare-v4.txt", "10.0.0.0/8\n")
             self.write(new, "presets/balanced-v4.txt", "10.0.0.0/8\n")
