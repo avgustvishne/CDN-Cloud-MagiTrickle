@@ -2,7 +2,7 @@
 
 Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
-# Subscription update — v44
+## Subscription update — v44
 
 Generated: 2026-09-18 04:44:13 UTC
 
