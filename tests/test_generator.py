@@ -170,5 +170,46 @@ class GeneratorUnitTests(unittest.TestCase):
                 if line.strip():
                     ipaddress.ip_network(line.strip())
 
+    def test_asn_aggregates_respect_global_policy_exclude(self):
+        import policy_engine as real_policy_engine
+        with tempfile.TemporaryDirectory() as tmp:
+            policy_path = Path(tmp) / "policy.json"
+            policy_path.write_text(json.dumps({
+                "enabled": True, "providers": {},
+                "global": {"exclude": ["45.100.0.0/24"], "include": []},
+            }), encoding="utf-8")
+            with patch.object(real_policy_engine, "CONFIG", policy_path):
+                v4, v6 = self.engine.apply_global_policy_to_asn_aggregates(
+                    [ipaddress.ip_network("45.100.0.0/24"), ipaddress.ip_network("45.101.0.0/24")],
+                    [ipaddress.ip_network("2606:4700::/32")],
+                )
+        self.assertEqual([str(n) for n in v4], ["45.101.0.0/24"])
+        self.assertEqual([str(n) for n in v6], ["2606:4700::/32"])
+
+    def test_asn_aggregates_unaffected_when_policy_disabled(self):
+        import policy_engine as real_policy_engine
+        with tempfile.TemporaryDirectory() as tmp:
+            policy_path = Path(tmp) / "policy.json"
+            policy_path.write_text(json.dumps({"enabled": False, "providers": {}, "global": {}}), encoding="utf-8")
+            with patch.object(real_policy_engine, "CONFIG", policy_path):
+                v4, v6 = self.engine.apply_global_policy_to_asn_aggregates(
+                    [ipaddress.ip_network("45.100.0.0/24")],
+                    [ipaddress.ip_network("2606:4700::/32")],
+                )
+        self.assertEqual([str(n) for n in v4], ["45.100.0.0/24"])
+        self.assertEqual([str(n) for n in v6], ["2606:4700::/32"])
+
+    def test_official_telegram_parses_whitespace_separated_cidr_list(self):
+        def fake_request(url):
+            if url == "https://core.telegram.org/resources/cidr.txt":
+                return b"91.108.4.0/22 149.154.160.0/20\n2001:b28:f23d::/48\n"
+            raise AssertionError(url)
+        with patch.object(self.engine, "request", side_effect=fake_request):
+            values = self.engine.official("telegram")
+        self.assertEqual(values, ["91.108.4.0/22", "149.154.160.0/20", "2001:b28:f23d::/48"])
+
+    def test_official_unknown_provider_returns_empty_list(self):
+        self.assertEqual(self.engine.official("twitter"), [])
+
 if __name__ == "__main__":
     unittest.main()

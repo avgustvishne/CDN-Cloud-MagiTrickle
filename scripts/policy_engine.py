@@ -26,13 +26,17 @@ def apply(provider, values, collect_explain=True):
     excludes=networks(global_policy.get("exclude",[])+p.get("exclude",[]))
     result=[]; explain=[]
     for raw in values:
-        try: n=ipaddress.ip_network(str(raw).strip(),strict=False)
+        try:
+            n=ipaddress.ip_network(str(raw).strip(),strict=False)
         except ValueError:
-            if collect_explain: explain.append({"cidr":str(raw),"action":"excluded","reason":"invalid CIDR"}); continue
-        if any(n.subnet_of(x) or x.subnet_of(n) for x in excludes):
-            if collect_explain: explain.append({"cidr":str(n),"action":"excluded","reason":"exclude policy"}); continue
-        if includes and not any(n.subnet_of(x) or x.subnet_of(n) for x in includes):
-            if collect_explain: explain.append({"cidr":str(n),"action":"excluded","reason":"not in include policy"}); continue
+            if collect_explain: explain.append({"cidr":str(raw),"action":"excluded","reason":"invalid CIDR"})
+            continue
+        if any(n.version == x.version and (n.subnet_of(x) or x.subnet_of(n)) for x in excludes):
+            if collect_explain: explain.append({"cidr":str(n),"action":"excluded","reason":"exclude policy"})
+            continue
+        if includes and not any(n.version == x.version and (n.subnet_of(x) or x.subnet_of(n)) for x in includes):
+            if collect_explain: explain.append({"cidr":str(n),"action":"excluded","reason":"not in include policy"})
+            continue
         result.append(str(n))
         if collect_explain: explain.append({"cidr":str(n),"action":"included","reason":"policy match"})
     return result, explain

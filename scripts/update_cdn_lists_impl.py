@@ -577,6 +577,8 @@ def official(name):
         return list(walk_strings(jsonget("https://api.fastly.com/public-ip-list")))
     if name == "gcore":
         return list(walk_strings(jsonget("https://api.gcore.com/cdn/public-ip-list")))
+    if name == "telegram":
+        return request("https://core.telegram.org/resources/cidr.txt").decode().split()
     if name in STATIC:
         return STATIC[name]
     return []
@@ -783,6 +785,14 @@ def write_source_health_registry(registry):
         json.dumps({"generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "sources": rows}, indent=2, ensure_ascii=False) + "\n")
 
+def apply_global_policy_to_asn_aggregates(all_asn4, all_asn6):
+    """Apply global policy rules to ASN-derived aggregate datasets."""
+    asn4_policy, _ = apply_policy("__asn_aggregate__", list(map(str, all_asn4)), collect_explain=False)
+    asn6_policy, _ = apply_policy("__asn_aggregate__", list(map(str, all_asn6)), collect_explain=False)
+    filtered4, _ = nets(asn4_policy, 4)
+    filtered6, _ = nets(asn6_policy, 6)
+    return filtered4, filtered6
+
 def main():
     parser = argparse.ArgumentParser(description="Build CDN/ASN subscriptions")
     parser.add_argument("--explain", action="store_true", help="generate per-CIDR policy explanations")
@@ -920,7 +930,7 @@ def main():
         if prev6_coverage and new6_coverage < int(prev6_coverage * MIN_COVERAGE_RATIO_V6):
             suspicious6 = True
         if suspicious4 and prev4:
-            v4 = prev4; status = "KEEP_OLD"; used_fallback = True
+            v4 = prev4; status = "KEEP_OLD" if status == "OK" else status; used_fallback = True
         if suspicious6 and prev6:
             v6 = prev6; status = "KEEP_OLD" if status == "OK" else status; used_fallback = True
         if suspicious4 and not prev4:
@@ -965,6 +975,7 @@ def main():
 
     all4, _ = nets(all4, 4); all6, _ = nets(all6, 6)
     all_asn4, _ = nets(all_asn4, 4); all_asn6, _ = nets(all_asn6, 6)
+    all_asn4, all_asn6 = apply_global_policy_to_asn_aggregates(all_asn4, all_asn6)
 
     validated_asn4 = []
     validated_asn6 = []

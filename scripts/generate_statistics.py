@@ -115,7 +115,7 @@ def update_readme(stats):
         "| **ASN ALL** | **{} CIDR** | **{} CIDR** |".format(human_count(datasets["asn_all"]["ipv4"]), human_count(datasets["asn_all"]["ipv6"])),
         "| **ALL-CLOUD** | **{} CIDR** | **{} CIDR** |".format(human_count(datasets["all_cloud"]["ipv4"]), human_count(datasets["all_cloud"]["ipv6"])),
         "",
-        "**Обновлено:** `{}` · [полная статистика](data/statistics.json)".format(generated_at),
+        "**Обновлено:** `{}` · [полная статистика](data/statistics.json) · [живой дашборд](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/)".format(generated_at),
         "",
         "> Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.",
         "<!-- AUTO-STATS:END -->",
