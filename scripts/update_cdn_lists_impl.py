@@ -577,6 +577,8 @@ def official(name):
         return list(walk_strings(jsonget("https://api.fastly.com/public-ip-list")))
     if name == "gcore":
         return list(walk_strings(jsonget("https://api.gcore.com/cdn/public-ip-list")))
+    if name == "telegram":
+        return request("https://core.telegram.org/resources/cidr.txt").decode().split()
     if name in STATIC:
         return STATIC[name]
     return []
