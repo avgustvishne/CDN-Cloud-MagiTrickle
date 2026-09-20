@@ -17,7 +17,7 @@ PROVIDERS = sorted(CFG["providers"])
 # Increment this when the intentional profile composition changes. A policy
 # version change tells the anomaly gate that the resulting size change is
 # expected and establishes a fresh baseline for subsequent updates.
-PROFILE_POLICY_VERSION = 3
+PROFILE_POLICY_VERSION = 4
 PROFILE_ORDER = ("minimal", "performance", "balanced", "full")
 STABILITY_PROFILE = "stable"
 ANOMALY_LIMITS = {
@@ -56,6 +56,7 @@ SPECIAL = {
     "cloud": ["aws", "cloudflare", "microsoft", "oracle", "alibaba", "digitalocean"],
     "video": ["cloudflare", "fastly", "akamai", "aws", "microsoft"],
     "vpn": ["vultr", "buyvm", "ovh", "hetzner", "digitalocean", "gcore", "contabo", "scaleway", "melbicom"],
+    "messaging": ["telegram", "twitter"],
 }
 
 # ALL-CLOUD is a dedicated cloud-provider aggregate. FULL is intentionally
