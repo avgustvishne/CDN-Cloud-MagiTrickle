@@ -199,5 +199,17 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertEqual([str(n) for n in v4], ["45.100.0.0/24"])
         self.assertEqual([str(n) for n in v6], ["2606:4700::/32"])
 
+    def test_official_telegram_parses_whitespace_separated_cidr_list(self):
+        def fake_request(url):
+            if url == "https://core.telegram.org/resources/cidr.txt":
+                return b"91.108.4.0/22 149.154.160.0/20\n2001:b28:f23d::/48\n"
+            raise AssertionError(url)
+        with patch.object(self.engine, "request", side_effect=fake_request):
+            values = self.engine.official("telegram")
+        self.assertEqual(values, ["91.108.4.0/22", "149.154.160.0/20", "2001:b28:f23d::/48"])
+
+    def test_official_unknown_provider_returns_empty_list(self):
+        self.assertEqual(self.engine.official("twitter"), [])
+
 if __name__ == "__main__":
     unittest.main()
