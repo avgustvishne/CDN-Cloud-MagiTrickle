@@ -67,6 +67,14 @@ class ProfileTests(unittest.TestCase):
             self.assertNotIn("oracle", selected)
             self.assertNotIn("alibaba", selected)
 
+    def test_messaging_special_profile_has_intended_scope(self):
+        self.assertEqual(set(self.engine.SPECIAL["messaging"]), {"telegram", "twitter"})
+        for profile in ("minimal", "performance", "balanced"):
+            self.assertNotIn("telegram", self.engine.PROFILES[profile])
+            self.assertNotIn("twitter", self.engine.PROFILES[profile])
+        self.assertIn("telegram", self.engine.PROFILES["full"])
+        self.assertIn("twitter", self.engine.PROFILES["full"])
+
     def test_profile_provider_names_are_valid(self):
         known = set(self.engine.PROVIDERS)
         for selected in self.engine.PROFILES.values():
