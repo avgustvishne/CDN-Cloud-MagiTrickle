@@ -34,6 +34,9 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Validate config schemas
+        run: python scripts/validate_config.py
+
       - name: Autonomous workflow audit
         run: python scripts/autonomous_audit.py
 
@@ -300,6 +303,12 @@ jobs:
       - name: Generate automatic CIDR statistics
         run: python scripts/generate_statistics.py
 
+      - name: Generate source health report
+        run: python scripts/generate_health.py
+
+      - name: Canary domain check (advisory)
+        run: python scripts/canary_check.py
+
       - name: Autonomous failure notification
         if: ${{ failure() }}
         shell: bash
@@ -326,7 +335,7 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ README.md UPDATE_REPORT.md CHANGELOG.md
+          git add data/ README.md UPDATE_REPORT.md CHANGELOG.md HEALTH.md
           if git diff --cached --quiet; then
             echo "No changes."
             exit 0

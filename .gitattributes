@@ -1,0 +1,5 @@
+# Force LF everywhere, regardless of the contributor's OS or git config, so
+# regenerating data files never produces a noisy CRLF/LF-only diff.
+* text=auto eol=lf
+data/**/*.txt text eol=lf
+data/**/*.json text eol=lf

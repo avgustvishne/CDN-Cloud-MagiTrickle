@@ -1,0 +1,49 @@
+name: Publish stable preset snapshot
+# Same data as FULL, just refreshed weekly instead of twice a day -- for
+# setups where reloading routing rules twice daily is disruptive (e.g. some
+# router firmwares reload connection state on every rule change).
+# This workflow does not fetch or regenerate anything; it only copies
+# whatever update.yml last published.
+
+on:
+  schedule:
+    - cron: "0 3 * * 0"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: magitrickle-stable-snapshot
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Copy full preset into stable
+        run: |
+          set -e
+          if [ ! -f data/presets/full-v4.txt ] || [ ! -f data/presets/full-v6.txt ]; then
+            echo "::error::data/presets/full-v4.txt or -v6.txt missing; nothing to snapshot."
+            exit 1
+          fi
+          cp data/presets/full-v4.txt data/presets/stable-v4.txt
+          cp data/presets/full-v6.txt data/presets/stable-v6.txt
+
+      - name: Commit snapshot
+        shell: bash
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/presets/stable-v4.txt data/presets/stable-v6.txt
+          if git diff --cached --quiet; then
+            echo "Stable preset unchanged since last snapshot."
+            exit 0
+          fi
+          git commit -m "chore: weekly stable preset snapshot"
+          git push
