@@ -14,7 +14,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PROVIDER_NAME_RE = re.compile(r"^[a-z][a-z0-9-]*$")
-ASN_RE = re.compile(r"^\\d+$")
+ASN_RE = re.compile(r"^\d+$")
 
 
 def fail(errors):
