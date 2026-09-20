@@ -170,5 +170,34 @@ class GeneratorUnitTests(unittest.TestCase):
                 if line.strip():
                     ipaddress.ip_network(line.strip())
 
+    def test_asn_aggregates_respect_global_policy_exclude(self):
+        import policy_engine as real_policy_engine
+        with tempfile.TemporaryDirectory() as tmp:
+            policy_path = Path(tmp) / "policy.json"
+            policy_path.write_text(json.dumps({
+                "enabled": True, "providers": {},
+                "global": {"exclude": ["45.100.0.0/24"], "include": []},
+            }), encoding="utf-8")
+            with patch.object(real_policy_engine, "CONFIG", policy_path):
+                v4, v6 = self.engine.apply_global_policy_to_asn_aggregates(
+                    [ipaddress.ip_network("45.100.0.0/24"), ipaddress.ip_network("45.101.0.0/24")],
+                    [ipaddress.ip_network("2606:4700::/32")],
+                )
+        self.assertEqual([str(n) for n in v4], ["45.101.0.0/24"])
+        self.assertEqual([str(n) for n in v6], ["2606:4700::/32"])
+
+    def test_asn_aggregates_unaffected_when_policy_disabled(self):
+        import policy_engine as real_policy_engine
+        with tempfile.TemporaryDirectory() as tmp:
+            policy_path = Path(tmp) / "policy.json"
+            policy_path.write_text(json.dumps({"enabled": False, "providers": {}, "global": {}}), encoding="utf-8")
+            with patch.object(real_policy_engine, "CONFIG", policy_path):
+                v4, v6 = self.engine.apply_global_policy_to_asn_aggregates(
+                    [ipaddress.ip_network("45.100.0.0/24")],
+                    [ipaddress.ip_network("2606:4700::/32")],
+                )
+        self.assertEqual([str(n) for n in v4], ["45.100.0.0/24"])
+        self.assertEqual([str(n) for n in v6], ["2606:4700::/32"])
+
 if __name__ == "__main__":
     unittest.main()
