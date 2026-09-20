@@ -28,8 +28,8 @@ contabo,250,2,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 scaleway,11,1,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 gcore,530,223,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 backblaze,5,1,static+cloud-ip-ranges,OK,0,0,0`  
-**Отчёт сформирован:** `2026-09-20T05:24:46Z`  
-**Исходный commit:** `bc06d1c519ee2abcf06c5612e651f3b271e1c3b8`  
+**Отчёт сформирован:** `2026-09-20T05:27:03Z`  
+**Исходный commit:** `18806055a90635dfc0b17524efd09135073b5460`  
 **Последний известный рабочий commit:** `9c8728c9a1224209d132162d2e2d2b1ee126769c`
 
 ## Данные
@@ -49,6 +49,6 @@ backblaze,5,1,static+cloud-ip-ranges,OK,0,0,0`
 
 ## Последний сбой
 
-`https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/runs/35486578039 (conclusion: failure, run: 35486578039)`
+`https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/runs/35490388911 (conclusion: failure, run: 35490388911)`
 
 Машиночитаемый статус: [`data/status.json`](data/status.json)
