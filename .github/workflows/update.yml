@@ -92,7 +92,7 @@ jobs:
 
           report = json.loads(pathlib.Path("data/profile-intelligence.json").read_text(encoding="utf-8"))
           assert report["schema_version"] == 1
-          assert report["policy_version"] == 3
+          assert report["policy_version"] == 4
           assert report["anomalies"] == []
 
           order = ("minimal", "performance", "balanced", "full")
@@ -164,17 +164,14 @@ jobs:
           assert (d / "asn-all-v4.txt").stat().st_size > 0
           assert (d / "asn-all-v6.txt").exists()
 
-          for p in list(d.glob("*.txt")) + list((d / "presets").glob("*.txt")):
-              if p.name == "last-update.txt":
-                  continue
-              lines = [x.strip() for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
-              assert len(lines) == len(set(lines)), f"duplicate CIDR: {p.name}"
-              expected_version = 6 if p.name.endswith("-v6.txt") else 4
-              for line in lines:
-                  n = ipaddress.ip_network(line)
-                  assert n.version == expected_version, f"wrong IP version: {line} in {p.name}"
-                  assert n.is_global, f"non-global prefix: {line} in {p.name}"
-                  assert n.prefixlen >= (8 if n.version == 4 else 16), f"broad prefix: {line} in {p.name}"
+          # CIDR-format checks (duplicates, IP version, global-only, prefix
+          # length) live in scripts/validate_subscriptions.py, run later in
+          # this same workflow ("Validate generated data with shared
+          # validator") and reused by ip-consistency.yml / subscription-health.yml.
+          # Keeping a second, inline copy of those same checks here just
+          # means every rule change has to be made twice -- see the
+          # policy_version/PROFILE_POLICY_VERSION mismatch that held
+          # publication for two days for what that costs in practice.
 
           cfg = json.loads(pathlib.Path("config/providers.json").read_text(encoding="utf-8"))
           provider_names = set(cfg["providers"])
