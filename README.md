@@ -32,11 +32,12 @@
 | Облако/VPS | **CLOUD** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
 | Видео/CDN | **VIDEO** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
 | VPN/VPS | **VPN** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
-| Telegram + Twitter/X | **MESSAGING** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/messaging-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/messaging-v6.txt) |
 | Все собранные ASN | **ASN ALL** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt) |
 | Тот же набор, что FULL, но обновляется раз в неделю | **STABLE** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/stable-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/stable-v6.txt) |
 
 **FULL** включает все настроенные провайдеры. **ALL-CLOUD** — отдельный агрегат для AWS, Cloudflare, Microsoft, Oracle, Alibaba и DigitalOcean; он намеренно отличается от FULL. **STABLE** — это те же данные, что в FULL, просто публикуются раз в неделю (по воскресеньям), а не дважды в сутки — для роутеров/прошивок, где частая перезагрузка правил маршрутизации нежелательна.
+
+> **MESSAGING (Telegram + Twitter/X)** временно убран из этой таблицы: провайдерские файлы для Telegram/Twitter ещё ни разу не были успешно опубликованы (`data/telegram-v4.txt`/`twitter-v4.txt` отсутствуют), и держать в README ссылку на несуществующий файл ломает `check_links.py` на каждом прогоне. Вернём строку в таблицу, как только пайплайн один раз успешно сгенерирует реальные данные для обоих провайдеров.
 
 ## Как использовать
 
