@@ -12,6 +12,7 @@ on:
         default: true
         type: boolean
   push:
+    branches: [main]
     paths:
       - "config/providers.json"
       - "config/source_registry.json"
