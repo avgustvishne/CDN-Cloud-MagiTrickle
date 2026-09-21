@@ -29,8 +29,9 @@ REQUIRED = {
     "README statistics validation": "Validate README statistics",
 }
 STABLE_REQUIRED = {
-    "stable checksum refresh": "data/checksums.sha256 README.md",
+    "stable checksum refresh": "data/checksums.sha256",
     "stable statistics refresh": "python scripts/generate_statistics.py",
+    "stable README publication": "git add data/presets/stable-v4.txt data/presets/stable-v6.txt data/checksums.sha256 data/statistics.json README.md",
     "stable validation": "python scripts/validate_subscriptions.py",
 }
 STATUS_REQUIRED = {
