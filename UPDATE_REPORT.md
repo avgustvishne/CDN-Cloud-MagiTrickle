@@ -1,40 +1,40 @@
 # CDN-Cloud-MagiTrickle — Update Report
 
-Обновлено: 2026-09-21 16:37:13Z
+Обновлено: 2026-09-21 18:43:46Z
 
 ## Подписки
 
 | Подписка | CIDR | IPv4 | IPv6 |
 |---|---:|---:|---:|
-| balanced-v4 | 9 240 | 9 240 | 0 |
-| balanced-v6 | 3 042 | 0 | 3 042 |
-| cdn-v4 | 1 854 | 1 854 | 0 |
+| balanced-v4 | 9 241 | 9 241 | 0 |
+| balanced-v6 | 3 110 | 0 | 3 110 |
+| cdn-v4 | 1 855 | 1 855 | 0 |
 | cdn-v6 | 675 | 0 | 675 |
-| cloud-v4 | 8 980 | 8 980 | 0 |
-| cloud-v6 | 2 294 | 0 | 2 294 |
-| full-v4 | 17 545 | 17 545 | 0 |
-| full-v6 | 5 247 | 0 | 5 247 |
+| cloud-v4 | 8 987 | 8 987 | 0 |
+| cloud-v6 | 2 295 | 0 | 2 295 |
+| full-v4 | 17 551 | 17 551 | 0 |
+| full-v6 | 5 316 | 0 | 5 316 |
 | messaging-v4 | 19 | 19 | 0 |
 | messaging-v6 | 8 | 0 | 8 |
-| minimal-v4 | 1 854 | 1 854 | 0 |
+| minimal-v4 | 1 855 | 1 855 | 0 |
 | minimal-v6 | 675 | 0 | 675 |
-| performance-v4 | 2 097 | 2 097 | 0 |
+| performance-v4 | 2 098 | 2 098 | 0 |
 | performance-v6 | 690 | 0 | 690 |
 | stable-v4 | 17 471 | 17 471 | 0 |
 | stable-v6 | 5 264 | 0 | 5 264 |
-| video-v4 | 7 346 | 7 346 | 0 |
-| video-v6 | 2 067 | 0 | 2 067 |
-| vpn-v4 | 8 289 | 8 289 | 0 |
-| vpn-v6 | 2 638 | 0 | 2 638 |
+| video-v4 | 7 354 | 7 354 | 0 |
+| video-v6 | 2 068 | 0 | 2 068 |
+| vpn-v4 | 8 290 | 8 290 | 0 |
+| vpn-v6 | 2 706 | 0 | 2 706 |
 
 ## Провайдеры
 
 | Провайдер | IPv4 | IPv6 | Статус |
 |---|---:|---:|---|
-| aws | 5350 | 1514 | OK |
-| cloudflare | 738 | 126 | OK |
+| aws | 5357 | 1515 | OK |
+| cloudflare | 739 | 126 | OK |
 | hetzner | 3954 | 397 | OK |
-| ovh | 2640 | 397 | OK |
+| ovh | 2641 | 397 | OK |
 | akamai | 356 | 252 | OK |
 | digitalocean | 232 | 14 | OK |
 | microsoft | 989 | 135 | OK |
@@ -44,7 +44,7 @@
 | fastly | 48 | 41 | OK |
 | melbicom | 99 | 18 | OK |
 | buyvm | 23 | 27 | OK |
-| vultr | 739 | 1563 | OK |
+| vultr | 739 | 1631 | OK |
 | contabo | 250 | 2 | OK |
 | scaleway | 11 | 1 | OK |
 | gcore | 527 | 224 | FILTERED |
@@ -57,5 +57,5 @@
 - Engine: final-v44-source-fusion-ipverse
 - Global-only: True
 - Лимит на провайдера: None (искусственного лимита нет)
-- Общий IPv4: 17545 CIDR
-- Общий IPv6: 5260 CIDR
+- Общий IPv4: 17551 CIDR
+- Общий IPv6: 5329 CIDR
