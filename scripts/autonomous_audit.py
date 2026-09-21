@@ -26,7 +26,11 @@ REQUIRED = {
     "conditional publish": 'git commit -m "chore: update provider subscriptions"',
     "main-only automatic push": "branches: [main]",
     "automatic statistics": "python scripts/generate_statistics.py",
-    "README statistics validation": "Validate README statistics",
+    "README statistics validation": "python scripts/validate_generated_data.py --include-readme-statistics",
+    "central generated-data validation": "python scripts/validate_generated_data.py",
+    "central profile validation": "python scripts/validate_profiles.py",
+    "central checksum generation": "python scripts/refresh_checksums.py",
+    "pinned Python minor": 'python-version: "3.12"',
 }
 STABLE_REQUIRED = {
     "stable checksum refresh": "data/checksums.sha256",
@@ -47,6 +51,7 @@ FORBIDDEN = {
     "hard reset": "git reset --hard",
     "unconditional destructive cleanup": "rm -rf data/",
     "issues write permission": "issues: write",
+    "inline Python workflow blocks": "python - <<'PY'",
 }
 
 missing = [name for name, token in REQUIRED.items() if token not in TEXT]
