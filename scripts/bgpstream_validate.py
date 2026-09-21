@@ -61,7 +61,6 @@ def query_update_files(broker, start, end, project):
         ts_end=end,
         project=project,
         data_type="updates",
-        page=1,
         page_size=100,
     )
 
