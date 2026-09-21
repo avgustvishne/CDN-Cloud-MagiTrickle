@@ -27,7 +27,7 @@ on:
       - "scripts/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: magitrickle-subscriptions
@@ -37,11 +37,13 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
-          python-version: "3.x"
+          python-version: "3.12"
 
       - name: Validate config schemas
         run: python scripts/validate_config.py
@@ -55,19 +57,6 @@ jobs:
       - name: Run generator unit tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
 
-      - name: Create automatic rollback backup
-        if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          backup_ref="refs/heads/backup/pre-update"
-          git fetch origin "$backup_ref" || true
-          if git show-ref --verify --quiet "refs/remotes/origin/backup/pre-update"; then
-            git update-ref refs/heads/backup/pre-update "refs/remotes/origin/backup/pre-update"
-          fi
-          git push origin "HEAD:${backup_ref}" --force-with-lease
-          echo "Rollback backup updated to $(git rev-parse HEAD)"
-
       - name: Snapshot current subscriptions
         run: |
           rm -rf /tmp/cdn-old
@@ -80,63 +69,10 @@ jobs:
       - name: Refresh profiles and checksums
         run: |
           python scripts/generate_profiles.py
-          python - <<'PY'
-          import hashlib
-          import pathlib
-          root = pathlib.Path(".")
-          data = root / "data"
-          files = sorted(set(data.glob("*-v*.txt")) | {
-              data / "all-cloud-v4.txt", data / "all-cloud-v6.txt",
-              data / "asn-all-v4.txt", data / "asn-all-v6.txt",
-              data / "asn-confirmed-v4.txt", data / "asn-confirmed-v6.txt",
-          })
-          (data / "checksums.sha256").write_text(
-              "\n".join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(root).as_posix()}" for p in files) + "\n",
-              encoding="utf-8",
-          )
-          PY
+          python scripts/refresh_checksums.py
 
       - name: Validate profile intelligence
-        run: |
-          python - <<'PY'
-          import json
-          import pathlib
-          import sys
-
-          sys.path.insert(0, "scripts")
-          from generate_profiles import PROFILE_POLICY_VERSION
-
-          report = json.loads(pathlib.Path("data/profile-intelligence.json").read_text(encoding="utf-8"))
-          assert report["schema_version"] == 1
-          assert report["policy_version"] == PROFILE_POLICY_VERSION, (
-              f'profile-intelligence.json has policy_version={report["policy_version"]!r}, '
-              f'but scripts/generate_profiles.py currently defines PROFILE_POLICY_VERSION='
-              f'{PROFILE_POLICY_VERSION!r}. Regenerate the data, or bump PROFILE_POLICY_VERSION '
-              f'if this is an intentional profile composition change.'
-          )
-          assert report["anomalies"] == []
-
-          order = ("minimal", "performance", "balanced", "full")
-          for family in (4, 6):
-              previous = None
-              for name in order:
-                  item = report["profiles"][f"{name}-v{family}"]
-                  assert item["prefixes"] > 0
-                  assert item["coverage_ips"] > 0
-                  assert item["coverage_per_prefix"] > 0
-                  if previous is not None:
-                      assert item["is_superset"] is True
-                  previous = item
-
-          stable = report["stability_profile"]["profiles"]
-          for family in (4, 6):
-              item = stable[f"stable-v{family}"]
-              assert item["bootstrap"] in {True, False}
-              assert item["previous_coverage_ips"] >= item["retained_coverage_ips"]
-              if not item["bootstrap"]:
-                  assert item["retention_coverage_ratio"] is not None
-          print("Profile intelligence: PASS")
-          PY
+        run: python scripts/validate_profiles.py
 
       - name: Collect source manifest
         run: python scripts/fetch_sources.py
@@ -172,114 +108,7 @@ jobs:
         run: python scripts/release_notes.py
 
       - name: Validate generated data
-        run: |
-          python - <<'PY'
-          import hashlib
-          import ipaddress
-          import json
-          import pathlib
-
-          d = pathlib.Path("data")
-          assert (d / "all-cloud-v4.txt").stat().st_size > 0
-          assert (d / "all-cloud-v6.txt").exists()
-          assert (d / "asn-all-v4.txt").stat().st_size > 0
-          assert (d / "asn-all-v6.txt").exists()
-
-          # CIDR-format checks (duplicates, IP version, global-only, prefix
-          # length) live in scripts/validate_subscriptions.py, run later in
-          # this same workflow ("Validate generated data with shared
-          # validator") and reused by ip-consistency.yml / subscription-health.yml.
-          # Keeping a second, inline copy of those same checks here just
-          # means every rule change has to be made twice -- see the
-          # policy_version/PROFILE_POLICY_VERSION mismatch that held
-          # publication for two days for what that costs in practice.
-
-          cfg = json.loads(pathlib.Path("config/providers.json").read_text(encoding="utf-8"))
-          provider_names = set(cfg["providers"])
-          generated_names = {p.name[:-7] for p in d.glob("*-v4.txt") if p.name not in ("all-cloud-v4.txt", "asn-all-v4.txt", "asn-confirmed-v4.txt")}
-          assert generated_names == provider_names, f"provider files mismatch: generated={sorted(generated_names)} config={sorted(provider_names)}"
-          for obsolete in ("cdn-cloud-v4.txt", "cdn-cloud-v6.txt", "dpi-recommended-v4.txt", "dpi-recommended-v6.txt", "lite-v4.txt", "lite-v6.txt"):
-              assert not (d / obsolete).exists(), f"obsolete file remains: {obsolete}"
-          required_profiles = [
-              "full-v4.txt", "full-v6.txt",
-              "performance-v4.txt", "performance-v6.txt",
-              "balanced-v4.txt", "balanced-v6.txt",
-              "minimal-v4.txt", "minimal-v6.txt",
-              "stable-v4.txt", "stable-v6.txt",
-              "cdn-v4.txt", "cdn-v6.txt",
-              "cloud-v4.txt", "cloud-v6.txt",
-              "video-v4.txt", "video-v6.txt",
-              "vpn-v4.txt", "vpn-v6.txt",
-          ]
-          for name in required_profiles:
-              p = d / "presets" / name
-              assert p.exists() and p.stat().st_size > 0, f"missing/empty profile: {name}"
-
-          summary = json.loads((d / "change-summary.json").read_text(encoding="utf-8"))
-          assert isinstance(summary.get("datasets"), dict)
-          notes = (d / "release-notes.md").read_text(encoding="utf-8")
-          assert notes.startswith("## Subscription update — v")
-
-          m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
-          assert m["global_only"] is True
-          assert m["engine"] == "final-v44-source-fusion-ipverse"
-          assert m.get("min_provider_prefixes") is None
-          assert m.get("max_provider_prefixes") is None
-          audit = json.loads((d / "source-audit.json").read_text(encoding="utf-8"))
-          assert audit.get("method", "").startswith("exact merged address-space")
-          assert isinstance(audit.get("providers"), list)
-          assert isinstance(audit.get("sources"), dict)
-
-          network = json.loads((d / "network-evidence.json").read_text(encoding="utf-8"))
-          assert network["schema_version"] == 1
-          assert network["policy"]["rpki_invalid_deletes_prefix"] is False
-          assert network["policy"]["bgp_absence_deletes_prefix"] is False
-          assert network["policy"]["irr_absence_deletes_prefix"] is False
-          assert network["queried"] <= network["policy"]["max_prefixes"]
-          assert isinstance(network.get("evidence"), list)
-
-          intelligence = json.loads((d / "source-intelligence.json").read_text(encoding="utf-8"))
-          assert intelligence["schema_version"] == 2
-          assert intelligence["policy"]["mutates_subscriptions"] is False
-          assert intelligence["policy"]["source_failure_replaces_data"] is False
-          assert intelligence["change_policy"]["min_confirming_sources"] == 2
-          assert intelligence["change_policy"]["confirmed_changes_are_not_auto_published"] is True
-          assert intelligence["change_policy"]["coverage_metric"] == "exact_union_address_space"
-          assert isinstance(intelligence.get("sources"), list)
-          assert isinstance(intelligence.get("providers"), dict)
-          assert isinstance(intelligence.get("anomalies"), list)
-          assert isinstance(intelligence.get("prefix_evidence"), list)
-          for provider, item in intelligence["providers"].items():
-              assert set(item["coverage"]) == {"ipv4", "ipv6"}, provider
-              assert all(isinstance(item["coverage"][family], int) and item["coverage"][family] >= 0 for family in ("ipv4", "ipv6"))
-          for evidence in intelligence["prefix_evidence"]:
-              assert evidence["source_count"] == len(evidence["sources"])
-              assert evidence["status"] in {"confirmed", "single_source"}
-          for source in intelligence["sources"]:
-              assert 0 <= source["reliability_score"] <= 100
-
-          history_path = d / "source-intelligence-history.json"
-          assert history_path.exists()
-          history = json.loads(history_path.read_text(encoding="utf-8"))
-          assert isinstance(history, list) and len(history) <= 30
-
-          overlaps = json.loads((d / "provider-overlaps.json").read_text(encoding="utf-8"))
-          assert isinstance(overlaps.get("entries"), list)
-          assert overlaps.get("exact_cross_provider_overlaps", 0) >= 0
-          assert m["min_prefixlen"] == {"ipv4": 8, "ipv6": 16}
-          assert m["aggregate"]["ipv4"] > 0
-          assert m["aggregate"]["ipv6"] >= 0
-
-          checks = (d / "checksums.sha256").read_text(encoding="utf-8").splitlines()
-          assert checks
-          for row in checks:
-              digest, rel = row.split("  ", 1)
-              p = pathlib.Path(rel)
-              assert p.exists(), rel
-              assert hashlib.sha256(p.read_bytes()).hexdigest() == digest, f"checksum mismatch: {rel}"
-
-          print("Validation OK: syntax, CIDR uniqueness, provider coverage, profiles, checksums and overlap audit")
-          PY
+        run: python scripts/validate_generated_data.py
 
       - name: Validate generated data with shared validator
         run: python scripts/validate_subscriptions.py
@@ -298,13 +127,7 @@ jobs:
             --max-drop "$MAX_DATASET_DROP" \
             --max-coverage-drop "$MAX_DATASET_COVERAGE_DROP" \
             --report data/rollback-report.json
-          python - <<'PY'
-          import json, pathlib
-          p = pathlib.Path("data/rollback-report.json")
-          report = json.loads(p.read_text(encoding="utf-8"))
-          assert not report.get("guarded"), "publication held by rollback guard"
-          print("Autonomous safety gate: PASS")
-          PY
+          python scripts/validate_rollback_report.py
 
       - name: Generate update report
         run: python scripts/update_report.py
@@ -313,26 +136,7 @@ jobs:
         run: python scripts/generate_statistics.py
 
       - name: Validate README statistics
-        run: |
-          python - <<'PY'
-          import json
-          import pathlib
-          import re
-
-          stats = json.loads(pathlib.Path("data/statistics.json").read_text(encoding="utf-8"))
-          readme = pathlib.Path("README.md").read_text(encoding="utf-8")
-          block = re.search(
-              r"<!-- AUTO-STATS:START -->.*?<!-- AUTO-STATS:END -->",
-              readme,
-              re.DOTALL,
-          )
-          assert block, "README AUTO-STATS block is missing"
-          assert "Актуальная статистика" in block.group(0)
-          assert stats["source_of_truth"] == "published normalized CIDR files"
-          for name in ("full-v4", "full-v6", "balanced-v4", "balanced-v6", "minimal-v4", "minimal-v6"):
-              assert name in stats["profiles"], name
-              assert stats["profiles"][name]["cidr_count"] > 0, name
-          print("README statistics: PASS")
+        run: python scripts/validate_generated_data.py --include-readme-statistics
 
       - name: Generate source health report
         run: python scripts/generate_health.py
@@ -359,11 +163,60 @@ jobs:
       - name: Show summary
         run: cat data/last-update.txt
 
-      - name: Commit generated lists
-        if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
+      - name: Upload validated publication bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-publication-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            data/**
+            README.md
+            UPDATE_REPORT.md
+            CHANGELOG.md
+            HEALTH.md
+
+  publish:
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
+    needs: update
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Download validated publication bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-publication-${{ github.sha }}
+          path: publication
+
+      - name: Create automatic rollback backup
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
+          backup_ref="refs/heads/backup/pre-update"
+          git fetch origin "$backup_ref" || true
+          git push origin "HEAD:${backup_ref}" --force-with-lease
+          echo "Rollback backup updated to $(git rev-parse HEAD)"
+
+      - name: Apply validated publication bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -a --delete publication/data/ data/
+          cp publication/README.md README.md
+          cp publication/UPDATE_REPORT.md UPDATE_REPORT.md
+          cp publication/CHANGELOG.md CHANGELOG.md
+          cp publication/HEALTH.md HEALTH.md
+
+      - name: Commit generated lists
+        shell: bash
+        run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/ README.md UPDATE_REPORT.md CHANGELOG.md HEALTH.md
@@ -374,12 +227,10 @@ jobs:
           git commit -m "chore: update provider subscriptions"
 
           tag="data-$(date -u +%Y%m%d-%H%M)"
-
           for attempt in 1 2 3 4 5; do
             if git push; then
               echo "Push succeeded on attempt ${attempt}."
-              if git tag -a "$tag" -m "Automated subscription update $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-                 && git push origin "$tag"; then
+              if git tag -a "$tag" -m "Automated subscription update $(date -u +%Y-%m-%dT%H:%M:%SZ)"                  && git push origin "$tag"; then
                 echo "Tagged as ${tag}."
               else
                 echo "::warning::Could not create/push tag ${tag}; data was published successfully regardless."

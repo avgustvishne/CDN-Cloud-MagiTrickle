@@ -26,7 +26,13 @@ REQUIRED = {
     "conditional publish": 'git commit -m "chore: update provider subscriptions"',
     "main-only automatic push": "branches: [main]",
     "automatic statistics": "python scripts/generate_statistics.py",
-    "README statistics validation": "Validate README statistics",
+    "README statistics validation": "python scripts/validate_generated_data.py --include-readme-statistics",
+    "central generated-data validation": "python scripts/validate_generated_data.py",
+    "central profile validation": "python scripts/validate_profiles.py",
+    "central checksum generation": "python scripts/refresh_checksums.py",
+    "central rollback report validation": "python scripts/validate_rollback_report.py",
+    "isolated publication job": "  publish:\n",
+    "pinned Python minor": 'python-version: "3.12"',
 }
 STABLE_REQUIRED = {
     "stable checksum refresh": "data/checksums.sha256",
@@ -53,6 +59,8 @@ missing = [name for name, token in REQUIRED.items() if token not in TEXT]
 missing_status = [name for name, token in STATUS_REQUIRED.items() if token not in STATUS_TEXT]
 missing_stable = [name for name, token in STABLE_REQUIRED.items() if token not in STABLE_TEXT]
 forbidden = [name for name, token in FORBIDDEN.items() if token in TEXT or token in STATUS_TEXT]
+if "python - <<'PY'" in TEXT:
+    forbidden.append("inline Python workflow blocks")
 
 if missing or missing_status or missing_stable or forbidden:
     if missing:
