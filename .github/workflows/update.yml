@@ -202,7 +202,7 @@ jobs:
         run: |
           set -euo pipefail
           test -f publication/data/publication-metadata.json
-          source_sha="$(python -c 'import json; print(json.load(open("publication/data/publication-metadata.json"))["source_sha"])' )"
+          source_sha="$(jq -r .source_sha publication/data/publication-metadata.json)"
           test "$source_sha" = "$GITHUB_SHA" || {
             echo "::error::Publication artifact was generated from a different commit ($source_sha != $GITHUB_SHA)."
             exit 1
