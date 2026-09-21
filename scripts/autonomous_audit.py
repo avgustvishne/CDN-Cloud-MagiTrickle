@@ -53,7 +53,7 @@ missing_status = [name for name, token in STATUS_REQUIRED.items() if token not i
 missing_stable = [name for name, token in STABLE_REQUIRED.items() if token not in STABLE_TEXT]
 forbidden = [name for name, token in FORBIDDEN.items() if token in TEXT or token in STATUS_TEXT]
 
-if missing or missing_status or forbidden:
+if missing or missing_status or missing_stable or forbidden:
     if missing:
         print("Missing automation gates:", ", ".join(missing))
     if missing_status:
