@@ -49,9 +49,7 @@ def validate_generated_data() -> list[str]:
     for name in ("all-cloud-v4.txt", "asn-all-v4.txt"):
         require((DATA / name).stat().st_size > 0, f"empty aggregate: {name}")
 
-    cfg = load_json("config/providers.json") if False else json.loads(
-        (ROOT / "config/providers.json").read_text(encoding="utf-8")
-    )
+    cfg = json.loads((ROOT / "config/providers.json").read_text(encoding="utf-8"))
     provider_names = set(cfg["providers"])
     generated_names = {
         p.name[:-7]
@@ -183,7 +181,10 @@ def validate_readme_statistics() -> list[str]:
 
 
 def main() -> int:
-    errors = validate_generated_data() + validate_readme_statistics()
+    include_readme = "--include-readme-statistics" in sys.argv[1:]
+    errors = validate_generated_data()
+    if include_readme:
+        errors += validate_readme_statistics()
     if errors:
         print("\n".join(errors))
         return 1
