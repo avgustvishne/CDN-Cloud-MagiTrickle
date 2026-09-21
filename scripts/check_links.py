@@ -27,9 +27,14 @@ for url in urls:
         continue
     rel = url[len(BASE):].split("?", 1)[0].split("#", 1)[0]
     target = Path(rel)
-    local_targets[url] = target.is_file()
-    if not target.is_file():
-        bad.append((url, f"missing repository file in checkout: {rel}"))
+
+    # On pull requests the README still points at main, while the proposed
+    # file may exist only on the PR branch (or be intentionally deleted there).
+    # The branch-aware network check below is the source of truth in that case.
+    if EVENT != "pull_request":
+        local_targets[url] = target.is_file()
+        if not target.is_file():
+            bad.append((url, f"missing repository file in checkout: {rel}"))
 
 def check(url):
     check_url = CHECK_BASE + url[len(BASE):] if url.startswith(BASE) and CHECK_BASE != BASE else url
