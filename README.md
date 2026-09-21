@@ -50,20 +50,20 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
-| **FULL** | **17 551 CIDR** | **5 316 CIDR** |
-| **BALANCED** | **9 241 CIDR** | **3 110 CIDR** |
+| **FULL** | **17 551 CIDR** | **5 312 CIDR** |
+| **BALANCED** | **9 241 CIDR** | **3 106 CIDR** |
 | **PERFORMANCE** | **2 098 CIDR** | **690 CIDR** |
 | **MINIMAL** | **1 855 CIDR** | **675 CIDR** |
 | **STABLE** | **17 471 CIDR** | **5 264 CIDR** |
 | **CDN** | **1 855 CIDR** | **675 CIDR** |
 | **CLOUD** | **8 987 CIDR** | **2 295 CIDR** |
 | **VIDEO** | **7 354 CIDR** | **2 068 CIDR** |
-| **VPN** | **8 290 CIDR** | **2 706 CIDR** |
+| **VPN** | **8 290 CIDR** | **2 702 CIDR** |
 | **MESSAGING** | **19 CIDR** | **8 CIDR** |
-| **ASN ALL** | **12 614 CIDR** | **6 022 CIDR** |
+| **ASN ALL** | **12 614 CIDR** | **6 018 CIDR** |
 | **ALL-CLOUD** | **8 987 CIDR** | **2 308 CIDR** |
 
-**Обновлено:** 2026-09-21T18:43:47Z · [полная статистика](data/statistics.json) · [живой дашборд](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/)
+**Обновлено:** 2026-09-21T20:22:24Z · [полная статистика](data/statistics.json) · [живой дашборд](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/)
 
 > Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
