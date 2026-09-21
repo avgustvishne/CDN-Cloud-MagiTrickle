@@ -33,11 +33,11 @@
 | Видео/CDN | **VIDEO** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
 | VPN/VPS | **VPN** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
 | Все собранные ASN | **ASN ALL** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt) |
+| Telegram + Twitter/X | **MESSAGING** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/messaging-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/messaging-v6.txt) |
 | Тот же набор, что FULL, но обновляется раз в неделю | **STABLE** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/stable-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/stable-v6.txt) |
 
 **FULL** включает все настроенные провайдеры. **ALL-CLOUD** — отдельный агрегат для AWS, Cloudflare, Microsoft, Oracle, Alibaba и DigitalOcean; он намеренно отличается от FULL. **STABLE** — это те же данные, что в FULL, просто публикуются раз в неделю (по воскресеньям), а не дважды в сутки — для роутеров/прошивок, где частая перезагрузка правил маршрутизации нежелательна.
 
-> **MESSAGING (Telegram + Twitter/X)** временно убран из этой таблицы: провайдерские файлы для Telegram/Twitter ещё ни разу не были успешно опубликованы (`data/telegram-v4.txt`/`twitter-v4.txt` отсутствуют), и держать в README ссылку на несуществующий файл ломает `check_links.py` на каждом прогоне. Вернём строку в таблицу, как только пайплайн один раз успешно сгенерирует реальные данные для обоих провайдеров.
 
 ## Как использовать
 
@@ -50,14 +50,22 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
-| **FULL** | **17 471 CIDR** | **5 264 CIDR** |
-| **PERFORMANCE** | **8 499 CIDR** | **1 516 CIDR** |
-| **BALANCED** | **15 322 CIDR** | **4 696 CIDR** |
-| **MINIMAL** | **8 242 CIDR** | **2 763 CIDR** |
-| **ASN ALL** | **12 601 CIDR** | **5 963 CIDR** |
-| **ALL-CLOUD** | **17 471 CIDR** | **5 264 CIDR** |
+| **FULL** | **17 542 CIDR** | **5 291 CIDR** |
+| **BALANCED** | **9 235 CIDR** | **3 081 CIDR** |
+| **PERFORMANCE** | **2 093 CIDR** | **690 CIDR** |
+| **MINIMAL** | **1 850 CIDR** | **675 CIDR** |
+| **STABLE** | **17 471 CIDR** | **5 264 CIDR** |
+| **CDN** | **1 850 CIDR** | **675 CIDR** |
+| **CLOUD** | **8 983 CIDR** | **2 299 CIDR** |
+| **VIDEO** | **7 346 CIDR** | **2 072 CIDR** |
+| **VPN** | **8 288 CIDR** | **2 677 CIDR** |
+| **MESSAGING** | **19 CIDR** | **8 CIDR** |
+| **ASN ALL** | **12 601 CIDR** | **5 997 CIDR** |
+| **ALL-CLOUD** | **8 983 CIDR** | **2 312 CIDR** |
 
-**Обновлено:** `2026-09-18T04:45:09Z` · [полная статистика](data/statistics.json)
+**Обновлено:** 2026-09-21T12:59:30Z · [полная статистика](data/statistics.json) · [живой дашборд](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/)
+
+> Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
 
 ## Провайдеры
