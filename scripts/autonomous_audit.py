@@ -22,6 +22,9 @@ REQUIRED = {
     "failure notification": "Autonomous failure notification",
     "failure summary": "GITHUB_STEP_SUMMARY",
     "conditional publish": 'git commit -m "chore: update provider subscriptions"',
+    "main-only automatic push": "branches: [main]",
+    "automatic statistics": "python scripts/generate_statistics.py",
+    "README statistics validation": "Validate README statistics",
 }
 STATUS_REQUIRED = {
     "status schedule": "schedule:",
