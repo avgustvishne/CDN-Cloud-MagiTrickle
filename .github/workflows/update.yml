@@ -11,6 +11,12 @@ on:
         required: false
         default: true
         type: boolean
+  pull_request:
+    branches: [main]
+    paths:
+      - "config/providers.json"
+      - "config/source_registry.json"
+      - "scripts/**"
   push:
     branches: [main]
     paths:
@@ -353,7 +359,7 @@ jobs:
         run: cat data/last-update.txt
 
       - name: Commit generated lists
-        if: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run == false }}
+        if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
         shell: bash
         run: |
           set -e
