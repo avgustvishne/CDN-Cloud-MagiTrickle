@@ -27,7 +27,7 @@ on:
       - "scripts/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: magitrickle-subscriptions
@@ -37,6 +37,8 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -54,19 +56,6 @@ jobs:
 
       - name: Run generator unit tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
-
-      - name: Create automatic rollback backup
-        if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          backup_ref="refs/heads/backup/pre-update"
-          git fetch origin "$backup_ref" || true
-          if git show-ref --verify --quiet "refs/remotes/origin/backup/pre-update"; then
-            git update-ref refs/heads/backup/pre-update "refs/remotes/origin/backup/pre-update"
-          fi
-          git push origin "HEAD:${backup_ref}" --force-with-lease
-          echo "Rollback backup updated to $(git rev-parse HEAD)"
 
       - name: Snapshot current subscriptions
         run: |
@@ -180,11 +169,60 @@ jobs:
       - name: Show summary
         run: cat data/last-update.txt
 
-      - name: Commit generated lists
-        if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
+      - name: Upload validated publication bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-publication-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            data/**
+            README.md
+            UPDATE_REPORT.md
+            CHANGELOG.md
+            HEALTH.md
+
+  publish:
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.dry_run == false) }}
+    needs: update
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Download validated publication bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-publication-${{ github.sha }}
+          path: publication
+
+      - name: Create automatic rollback backup
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
+          backup_ref="refs/heads/backup/pre-update"
+          git fetch origin "$backup_ref" || true
+          git push origin "HEAD:${backup_ref}" --force-with-lease
+          echo "Rollback backup updated to $(git rev-parse HEAD)"
+
+      - name: Apply validated publication bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -a --delete publication/data/ data/
+          cp publication/README.md README.md
+          cp publication/UPDATE_REPORT.md UPDATE_REPORT.md
+          cp publication/CHANGELOG.md CHANGELOG.md
+          cp publication/HEALTH.md HEALTH.md
+
+      - name: Commit generated lists
+        shell: bash
+        run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/ README.md UPDATE_REPORT.md CHANGELOG.md HEALTH.md
@@ -195,12 +233,10 @@ jobs:
           git commit -m "chore: update provider subscriptions"
 
           tag="data-$(date -u +%Y%m%d-%H%M)"
-
           for attempt in 1 2 3 4 5; do
             if git push; then
               echo "Push succeeded on attempt ${attempt}."
-              if git tag -a "$tag" -m "Automated subscription update $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-                 && git push origin "$tag"; then
+              if git tag -a "$tag" -m "Automated subscription update $(date -u +%Y-%m-%dT%H:%M:%SZ)"                  && git push origin "$tag"; then
                 echo "Tagged as ${tag}."
               else
                 echo "::warning::Could not create/push tag ${tag}; data was published successfully regardless."
