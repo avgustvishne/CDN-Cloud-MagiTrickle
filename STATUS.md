@@ -28,9 +28,9 @@ contabo,250,2,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 scaleway,11,1,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 gcore,530,223,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 backblaze,5,1,static+cloud-ip-ranges,OK,0,0,0`  
-**Отчёт сформирован:** `2026-09-20T19:25:45Z`  
-**Исходный commit:** `d45f2342df1063d69022b12d6a68e556535d1fbc`  
-**Последний известный рабочий commit:** `d45f2342df1063d69022b12d6a68e556535d1fbc`
+**Отчёт сформирован:** `2026-09-21T05:29:15Z`  
+**Исходный commit:** `7c109f15796f93080149a4830188d69d830d6219`  
+**Последний известный рабочий commit:** `7913f25344a11386a16b537e27c293c45c2b9ec9`
 
 ## Данные
 
