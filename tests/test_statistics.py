@@ -79,6 +79,39 @@ class StatisticsTests(unittest.TestCase):
         self.assertIn("2026-09-21T00:00:00Z", text)
         self.assertNotIn("old", text)
 
+    def test_update_readme_publishes_messaging_row_when_files_exist(self):
+        with tempfile.TemporaryDirectory() as td:
+            readme = Path(td) / "README.md"
+            readme.write_text(
+                "| Тот же набор, что FULL, но обновляется раз в неделю | **STABLE** | stable4 | stable6 |\n"
+                "> **MESSAGING (Telegram + Twitter/X)** временно убран из этой таблицы: old note\n",
+                encoding="utf-8",
+            )
+            original = self.stats.README
+            self.stats.README = readme
+            try:
+                stats = {
+                    "generated_at": "2026-09-21T00:00:00Z",
+                    "files": {
+                        "data/presets/messaging-v4.txt": {"cidr_count": 19},
+                        "data/presets/messaging-v6.txt": {"cidr_count": 8},
+                    },
+                    "profiles": {},
+                    "datasets": {
+                        "asn_all": {"ipv4": 1, "ipv6": 2},
+                        "all_cloud": {"ipv4": 3, "ipv6": 4},
+                    },
+                }
+                self.stats.update_readme(stats)
+                text = readme.read_text(encoding="utf-8")
+            finally:
+                self.stats.README = original
+
+        self.assertIn("| Telegram + Twitter/X | **MESSAGING** |", text)
+        self.assertIn("messaging-v4.txt", text)
+        self.assertNotIn("old note", text)
+
+
     def test_update_readme_adds_block_when_missing(self):
         with tempfile.TemporaryDirectory() as td:
             readme = Path(td) / "README.md"
