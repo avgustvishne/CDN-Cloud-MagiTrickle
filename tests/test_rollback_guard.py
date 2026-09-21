@@ -1,6 +1,8 @@
+import tempfile
+import pathlib
 import unittest
 
-from scripts.rollback_guard import VALIDATION_ONLY, address_coverage, dataset_metrics
+from scripts.rollback_guard import VALIDATION_ONLY, address_coverage, dataset_metrics, files
 
 
 class RollbackCoverageTests(unittest.TestCase):
@@ -23,6 +25,19 @@ class RollbackCoverageTests(unittest.TestCase):
         self.assertEqual(metrics["coverage"]["4"]["previous"], 256)
         self.assertEqual(metrics["coverage"]["4"]["current"], 256)
         self.assertEqual(metrics["coverage"]["4"]["drop_percent"], 0)
+
+
+    def test_derived_profiles_are_not_independent_rollback_inputs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "cloudflare-v4.txt").write_text("1.1.1.0/24\n", encoding="utf-8")
+            (root / "full-v4.txt").write_text("1.1.1.0/24\n", encoding="utf-8")
+            (root / "presets").mkdir()
+            (root / "presets" / "minimal-v6.txt").write_text("2001:db8::/32\n", encoding="utf-8")
+            guarded = {p.as_posix() for p in files(root)}
+            self.assertIn((root / "cloudflare-v4.txt").as_posix(), guarded)
+            self.assertNotIn((root / "full-v4.txt").as_posix(), guarded)
+            self.assertNotIn((root / "presets" / "minimal-v6.txt").as_posix(), guarded)
 
     def test_real_address_space_loss_is_detected(self):
         previous = "10.0.0.0/24\n"
