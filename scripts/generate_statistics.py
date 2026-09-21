@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""Generate machine-readable CIDR statistics and refresh README counts."""
+"""Generate machine-readable CIDR statistics and refresh the README."""
 import datetime
 import ipaddress
 import json
 import pathlib
-import re
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 README = ROOT / "README.md"
 STATS = DATA / "statistics.json"
+
+PROFILE_ORDER = (
+    "full", "balanced", "performance", "minimal", "stable",
+    "cdn", "cloud", "video", "vpn", "messaging",
+)
+
 
 def read_cidrs(path):
     values = []
@@ -23,6 +28,7 @@ def read_cidrs(path):
             continue
     return values
 
+
 def file_stats(path):
     networks = read_cidrs(path)
     v4 = [n for n in networks if n.version == 4]
@@ -35,34 +41,48 @@ def file_stats(path):
         "ipv6_coverage": sum(n.num_addresses for n in v6),
     }
 
+
 def human_count(value):
     return "{:,}".format(value).replace(",", " ")
 
+
 def collect():
-    generated_at = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    generated_at = (
+        datetime.datetime.now(datetime.timezone.utc)
+        .replace(microsecond=0)
+        .isoformat()
+        .replace("+00:00", "Z")
+    )
     files = {}
+
     for path in sorted(DATA.glob("*.txt")):
         if path.name == "last-update.txt":
             continue
         files[path.relative_to(ROOT).as_posix()] = file_stats(path)
-    for path in sorted((DATA / "presets").glob("*.txt")):
-        files[path.relative_to(ROOT).as_posix()] = file_stats(path)
-    providers = {}
+
+    presets = DATA / "presets"
+    if presets.exists():
+        for path in sorted(presets.glob("*.txt")):
+            files[path.relative_to(ROOT).as_posix()] = file_stats(path)
+
     config = json.loads((ROOT / "config" / "providers.json").read_text(encoding="utf-8"))
+    providers = {}
     for name in config.get("providers", {}):
         key = name.lower()
         providers[key] = {}
-        for af in ("v4", "v6"):
-            rel = "data/{}-{}.txt".format(key, af)
+        for family in (4, 6):
+            rel = "data/{}-v{}.txt".format(key, family)
             if rel in files:
-                providers[key]["ipv{}".format(4 if af == "v4" else 6)] = files[rel]["cidr_count"]
+                providers[key]["ipv{}".format(family)] = files[rel]["cidr_count"]
+
     profiles = {}
     for path, info in files.items():
-        if path.startswith("data/presets/"):
+        if path.startswith("data/presets/") and path.endswith(".txt"):
             profiles[path.rsplit("/", 1)[-1][:-4]] = info
+
     return {
         "schema_version": 1,
-        "engine": 44,
+        "engine": 45,
         "generated_at": generated_at,
         "source_of_truth": "published normalized CIDR files",
         "files": files,
@@ -80,82 +100,82 @@ def collect():
         },
     }
 
+
 def update_readme(stats):
     text = README.read_text(encoding="utf-8")
-    changed = 0
-    counts = {pathlib.PurePosixPath(path).name: info["cidr_count"] for path, info in stats["files"].items()}
 
-    pattern = re.compile(
-        r"(\*\*)[0-9][0-9 ]*(?: CIDR)(\*\*\s*·\s*\[(?:IPv4|IPv6)\]\()"
-        r"(https://raw\.githubusercontent\.com/avgustvishne/CDN-Cloud-MagiTrickle/main/(?:data/)?(?:presets/)?([^/)]+\.txt))"
-    )
-
-    def repl(match):
-        nonlocal changed
-        filename = match.group(4)
-        if filename not in counts:
-            return match.group(0)
-        changed += 1
-        return "{}{} CIDR{}{}".format(match.group(1), human_count(counts[filename]), match.group(2), match.group(3))
-
-    text = pattern.sub(repl, text)
+    rows = []
+    for profile in PROFILE_ORDER:
+        v4 = stats["profiles"].get("{}-v4".format(profile))
+        v6 = stats["profiles"].get("{}-v6".format(profile))
+        if not v4 and not v6:
+            continue
+        rows.append(
+            "| **{}** | **{} CIDR** | **{} CIDR** |".format(
+                profile.upper(),
+                human_count(v4["cidr_count"] if v4 else 0),
+                human_count(v6["cidr_count"] if v6 else 0),
+            )
+        )
 
     datasets = stats["datasets"]
-    generated_at = stats["generated_at"]
-    block = "\n".join([
-        "<!-- AUTO-STATS:START -->",
-        "## 📊 Актуальная статистика",
-        "",
-        "| Набор | IPv4 | IPv6 |",
-        "|---|---:|---:|",
-        "| **FULL** | **{} CIDR** | **{} CIDR** |".format(human_count(stats["profiles"].get("full-v4", {}).get("cidr_count", 0)), human_count(stats["profiles"].get("full-v6", {}).get("cidr_count", 0))),
-        "| **PERFORMANCE** | **{} CIDR** | **{} CIDR** |".format(human_count(stats["profiles"].get("performance-v4", {}).get("cidr_count", 0)), human_count(stats["profiles"].get("performance-v6", {}).get("cidr_count", 0))),
-        "| **BALANCED** | **{} CIDR** | **{} CIDR** |".format(human_count(stats["profiles"].get("balanced-v4", {}).get("cidr_count", 0)), human_count(stats["profiles"].get("balanced-v6", {}).get("cidr_count", 0))),
-        "| **MINIMAL** | **{} CIDR** | **{} CIDR** |".format(human_count(stats["profiles"].get("minimal-v4", {}).get("cidr_count", 0)), human_count(stats["profiles"].get("minimal-v6", {}).get("cidr_count", 0))),
-        "| **ASN ALL** | **{} CIDR** | **{} CIDR** |".format(human_count(datasets["asn_all"]["ipv4"]), human_count(datasets["asn_all"]["ipv6"])),
-        "| **ALL-CLOUD** | **{} CIDR** | **{} CIDR** |".format(human_count(datasets["all_cloud"]["ipv4"]), human_count(datasets["all_cloud"]["ipv6"])),
-        "",
-        "**Обновлено:** `{}` · [полная статистика](data/statistics.json) · [живой дашборд](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/)".format(generated_at),
-        "",
-        "> Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.",
-        "<!-- AUTO-STATS:END -->",
-    ])
+    rows.extend(
+        [
+            "| **ASN ALL** | **{} CIDR** | **{} CIDR** |".format(
+                human_count(datasets["asn_all"]["ipv4"]),
+                human_count(datasets["asn_all"]["ipv6"]),
+            ),
+            "| **ALL-CLOUD** | **{} CIDR** | **{} CIDR** |".format(
+                human_count(datasets["all_cloud"]["ipv4"]),
+                human_count(datasets["all_cloud"]["ipv6"]),
+            ),
+        ]
+    )
 
-    stats_pattern = re.compile(r"<!-- AUTO-STATS:START -->.*?<!-- AUTO-STATS:END -->", re.DOTALL)
-    if stats_pattern.search(text):
-        new_text = stats_pattern.sub(block, text, count=1)
-        if new_text != text:
-            text = new_text
-            changed += 1
+    block = "\n".join(
+        [
+            "<!-- AUTO-STATS:START -->",
+            "## 📊 Актуальная статистика",
+            "",
+            "| Набор | IPv4 | IPv6 |",
+            "|---|---:|---:|",
+            *rows,
+            "",
+            "**Обновлено:** {} · [полная статистика](data/statistics.json) · [живой дашборд](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/)".format(
+                stats["generated_at"]
+            ),
+            "",
+            "> Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.",
+            "<!-- AUTO-STATS:END -->",
+        ]
+    )
+
+    start = "<!-- AUTO-STATS:START -->"
+    end = "<!-- AUTO-STATS:END -->"
+    if start in text and end in text:
+        prefix, remainder = text.split(start, 1)
+        _, suffix = remainder.split(end, 1)
+        new_text = prefix + block + suffix
     else:
         marker = "## 🔄 Обновление\n"
         if marker in text:
-            text = text.replace(marker, block + "\n\n" + marker, 1)
+            new_text = text.replace(marker, block + "\n\n" + marker, 1)
         else:
-            text += "\n\n" + block + "\n"
-        changed += 1
+            new_text = text.rstrip() + "\n\n" + block + "\n"
 
-    marker = "## 🔄 Обновление\n"
-    if marker in text:
-        line = "\nДанные и количество CIDR обновляются автоматически после успешной генерации и проверок. Последняя генерация: `{}`. [Машиночитаемая статистика](data/statistics.json).\n\n".format(generated_at)
-        start = text.index(marker) + len(marker)
-        end = text.find("\n\n", start)
-        if end == -1:
-            end = start
-        current = text[start:end]
-        if current != line.rstrip("\n"):
-            text = text[:start] + line + text[end + 2:]
-            changed += 1
+    if new_text != text:
+        README.write_text(new_text, encoding="utf-8")
+        return 1
+    return 0
 
-    if changed:
-        README.write_text(text, encoding="utf-8")
-    return changed
+
 def main():
     stats = collect()
     DATA.mkdir(exist_ok=True)
     STATS.write_text(json.dumps(stats, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print("Statistics generated: {}".format(STATS))
-    print("README dynamic count updates: {}".format(update_readme(stats)))
+    print("README statistics refreshed: {}".format(update_readme(stats)))
+
 
 if __name__ == "__main__":
     main()
