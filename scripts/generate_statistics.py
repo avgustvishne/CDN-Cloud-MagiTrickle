@@ -105,9 +105,10 @@ def update_readme(stats):
     text = README.read_text(encoding="utf-8")
     lines = text.splitlines()
 
+    published_files = stats.get("files", {})
     messaging_ready = (
-        "data/presets/messaging-v4.txt" in stats["files"]
-        and "data/presets/messaging-v6.txt" in stats["files"]
+        "data/presets/messaging-v4.txt" in published_files
+        and "data/presets/messaging-v6.txt" in published_files
     )
     messaging_row = (
         "| Telegram + Twitter/X | **MESSAGING** | "
