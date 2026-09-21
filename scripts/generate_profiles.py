@@ -379,8 +379,8 @@ def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=
     counts = {}
     profile_data = {name: {} for name in PROFILE_ORDER}
     provider_map = {}
-    previous_full = {
-        version: read("full", version, output_dir) for version in (4, 6)
+    previous_stable = {
+        version: read(STABILITY_PROFILE, version, output_dir) for version in (4, 6)
     }
 
     for profile, selected in {**PROFILES, **SPECIAL}.items():
@@ -408,22 +408,18 @@ def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=
             if profile in PROFILE_ORDER:
                 profile_data[profile][version] = result
 
-    # STABLE is deliberately derived from two consecutive FULL snapshots.
-    # It never contains an address that is absent from the current FULL set.
-    # On the first generation there is no baseline, so it bootstraps to FULL.
+    # STABLE is a weekly snapshot. Twice-daily update runs must preserve
+    # the existing snapshot; the dedicated stable-release workflow refreshes it
+    # from FULL once a week. If no snapshot exists yet, bootstrap it from FULL.
     stable_metrics = {}
     for version in (4, 6):
         current_full = profile_data["full"][version]
-        baseline = previous_full[version]
-        stable = collapse(
-            current_full if not baseline else _intersect_networks(
-                current_full, baseline, version
-            ),
-            version,
-        )
+        baseline = previous_stable[version]
+        stable = collapse(baseline if baseline else current_full, version)
         if not stable:
             raise RuntimeError(f"empty profile: {STABILITY_PROFILE}-v{version}")
-        atomic(output_dir / f"{STABILITY_PROFILE}-v{version}.txt", stable)
+        if not baseline:
+            atomic(output_dir / f"{STABILITY_PROFILE}-v{version}.txt", stable)
         counts[f"{STABILITY_PROFILE}-v{version}"] = len(stable)
         stable_metrics[f"{STABILITY_PROFILE}-v{version}"] = profile_stability_metrics(
             current_full, baseline, version
@@ -432,7 +428,7 @@ def generate_profiles(provider_files=None, output_dir=DEFAULT_PRESETS, data_dir=
     report = build_profile_intelligence(profile_data, provider_map, data_dir)
     report["stability_profile"] = {
         "name": STABILITY_PROFILE,
-        "definition": "current FULL intersected with previous FULL; bootstrap uses current FULL",
+        "definition": "weekly snapshot of FULL; twice-daily updates preserve the existing snapshot; bootstrap uses current FULL",
         "profiles": stable_metrics,
     }
     atomic(
