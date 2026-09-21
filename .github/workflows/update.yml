@@ -31,7 +31,7 @@ permissions:
 
 concurrency:
   group: magitrickle-subscriptions
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   update:
@@ -40,8 +40,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.12"
 
@@ -164,7 +164,7 @@ jobs:
         run: cat data/last-update.txt
 
       - name: Upload validated publication bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: generated-publication-${{ github.sha }}
           if-no-files-found: error
@@ -184,12 +184,12 @@ jobs:
       contents: write
     steps:
       - name: Checkout main
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
       - name: Download validated publication bundle
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: generated-publication-${{ github.sha }}
           path: publication
@@ -226,7 +226,7 @@ jobs:
           fi
           git commit -m "chore: update provider subscriptions"
 
-          tag="data-$(date -u +%Y%m%d-%H%M)"
+          tag="data-$(date -u +%Y%m%d-%H%M)-${GITHUB_RUN_ID}"
           for attempt in 1 2 3 4 5; do
             if git push; then
               echo "Push succeeded on attempt ${attempt}."
