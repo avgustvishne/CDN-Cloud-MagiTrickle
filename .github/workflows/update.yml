@@ -207,7 +207,8 @@ jobs:
             echo "::error::Publication artifact was generated from a different commit ($source_sha != $GITHUB_SHA)."
             exit 1
           }
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA" || {
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA" || {
             echo "::error::main advanced after validation; refusing to publish a stale artifact."
             exit 1
           }
@@ -245,26 +246,14 @@ jobs:
           git commit -m "chore: update provider subscriptions"
 
           tag="data-$(date -u +%Y%m%d-%H%M)-${GITHUB_RUN_ID}"
-          for attempt in 1 2 3 4 5; do
-            if git push; then
-              echo "Push succeeded on attempt ${attempt}."
-              if git tag -a "$tag" -m "Automated subscription update $(date -u +%Y-%m-%dT%H:%M:%SZ)"                  && git push origin "$tag"; then
-                echo "Tagged as ${tag}."
-              else
-                echo "::warning::Could not create/push tag ${tag}; data was published successfully regardless."
-              fi
-              exit 0
-            fi
-
-            echo "Push was not a fast-forward; refreshing ${GITHUB_REF_NAME} (attempt ${attempt})."
-            git fetch origin "${GITHUB_REF_NAME}"
-            git rebase "origin/${GITHUB_REF_NAME}" || {
-              git rebase --abort || true
-              echo "Rebase failed on attempt ${attempt}."
-              sleep $((attempt * 2))
-              continue
-            }
-          done
-
-          echo "Unable to push generated data after 5 attempts."
-          exit 1
+          git push origin "HEAD:${GITHUB_REF_NAME}" || {
+            echo "::error::main changed after validation; refusing to rebase or publish a stale artifact."
+            echo "::error::A fresh update run must regenerate and validate the data against the new main."
+            exit 1
+          }
+          if git tag -a "$tag" -m "Automated subscription update $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+              && git push origin "$tag"; then
+            echo "Tagged as $tag."
+          else
+            echo "::warning::Could not create/push tag $tag; data was published successfully regardless."
+          fi
