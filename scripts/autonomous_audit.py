@@ -6,8 +6,10 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/update.yml"
 STATUS_WORKFLOW = ROOT / ".github/workflows/status.yml"
+STABLE_WORKFLOW = ROOT / ".github/workflows/stable-release.yml"
 TEXT = WORKFLOW.read_text(encoding="utf-8")
 STATUS_TEXT = STATUS_WORKFLOW.read_text(encoding="utf-8") if STATUS_WORKFLOW.exists() else ""
+STABLE_TEXT = STABLE_WORKFLOW.read_text(encoding="utf-8") if STABLE_WORKFLOW.exists() else ""
 
 REQUIRED = {
     "scheduled updates": "schedule:",
@@ -26,6 +28,11 @@ REQUIRED = {
     "automatic statistics": "python scripts/generate_statistics.py",
     "README statistics validation": "Validate README statistics",
 }
+STABLE_REQUIRED = {
+    "stable checksum refresh": "data/checksums.sha256 README.md",
+    "stable statistics refresh": "python scripts/generate_statistics.py",
+    "stable validation": "python scripts/validate_subscriptions.py",
+}
 STATUS_REQUIRED = {
     "status schedule": "schedule:",
     "status generator": "python scripts/status_report.py",
@@ -43,6 +50,7 @@ FORBIDDEN = {
 
 missing = [name for name, token in REQUIRED.items() if token not in TEXT]
 missing_status = [name for name, token in STATUS_REQUIRED.items() if token not in STATUS_TEXT]
+missing_stable = [name for name, token in STABLE_REQUIRED.items() if token not in STABLE_TEXT]
 forbidden = [name for name, token in FORBIDDEN.items() if token in TEXT or token in STATUS_TEXT]
 
 if missing or missing_status or forbidden:
@@ -50,11 +58,13 @@ if missing or missing_status or forbidden:
         print("Missing automation gates:", ", ".join(missing))
     if missing_status:
         print("Missing status automation gates:", ", ".join(missing_status))
+    if missing_stable:
+        print("Missing stable automation gates:", ", ".join(missing_stable))
     if forbidden:
         print("Forbidden workflow operations:", ", ".join(forbidden))
     sys.exit(1)
 
 print(
     f"Autonomous audit: PASS ({len(REQUIRED)} update gates, "
-    f"{len(STATUS_REQUIRED)} status gates, {len(FORBIDDEN)} forbidden patterns checked)"
+    f"{len(STATUS_REQUIRED)} status gates, {len(STABLE_REQUIRED)} stable gates, {len(FORBIDDEN)} forbidden patterns checked)"
 )
