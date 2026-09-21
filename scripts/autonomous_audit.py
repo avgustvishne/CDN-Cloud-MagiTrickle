@@ -33,6 +33,8 @@ REQUIRED = {
     "central rollback report validation": "python scripts/validate_rollback_report.py",
     "isolated publication job": "  publish:\n",
     "pinned Python minor": 'python-version: "3.12"',
+    "publication provenance": "python scripts/generate_publication_metadata.py",
+    "stale artifact gate": "Verify publication provenance",
 }
 STABLE_REQUIRED = {
     "stable checksum refresh": "data/checksums.sha256",
@@ -50,6 +52,7 @@ STATUS_REQUIRED = {
 }
 FORBIDDEN = {
     "force push": "git push --force",
+    "floating action refs": "uses: actions/checkout@v7",
     "hard reset": "git reset --hard",
     "unconditional destructive cleanup": "rm -rf data/",
     "issues write permission": "issues: write",
