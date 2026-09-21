@@ -6,11 +6,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "generate_statistics.py"
 
+
 def load_stats():
     spec = importlib.util.spec_from_file_location("generate_statistics", SCRIPT)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
 
 class StatisticsTests(unittest.TestCase):
     @classmethod
@@ -20,7 +22,10 @@ class StatisticsTests(unittest.TestCase):
     def test_file_stats_counts_ipv4_ipv6_and_coverage(self):
         with tempfile.TemporaryDirectory() as td:
             path = Path(td) / "sample.txt"
-            path.write_text("192.0.2.0/24\n2001:db8::/32\n192.0.2.0/24\n", encoding="utf-8")
+            path.write_text(
+                "192.0.2.0/24\n2001:db8::/32\n192.0.2.0/24\n",
+                encoding="utf-8",
+            )
             result = self.stats.file_stats(path)
         self.assertEqual(result["cidr_count"], 3)
         self.assertEqual(result["ipv4_count"], 2)
@@ -31,18 +36,93 @@ class StatisticsTests(unittest.TestCase):
     def test_human_count_uses_space_separator(self):
         self.assertEqual(self.stats.human_count(12478), "12 478")
 
-    def test_readme_pattern_compiles_and_matches_raw_links(self):
-        import re
-        pattern = re.compile(
-            r"(\*\*)[0-9][0-9 ]*(?: CIDR)(\*\*\s*·\s*\[(?:IPv4|IPv6)\]\()"
-            r"(https://raw\.githubusercontent\.com/avgustvishne/CDN-Cloud-MagiTrickle/main/(?:data/)?(?:presets/)?([^/)]+\.txt))"
-        )
-        match = pattern.search(
-            "**12 594 CIDR** · [IPv4](https://raw.githubusercontent.com/"
-            "avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt)"
-        )
-        self.assertIsNotNone(match)
-        self.assertEqual(match.group(4), "asn-all-v4.txt")
+    def test_update_readme_refreshes_all_profile_rows(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            readme = root / "README.md"
+            readme.write_text(
+                "intro\n\n<!-- AUTO-STATS:START -->\nold\n<!-- AUTO-STATS:END -->\n",
+                encoding="utf-8",
+            )
+            original = self.stats.README
+            self.stats.README = readme
+            try:
+                stats = {
+                    "generated_at": "2026-09-21T00:00:00Z",
+                    "profiles": {
+                        "full-v4": {"cidr_count": 17512},
+                        "full-v6": {"cidr_count": 5292},
+                        "balanced-v4": {"cidr_count": 9204},
+                        "balanced-v6": {"cidr_count": 3085},
+                        "minimal-v4": {"cidr_count": 1852},
+                        "minimal-v6": {"cidr_count": 674},
+                        "stable-v4": {"cidr_count": 17512},
+                        "stable-v6": {"cidr_count": 5292},
+                        "messaging-v4": {"cidr_count": 19},
+                        "messaging-v6": {"cidr_count": 8},
+                    },
+                    "datasets": {
+                        "asn_all": {"ipv4": 100, "ipv6": 200},
+                        "all_cloud": {"ipv4": 300, "ipv6": 400},
+                    },
+                }
+                changed = self.stats.update_readme(stats)
+                text = readme.read_text(encoding="utf-8")
+            finally:
+                self.stats.README = original
+
+        self.assertEqual(changed, 1)
+        self.assertIn("**FULL** | **17 512 CIDR** | **5 292 CIDR**", text)
+        self.assertIn("**STABLE** | **17 512 CIDR** | **5 292 CIDR**", text)
+        self.assertIn("**MESSAGING** | **19 CIDR** | **8 CIDR**", text)
+        self.assertIn("**ASN ALL** | **100 CIDR** | **200 CIDR**", text)
+        self.assertIn("2026-09-21T00:00:00Z", text)
+        self.assertNotIn("old", text)
+
+    def test_update_readme_adds_block_when_missing(self):
+        with tempfile.TemporaryDirectory() as td:
+            readme = Path(td) / "README.md"
+            readme.write_text("## 🔄 Обновление\n\ntext\n", encoding="utf-8")
+            original = self.stats.README
+            self.stats.README = readme
+            try:
+                stats = {
+                    "generated_at": "2026-09-21T00:00:00Z",
+                    "profiles": {},
+                    "datasets": {
+                        "asn_all": {"ipv4": 1, "ipv6": 2},
+                        "all_cloud": {"ipv4": 3, "ipv6": 4},
+                    },
+                }
+                self.stats.update_readme(stats)
+                text = readme.read_text(encoding="utf-8")
+            finally:
+                self.stats.README = original
+
+        self.assertIn("<!-- AUTO-STATS:START -->", text)
+        self.assertIn("<!-- AUTO-STATS:END -->", text)
+        self.assertIn("**ALL-CLOUD** | **3 CIDR** | **4 CIDR**", text)
+
+    def test_readme_block_omits_missing_profiles(self):
+        with tempfile.TemporaryDirectory() as td:
+            readme = Path(td) / "README.md"
+            readme.write_text("<!-- AUTO-STATS:START -->old<!-- AUTO-STATS:END -->", encoding="utf-8")
+            original = self.stats.README
+            self.stats.README = readme
+            try:
+                stats = {
+                    "generated_at": "2026-09-21T00:00:00Z",
+                    "profiles": {"full-v4": {"cidr_count": 10}, "full-v6": {"cidr_count": 20}},
+                    "datasets": {"asn_all": {"ipv4": 1, "ipv6": 2}, "all_cloud": {"ipv4": 3, "ipv6": 4}},
+                }
+                self.stats.update_readme(stats)
+                text = readme.read_text(encoding="utf-8")
+            finally:
+                self.stats.README = original
+
+        self.assertIn("**FULL** | **10 CIDR** | **20 CIDR**", text)
+        self.assertNotIn("**MESSAGING**", text)
+
 
 if __name__ == "__main__":
     unittest.main()
