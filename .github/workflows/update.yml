@@ -210,7 +210,7 @@ jobs:
           summary = json.loads((d / "change-summary.json").read_text(encoding="utf-8"))
           assert isinstance(summary.get("datasets"), dict)
           notes = (d / "release-notes.md").read_text(encoding="utf-8")
-          assert notes.startswith("# Subscription update — v")
+          assert notes.startswith("## Subscription update — v")
 
           m = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
           assert m["global_only"] is True
