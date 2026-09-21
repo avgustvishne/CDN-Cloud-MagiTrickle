@@ -141,6 +141,9 @@ jobs:
       - name: Generate source health report
         run: python scripts/generate_health.py
 
+      - name: Generate publication provenance
+        run: python scripts/generate_publication_metadata.py
+
       - name: Canary domain check (advisory)
         run: python scripts/canary_check.py
 
@@ -193,6 +196,21 @@ jobs:
         with:
           name: generated-publication-${{ github.sha }}
           path: publication
+
+      - name: Verify publication provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f publication/data/publication-metadata.json
+          source_sha="$(python -c 'import json; print(json.load(open("publication/data/publication-metadata.json"))["source_sha"])' )"
+          test "$source_sha" = "$GITHUB_SHA" || {
+            echo "::error::Publication artifact was generated from a different commit ($source_sha != $GITHUB_SHA)."
+            exit 1
+          }
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA" || {
+            echo "::error::main advanced after validation; refusing to publish a stale artifact."
+            exit 1
+          }
 
       - name: Create automatic rollback backup
         shell: bash
