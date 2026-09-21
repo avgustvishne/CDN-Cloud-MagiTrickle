@@ -10,7 +10,7 @@ on:
 
 permissions:
   actions: read
-  contents: write
+  contents: read
 
 concurrency:
   group: magitrickle-status
@@ -18,12 +18,15 @@ concurrency:
 
 jobs:
   status:
+    permissions:
+      actions: read
+      contents: write
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Checkout main
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: main
           fetch-depth: 0
