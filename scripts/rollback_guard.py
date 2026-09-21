@@ -140,14 +140,18 @@ def main():
                 continue
             if family["drop_percent"] / 100 > args.max_coverage_drop:
                 coverage_breach = True
-        if count_breach or coverage_breach:
+        # CIDR count is advisory only. Re-aggregation can legitimately
+        # collapse many prefixes into fewer prefixes without losing any
+        # address space. The publication guard must therefore be based on
+        # exact union coverage, not prefix-count changes.
+        if coverage_breach:
             item["status"] = "rollback_required"
             item["count_guard"] = count_breach
-            item["coverage_guard"] = coverage_breach
+            item["coverage_guard"] = True
             report["critical"].append(rel)
         else:
             item["status"] = "ok"
-            item["count_guard"] = False
+            item["count_guard"] = count_breach
             item["coverage_guard"] = False
         report["datasets"][rel] = item
 
