@@ -974,6 +974,7 @@ def main():
     overlap_report = build_provider_overlap_report(provider_networks)
 
     all4, _ = nets(all4, 4); all6, _ = nets(all6, 6)
+    all_cloud4, _ = nets(all_cloud4, 4); all_cloud6, _ = nets(all_cloud6, 6)
     all_asn4, _ = nets(all_asn4, 4); all_asn6, _ = nets(all_asn6, 6)
     all_asn4, all_asn6 = apply_global_policy_to_asn_aggregates(all_asn4, all_asn6)
 
