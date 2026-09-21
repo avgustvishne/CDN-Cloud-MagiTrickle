@@ -326,7 +326,7 @@ jobs:
               assert stats["profiles"][name]["cidr_count"] > 0, name
           print("README statistics: PASS")
 
-          - name: Generate source health report
+      - name: Generate source health report
         run: python scripts/generate_health.py
 
       - name: Canary domain check (advisory)
