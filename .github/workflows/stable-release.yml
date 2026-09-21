@@ -23,6 +23,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
 
       - name: Copy full preset into stable
         run: |
@@ -34,13 +37,49 @@ jobs:
           cp data/presets/full-v4.txt data/presets/stable-v4.txt
           cp data/presets/full-v6.txt data/presets/stable-v6.txt
 
+      - name: Refresh checksums and README statistics
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import pathlib
+
+          root = pathlib.Path(".")
+          data = root / "data"
+          files = sorted(
+              set(data.glob("*-v*.txt"))
+              | {
+                  data / "all-cloud-v4.txt",
+                  data / "all-cloud-v6.txt",
+                  data / "asn-all-v4.txt",
+                  data / "asn-all-v6.txt",
+                  data / "asn-confirmed-v4.txt",
+                  data / "asn-confirmed-v6.txt",
+              }
+          )
+          files = [p for p in files if p.exists()]
+          (data / "checksums.sha256").write_text(
+              "\n".join(
+                  "{}  {}".format(
+                      hashlib.sha256(p.read_bytes()).hexdigest(),
+                      p.relative_to(root).as_posix(),
+                  )
+                  for p in files
+              )
+              + "\n",
+              encoding="utf-8",
+          )
+          PY
+          python scripts/validate_subscriptions.py
+          python scripts/generate_statistics.py
+
       - name: Commit snapshot
         shell: bash
         run: |
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/presets/stable-v4.txt data/presets/stable-v6.txt
+          git add data/presets/stable-v4.txt data/presets/stable-v6.txt data/checksums.sha256 data/statistics.json README.md
           if git diff --cached --quiet; then
             echo "Stable preset unchanged since last snapshot."
             exit 0

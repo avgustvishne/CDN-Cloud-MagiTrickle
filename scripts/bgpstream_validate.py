@@ -55,14 +55,12 @@ def select_update_files(items, limit):
 
 
 def query_update_files(broker, start, end, project):
-    """Query one project; keep broker pagination bounded for unattended CI."""
+    """Query one project using only the pybgpkit Broker.query() API."""
     return broker.query(
         ts_start=start,
         ts_end=end,
         project=project,
         data_type="updates",
-        page=1,
-        page_size=100,
     )
 
 
@@ -93,7 +91,7 @@ def main():
     start_s = start.isoformat().replace("+00:00", "Z")
     end_s = end.isoformat().replace("+00:00", "Z")
 
-    broker = bgpkit.Broker()
+    broker = bgpkit.Broker(page_size=100)
     items = []
     project_errors = []
     for project in ("routeviews", "riperis"):

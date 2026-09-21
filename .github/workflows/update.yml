@@ -12,6 +12,7 @@ on:
         default: true
         type: boolean
   push:
+    branches: [main]
     paths:
       - "config/providers.json"
       - "config/source_registry.json"
@@ -302,6 +303,28 @@ jobs:
 
       - name: Generate automatic CIDR statistics
         run: python scripts/generate_statistics.py
+
+      - name: Validate README statistics
+        run: |
+          python - <<'PY'
+          import json
+          import pathlib
+          import re
+
+          stats = json.loads(pathlib.Path("data/statistics.json").read_text(encoding="utf-8"))
+          readme = pathlib.Path("README.md").read_text(encoding="utf-8")
+          block = re.search(
+              r"<!-- AUTO-STATS:START -->.*?<!-- AUTO-STATS:END -->",
+              readme,
+              re.DOTALL,
+          )
+          assert block, "README AUTO-STATS block is missing"
+          assert "Актуальная статистика" in block.group(0)
+          assert stats["source_of_truth"] == "published normalized CIDR files"
+          for name in ("full-v4", "full-v6", "balanced-v4", "balanced-v6", "minimal-v4", "minimal-v6"):
+              assert name in stats["profiles"], name
+              assert stats["profiles"][name]["cidr_count"] > 0, name
+          print("README statistics: PASS")
 
       - name: Generate source health report
         run: python scripts/generate_health.py
