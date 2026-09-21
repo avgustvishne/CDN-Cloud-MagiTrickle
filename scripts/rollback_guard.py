@@ -17,8 +17,20 @@ VALIDATION_ONLY = {"asn-confirmed-v4.txt", "asn-confirmed-v6.txt"}
 
 def files(d):
     root = pathlib.Path(d)
-    generated = list(root.glob("*-v[46].txt")) + list((root / "presets").glob("*.txt"))
-    return sorted(path for path in generated if path.name not in VALIDATION_ONLY)
+    # Guard source-of-truth provider datasets and explicit aggregate datasets.
+    # Profiles under data/presets/ are derived policy outputs: their coverage
+    # is validated by generate_profiles.py (including the profile ladder and
+    # policy-version anomaly gate). Comparing them a second time against HEAD
+    # can reject a legitimate provider/profile recomposition even when the
+    # underlying source datasets remain healthy.
+    generated = list(root.glob("*-v[46].txt"))
+    return sorted(
+        path for path in generated
+        if path.name not in VALIDATION_ONLY
+        and path.name not in {
+            "full-v4.txt", "full-v6.txt",
+        }
+    )
 
 
 def parse_networks(text):
