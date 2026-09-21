@@ -30,6 +30,8 @@ REQUIRED = {
     "central generated-data validation": "python scripts/validate_generated_data.py",
     "central profile validation": "python scripts/validate_profiles.py",
     "central checksum generation": "python scripts/refresh_checksums.py",
+    "central rollback report validation": "python scripts/validate_rollback_report.py",
+    "isolated publication job": "  publish:\n",
     "pinned Python minor": 'python-version: "3.12"',
 }
 STABLE_REQUIRED = {
