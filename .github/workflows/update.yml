@@ -83,46 +83,7 @@ jobs:
           python scripts/refresh_checksums.py
 
       - name: Validate profile intelligence
-        run: |
-          python - <<'PY'
-          import json
-          import pathlib
-          import sys
-
-          sys.path.insert(0, "scripts")
-          from generate_profiles import PROFILE_POLICY_VERSION
-
-          report = json.loads(pathlib.Path("data/profile-intelligence.json").read_text(encoding="utf-8"))
-          assert report["schema_version"] == 1
-          assert report["policy_version"] == PROFILE_POLICY_VERSION, (
-              f'profile-intelligence.json has policy_version={report["policy_version"]!r}, '
-              f'but scripts/generate_profiles.py currently defines PROFILE_POLICY_VERSION='
-              f'{PROFILE_POLICY_VERSION!r}. Regenerate the data, or bump PROFILE_POLICY_VERSION '
-              f'if this is an intentional profile composition change.'
-          )
-          assert report["anomalies"] == []
-
-          order = ("minimal", "performance", "balanced", "full")
-          for family in (4, 6):
-              previous = None
-              for name in order:
-                  item = report["profiles"][f"{name}-v{family}"]
-                  assert item["prefixes"] > 0
-                  assert item["coverage_ips"] > 0
-                  assert item["coverage_per_prefix"] > 0
-                  if previous is not None:
-                      assert item["is_superset"] is True
-                  previous = item
-
-          stable = report["stability_profile"]["profiles"]
-          for family in (4, 6):
-              item = stable[f"stable-v{family}"]
-              assert item["bootstrap"] in {True, False}
-              assert item["previous_coverage_ips"] >= item["retained_coverage_ips"]
-              if not item["bootstrap"]:
-                  assert item["retention_coverage_ratio"] is not None
-          print("Profile intelligence: PASS")
-          PY
+        run: python scripts/validate_profiles.py
 
       - name: Collect source manifest
         run: python scripts/fetch_sources.py
