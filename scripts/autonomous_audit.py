@@ -53,13 +53,14 @@ FORBIDDEN = {
     "hard reset": "git reset --hard",
     "unconditional destructive cleanup": "rm -rf data/",
     "issues write permission": "issues: write",
-    "inline Python workflow blocks": "python - <<'PY'",
 }
 
 missing = [name for name, token in REQUIRED.items() if token not in TEXT]
 missing_status = [name for name, token in STATUS_REQUIRED.items() if token not in STATUS_TEXT]
 missing_stable = [name for name, token in STABLE_REQUIRED.items() if token not in STABLE_TEXT]
 forbidden = [name for name, token in FORBIDDEN.items() if token in TEXT or token in STATUS_TEXT]
+if "python - <<'PY'" in TEXT:
+    forbidden.append("inline Python workflow blocks")
 
 if missing or missing_status or missing_stable or forbidden:
     if missing:
