@@ -127,13 +127,7 @@ jobs:
             --max-drop "$MAX_DATASET_DROP" \
             --max-coverage-drop "$MAX_DATASET_COVERAGE_DROP" \
             --report data/rollback-report.json
-          python - <<'PY'
-          import json, pathlib
-          p = pathlib.Path("data/rollback-report.json")
-          report = json.loads(p.read_text(encoding="utf-8"))
-          assert not report.get("guarded"), "publication held by rollback guard"
-          print("Autonomous safety gate: PASS")
-          PY
+          python scripts/validate_rollback_report.py
 
       - name: Generate update report
         run: python scripts/update_report.py
