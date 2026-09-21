@@ -103,6 +103,44 @@ def collect():
 
 def update_readme(stats):
     text = README.read_text(encoding="utf-8")
+    lines = text.splitlines()
+
+    messaging_ready = (
+        "data/presets/messaging-v4.txt" in stats["files"]
+        and "data/presets/messaging-v6.txt" in stats["files"]
+    )
+    messaging_row = (
+        "| Telegram + Twitter/X | **MESSAGING** | "
+        "[↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/messaging-v4.txt) | "
+        "[↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/messaging-v6.txt) |"
+    )
+    note_prefix = "> **MESSAGING (Telegram + Twitter/X)** временно убран из этой таблицы:"
+
+    lines = [
+        line for line in lines
+        if not line.startswith("| Telegram + Twitter/X | **MESSAGING** |")
+        and not line.startswith(note_prefix)
+    ]
+
+    if messaging_ready:
+        for index, line in enumerate(lines):
+            if line.startswith("| Тот же набор, что FULL, но обновляется раз в неделю | **STABLE**"):
+                lines.insert(index, messaging_row)
+                break
+    else:
+        for index, line in enumerate(lines):
+            if line.startswith("**FULL** включает"):
+                lines.insert(
+                    index + 1,
+                    note_prefix
+                    + " провайдерские файлы для Telegram/Twitter ещё ни разу не были успешно опубликованы "
+                    + "(data/telegram-v4.txt/twitter-v4.txt отсутствуют), и держать в README ссылку "
+                    + "на несуществующий файл ломает check_links.py на каждом прогоне. Вернём строку в таблицу, "
+                    + "как только пайплайн один раз успешно сгенерирует реальные данные для обоих провайдеров."
+                )
+                break
+
+    text = "\n".join(lines) + "\n"
 
     rows = []
     for profile in PROFILE_ORDER:
