@@ -59,4 +59,32 @@ jobs:
             exit 0
           fi
           git commit -m "chore: refresh BGPKIT validation"
-          git push
+
+          # This workflow publishes a small live-validation report to main.
+          # Other repository automation can legitimately advance main while
+          # this job is running, so a plain git push is racy. Rebase the
+          # generated commit onto the newest main and retry the push instead
+          # of overwriting or force-pushing remote work.
+          for attempt in 1 2 3 4 5; do
+            echo "Publishing BGPKIT validation (attempt $attempt/5)..."
+            git fetch --no-tags origin main
+
+            if ! git rebase origin/main; then
+              echo "::error::Cannot rebase BGPKIT validation commit onto the current main."
+              git rebase --abort || true
+              exit 1
+            fi
+
+            if git push origin "HEAD:main"; then
+              echo "BGPKIT validation report published successfully."
+              exit 0
+            fi
+
+            echo "::warning::main advanced during the push; retrying with a fresh rebase."
+            if [ "$attempt" -lt 5 ]; then
+              sleep $((attempt * 5))
+            fi
+          done
+
+          echo "::error::Failed to publish BGPKIT validation after 5 attempts because main kept advancing."
+          exit 1
