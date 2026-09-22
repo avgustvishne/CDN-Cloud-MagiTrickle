@@ -30,10 +30,12 @@ for path in sorted(DIFF.glob("*.json")):
             f"+{added.get('ipv6', 0)} / -{removed.get('ipv6', 0)} |"
         )
 
+generated_at = manifest.get("updated", datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"))
+
 lines = [
-    f"## Subscription update — v{manifest.get('version', '?')}",
+    f"## Subscription update — v{manifest.get('version', '?')} · {generated_at}",
     "",
-    f"Generated: {manifest.get('updated', datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC'))}",
+    f"Generated: {generated_at}",
     "",
     f"- Aggregate IPv4: **{manifest.get('aggregate', {}).get('ipv4', 0):,}**",
     f"- Aggregate IPv6: **{manifest.get('aggregate', {}).get('ipv6', 0):,}**",
@@ -41,7 +43,7 @@ lines = [
 ]
 if rows:
     lines += [
-        "## Changes",
+        "### Changes",
         "",
         "| Provider | IPv4 (+ / -) | IPv6 (+ / -) |",
         "|---|---:|---:|",
@@ -49,10 +51,10 @@ if rows:
         "",
     ]
 else:
-    lines += ["## Changes", "", "No provider CIDR changes detected.", ""]
+    lines += ["### Changes", "", "No provider CIDR changes detected.", ""]
 
 lines += [
-    "## Safety",
+    "### Safety",
     "",
     "- Global prefixes only",
     "- Minimum prefix length: IPv4 /8, IPv6 /16",
@@ -69,7 +71,7 @@ def prepend_changelog(entry_text, max_entries=CHANGELOG_MAX_ENTRIES):
     if CHANGELOG.exists():
         existing = CHANGELOG.read_text(encoding="utf-8")
         _, _, body = existing.partition("\n\n")
-    old_entries = [e for e in body.split(CHANGELOG_SEPARATOR) if e.strip()] if body else []
+    old_entries = [e.strip() for e in body.split(CHANGELOG_SEPARATOR) if e.strip()] if body else []
     entries = ([entry_text] + old_entries)[:max_entries]
     CHANGELOG.write_text(CHANGELOG_HEADER + "\n\n" + CHANGELOG_SEPARATOR.join(entries) + "\n", encoding="utf-8")
 

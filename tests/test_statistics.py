@@ -36,6 +36,16 @@ class StatisticsTests(unittest.TestCase):
     def test_human_count_uses_space_separator(self):
         self.assertEqual(self.stats.human_count(12478), "12 478")
 
+    def test_human_datetime_formats_in_russian(self):
+        self.assertEqual(
+            self.stats.human_datetime("2026-09-22T06:14:48Z"),
+            "22 сентября 2026, 06:14 UTC",
+        )
+        self.assertEqual(
+            self.stats.human_datetime("2026-01-05T23:00:00Z"),
+            "5 января 2026, 23:00 UTC",
+        )
+
     def test_update_readme_refreshes_all_profile_rows(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -76,7 +86,7 @@ class StatisticsTests(unittest.TestCase):
         self.assertIn("**STABLE** | **17 512 CIDR** | **5 292 CIDR**", text)
         self.assertIn("**MESSAGING** | **19 CIDR** | **8 CIDR**", text)
         self.assertIn("**ASN ALL** | **100 CIDR** | **200 CIDR**", text)
-        self.assertIn("2026-09-21T00:00:00Z", text)
+        self.assertIn("21 сентября 2026, 00:00 UTC", text)
         self.assertNotIn("old", text)
 
     def test_update_readme_publishes_messaging_row_when_files_exist(self):

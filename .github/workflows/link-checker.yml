@@ -49,7 +49,6 @@ jobs:
               and not u.endswith("?")
               and "stat.ripe.net/data/" not in u
               and "raw.githubusercontent.com" not in u
-              and "avgustvishne.github.io/CDN-Cloud-MagiTrickle" not in u
           }
           # Validate reachability; 401/403/405 are valid responses from servers that reject automated HEAD/GET clients.
           bad=[]

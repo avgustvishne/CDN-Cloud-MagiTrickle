@@ -2,14 +2,14 @@
 
 Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
-## Subscription update — v44
+## Subscription update — v44 · 2026-09-22 06:06:10 UTC
 
 Generated: 2026-09-22 06:06:10 UTC
 
 - Aggregate IPv4: **17,555**
 - Aggregate IPv6: **5,345**
 
-## Changes
+### Changes
 
 | Provider | IPv4 (+ / -) | IPv6 (+ / -) |
 |---|---:|---:|
@@ -21,7 +21,7 @@ Generated: 2026-09-22 06:06:10 UTC
 | ovh | +5 / -0 | +0 / -0 |
 | vultr | +0 / -0 | +192 / -177 |
 
-## Safety
+### Safety
 
 - Global prefixes only
 - Minimum prefix length: IPv4 /8, IPv6 /16
@@ -32,21 +32,21 @@ Generated: 2026-09-22 06:06:10 UTC
 
 Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
-## Subscription update — v44
+## Subscription update — v44 · 2026-09-21 20:13:49 UTC
 
 Generated: 2026-09-21 20:13:49 UTC
 
 - Aggregate IPv4: **17,551**
 - Aggregate IPv6: **5,325**
 
-## Changes
+### Changes
 
 | Provider | IPv4 (+ / -) | IPv6 (+ / -) |
 |---|---:|---:|
 | oracle | +0 / -0 | +14 / -1 |
 | vultr | +0 / -0 | +169 / -173 |
 
-## Safety
+### Safety
 
 - Global prefixes only
 - Minimum prefix length: IPv4 /8, IPv6 /16
@@ -57,14 +57,14 @@ Generated: 2026-09-21 20:13:49 UTC
 
 Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
-## Subscription update — v44
+## Subscription update — v44 · 2026-09-21 18:37:03 UTC
 
 Generated: 2026-09-21 18:37:03 UTC
 
 - Aggregate IPv4: **17,551**
 - Aggregate IPv6: **5,329**
 
-## Changes
+### Changes
 
 | Provider | IPv4 (+ / -) | IPv6 (+ / -) |
 |---|---:|---:|
@@ -74,7 +74,7 @@ Generated: 2026-09-21 18:37:03 UTC
 | ovh | +1 / -0 | +0 / -0 |
 | vultr | +0 / -0 | +141 / -73 |
 
-## Safety
+### Safety
 
 - Global prefixes only
 - Minimum prefix length: IPv4 /8, IPv6 /16
@@ -85,14 +85,14 @@ Generated: 2026-09-21 18:37:03 UTC
 
 Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
-## Subscription update — v44
+## Subscription update — v44 · 2026-09-21 16:28:34 UTC
 
 Generated: 2026-09-21 16:28:34 UTC
 
 - Aggregate IPv4: **17,545**
 - Aggregate IPv6: **5,260**
 
-## Changes
+### Changes
 
 | Provider | IPv4 (+ / -) | IPv6 (+ / -) |
 |---|---:|---:|
@@ -102,7 +102,7 @@ Generated: 2026-09-21 16:28:34 UTC
 | ovh | +1 / -0 | +0 / -0 |
 | vultr | +0 / -0 | +35 / -74 |
 
-## Safety
+### Safety
 
 - Global prefixes only
 - Minimum prefix length: IPv4 /8, IPv6 /16
@@ -113,14 +113,14 @@ Generated: 2026-09-21 16:28:34 UTC
 
 Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
-## Subscription update — v44
+## Subscription update — v44 · 2026-09-21 12:50:17 UTC
 
 Generated: 2026-09-21 12:50:17 UTC
 
 - Aggregate IPv4: **17,542**
 - Aggregate IPv6: **5,304**
 
-## Changes
+### Changes
 
 | Provider | IPv4 (+ / -) | IPv6 (+ / -) |
 |---|---:|---:|
@@ -137,7 +137,7 @@ Generated: 2026-09-21 12:50:17 UTC
 | twitter | +11 / -0 | +4 / -0 |
 | vultr | +57 / -21 | +326 / -241 |
 
-## Safety
+### Safety
 
 - Global prefixes only
 - Minimum prefix length: IPv4 /8, IPv6 /16
@@ -148,14 +148,14 @@ Generated: 2026-09-21 12:50:17 UTC
 
 Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
-## Subscription update — v44
+## Subscription update — v44 · 2026-09-18 04:44:13 UTC
 
 Generated: 2026-09-18 04:44:13 UTC
 
 - Aggregate IPv4: **17,471**
 - Aggregate IPv6: **5,264**
 
-## Changes
+### Changes
 
 | Provider | IPv4 (+ / -) | IPv6 (+ / -) |
 |---|---:|---:|
@@ -166,14 +166,9 @@ Generated: 2026-09-18 04:44:13 UTC
 | ovh | +39 / -2 | +2 / -0 |
 | vultr | +0 / -0 | +174 / -199 |
 
-## Safety
+### Safety
 
 - Global prefixes only
 - Minimum prefix length: IPv4 /8, IPv6 /16
 - Generated subscriptions are validated before publication
 - SHA-256 checksums are regenerated with every update
-
-
-
-
-
