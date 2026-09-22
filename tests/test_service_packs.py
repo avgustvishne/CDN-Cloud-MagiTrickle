@@ -45,9 +45,8 @@ class ServicePackTests(unittest.TestCase):
                     "both": {"services": ["one", "two"]}
                 },
             }), encoding="utf-8")
-            generator.SERVICES = services_path
-            config = generator.load_config(packs_path)
-            files = generator.generate(config, output)
+            config = generator.load_config(packs_path, services_path)
+            files = generator.generate(config, services_path, output)
             self.assertEqual(len(files), 3)
             self.assertEqual(
                 (output / "both-domains.txt").read_text(encoding="utf-8"),
