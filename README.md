@@ -70,34 +70,6 @@
 | Twitter/X | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/twitter-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/twitter-v6.txt) |
 | Vultr | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v6.txt) |
 
-## Готовые сервисные наборы для Mihomo
-
-Помимо CIDR-подписок, репозиторий теперь автоматически собирает **сервисные наборы доменов** из `config/services.json`. Один набор может объединять несколько сервисов и публикуется сразу в трёх вариантах:
-
-- обычный список доменов;
-- готовый YAML rule-provider для Mihomo;
-- небольшой блок `rule-providers`, который можно вставить в конфигурацию Mihomo.
-
-| Набор | Сервисы | Домены | Mihomo |
-|---|---|:---:|:---:|
-| **MESSAGING** | Telegram + WhatsApp + Signal | [список](data/service-packs/messaging-domains.txt) | [rule-provider](data/service-packs/messaging-mihomo.yaml) |
-| **SIGNAL-WHATSAPP** | Signal + WhatsApp | [список](data/service-packs/signal-whatsapp-domains.txt) | [rule-provider](data/service-packs/signal-whatsapp-mihomo.yaml) |
-
-Например, для MESSAGING можно добавить в `rule-providers`:
-
-```yaml
-messaging:
-  type: http
-  behavior: classical
-  format: yaml
-  interval: 43200
-  url: https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/service-packs/messaging-mihomo.yaml
-```
-
-После этого набор подключается обычным правилом `RULE-SET,messaging,PROXY` или другой нужной группой.
-
-> Важно: это **доменная** маршрутизация. DNS-адреса сервисов не превращаются автоматически в исключительные IP/CIDR-принадлежности.
-
 <!-- AUTO-STATS:START -->
 ## 📊 Актуальная статистика
 
