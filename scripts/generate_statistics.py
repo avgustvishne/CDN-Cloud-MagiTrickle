@@ -46,6 +46,22 @@ def human_count(value):
     return "{:,}".format(value).replace(",", " ")
 
 
+RU_MONTHS = {
+    1: "января", 2: "февраля", 3: "марта", 4: "апреля",
+    5: "мая", 6: "июня", 7: "июля", 8: "августа",
+    9: "сентября", 10: "октября", 11: "ноября", 12: "декабря",
+}
+
+
+def human_datetime(iso_string):
+    """Render an ISO-8601 UTC timestamp (with trailing 'Z') for a human
+    reader, e.g. '22 сентября 2026, 06:14 UTC'. The raw ISO string stays
+    in data/statistics.json for anything that parses it programmatically;
+    this is display-only, for the README."""
+    dt = datetime.datetime.strptime(iso_string, "%Y-%m-%dT%H:%M:%SZ")
+    return f"{dt.day} {RU_MONTHS[dt.month]} {dt.year}, {dt.strftime('%H:%M')} UTC"
+
+
 def collect():
     generated_at = (
         datetime.datetime.now(datetime.timezone.utc)
@@ -180,8 +196,8 @@ def update_readme(stats):
             "|---|---:|---:|",
             *rows,
             "",
-            "**Обновлено:** {} · [полная статистика](data/statistics.json) · [живой дашборд](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/)".format(
-                stats["generated_at"]
+            "**Обновлено:** {} · [полная статистика](data/statistics.json)".format(
+                human_datetime(stats["generated_at"])
             ),
             "",
             "> Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.",
