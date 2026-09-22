@@ -120,6 +120,21 @@ class GeneratorUnitTests(unittest.TestCase):
         self.assertEqual(rows[0]["bgp_observed_asns"], [])
         self.assertEqual(rows[0]["bgp_max_peers"], 0)
 
+    def test_consensus_ignores_scalar_bgp_prefix_metadata(self):
+        health = {
+            "64500": {"prefixes": 123, "peers": 4},
+            "64501": {"observed_prefixes": "192.0.2.0/24", "peers": 3},
+        }
+        rows = self.engine.build_consensus(
+            "test",
+            ["192.0.2.0/24"],
+            {"official": ["192.0.2.0/24"]},
+            ["64500", "64501"],
+            health,
+        )
+        self.assertEqual(rows[0]["bgp_observed_asns"], ["64501"])
+        self.assertEqual(rows[0]["bgp_max_peers"], 3)
+
     def test_consensus_preserves_first_seen(self):
         with tempfile.TemporaryDirectory() as td:
             old_data = self.engine.DATA
