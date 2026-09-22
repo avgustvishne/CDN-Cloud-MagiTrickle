@@ -732,12 +732,24 @@ def build_consensus(provider, prefixes, source_prefixes, asns, bgp_health):
             # Without that list, an ASN-level observation is deliberately
             # NOT attributed to every CIDR.
             observed_prefixes = set()
-            for prefix in row.get("prefixes", row.get("observed_prefixes", [])) or []:
+            raw_observed_prefixes = row.get("prefixes", row.get("observed_prefixes", []))
+            # External BGP-health producers may use prefixes either for an
+            # exact prefix list or for a numeric prefix count. Scalar
+            # metadata is not exact evidence and must not crash the update.
+            if isinstance(raw_observed_prefixes, dict):
+                raw_observed_prefixes = raw_observed_prefixes.get(
+                    "prefixes", raw_observed_prefixes.get("observed_prefixes", [])
+                )
+            if isinstance(raw_observed_prefixes, str):
+                raw_observed_prefixes = [raw_observed_prefixes]
+            elif not isinstance(raw_observed_prefixes, (list, tuple, set)):
+                raw_observed_prefixes = []
+            for prefix in raw_observed_prefixes:
                 try:
                     observed_prefixes.add(
                         str(ipaddress.ip_network(str(prefix), strict=False))
                     )
-                except ValueError:
+                except (TypeError, ValueError):
                     continue
             if cidr in observed_prefixes:
                 bgp_observed_asns.append(str(asn))
