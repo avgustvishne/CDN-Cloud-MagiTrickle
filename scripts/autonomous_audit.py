@@ -35,6 +35,8 @@ REQUIRED = {
     "pinned Python minor": 'python-version: "3.12"',
     "publication provenance": "python scripts/generate_publication_metadata.py",
     "stale artifact gate": "Verify publication provenance",
+    "remote main freshness gate": "git fetch origin main",
+    "no artifact rebase": "refusing to rebase or publish a stale artifact",
 }
 STABLE_REQUIRED = {
     "stable checksum refresh": "data/checksums.sha256",
@@ -53,6 +55,8 @@ STATUS_REQUIRED = {
 FORBIDDEN = {
     "force push": "git push --force",
     "floating action refs": "uses: actions/checkout@v7",
+    "pull request target": "pull_request_target:",
+    "credential persistence": "persist-credentials: true",
     "hard reset": "git reset --hard",
     "unconditional destructive cleanup": "rm -rf data/",
     "issues write permission": "issues: write",
