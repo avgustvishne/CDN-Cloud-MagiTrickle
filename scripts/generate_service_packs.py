@@ -19,14 +19,14 @@ PACKS = ROOT / "config" / "service_packs.json"
 DEFAULT_OUTPUT = ROOT / "data" / "service-packs"
 
 
-def load_config(path: Path) -> dict:
+def load_config(path: Path, services_path: Path = SERVICES) -> dict:
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schema_version") != 1:
         raise ValueError("unsupported service_packs schema_version")
     packs = data.get("packs")
     if not isinstance(packs, dict) or not packs:
         raise ValueError("service_packs.packs must be a non-empty object")
-    services = json.loads(SERVICES.read_text(encoding="utf-8")).get("services", {})
+    services = json.loads(services_path.read_text(encoding="utf-8")).get("services", {})
     if not isinstance(services, dict) or not services:
         raise ValueError("services.json contains no services")
 
@@ -78,8 +78,8 @@ def render_mihomo_snippet(pack_name: str) -> str:
     )
 
 
-def generate(config: dict, output: Path) -> list[Path]:
-    services = json.loads(SERVICES.read_text(encoding="utf-8"))["services"]
+def generate(config: dict, services_path: Path, output: Path) -> list[Path]:
+    services = json.loads(services_path.read_text(encoding="utf-8"))["services"]
     output.mkdir(parents=True, exist_ok=True)
     generated: list[Path] = []
     for name in sorted(config["packs"]):
@@ -103,10 +103,9 @@ def main() -> int:
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
     args = parser.parse_args()
 
-    global SERVICES
-    SERVICES = Path(args.services)
-    config = load_config(Path(args.config))
-    generated = generate(config, Path(args.output))
+    services_path = Path(args.services)
+    config = load_config(Path(args.config), services_path)
+    generated = generate(config, services_path, Path(args.output))
     print(f"Generated {len(generated)} service-pack files.")
     return 0
 
