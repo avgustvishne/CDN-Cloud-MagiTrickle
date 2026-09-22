@@ -30,17 +30,17 @@ gcore,526,224,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE
 backblaze,5,1,static+cloud-ip-ranges,OK,0,0,0
 telegram,8,4,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 twitter,11,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`  
-**Отчёт сформирован:** `2026-09-22T06:15:16Z`  
-**Исходный commit:** `ccc6a585f8b3b52336539c86cbd411504feaed44`  
-**Последний известный рабочий commit:** `4fc8438a9ff11978736a3cd40bb612f9c0e6d231`
+**Отчёт сформирован:** `2026-09-22T11:48:09Z`  
+**Исходный commit:** `ad51f1d43d2c9d58af276f91fd308bc6140b38ce`  
+**Последний известный рабочий commit:** `c03d6a32d7e419a205ebe491f1daf822afac1513`
 
 ## Данные
 
 | Показатель | Значение |
 |---|---:|
 | Провайдеры | **20** |
-| IPv4 CIDR | **17 555** |
-| IPv6 CIDR | **5 345** |
+| IPv4 CIDR | **17 556** |
+| IPv6 CIDR | **5 368** |
 | Источники | **8 / 8** healthy |
 | Network evidence | **128** queried |
 
