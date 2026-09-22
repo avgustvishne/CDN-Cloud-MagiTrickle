@@ -51,7 +51,7 @@ if rows:
         "",
     ]
 else:
-    lines += ["## Changes", "", "No provider CIDR changes detected.", ""]
+    lines += ["### Changes", "", "No provider CIDR changes detected.", ""]
 
 lines += [
     "### Safety",
