@@ -4,13 +4,13 @@
 
 # CDN-Cloud-MagiTrickle
 
-**Актуальные IPv4/IPv6 CIDR-подписки для [MagiTrickle](https://github.com/MagiTrickle/MagiTrickle) — CDN, облака, видео, VPN, Telegram, Twitter/X**
+**Готовые IPv4/IPv6 CIDR-подписки для [MagiTrickle](https://github.com/MagiTrickle/MagiTrickle) — CDN, облака, видео, VPN, Telegram, Twitter/X**
 
 [![Update MagiTrickle subscriptions](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/workflows/update.yml/badge.svg)](https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/workflows/update.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Обновление](https://img.shields.io/badge/обновление-каждые%2012ч-16b9ff)](.github/workflows/update.yml)
+[![Поддержать проект](https://img.shields.io/badge/%E2%9D%A4-Поддержать%20проект-e25555)](https://tips.tips/000484125)
 
-[📈 Дашборд](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/) · [📊 Статус](STATUS.md) · [💚 Здоровье источников](HEALTH.md) · [📝 Изменения](CHANGELOG.md) · [⚙️ Провайдеры](config/providers.json) · [🤝 Вклад в проект](CONTRIBUTING.md)
+[📊 Статус](STATUS.md) · [📝 Изменения](CHANGELOG.md) · [🤝 Вклад в проект](CONTRIBUTING.md)
 
 </div>
 
@@ -18,32 +18,57 @@
 
 ## Что это
 
-Репозиторий дважды в сутки собирает диапазоны адресов CDN, облачных провайдеров и отдельных сервисов (Telegram, Twitter/X) из официальных источников, ASN/BGP-данных и RIPEstat, сверяет их между собой и публикует готовые .txt-подписки, которые можно напрямую подключить в MagiTrickle.
-
-## Быстрый выбор
-
-| Нужно | Профиль | IPv4 | IPv6 |
-|---|---|:---:|:---:|
-| Максимальное покрытие | **FULL** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) |
-| Широкое покрытие без гиперскейл-пулов | **BALANCED** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
-| CDN + компактный периферийный набор | **PERFORMANCE** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v6.txt) |
-| Только базовый набор CDN | **MINIMAL** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) |
-| Только CDN | **CDN** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v6.txt) |
-| Облако/VPS | **CLOUD** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
-| Видео/CDN | **VIDEO** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
-| VPN/VPS | **VPN** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
-| Все собранные ASN | **ASN ALL** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt) |
-| Telegram + Twitter/X | **MESSAGING** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/messaging-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/messaging-v6.txt) |
-| Тот же набор, что FULL, но обновляется раз в неделю | **STABLE** | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/stable-v4.txt) | [↓](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/stable-v6.txt) |
-
-**FULL** включает все настроенные провайдеры. **ALL-CLOUD** — отдельный агрегат для AWS, Cloudflare, Microsoft, Oracle, Alibaba и DigitalOcean; он намеренно отличается от FULL. **STABLE** — это те же данные, что в FULL, просто публикуются раз в неделю (по воскресеньям), а не дважды в сутки — для роутеров/прошивок, где частая перезагрузка правил маршрутизации нежелательна.
-
+Репозиторий дважды в сутки собирает диапазоны адресов CDN, облачных провайдеров и отдельных сервисов (Telegram, Twitter/X), сверяет их между собой и публикует готовые `.txt`-подписки, которые можно напрямую подключить в MagiTrickle.
 
 ## Как использовать
 
-1. Выбери профиль в таблице.
-2. Открой IPv4 или IPv6 — это прямая raw-ссылка.
-3. Добавь URL в MagiTrickle как источник подписки.
+1. Выбери набор в таблице ниже.
+2. Открой ссылку IPv4 или IPv6 — она ведёт прямо на файл со списком адресов.
+3. Добавь эту ссылку в MagiTrickle как источник подписки (URL, не файл).
+
+## Готовые наборы
+
+| Нужно | Набор | IPv4 | IPv6 |
+|---|---|:---:|:---:|
+| Максимальное покрытие | **FULL** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/full-v6.txt) |
+| Широкое покрытие без гиперскейл-пулов | **BALANCED** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/balanced-v6.txt) |
+| CDN + компактный периферийный набор | **PERFORMANCE** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/performance-v6.txt) |
+| Только базовый набор CDN | **MINIMAL** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/minimal-v6.txt) |
+| Только CDN | **CDN** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cdn-v6.txt) |
+| Облако/VPS | **CLOUD** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/cloud-v6.txt) |
+| Видео/CDN | **VIDEO** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/video-v6.txt) |
+| VPN/VPS | **VPN** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/vpn-v6.txt) |
+| Все собранные ASN | **ASN ALL** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/asn-all-v6.txt) |
+| То же, что FULL, но обновляется раз в неделю | **STABLE** | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/stable-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/presets/stable-v6.txt) |
+
+**FULL** включает все провайдеры. **ALL-CLOUD** ([IPv4](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v4.txt)/[IPv6](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/all-cloud-v6.txt)) — только AWS, Cloudflare, Microsoft, Oracle, Alibaba и DigitalOcean, отдельно от FULL.
+
+## Отдельные провайдеры
+
+Если нужен не готовый набор, а конкретный провайдер:
+
+| Провайдер | IPv4 | IPv6 |
+|---|:---:|:---:|
+| AWS | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v6.txt) |
+| Akamai | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/akamai-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/akamai-v6.txt) |
+| Alibaba Cloud | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/alibaba-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/alibaba-v6.txt) |
+| Backblaze | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v6.txt) |
+| BuyVM | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v6.txt) |
+| CDN77 | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v6.txt) |
+| Cloudflare | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v6.txt) |
+| Contabo | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v6.txt) |
+| DigitalOcean | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v6.txt) |
+| Fastly | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v6.txt) |
+| Gcore | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v6.txt) |
+| Hetzner | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v6.txt) |
+| Melbicom | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/melbicom-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/melbicom-v6.txt) |
+| Microsoft Azure | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/microsoft-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/microsoft-v6.txt) |
+| Oracle Cloud | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/oracle-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/oracle-v6.txt) |
+| OVH | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/ovh-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/ovh-v6.txt) |
+| Scaleway | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/scaleway-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/scaleway-v6.txt) |
+| Telegram | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/telegram-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/telegram-v6.txt) |
+| Twitter/X | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/twitter-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/twitter-v6.txt) |
+| Vultr | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v6.txt) |
 
 <!-- AUTO-STATS:START -->
 ## 📊 Актуальная статистика
@@ -63,35 +88,15 @@
 | **ASN ALL** | **12 612 CIDR** | **6 039 CIDR** |
 | **ALL-CLOUD** | **8 987 CIDR** | **2 313 CIDR** |
 
-**Обновлено:** 2026-09-22T06:14:48Z · [полная статистика](data/statistics.json) · [живой дашборд](https://avgustvishne.github.io/CDN-Cloud-MagiTrickle/)
+**Обновлено:** 22 сентября 2026, 06:14 UTC · [полная статистика](data/statistics.json)
 
 > Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
 
-## Провайдеры
+---
 
-CDN: Cloudflare, Akamai, Fastly, CDN77, Gcore.  
-Облака/хостинг: AWS, Microsoft Azure, Oracle Cloud, Alibaba Cloud, DigitalOcean, Hetzner, OVH, Vultr, Scaleway, Contabo, BuyVM, Backblaze, Melbicom.  
-Сервисы: Telegram, Twitter/X.
+Подписки обновляются автоматически дважды в сутки. Для разработчиков и контрибьюторов — устройство пайплайна и как добавить провайдера в [CONTRIBUTING.md](CONTRIBUTING.md), история изменений в [CHANGELOG.md](CHANGELOG.md).
 
-Полный список ASN — в [config/providers.json](config/providers.json). Инструкции для новых провайдеров — в [CONTRIBUTING.md](CONTRIBUTING.md).
+Лицензия — [MIT](LICENSE).
 
-## Как это работает
-
-1. Источники провайдеров собираются из официальных CIDR-списков и ASN/BGP/RIPEstat.
-2. Политика config/policy.json применяется и к обычным провайдерским данным, и к ASN-агрегатам.
-3. Генератор строит FULL и специализированные профили, включая отдельный MESSAGING.
-4. Проверки валидируют CIDR, покрытие, ссылки, статистику и регрессионные изменения.
-5. Только успешный прогон публикует обновлённые подписки.
-
-## Автоматизация
-
-GitHub Actions запускает обновление каждые 12 часов. Реальные обновления получают отдельные data-YYYYMMDD-HHMM теги. История изменений хранится в [CHANGELOG.md](CHANGELOG.md).
-
-## Вклад
-
-См. [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Лицензия
-
-MIT.
+Если проект оказался полезен — можно [поддержать его](https://tips.tips/000484125) ❤️
