@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-22T06:14:16Z",
+  "generated_at": "2026-09-23T09:45:41Z",
   "artifacts": {
     "source-audit.json": {
-      "generated_at": "2026-09-22T06:14:16Z",
+      "generated_at": "2026-09-23T09:45:41Z",
       "method": "exact merged address-space intervals; prefix count is secondary",
       "policy": "audit-only; no source disagreement removes or replaces generated CIDRs",
       "sources": {
@@ -14,8 +14,8 @@
             "6": 32806619966882191914001498112
           },
           "source_coverage_ips": {
-            "4": 322126336,
-            "6": 211099536606711611495021904134144
+            "4": 322207232,
+            "6": 209831681698019867221194675585024
           }
         },
         "cdn-ip-database": {
@@ -38,8 +38,8 @@
             "6": 0
           },
           "source_coverage_ips": {
-            "4": 189952181,
-            "6": 98846798448331222367185471012970
+            "4": 190022069,
+            "6": 98846800304221250134956039995498
           }
         }
       },
@@ -49,45 +49,45 @@
           "source": "cloud-ip-ranges",
           "status": "OK",
           "source_ref": "https://raw.githubusercontent.com/disposable/cloud-ip-ranges/master/txt/aws.txt",
-          "generated_prefixes_total": 6876,
-          "source_prefixes_total": 11696,
+          "generated_prefixes_total": 6877,
+          "source_prefixes_total": 11707,
           "coverage": {
             "4": {
-              "source_prefixes": 8111,
-              "generated_prefixes": 5357,
+              "source_prefixes": 8112,
+              "generated_prefixes": 5359,
               "source_coverage_ips": 102031828,
-              "generated_coverage_ips": 192982934,
+              "generated_coverage_ips": 192986262,
               "overlap_coverage_ips": 102031828,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
-              "source_prefixes": 3585,
-              "generated_prefixes": 1519,
-              "source_coverage_ips": 1758876914467256259265345617933,
-              "generated_coverage_ips": 76939833888716254568852368654336,
-              "overlap_coverage_ips": 1758876914467256259265345617933,
+              "source_prefixes": 3595,
+              "generated_prefixes": 1518,
+              "source_coverage_ips": 1758876956968554605092152541197,
+              "generated_coverage_ips": 76939844769048631100514941009920,
+              "overlap_coverage_ips": 1758876956968554605092152541197,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:13:58Z"
+          "checked_at": "2026-09-23T09:45:24Z"
         },
         {
           "provider": "aws",
           "source": "cdn-ip-database",
           "status": "OK",
           "source_ref": "cdn-ip-database",
-          "generated_prefixes_total": 6876,
+          "generated_prefixes_total": 6877,
           "source_prefixes_total": 0,
           "coverage": {
             "4": {
               "source_prefixes": 0,
-              "generated_prefixes": 5357,
+              "generated_prefixes": 5359,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 192982934,
+              "generated_coverage_ips": 192986262,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
@@ -95,47 +95,47 @@
             },
             "6": {
               "source_prefixes": 0,
-              "generated_prefixes": 1519,
+              "generated_prefixes": 1518,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 76939833888716254568852368654336,
+              "generated_coverage_ips": 76939844769048631100514941009920,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:13:59Z"
+          "checked_at": "2026-09-23T09:45:24Z"
         },
         {
           "provider": "aws",
           "source": "IPVerse",
           "status": "OK",
           "source_ref": "IPVerse",
-          "generated_prefixes_total": 6876,
-          "source_prefixes_total": 8244,
+          "generated_prefixes_total": 6877,
+          "source_prefixes_total": 8222,
           "coverage": {
             "4": {
-              "source_prefixes": 6828,
-              "generated_prefixes": 5357,
-              "source_coverage_ips": 180443648,
-              "generated_coverage_ips": 192982934,
-              "overlap_coverage_ips": 180443648,
+              "source_prefixes": 6802,
+              "generated_prefixes": 5359,
+              "source_coverage_ips": 180457728,
+              "generated_coverage_ips": 192986262,
+              "overlap_coverage_ips": 180457728,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
-              "source_prefixes": 1416,
-              "generated_prefixes": 1519,
-              "source_coverage_ips": 76846698333279659967661079527424,
-              "generated_coverage_ips": 76939833888716254568852368654336,
-              "overlap_coverage_ips": 76846698333279659967661079527424,
+              "source_prefixes": 1420,
+              "generated_prefixes": 1518,
+              "source_coverage_ips": 76212885122423741413204474986496,
+              "generated_coverage_ips": 76939844769048631100514941009920,
+              "overlap_coverage_ips": 76212885122423741413204474986496,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:13:59Z"
+          "checked_at": "2026-09-23T09:45:24Z"
         },
         {
           "provider": "cloudflare",
@@ -166,7 +166,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:01Z"
+          "checked_at": "2026-09-23T09:45:27Z"
         },
         {
           "provider": "cloudflare",
@@ -197,7 +197,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:01Z"
+          "checked_at": "2026-09-23T09:45:27Z"
         },
         {
           "provider": "cloudflare",
@@ -205,45 +205,45 @@
           "status": "OK",
           "source_ref": "IPVerse",
           "generated_prefixes_total": 865,
-          "source_prefixes_total": 3269,
+          "source_prefixes_total": 3278,
           "coverage": {
             "4": {
-              "source_prefixes": 1392,
+              "source_prefixes": 1395,
               "generated_prefixes": 739,
-              "source_coverage_ips": 1602560,
+              "source_coverage_ips": 1604352,
               "generated_coverage_ips": 2125072,
-              "overlap_coverage_ips": 1602560,
+              "overlap_coverage_ips": 1604352,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
-              "source_prefixes": 1877,
+              "source_prefixes": 1883,
               "generated_prefixes": 126,
-              "source_coverage_ips": 1843071485070941752185824739328,
+              "source_coverage_ips": 1843072693996761366814999445504,
               "generated_coverage_ips": 2783216827337471787986329796608,
-              "overlap_coverage_ips": 1843071485070941752185824739328,
+              "overlap_coverage_ips": 1843072693996761366814999445504,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:01Z"
+          "checked_at": "2026-09-23T09:45:27Z"
         },
         {
           "provider": "hetzner",
           "source": "cloud-ip-ranges",
           "status": "OK",
           "source_ref": "https://raw.githubusercontent.com/disposable/cloud-ip-ranges/master/txt/hetzner.txt",
-          "generated_prefixes_total": 4353,
-          "source_prefixes_total": 7802,
+          "generated_prefixes_total": 4362,
+          "source_prefixes_total": 7817,
           "coverage": {
             "4": {
-              "source_prefixes": 7161,
-              "generated_prefixes": 3956,
-              "source_coverage_ips": 6144512,
-              "generated_coverage_ips": 6409216,
-              "overlap_coverage_ips": 6144512,
+              "source_prefixes": 7176,
+              "generated_prefixes": 3965,
+              "source_coverage_ips": 6213632,
+              "generated_coverage_ips": 6478336,
+              "overlap_coverage_ips": 6213632,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
@@ -259,21 +259,21 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:04Z"
+          "checked_at": "2026-09-23T09:45:29Z"
         },
         {
           "provider": "hetzner",
           "source": "cdn-ip-database",
           "status": "OK",
           "source_ref": "cdn-ip-database",
-          "generated_prefixes_total": 4353,
+          "generated_prefixes_total": 4362,
           "source_prefixes_total": 0,
           "coverage": {
             "4": {
               "source_prefixes": 0,
-              "generated_prefixes": 3956,
+              "generated_prefixes": 3965,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 6409216,
+              "generated_coverage_ips": 6478336,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
@@ -290,22 +290,22 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:04Z"
+          "checked_at": "2026-09-23T09:45:29Z"
         },
         {
           "provider": "hetzner",
           "source": "IPVerse",
           "status": "OK",
           "source_ref": "IPVerse",
-          "generated_prefixes_total": 4353,
-          "source_prefixes_total": 92,
+          "generated_prefixes_total": 4362,
+          "source_prefixes_total": 93,
           "coverage": {
             "4": {
-              "source_prefixes": 85,
-              "generated_prefixes": 3956,
-              "source_coverage_ips": 3433728,
-              "generated_coverage_ips": 6409216,
-              "overlap_coverage_ips": 3433728,
+              "source_prefixes": 86,
+              "generated_prefixes": 3965,
+              "source_coverage_ips": 3499264,
+              "generated_coverage_ips": 6478336,
+              "overlap_coverage_ips": 3499264,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
@@ -321,52 +321,52 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:04Z"
+          "checked_at": "2026-09-23T09:45:29Z"
         },
         {
           "provider": "ovh",
           "source": "cloud-ip-ranges",
           "status": "OK",
           "source_ref": "https://raw.githubusercontent.com/disposable/cloud-ip-ranges/master/txt/ovh.txt",
-          "generated_prefixes_total": 3043,
-          "source_prefixes_total": 5454,
+          "generated_prefixes_total": 3045,
+          "source_prefixes_total": 5457,
           "coverage": {
             "4": {
-              "source_prefixes": 4658,
-              "generated_prefixes": 2646,
-              "source_coverage_ips": 7058560,
-              "generated_coverage_ips": 7059072,
-              "overlap_coverage_ips": 7058560,
+              "source_prefixes": 4660,
+              "generated_prefixes": 2647,
+              "source_coverage_ips": 7059072,
+              "generated_coverage_ips": 7059328,
+              "overlap_coverage_ips": 7059072,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
-              "source_prefixes": 796,
-              "generated_prefixes": 397,
-              "source_coverage_ips": 15782198956171868311282782306304,
-              "generated_coverage_ips": 15782198956171868311282782306304,
-              "overlap_coverage_ips": 15782198956171868311282782306304,
+              "source_prefixes": 797,
+              "generated_prefixes": 398,
+              "source_coverage_ips": 15782200165097687925911957012480,
+              "generated_coverage_ips": 15782200165097687925911957012480,
+              "overlap_coverage_ips": 15782200165097687925911957012480,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:04Z"
+          "checked_at": "2026-09-23T09:45:29Z"
         },
         {
           "provider": "ovh",
           "source": "cdn-ip-database",
           "status": "OK",
           "source_ref": "cdn-ip-database",
-          "generated_prefixes_total": 3043,
+          "generated_prefixes_total": 3045,
           "source_prefixes_total": 0,
           "coverage": {
             "4": {
               "source_prefixes": 0,
-              "generated_prefixes": 2646,
+              "generated_prefixes": 2647,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 7059072,
+              "generated_coverage_ips": 7059328,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
@@ -374,47 +374,47 @@
             },
             "6": {
               "source_prefixes": 0,
-              "generated_prefixes": 397,
+              "generated_prefixes": 398,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 15782198956171868311282782306304,
+              "generated_coverage_ips": 15782200165097687925911957012480,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:04Z"
+          "checked_at": "2026-09-23T09:45:30Z"
         },
         {
           "provider": "ovh",
           "source": "IPVerse",
           "status": "OK",
           "source_ref": "IPVerse",
-          "generated_prefixes_total": 3043,
-          "source_prefixes_total": 612,
+          "generated_prefixes_total": 3045,
+          "source_prefixes_total": 613,
           "coverage": {
             "4": {
-              "source_prefixes": 607,
-              "generated_prefixes": 2646,
-              "source_coverage_ips": 4755456,
-              "generated_coverage_ips": 7059072,
-              "overlap_coverage_ips": 4755456,
+              "source_prefixes": 608,
+              "generated_prefixes": 2647,
+              "source_coverage_ips": 4755712,
+              "generated_coverage_ips": 7059328,
+              "overlap_coverage_ips": 4755712,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
               "source_prefixes": 5,
-              "generated_prefixes": 397,
+              "generated_prefixes": 398,
               "source_coverage_ips": 316912650057057350374175801344,
-              "generated_coverage_ips": 15782198956171868311282782306304,
+              "generated_coverage_ips": 15782200165097687925911957012480,
               "overlap_coverage_ips": 316912650057057350374175801344,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:04Z"
+          "checked_at": "2026-09-23T09:45:30Z"
         },
         {
           "provider": "akamai",
@@ -445,7 +445,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:04Z"
+          "checked_at": "2026-09-23T09:45:30Z"
         },
         {
           "provider": "akamai",
@@ -476,7 +476,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:04Z"
+          "checked_at": "2026-09-23T09:45:30Z"
         },
         {
           "provider": "akamai",
@@ -484,10 +484,10 @@
           "status": "OK",
           "source_ref": "IPVerse",
           "generated_prefixes_total": 608,
-          "source_prefixes_total": 4546,
+          "source_prefixes_total": 4550,
           "coverage": {
             "4": {
-              "source_prefixes": 2787,
+              "source_prefixes": 2786,
               "generated_prefixes": 356,
               "source_coverage_ips": 14632448,
               "generated_coverage_ips": 14636371,
@@ -497,7 +497,7 @@
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
-              "source_prefixes": 1759,
+              "source_prefixes": 1764,
               "generated_prefixes": 252,
               "source_coverage_ips": 23851877934016726452038833012736,
               "generated_coverage_ips": 23851877953182893544623057141760,
@@ -507,7 +507,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:04Z"
+          "checked_at": "2026-09-23T09:45:30Z"
         },
         {
           "provider": "digitalocean",
@@ -538,7 +538,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:09Z"
+          "checked_at": "2026-09-23T09:45:34Z"
         },
         {
           "provider": "digitalocean",
@@ -569,7 +569,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:09Z"
+          "checked_at": "2026-09-23T09:45:34Z"
         },
         {
           "provider": "digitalocean",
@@ -600,52 +600,52 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:09Z"
+          "checked_at": "2026-09-23T09:45:34Z"
         },
         {
           "provider": "microsoft",
           "source": "cloud-ip-ranges",
           "status": "OK",
           "source_ref": "https://raw.githubusercontent.com/disposable/cloud-ip-ranges/master/txt/microsoft-azure.txt",
-          "generated_prefixes_total": 1125,
-          "source_prefixes_total": 72438,
+          "generated_prefixes_total": 1126,
+          "source_prefixes_total": 73025,
           "coverage": {
             "4": {
-              "source_prefixes": 52640,
-              "generated_prefixes": 989,
-              "source_coverage_ips": 57084831,
-              "generated_coverage_ips": 83565440,
-              "overlap_coverage_ips": 57084831,
+              "source_prefixes": 53179,
+              "generated_prefixes": 990,
+              "source_coverage_ips": 57085087,
+              "generated_coverage_ips": 83565952,
+              "overlap_coverage_ips": 57085087,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
-              "source_prefixes": 19798,
+              "source_prefixes": 19846,
               "generated_prefixes": 136,
-              "source_coverage_ips": 14970616266881726393188614237,
+              "source_coverage_ips": 14971220729791533707775967325,
               "generated_coverage_ips": 11553227746430724455337054699536,
-              "overlap_coverage_ips": 14970616266881726393188614237,
+              "overlap_coverage_ips": 14971220729791533707775967325,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:11Z"
+          "checked_at": "2026-09-23T09:45:37Z"
         },
         {
           "provider": "microsoft",
           "source": "cdn-ip-database",
           "status": "OK",
           "source_ref": "cdn-ip-database",
-          "generated_prefixes_total": 1125,
+          "generated_prefixes_total": 1126,
           "source_prefixes_total": 0,
           "coverage": {
             "4": {
               "source_prefixes": 0,
-              "generated_prefixes": 989,
+              "generated_prefixes": 990,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 83565440,
+              "generated_coverage_ips": 83565952,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
@@ -662,22 +662,22 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:13Z"
+          "checked_at": "2026-09-23T09:45:38Z"
         },
         {
           "provider": "microsoft",
           "source": "IPVerse",
           "status": "OK",
           "source_ref": "IPVerse",
-          "generated_prefixes_total": 1125,
-          "source_prefixes_total": 1318,
+          "generated_prefixes_total": 1126,
+          "source_prefixes_total": 1319,
           "coverage": {
             "4": {
-              "source_prefixes": 1182,
-              "generated_prefixes": 989,
-              "source_coverage_ips": 83551232,
-              "generated_coverage_ips": 83565440,
-              "overlap_coverage_ips": 83551232,
+              "source_prefixes": 1183,
+              "generated_prefixes": 990,
+              "source_coverage_ips": 83551744,
+              "generated_coverage_ips": 83565952,
+              "overlap_coverage_ips": 83551744,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
@@ -693,7 +693,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:13Z"
+          "checked_at": "2026-09-23T09:45:38Z"
         },
         {
           "provider": "oracle",
@@ -724,7 +724,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:13Z"
+          "checked_at": "2026-09-23T09:45:38Z"
         },
         {
           "provider": "oracle",
@@ -755,7 +755,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:40Z"
         },
         {
           "provider": "oracle",
@@ -763,17 +763,17 @@
           "status": "OK",
           "source_ref": "IPVerse",
           "generated_prefixes_total": 1517,
-          "source_prefixes_total": 1526,
+          "source_prefixes_total": 1525,
           "coverage": {
             "4": {
-              "source_prefixes": 1208,
+              "source_prefixes": 1207,
               "generated_prefixes": 1206,
-              "source_coverage_ips": 5683968,
+              "source_coverage_ips": 5683456,
               "generated_coverage_ips": 5645578,
-              "overlap_coverage_ips": 5635840,
+              "overlap_coverage_ips": 5635328,
               "new_coverage_ips": 48128,
-              "source_coverage_already_present_percent": 99.1533,
-              "new_coverage_percent_of_source": 0.8467
+              "source_coverage_already_present_percent": 99.1532,
+              "new_coverage_percent_of_source": 0.8468
             },
             "6": {
               "source_prefixes": 318,
@@ -786,29 +786,29 @@
               "new_coverage_percent_of_source": 2.6151
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "alibaba",
           "source": "cloud-ip-ranges",
           "status": "OK",
           "source_ref": "https://raw.githubusercontent.com/disposable/cloud-ip-ranges/master/txt/alibaba.txt",
-          "generated_prefixes_total": 864,
-          "source_prefixes_total": 1409,
+          "generated_prefixes_total": 860,
+          "source_prefixes_total": 1412,
           "coverage": {
             "4": {
-              "source_prefixes": 1229,
-              "generated_prefixes": 667,
+              "source_prefixes": 1230,
+              "generated_prefixes": 666,
               "source_coverage_ips": 5659136,
-              "generated_coverage_ips": 21496324,
+              "generated_coverage_ips": 21496580,
               "overlap_coverage_ips": 5659136,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
-              "source_prefixes": 180,
-              "generated_prefixes": 197,
+              "source_prefixes": 182,
+              "generated_prefixes": 194,
               "source_coverage_ips": 5645702920413432079944637218816,
               "generated_coverage_ips": 87330292687885111225236638924800,
               "overlap_coverage_ips": 5645702920413432079944637218816,
@@ -817,21 +817,21 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "alibaba",
           "source": "cdn-ip-database",
           "status": "OK",
           "source_ref": "cdn-ip-database",
-          "generated_prefixes_total": 864,
+          "generated_prefixes_total": 860,
           "source_prefixes_total": 0,
           "coverage": {
             "4": {
               "source_prefixes": 0,
-              "generated_prefixes": 667,
+              "generated_prefixes": 666,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 21496324,
+              "generated_coverage_ips": 21496580,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
@@ -839,7 +839,7 @@
             },
             "6": {
               "source_prefixes": 0,
-              "generated_prefixes": 197,
+              "generated_prefixes": 194,
               "source_coverage_ips": 0,
               "generated_coverage_ips": 87330292687885111225236638924800,
               "overlap_coverage_ips": 0,
@@ -848,29 +848,29 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "alibaba",
           "source": "IPVerse",
           "status": "OK",
           "source_ref": "IPVerse",
-          "generated_prefixes_total": 864,
-          "source_prefixes_total": 811,
+          "generated_prefixes_total": 860,
+          "source_prefixes_total": 813,
           "coverage": {
             "4": {
-              "source_prefixes": 622,
-              "generated_prefixes": 667,
-              "source_coverage_ips": 21462016,
-              "generated_coverage_ips": 21496324,
-              "overlap_coverage_ips": 21462016,
+              "source_prefixes": 624,
+              "generated_prefixes": 666,
+              "source_coverage_ips": 21462528,
+              "generated_coverage_ips": 21496580,
+              "overlap_coverage_ips": 21462528,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
               "source_prefixes": 189,
-              "generated_prefixes": 197,
+              "generated_prefixes": 194,
               "source_coverage_ips": 83605935572585209292652527222784,
               "generated_coverage_ips": 87330292687885111225236638924800,
               "overlap_coverage_ips": 83605935572585209292652527222784,
@@ -879,7 +879,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "cdn77",
@@ -910,7 +910,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "cdn77",
@@ -941,7 +941,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "cdn77",
@@ -972,7 +972,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "fastly",
@@ -1003,7 +1003,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "fastly",
@@ -1034,7 +1034,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "fastly",
@@ -1042,30 +1042,30 @@
           "status": "OK",
           "source_ref": "IPVerse",
           "generated_prefixes_total": 89,
-          "source_prefixes_total": 681,
+          "source_prefixes_total": 680,
           "coverage": {
             "4": {
-              "source_prefixes": 112,
+              "source_prefixes": 113,
               "generated_prefixes": 48,
-              "source_coverage_ips": 363776,
+              "source_coverage_ips": 363520,
               "generated_coverage_ips": 376576,
-              "overlap_coverage_ips": 363776,
+              "overlap_coverage_ips": 363520,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
-              "source_prefixes": 569,
+              "source_prefixes": 567,
               "generated_prefixes": 41,
-              "source_coverage_ips": 123854450219518758948647731200,
+              "source_coverage_ips": 123853241293699144319473025024,
               "generated_coverage_ips": 198933579320865689214600085504,
-              "overlap_coverage_ips": 123854450219518758948647731200,
+              "overlap_coverage_ips": 123853241293699144319473025024,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "melbicom",
@@ -1096,7 +1096,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "melbicom",
@@ -1127,7 +1127,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "melbicom",
@@ -1158,7 +1158,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "buyvm",
@@ -1189,7 +1189,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "buyvm",
@@ -1220,7 +1220,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "buyvm",
@@ -1251,21 +1251,21 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "vultr",
           "source": "cloud-ip-ranges",
           "status": "OK",
           "source_ref": null,
-          "generated_prefixes_total": 2381,
+          "generated_prefixes_total": 2351,
           "source_prefixes_total": 0,
           "coverage": {
             "4": {
               "source_prefixes": 0,
-              "generated_prefixes": 739,
+              "generated_prefixes": 743,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 1487876,
+              "generated_coverage_ips": 1487365,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
@@ -1273,30 +1273,30 @@
             },
             "6": {
               "source_prefixes": 0,
-              "generated_prefixes": 1642,
+              "generated_prefixes": 1608,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 8733031082177240544467425951744,
+              "generated_coverage_ips": 8732918652076016383954178277376,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:15Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "vultr",
           "source": "cdn-ip-database",
           "status": "OK",
           "source_ref": "cdn-ip-database",
-          "generated_prefixes_total": 2381,
+          "generated_prefixes_total": 2351,
           "source_prefixes_total": 0,
           "coverage": {
             "4": {
               "source_prefixes": 0,
-              "generated_prefixes": 739,
+              "generated_prefixes": 743,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 1487876,
+              "generated_coverage_ips": 1487365,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
@@ -1304,47 +1304,47 @@
             },
             "6": {
               "source_prefixes": 0,
-              "generated_prefixes": 1642,
+              "generated_prefixes": 1608,
               "source_coverage_ips": 0,
-              "generated_coverage_ips": 8733031082177240544467425951744,
+              "generated_coverage_ips": 8732918652076016383954178277376,
               "overlap_coverage_ips": 0,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 0.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "vultr",
           "source": "IPVerse",
           "status": "OK",
           "source_ref": "IPVerse",
-          "generated_prefixes_total": 2381,
-          "source_prefixes_total": 1107,
+          "generated_prefixes_total": 2351,
+          "source_prefixes_total": 945,
           "coverage": {
             "4": {
-              "source_prefixes": 668,
-              "generated_prefixes": 739,
-              "source_coverage_ips": 1459968,
-              "generated_coverage_ips": 1487876,
-              "overlap_coverage_ips": 1459968,
+              "source_prefixes": 667,
+              "generated_prefixes": 743,
+              "source_coverage_ips": 1459200,
+              "generated_coverage_ips": 1487365,
+              "overlap_coverage_ips": 1459200,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             },
             "6": {
-              "source_prefixes": 439,
-              "generated_prefixes": 1642,
-              "source_coverage_ips": 8728317480406563105315246571520,
-              "generated_coverage_ips": 8733031082177240544467425951744,
-              "overlap_coverage_ips": 8728317480406563105315246571520,
+              "source_prefixes": 278,
+              "generated_prefixes": 1608,
+              "source_coverage_ips": 8094295125383851220011417862144,
+              "generated_coverage_ips": 8732918652076016383954178277376,
+              "overlap_coverage_ips": 8094295125383851220011417862144,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "contabo",
@@ -1375,7 +1375,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "contabo",
@@ -1406,7 +1406,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "contabo",
@@ -1437,7 +1437,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "scaleway",
@@ -1468,7 +1468,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "scaleway",
@@ -1499,7 +1499,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "scaleway",
@@ -1530,7 +1530,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "gcore",
@@ -1561,7 +1561,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "gcore",
@@ -1592,7 +1592,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "gcore",
@@ -1605,9 +1605,9 @@
             "4": {
               "source_prefixes": 520,
               "generated_prefixes": 526,
-              "source_coverage_ips": 194816,
+              "source_coverage_ips": 194560,
               "generated_coverage_ips": 201227,
-              "overlap_coverage_ips": 194816,
+              "overlap_coverage_ips": 194560,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
@@ -1615,15 +1615,15 @@
             "6": {
               "source_prefixes": 52,
               "generated_prefixes": 224,
-              "source_coverage_ips": 2161559365470956964374642688,
+              "source_coverage_ips": 2142216552357122897579343872,
               "generated_coverage_ips": 2163977254003674370143158454,
-              "overlap_coverage_ips": 2161559365470956964374642688,
+              "overlap_coverage_ips": 2142216552357122897579343872,
               "new_coverage_ips": 0,
               "source_coverage_already_present_percent": 100.0,
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "backblaze",
@@ -1654,7 +1654,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "backblaze",
@@ -1685,7 +1685,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "backblaze",
@@ -1716,7 +1716,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "telegram",
@@ -1747,7 +1747,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "telegram",
@@ -1778,7 +1778,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "telegram",
@@ -1809,7 +1809,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "twitter",
@@ -1840,7 +1840,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "twitter",
@@ -1871,7 +1871,7 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         },
         {
           "provider": "twitter",
@@ -1902,9 +1902,114 @@
               "new_coverage_percent_of_source": 0.0
             }
           },
-          "checked_at": "2026-09-22T06:14:16Z"
+          "checked_at": "2026-09-23T09:45:41Z"
         }
       ]
+    },
+    "bgpstream-health.json": {
+      "engine": "v45",
+      "source": "BGPKIT Broker + BGPKIT Parser",
+      "broker": "https://api.bgpkit.com/v3/broker",
+      "projects": [
+        "routeviews",
+        "riperis"
+      ],
+      "record_type": "updates",
+      "window_hours": 0.5,
+      "generated_at": "2026-09-23T05:10:01.927949+00:00",
+      "sample_size": 12,
+      "files_selected": 12,
+      "files_parsed": 12,
+      "elements_observed": 60084,
+      "results": [
+        {
+          "provider": "aws",
+          "asn": "8987",
+          "prefixes": 8,
+          "peers": 142,
+          "observed": true
+        },
+        {
+          "provider": "aws",
+          "asn": "14618",
+          "prefixes": 14,
+          "peers": 135,
+          "observed": true
+        },
+        {
+          "provider": "aws",
+          "asn": "16509",
+          "prefixes": 8365,
+          "peers": 183,
+          "observed": true
+        },
+        {
+          "provider": "aws",
+          "asn": "214101",
+          "prefixes": 0,
+          "peers": 0,
+          "observed": false
+        },
+        {
+          "provider": "cloudflare",
+          "asn": "13335",
+          "prefixes": 1827,
+          "peers": 35,
+          "observed": true
+        },
+        {
+          "provider": "cloudflare",
+          "asn": "14789",
+          "prefixes": 263,
+          "peers": 129,
+          "observed": true
+        },
+        {
+          "provider": "cloudflare",
+          "asn": "132892",
+          "prefixes": 33,
+          "peers": 2,
+          "observed": true
+        },
+        {
+          "provider": "cloudflare",
+          "asn": "133877",
+          "prefixes": 0,
+          "peers": 0,
+          "observed": false
+        },
+        {
+          "provider": "cloudflare",
+          "asn": "139242",
+          "prefixes": 1,
+          "peers": 2,
+          "observed": true
+        },
+        {
+          "provider": "cloudflare",
+          "asn": "202623",
+          "prefixes": 21,
+          "peers": 2,
+          "observed": true
+        },
+        {
+          "provider": "cloudflare",
+          "asn": "203898",
+          "prefixes": 1,
+          "peers": 1,
+          "observed": true
+        },
+        {
+          "provider": "cloudflare",
+          "asn": "209242",
+          "prefixes": 28,
+          "peers": 2,
+          "observed": true
+        }
+      ],
+      "healthy_asns": 10,
+      "partial": false,
+      "warnings": []
     }
   }
 }
