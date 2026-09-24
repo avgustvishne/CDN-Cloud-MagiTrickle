@@ -211,7 +211,7 @@ jobs:
           latest_main="$(git rev-parse origin/main)"
           if [ "$latest_main" != "$GITHUB_SHA" ]; then
             changed_paths="$(git diff --name-only "$GITHUB_SHA" "$latest_main")"
-            unexpected_paths="$(printf '%s\n' "$changed_paths" | grep -Ev '^(STATUS\.md|data/status\.json)
+            unexpected_paths="$(echo "$changed_paths" | grep -Ev '^(STATUS\.md|data/status\.json)
 
       - name: Create automatic rollback backup
         shell: bash
@@ -260,7 +260,7 @@ jobs:
  || true)"
             if [ -n "$unexpected_paths" ]; then
               echo "::error::main advanced with non-status changes after validation; refusing to publish a stale artifact."
-              printf '%s\n' "$unexpected_paths"
+              echo "$unexpected_paths"
               exit 1
             fi
             echo "main advanced only in autonomous status files; preserving those newer files and applying the validated bundle."
