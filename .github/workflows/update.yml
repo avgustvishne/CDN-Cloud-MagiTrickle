@@ -208,10 +208,64 @@ jobs:
             exit 1
           }
           git fetch origin main
-          test "$(git rev-parse origin/main)" = "$GITHUB_SHA" || {
-            echo "::error::main advanced after validation; refusing to publish a stale artifact."
+          latest_main="$(git rev-parse origin/main)"
+          if [ "$latest_main" != "$GITHUB_SHA" ]; then
+            changed_paths="$(git diff --name-only "$GITHUB_SHA" "$latest_main")"
+            unexpected_paths="$(printf '%s\n' "$changed_paths" | grep -Ev '^(STATUS\.md|data/status\.json)
+
+      - name: Create automatic rollback backup
+        shell: bash
+        run: |
+          set -euo pipefail
+          backup_ref="refs/heads/backup/pre-update"
+          git fetch origin "$backup_ref" || true
+          git push origin "HEAD:${backup_ref}" --force-with-lease
+          echo "Rollback backup updated to $(git rev-parse HEAD)"
+
+      - name: Apply validated publication bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -a --delete --exclude='status.json' publication/data/ data/
+          cp publication/README.md README.md
+          cp publication/UPDATE_REPORT.md UPDATE_REPORT.md
+          cp publication/CHANGELOG.md CHANGELOG.md
+          cp publication/HEALTH.md HEALTH.md
+
+      - name: Commit generated lists
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ README.md UPDATE_REPORT.md CHANGELOG.md HEALTH.md
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git commit -m "chore: update provider subscriptions"
+
+          tag="data-$(date -u +%Y%m%d-%H%M)-${GITHUB_RUN_ID}"
+          git push origin "HEAD:${GITHUB_REF_NAME}" || {
+            echo "::error::main changed after validation; refusing to rebase or publish a stale artifact."
+            echo "::error::A fresh update run must regenerate and validate the data against the new main."
             exit 1
           }
+          if git tag -a "$tag" -m "Automated subscription update $(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+              && git push origin "$tag"; then
+            echo "Tagged as $tag."
+          else
+            echo "::warning::Could not create/push tag $tag; data was published successfully regardless."
+          fi
+ || true)"
+            if [ -n "$unexpected_paths" ]; then
+              echo "::error::main advanced with non-status changes after validation; refusing to publish a stale artifact."
+              printf '%s\n' "$unexpected_paths"
+              exit 1
+            fi
+            echo "main advanced only in autonomous status files; preserving those newer files and applying the validated bundle."
+            git reset --hard "$latest_main"
+          fi
 
       - name: Create automatic rollback backup
         shell: bash
