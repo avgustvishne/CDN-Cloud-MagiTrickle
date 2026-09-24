@@ -208,10 +208,16 @@ jobs:
             exit 1
           }
           git fetch origin main
-          test "$(git rev-parse origin/main)" = "$GITHUB_SHA" || {
-            echo "::error::main advanced after validation; refusing to publish a stale artifact."
-            exit 1
-          }
+          latest_main="$(git rev-parse origin/main)"
+          if [ "$latest_main" != "$GITHUB_SHA" ]; then
+            if ! git diff --quiet "$GITHUB_SHA" "$latest_main" -- . ':(exclude)STATUS.md' ':(exclude)data/status.json'; then
+              echo "::error::main advanced with non-status changes after validation; refusing to publish a stale artifact."
+              git diff --name-only "$GITHUB_SHA" "$latest_main" -- . ':(exclude)STATUS.md' ':(exclude)data/status.json'
+              exit 1
+            fi
+            echo "main advanced only in autonomous status files; preserving those newer files and applying the validated bundle."
+            git merge --ff-only "$latest_main"
+          fi
 
       - name: Create automatic rollback backup
         shell: bash
@@ -226,7 +232,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rsync -a --delete publication/data/ data/
+          rsync -a --delete --exclude='status.json' publication/data/ data/
           cp publication/README.md README.md
           cp publication/UPDATE_REPORT.md UPDATE_REPORT.md
           cp publication/CHANGELOG.md CHANGELOG.md
