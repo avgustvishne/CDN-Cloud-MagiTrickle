@@ -10,7 +10,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Поддержать проект](https://img.shields.io/badge/%E2%9D%A4-Поддержать%20проект-e25555)](https://tips.tips/000484125)
 
-[📊 Статус](STATUS.md) · [📝 Изменения](CHANGELOG.md) · [🤝 Вклад в проект](CONTRIBUTING.md)
+[📊 Статус](STATUS.md) · [📝 Изменения](CHANGELOG.md) · [🇬🇧 English](docs/README.en.md) · [📚 Документация](docs/README.md) · [🤝 Вклад в проект](CONTRIBUTING.md)
 
 </div>
 
