@@ -216,7 +216,7 @@ jobs:
               exit 1
             fi
             echo "main advanced only in autonomous status files; preserving those newer files and applying the validated bundle."
-            git reset --hard "$latest_main"
+            git merge --ff-only "$latest_main"
           fi
 
       - name: Create automatic rollback backup
