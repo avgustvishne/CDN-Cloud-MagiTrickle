@@ -33,8 +33,6 @@ Generated: 2026-09-24 08:18:51 UTC
 
 ---
 
-Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
-
 ## Subscription update — v44 · 2026-09-23 09:38:09 UTC
 
 Generated: 2026-09-23 09:38:09 UTC
@@ -63,8 +61,6 @@ Generated: 2026-09-23 09:38:09 UTC
 
 ---
 
-Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
-
 ## Subscription update — v44 · 2026-09-22 11:38:56 UTC
 
 Generated: 2026-09-22 11:38:56 UTC
@@ -90,8 +86,6 @@ Generated: 2026-09-22 11:38:56 UTC
 - SHA-256 checksums are regenerated with every update
 
 ---
-
-Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
 ## Subscription update — v44 · 2026-09-22 06:06:10 UTC
 
@@ -121,8 +115,6 @@ Generated: 2026-09-22 06:06:10 UTC
 
 ---
 
-Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
-
 ## Subscription update — v44 · 2026-09-21 20:13:49 UTC
 
 Generated: 2026-09-21 20:13:49 UTC
@@ -145,8 +137,6 @@ Generated: 2026-09-21 20:13:49 UTC
 - SHA-256 checksums are regenerated with every update
 
 ---
-
-Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
 ## Subscription update — v44 · 2026-09-21 18:37:03 UTC
 
@@ -174,8 +164,6 @@ Generated: 2026-09-21 18:37:03 UTC
 
 ---
 
-Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
-
 ## Subscription update — v44 · 2026-09-21 16:28:34 UTC
 
 Generated: 2026-09-21 16:28:34 UTC
@@ -201,8 +189,6 @@ Generated: 2026-09-21 16:28:34 UTC
 - SHA-256 checksums are regenerated with every update
 
 ---
-
-Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
 ## Subscription update — v44 · 2026-09-21 12:50:17 UTC
 
@@ -236,8 +222,6 @@ Generated: 2026-09-21 12:50:17 UTC
 - SHA-256 checksums are regenerated with every update
 
 ---
-
-Automated log of provider CIDR changes, most recent entry first. Runs with no provider changes are not recorded here; the full report for the latest run always lives in `data/release-notes.md`.
 
 ## Subscription update — v44 · 2026-09-18 04:44:13 UTC
 
