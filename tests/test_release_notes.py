@@ -49,7 +49,7 @@ class PrependChangelogTests(unittest.TestCase):
 
 
     def test_legacy_duplicate_descriptions_are_removed_without_losing_entries(self):
-        description = self.mod.CHANGELOG_HEADER.split("\\n\\n", 1)[1]
+        description = self.mod.CHANGELOG_HEADER.partition("\n\n")[2]
         legacy = (
             "# Changelog\\n\\n"
             + description
