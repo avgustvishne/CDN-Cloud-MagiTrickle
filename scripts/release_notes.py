@@ -19,7 +19,16 @@ def prepend_changelog(entry_text, max_entries=CHANGELOG_MAX_ENTRIES):
     body = ""
     if CHANGELOG.exists():
         existing = CHANGELOG.read_text(encoding="utf-8")
-        _, _, body = existing.partition("\n\n")
+        if existing.startswith(CHANGELOG_HEADER):
+            body = existing[len(CHANGELOG_HEADER):].strip()
+        else:
+            # Migrate older changelogs that had the title and/or description
+            # stored as separate blocks before the generated entries.
+            body = existing
+            if body.startswith("# Changelog"):
+                body = body[len("# Changelog"):].lstrip()
+            if body.startswith(CHANGELOG_HEADER.split("\\n\\n", 1)[1]):
+                body = body[len(CHANGELOG_HEADER.split("\\n\\n", 1)[1]):].lstrip()
     old_entries = [e.strip() for e in body.split(CHANGELOG_SEPARATOR) if e.strip()] if body else []
     entries = ([entry_text] + old_entries)[:max_entries]
     CHANGELOG.write_text(CHANGELOG_HEADER + "\n\n" + CHANGELOG_SEPARATOR.join(entries) + "\n", encoding="utf-8")
