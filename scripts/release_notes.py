@@ -19,17 +19,29 @@ def prepend_changelog(entry_text, max_entries=CHANGELOG_MAX_ENTRIES):
     body = ""
     if CHANGELOG.exists():
         existing = CHANGELOG.read_text(encoding="utf-8")
+        description = CHANGELOG_HEADER.split("\n\n", 1)[1]
         if existing.startswith(CHANGELOG_HEADER):
-            body = existing[len(CHANGELOG_HEADER):].strip()
+            body = existing[len(CHANGELOG_HEADER):].lstrip()
         else:
-            # Migrate older changelogs that had the title and/or description
-            # stored as separate blocks before the generated entries.
+            # Migrate legacy files with the title/description in separate blocks.
             body = existing
             if body.startswith("# Changelog"):
                 body = body[len("# Changelog"):].lstrip()
-            if body.startswith(CHANGELOG_HEADER.split("\\n\\n", 1)[1]):
-                body = body[len(CHANGELOG_HEADER.split("\\n\\n", 1)[1]):].lstrip()
-    old_entries = [e.strip() for e in body.split(CHANGELOG_SEPARATOR) if e.strip()] if body else []
+            if body.startswith(description):
+                body = body[len(description):].lstrip()
+
+    old_entries = []
+    if body:
+        for entry in body.split(CHANGELOG_SEPARATOR):
+            entry = entry.strip()
+            if not entry:
+                continue
+            # Older buggy versions inserted the description between entries.
+            # Drop only exact copies of our known header text, preserving entries.
+            while entry.startswith(description):
+                entry = entry[len(description):].lstrip()
+            if entry and entry != "# Changelog":
+                old_entries.append(entry)
     entries = ([entry_text] + old_entries)[:max_entries]
     CHANGELOG.write_text(CHANGELOG_HEADER + "\n\n" + CHANGELOG_SEPARATOR.join(entries) + "\n", encoding="utf-8")
 
