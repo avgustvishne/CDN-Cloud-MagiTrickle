@@ -47,6 +47,29 @@ class PrependChangelogTests(unittest.TestCase):
         self.assertNotIn("entry 1", text)
         self.assertNotIn("entry 0", text)
 
+
+    def test_legacy_duplicate_descriptions_are_removed_without_losing_entries(self):
+        description = self.mod.CHANGELOG_HEADER.split("\\n\\n", 1)[1]
+        legacy = (
+            "# Changelog\\n\\n"
+            + description
+            + "\\n\\nentry old-1"
+            + self.mod.CHANGELOG_SEPARATOR
+            + description
+            + "\\n\\nentry old-2"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            changelog = Path(tmp) / "CHANGELOG.md"
+            changelog.write_text(legacy, encoding="utf-8")
+            with patch.object(self.mod, "CHANGELOG", changelog):
+                self.mod.prepend_changelog("entry new")
+            text = changelog.read_text(encoding="utf-8")
+        self.assertEqual(text.count(description), 1)
+        self.assertIn("entry old-1", text)
+        self.assertIn("entry old-2", text)
+        self.assertLess(text.index("entry new"), text.index("entry old-1"))
+        self.assertLess(text.index("entry old-1"), text.index("entry old-2"))
+
     def test_unrecognized_existing_file_falls_back_gracefully(self):
         with tempfile.TemporaryDirectory() as tmp:
             changelog = Path(tmp) / "CHANGELOG.md"
