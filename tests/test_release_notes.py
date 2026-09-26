@@ -51,12 +51,12 @@ class PrependChangelogTests(unittest.TestCase):
     def test_legacy_duplicate_descriptions_are_removed_without_losing_entries(self):
         description = self.mod.CHANGELOG_HEADER.partition("\n\n")[2]
         legacy = (
-            "# Changelog\\n\\n"
+            "# Changelog\n\n"
             + description
-            + "\\n\\nentry old-1"
+            + "\n\nentry old-1"
             + self.mod.CHANGELOG_SEPARATOR
             + description
-            + "\\n\\nentry old-2"
+            + "\n\nentry old-2"
         )
         with tempfile.TemporaryDirectory() as tmp:
             changelog = Path(tmp) / "CHANGELOG.md"
