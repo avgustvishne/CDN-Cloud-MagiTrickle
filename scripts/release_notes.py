@@ -36,11 +36,13 @@ def prepend_changelog(entry_text, max_entries=CHANGELOG_MAX_ENTRIES):
             entry = entry.strip()
             if not entry:
                 continue
-            # Older buggy versions inserted the description between entries.
-            # Drop only exact copies of our known header text, preserving entries.
-            while entry.startswith(description):
-                entry = entry[len(description):].lstrip()
-            if entry and entry != "# Changelog":
+            # Legacy releases could leave the description adjacent to an entry,
+            # separated by blank lines, or repeated in the middle of a block.
+            # Remove exact copies of the known description while retaining entry
+            # text and its original order.
+            entry = entry.replace(description, "").strip()
+            entry = entry.removeprefix("# Changelog").strip()
+            if entry:
                 old_entries.append(entry)
     entries = ([entry_text] + old_entries)[:max_entries]
     CHANGELOG.write_text(CHANGELOG_HEADER + "\n\n" + CHANGELOG_SEPARATOR.join(entries) + "\n", encoding="utf-8")
