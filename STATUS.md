@@ -2,18 +2,18 @@
 
 ## 🟢 HEALTHY
 
-**Публикация:** `held`  
-**Последнее обновление данных:** `Updated: 2026-09-26 09:33:07 UTC
-ALL IPv4: 17631
-ALL IPv6: 5325
-ALL ASN IPv4: 12626
-ALL ASN IPv6: 6014
+**Публикация:** `published`  
+**Последнее обновление данных:** `Updated: 2026-09-28 13:57:19 UTC
+ALL IPv4: 17643
+ALL IPv6: 5356
+ALL ASN IPv4: 12631
+ALL ASN IPv6: 6045
 
 Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6
-aws,5342,1517,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+aws,5346,1520,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 cloudflare,757,126,official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-hetzner,3990,397,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-ovh,2660,401,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+hetzner,3998,397,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+ovh,2661,401,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 akamai,355,252,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,FILTERED,0,1,0
 digitalocean,232,14,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 microsoft,991,136,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
@@ -23,24 +23,24 @@ cdn77,189,33,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 fastly,48,41,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 melbicom,100,18,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 buyvm,23,27,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-vultr,761,1620,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
+vultr,760,1648,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 contabo,250,2,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-scaleway,11,1,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+scaleway,11,1,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 gcore,528,227,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,FILTERED,0,7,0
 backblaze,6,1,static+cloud-ip-ranges,OK,0,0,0
 telegram,8,4,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 twitter,11,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`  
-**Отчёт сформирован:** `2026-09-28T05:59:40Z`  
-**Исходный commit:** `17937c12804b472eb214f3ed15b7de3572c09958`  
-**Последний известный рабочий commit:** `cc4fe554f5fe207aa6dc5fea2ad2ddad3841b5cd`
+**Отчёт сформирован:** `2026-09-28T14:02:54Z`  
+**Исходный commit:** `9a371070c3554bb8165665422b5096de85c89fc5`  
+**Последний известный рабочий commit:** `861c37857953a5062f4ddfaade114ad98e7aad3d`
 
 ## Данные
 
 | Показатель | Значение |
 |---|---:|
 | Провайдеры | **20** |
-| IPv4 CIDR | **17 631** |
-| IPv6 CIDR | **5 325** |
+| IPv4 CIDR | **17 643** |
+| IPv6 CIDR | **5 356** |
 | Источники | **8 / 8** healthy |
 | Network evidence | **128** queried |
 
@@ -48,9 +48,5 @@ twitter,11,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`
 
 - Rollback guard: **PASS**
 - Checksums: **available**
-
-## Последний сбой
-
-`https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/runs/36381991783 (conclusion: failure, run: 36381991783)`
 
 Машиночитаемый статус: [`data/status.json`](data/status.json)
