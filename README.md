@@ -75,20 +75,20 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
-| **FULL** | **17 699 CIDR** | **5 381 CIDR** |
-| **BALANCED** | **9 369 CIDR** | **3 166 CIDR** |
-| **PERFORMANCE** | **2 130 CIDR** | **693 CIDR** |
-| **MINIMAL** | **1 887 CIDR** | **678 CIDR** |
+| **FULL** | **17 680 CIDR** | **5 369 CIDR** |
+| **BALANCED** | **9 372 CIDR** | **3 147 CIDR** |
+| **PERFORMANCE** | **2 127 CIDR** | **691 CIDR** |
+| **MINIMAL** | **1 884 CIDR** | **676 CIDR** |
 | **STABLE** | **17 631 CIDR** | **5 312 CIDR** |
-| **CDN** | **1 887 CIDR** | **678 CIDR** |
-| **CLOUD** | **9 033 CIDR** | **2 304 CIDR** |
-| **VIDEO** | **7 402 CIDR** | **2 080 CIDR** |
-| **VPN** | **8 389 CIDR** | **2 762 CIDR** |
+| **CDN** | **1 884 CIDR** | **676 CIDR** |
+| **CLOUD** | **9 009 CIDR** | **2 311 CIDR** |
+| **VIDEO** | **7 377 CIDR** | **2 078 CIDR** |
+| **VPN** | **8 392 CIDR** | **2 745 CIDR** |
 | **MESSAGING** | **19 CIDR** | **8 CIDR** |
-| **ASN ALL** | **12 687 CIDR** | **6 078 CIDR** |
-| **ALL-CLOUD** | **9 033 CIDR** | **2 313 CIDR** |
+| **ASN ALL** | **12 653 CIDR** | **6 058 CIDR** |
+| **ALL-CLOUD** | **9 009 CIDR** | **2 311 CIDR** |
 
-**Обновлено:** 29 сентября 2026, 06:18 UTC · [полная статистика](data/statistics.json)
+**Обновлено:** 29 сентября 2026, 18:42 UTC · [полная статистика](data/statistics.json)
 
 > Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
