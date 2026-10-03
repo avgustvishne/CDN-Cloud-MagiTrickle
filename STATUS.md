@@ -3,15 +3,15 @@
 ## 🟢 HEALTHY
 
 **Публикация:** `published`  
-**Последнее обновление данных:** `Updated: 2026-10-03 16:45:39 UTC
-ALL IPv4: 18041
-ALL IPv6: 5417
-ALL ASN IPv4: 12926
-ALL ASN IPv6: 6086
+**Последнее обновление данных:** `Updated: 2026-10-03 19:35:03 UTC
+ALL IPv4: 18062
+ALL IPv6: 5436
+ALL ASN IPv4: 12956
+ALL ASN IPv6: 6105
 
 Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6
-aws,5359,1534,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-cloudflare,831,126,official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+aws,5380,1535,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+cloudflare,832,126,official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 hetzner,4178,432,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 ovh,2702,409,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 akamai,356,250,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,FILTERED,0,1,0
@@ -23,24 +23,24 @@ cdn77,189,33,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 fastly,49,42,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 melbicom,100,18,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 buyvm,23,27,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-vultr,851,1660,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
+vultr,851,1678,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 contabo,250,2,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 scaleway,11,1,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 gcore,528,226,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 backblaze,6,1,static+cloud-ip-ranges,OK,0,0,0
 telegram,8,4,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 twitter,11,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`  
-**Отчёт сформирован:** `2026-10-03T16:54:59Z`  
-**Исходный commit:** `385be7d3548ee70b8099eb29af91b9e8b5b2b76f`  
-**Последний известный рабочий commit:** `a038cdb000d048d7b634995cdf7a6bbee5ed1700`
+**Отчёт сформирован:** `2026-10-03T19:44:34Z`  
+**Исходный commit:** `b7b67dddfe3dd171002351332633d3634ca4602c`  
+**Последний известный рабочий commit:** `bc6e4ead93e399c5ecfe84bafaea5b3addb39059`
 
 ## Данные
 
 | Показатель | Значение |
 |---|---:|
 | Провайдеры | **20** |
-| IPv4 CIDR | **18 041** |
-| IPv6 CIDR | **5 417** |
+| IPv4 CIDR | **18 062** |
+| IPv6 CIDR | **5 436** |
 | Источники | **8 / 8** healthy |
 | Network evidence | **128** queried |
 
