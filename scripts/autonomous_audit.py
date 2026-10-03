@@ -21,6 +21,7 @@ REQUIRED = {
     "link validation": "python scripts/check_links.py",
     "rollback guard": "python scripts/rollback_guard.py",
     "network evidence": "python scripts/network_evidence.py",
+    "ASN discovery": "python scripts/asn_discovery.py",
     "failure notification": "Autonomous failure notification",
     "failure summary": "GITHUB_STEP_SUMMARY",
     "conditional publish": 'git commit -m "chore: update provider subscriptions"',

@@ -95,6 +95,9 @@ jobs:
           NETWORK_EVIDENCE_WORKERS: "8"
         run: python scripts/network_evidence.py
 
+      - name: Discover candidate ASNs
+        run: python scripts/asn_discovery.py
+
       - name: Validate generated outputs
         run: python scripts/validate_outputs.py
 
