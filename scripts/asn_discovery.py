@@ -177,10 +177,10 @@ def main():
     known = load_config()
     observations = collect_neighbours(known)
     candidates = aggregate(observations, known)
-    previous = load_history()
+    history = load_history()
     previously_seen = {
         row.get("asn")
-        for snapshot in previous
+        for snapshot in history
         if isinstance(snapshot, dict)
         for row in snapshot.get("candidates", [])
         if isinstance(row, dict)
