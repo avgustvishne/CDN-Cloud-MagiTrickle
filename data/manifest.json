@@ -1,6 +1,6 @@
 {
   "version": 44,
-  "updated": "2026-10-03 19:35:03 UTC",
+  "updated": "2026-10-04 06:21:18 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official provider feeds",
@@ -224,27 +224,27 @@
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 18062,
-    "ipv6": 5436
+    "ipv4": 18063,
+    "ipv6": 5432
   },
   "audit": [
     {
       "provider": "aws",
       "ipv4_prefixes": 5380,
       "ipv6_prefixes": 1535,
-      "previous_ipv4_prefixes": 5359,
-      "previous_ipv6_prefixes": 1534,
-      "ipv4_change_percent": 0.39,
-      "ipv6_change_percent": 0.07,
+      "previous_ipv4_prefixes": 5380,
+      "previous_ipv6_prefixes": 1535,
+      "ipv4_change_percent": 0.0,
+      "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "cloudflare",
-      "ipv4_prefixes": 832,
+      "ipv4_prefixes": 833,
       "ipv6_prefixes": 126,
-      "previous_ipv4_prefixes": 831,
+      "previous_ipv4_prefixes": 832,
       "previous_ipv6_prefixes": 126,
       "ipv4_change_percent": 0.12,
       "ipv6_change_percent": 0.0,
@@ -254,11 +254,11 @@
     },
     {
       "provider": "hetzner",
-      "ipv4_prefixes": 4178,
+      "ipv4_prefixes": 4179,
       "ipv6_prefixes": 432,
       "previous_ipv4_prefixes": 4178,
       "previous_ipv6_prefixes": 432,
-      "ipv4_change_percent": 0.0,
+      "ipv4_change_percent": 0.02,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -387,11 +387,11 @@
     {
       "provider": "vultr",
       "ipv4_prefixes": 851,
-      "ipv6_prefixes": 1678,
+      "ipv6_prefixes": 1674,
       "previous_ipv4_prefixes": 851,
-      "previous_ipv6_prefixes": 1660,
+      "previous_ipv6_prefixes": 1678,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 1.08,
+      "ipv6_change_percent": -0.24,
       "status": "OK",
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "errors": 0
@@ -480,7 +480,7 @@
       "rejected_ipv6": 0
     },
     "cloudflare": {
-      "ipv4": 832,
+      "ipv4": 833,
       "ipv6": 126,
       "source": "official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
@@ -488,7 +488,7 @@
       "rejected_ipv6": 0
     },
     "hetzner": {
-      "ipv4": 4178,
+      "ipv4": 4179,
       "ipv6": 432,
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
@@ -580,7 +580,7 @@
     },
     "vultr": {
       "ipv4": 851,
-      "ipv6": 1678,
+      "ipv6": 1674,
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "status": "OK",
       "rejected_ipv4": 0,
