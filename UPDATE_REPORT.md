@@ -1,19 +1,19 @@
 # CDN-Cloud-MagiTrickle — Update Report
 
-Обновлено: 2026-10-07 06:37:57Z
+Обновлено: 2026-10-07 07:10:52Z
 
 ## Подписки
 
 | Подписка | CIDR | IPv4 | IPv6 |
 |---|---:|---:|---:|
 | balanced-v4 | 9 778 | 9 778 | 0 |
-| balanced-v6 | 3 171 | 0 | 3 171 |
+| balanced-v6 | 3 153 | 0 | 3 153 |
 | cdn-v4 | 1 974 | 1 974 | 0 |
 | cdn-v6 | 678 | 0 | 678 |
-| cloud-v4 | 9 156 | 9 156 | 0 |
-| cloud-v6 | 2 337 | 0 | 2 337 |
-| full-v4 | 18 143 | 18 143 | 0 |
-| full-v6 | 5 418 | 0 | 5 418 |
+| cloud-v4 | 9 131 | 9 131 | 0 |
+| cloud-v6 | 2 332 | 0 | 2 332 |
+| full-v4 | 18 119 | 18 119 | 0 |
+| full-v6 | 5 395 | 0 | 5 395 |
 | messaging-v4 | 19 | 19 | 0 |
 | messaging-v6 | 8 | 0 | 8 |
 | minimal-v4 | 1 974 | 1 974 | 0 |
@@ -22,16 +22,16 @@
 | performance-v6 | 693 | 0 | 693 |
 | stable-v4 | 18 063 | 18 063 | 0 |
 | stable-v6 | 5 431 | 0 | 5 431 |
-| video-v4 | 7 506 | 7 506 | 0 |
-| video-v6 | 2 104 | 0 | 2 104 |
+| video-v4 | 7 481 | 7 481 | 0 |
+| video-v6 | 2 099 | 0 | 2 099 |
 | vpn-v4 | 8 711 | 8 711 | 0 |
-| vpn-v6 | 2 767 | 0 | 2 767 |
+| vpn-v6 | 2 749 | 0 | 2 749 |
 
 ## Провайдеры
 
 | Провайдер | IPv4 | IPv6 | Статус |
 |---|---:|---:|---|
-| aws | 5384 | 1541 | OK |
+| aws | 5359 | 1536 | OK |
 | cloudflare | 853 | 127 | OK |
 | hetzner | 4193 | 435 | OK |
 | ovh | 2716 | 410 | OK |
@@ -44,7 +44,7 @@
 | fastly | 50 | 42 | OK |
 | melbicom | 100 | 18 | OK |
 | buyvm | 23 | 27 | OK |
-| vultr | 872 | 1640 | OK |
+| vultr | 872 | 1622 | OK |
 | contabo | 250 | 2 | OK |
 | scaleway | 11 | 1 | OK |
 | gcore | 528 | 227 | OK |
@@ -57,5 +57,5 @@
 - Engine: final-v44-source-fusion-ipverse
 - Global-only: True
 - Лимит на провайдера: None (искусственного лимита нет)
-- Общий IPv4: 18143 CIDR
-- Общий IPv6: 5418 CIDR
+- Общий IPv4: 18119 CIDR
+- Общий IPv6: 5395 CIDR
