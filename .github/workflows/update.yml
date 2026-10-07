@@ -135,6 +135,9 @@ jobs:
       - name: Generate update report
         run: python scripts/update_report.py
 
+      - name: Generate provider subscription health
+        run: python scripts/generate_provider_health.py
+
       - name: Generate automatic CIDR statistics
         run: python scripts/generate_statistics.py
 
