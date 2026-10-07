@@ -181,7 +181,7 @@ def update_readme(report):
             table_end += 1
         new_lines = lines[:table_start] + rows + lines[table_end:]
 
-    new_text = "\\n".join(new_lines) + "\\n"
+    new_text = "\n".join(new_lines) + "\n"
     if new_text != text:
         README.write_text(new_text, encoding="utf-8")
         return True
@@ -189,7 +189,7 @@ def update_readme(report):
 
 def main():
     report = build()
-    OUTPUT.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+    OUTPUT.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     changed = update_readme(report)
     print(f"Provider health: {report['summary']}")
     print(f"README refreshed: {changed}")
