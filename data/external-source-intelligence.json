@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-11T06:27:10Z",
+  "generated_at": "2026-10-11T17:47:23Z",
   "policy": {
     "mode": "observational",
     "mutates_subscriptions": false,
@@ -18,7 +18,7 @@
       "bytes": 7351,
       "sha256": "a412300f77cd5ec37a07f30fa501c1785ec5e0b8587fd36f2acc80109ae97c94",
       "entries": 485,
-      "checked_at": "2026-10-11T06:26:50Z"
+      "checked_at": "2026-10-11T17:47:13Z"
     },
     {
       "id": "antifilter-community-ip",
@@ -42,7 +42,7 @@
           "overlap_performance_ips": 0
         }
       },
-      "checked_at": "2026-10-11T06:26:50Z"
+      "checked_at": "2026-10-11T17:47:13Z"
     },
     {
       "id": "antifilter-domain",
@@ -52,7 +52,7 @@
       "bytes": 32872391,
       "sha256": "5279a3da0a402c05a9956f2ba6668f49e0356e4092e739d5673920a09fac4a7f",
       "entries": 1703158,
-      "checked_at": "2026-10-11T06:26:50Z"
+      "checked_at": "2026-10-11T17:47:13Z"
     },
     {
       "id": "antifilter-ip",
@@ -76,31 +76,31 @@
           "overlap_performance_ips": 0
         }
       },
-      "checked_at": "2026-10-11T06:26:50Z"
+      "checked_at": "2026-10-11T17:47:13Z"
     },
     {
       "id": "cdn-ip-ranges-all",
       "type": "ip",
       "url": "https://raw.githubusercontent.com/123jjck/cdn-ip-ranges/main/all/all_plain.txt",
       "status": "OK",
-      "bytes": 301485,
-      "sha256": "b2b2e4a5379650e328dd2271a251e4f15ad5d207ad8d7a23c1eca4df91bfc809",
-      "entries": 17691,
+      "bytes": 301414,
+      "sha256": "c35f27dde44e641b9694e3c1e8787bdc16bb2d7abf34e4701891198e223031d2",
+      "entries": 17688,
       "metrics": {
         "4": {
-          "prefixes": 11088,
-          "coverage_ips": 178062910,
-          "overlap_full_ips": 138437956,
+          "prefixes": 11092,
+          "coverage_ips": 178064446,
+          "overlap_full_ips": 138438212,
           "overlap_performance_ips": 20434628
         },
         "6": {
-          "prefixes": 6603,
-          "coverage_ips": 100997788487390270478491936882701,
-          "overlap_full_ips": 39935154482803697450856501739533,
+          "prefixes": 6596,
+          "coverage_ips": 100997776398132074332200189820941,
+          "overlap_full_ips": 39935143602471320919193929383949,
           "overlap_performance_ips": 25130692969095930877570688483328
         }
       },
-      "checked_at": "2026-10-11T06:26:50Z"
+      "checked_at": "2026-10-11T17:47:13Z"
     },
     {
       "id": "itdog-geoblock-domain",
@@ -110,32 +110,32 @@
       "bytes": 6622,
       "sha256": "e28d3a4640bccbc23d4fbfefd00cd6cb1422871e05f9ef2655819e1341dd8e36",
       "entries": 465,
-      "checked_at": "2026-10-11T06:26:50Z"
+      "checked_at": "2026-10-11T17:47:13Z"
     },
     {
       "id": "refilter-domain",
       "type": "domain",
       "url": "https://raw.githubusercontent.com/1andrevich/Re-filter-lists/main/domains_all.lst",
       "status": "OK",
-      "bytes": 1327481,
-      "sha256": "a0d2137f82a31e40ed78831730951a641b8c7bb3d41857a793175ba2da20b1f2",
-      "entries": 78865,
-      "checked_at": "2026-10-11T06:26:50Z"
+      "bytes": 1330448,
+      "sha256": "48f08fe94d088e152dd894b590e061c69e06bc554001198fcdb85c932d3f3eab",
+      "entries": 79080,
+      "checked_at": "2026-10-11T17:47:13Z"
     },
     {
       "id": "refilter-ip",
       "type": "ip",
       "url": "https://raw.githubusercontent.com/1andrevich/Re-filter-lists/main/ipsum.lst",
       "status": "OK",
-      "bytes": 465117,
-      "sha256": "ee297de55e65088f6b03747908fcb8063ec6112aa2cbc9d8ae72fd5d0c32f352",
-      "entries": 27115,
+      "bytes": 469593,
+      "sha256": "531c41798b60a8a2b2bdeca924636820373d973eb381a0916dea466fb1438ba6",
+      "entries": 27388,
       "metrics": {
         "4": {
-          "prefixes": 27115,
-          "coverage_ips": 4480966,
-          "overlap_full_ips": 958178,
-          "overlap_performance_ips": 913968
+          "prefixes": 27388,
+          "coverage_ips": 4616104,
+          "overlap_full_ips": 958273,
+          "overlap_performance_ips": 913996
         },
         "6": {
           "prefixes": 0,
@@ -144,7 +144,7 @@
           "overlap_performance_ips": 0
         }
       },
-      "checked_at": "2026-10-11T06:26:50Z"
+      "checked_at": "2026-10-11T17:47:13Z"
     },
     {
       "id": "russia-whitelist-geoip",
@@ -172,7 +172,7 @@
           "overlap_performance_ips": 0
         }
       },
-      "checked_at": "2026-10-11T06:26:50Z",
+      "checked_at": "2026-10-11T17:47:13Z",
       "categories": {
         "other": {
           "prefixes": 1,
@@ -190,7 +190,7 @@
     }
   ],
   "domain_consensus": {
-    "unique_domains_across_successful_feeds": 1706755,
-    "domains_seen_in_at_least_two_feeds": 76022
+    "unique_domains_across_successful_feeds": 1706969,
+    "domains_seen_in_at_least_two_feeds": 76023
   }
 }
