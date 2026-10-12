@@ -1,6 +1,6 @@
 {
   "version": 44,
-  "updated": "2026-10-11 06:12:04 UTC",
+  "updated": "2026-10-12 06:27:45 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official provider feeds",
@@ -225,17 +225,17 @@
   },
   "aggregate": {
     "ipv4": 18146,
-    "ipv6": 5330
+    "ipv6": 5340
   },
   "audit": [
     {
       "provider": "aws",
-      "ipv4_prefixes": 5366,
-      "ipv6_prefixes": 1543,
-      "previous_ipv4_prefixes": 5371,
-      "previous_ipv6_prefixes": 1545,
-      "ipv4_change_percent": -0.09,
-      "ipv6_change_percent": -0.13,
+      "ipv4_prefixes": 5365,
+      "ipv6_prefixes": 1544,
+      "previous_ipv4_prefixes": 5366,
+      "previous_ipv6_prefixes": 1543,
+      "ipv4_change_percent": -0.02,
+      "ipv6_change_percent": 0.06,
       "status": "OK",
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
@@ -256,9 +256,9 @@
       "provider": "hetzner",
       "ipv4_prefixes": 4206,
       "ipv6_prefixes": 438,
-      "previous_ipv4_prefixes": 4201,
+      "previous_ipv4_prefixes": 4206,
       "previous_ipv6_prefixes": 438,
-      "ipv4_change_percent": 0.12,
+      "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -267,11 +267,11 @@
     {
       "provider": "ovh",
       "ipv4_prefixes": 2741,
-      "ipv6_prefixes": 413,
+      "ipv6_prefixes": 415,
       "previous_ipv4_prefixes": 2741,
-      "previous_ipv6_prefixes": 412,
+      "previous_ipv6_prefixes": 413,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 0.24,
+      "ipv6_change_percent": 0.48,
       "status": "OK",
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
@@ -328,9 +328,9 @@
       "provider": "alibaba",
       "ipv4_prefixes": 683,
       "ipv6_prefixes": 193,
-      "previous_ipv4_prefixes": 682,
+      "previous_ipv4_prefixes": 683,
       "previous_ipv6_prefixes": 193,
-      "ipv4_change_percent": 0.15,
+      "ipv4_change_percent": 0.0,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -387,11 +387,11 @@
     {
       "provider": "vultr",
       "ipv4_prefixes": 818,
-      "ipv6_prefixes": 1532,
+      "ipv6_prefixes": 1539,
       "previous_ipv4_prefixes": 818,
-      "previous_ipv6_prefixes": 1478,
+      "previous_ipv6_prefixes": 1532,
       "ipv4_change_percent": 0.0,
-      "ipv6_change_percent": 3.65,
+      "ipv6_change_percent": 0.46,
       "status": "OK",
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "errors": 0
@@ -422,11 +422,11 @@
     },
     {
       "provider": "gcore",
-      "ipv4_prefixes": 528,
+      "ipv4_prefixes": 529,
       "ipv6_prefixes": 228,
       "previous_ipv4_prefixes": 528,
       "previous_ipv6_prefixes": 228,
-      "ipv4_change_percent": 0.0,
+      "ipv4_change_percent": 0.19,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -472,8 +472,8 @@
   "diff": {},
   "providers": {
     "aws": {
-      "ipv4": 5366,
-      "ipv6": 1543,
+      "ipv4": 5365,
+      "ipv6": 1544,
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
@@ -497,7 +497,7 @@
     },
     "ovh": {
       "ipv4": 2741,
-      "ipv6": 413,
+      "ipv6": 415,
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
@@ -580,7 +580,7 @@
     },
     "vultr": {
       "ipv4": 818,
-      "ipv6": 1532,
+      "ipv6": 1539,
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "status": "OK",
       "rejected_ipv4": 0,
@@ -603,7 +603,7 @@
       "rejected_ipv6": 0
     },
     "gcore": {
-      "ipv4": 528,
+      "ipv4": 529,
       "ipv6": 228,
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
