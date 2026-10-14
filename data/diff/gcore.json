@@ -2,22 +2,24 @@
   "provider": "gcore",
   "added": {
     "ipv4": 1,
-    "ipv6": 1
-  },
-  "removed": {
-    "ipv4": 0,
     "ipv6": 0
   },
+  "removed": {
+    "ipv4": 1,
+    "ipv6": 1
+  },
   "sample_added": {
+    "ipv4": [
+      "80.15.252.68/31"
+    ],
+    "ipv6": []
+  },
+  "sample_removed": {
     "ipv4": [
       "80.15.252.69/32"
     ],
     "ipv6": [
-      "2a01:c9c0:c006:600::9/128"
+      "2a01:c9c0:c000:4001::/128"
     ]
-  },
-  "sample_removed": {
-    "ipv4": [],
-    "ipv6": []
   }
 }
