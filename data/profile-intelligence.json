@@ -11,9 +11,9 @@
   },
   "profiles": {
     "minimal-v4": {
-      "prefixes": 1990,
-      "coverage_ips": 17418375,
-      "coverage_per_prefix": 8752,
+      "prefixes": 1992,
+      "coverage_ips": 17418890,
+      "coverage_per_prefix": 8744,
       "average_prefixlen": 23.73,
       "providers": [
         "cloudflare",
@@ -24,13 +24,13 @@
       ]
     },
     "performance-v4": {
-      "prefixes": 2234,
-      "coverage_ips": 21160839,
-      "coverage_per_prefix": 9472,
+      "prefixes": 2236,
+      "coverage_ips": 21161354,
+      "coverage_per_prefix": 9463,
       "average_prefixlen": 23.37,
       "new_coverage_ips": 3742464,
-      "overlap_ips": 17418375,
-      "previous_coverage_ips": 17418375,
+      "overlap_ips": 17418890,
+      "previous_coverage_ips": 17418890,
       "is_superset": true,
       "providers": [
         "cloudflare",
@@ -43,13 +43,13 @@
       ]
     },
     "balanced-v4": {
-      "prefixes": 9842,
-      "coverage_ips": 36393735,
-      "coverage_per_prefix": 3697,
+      "prefixes": 9864,
+      "coverage_ips": 36404234,
+      "coverage_per_prefix": 3690,
       "average_prefixlen": 23.18,
-      "new_coverage_ips": 15232896,
-      "overlap_ips": 21160839,
-      "previous_coverage_ips": 21160839,
+      "new_coverage_ips": 15242880,
+      "overlap_ips": 21161354,
+      "previous_coverage_ips": 21161354,
       "is_superset": true,
       "providers": [
         "cloudflare",
@@ -65,13 +65,13 @@
       ]
     },
     "full-v4": {
-      "prefixes": 18221,
-      "coverage_ips": 341042221,
-      "coverage_per_prefix": 18716,
+      "prefixes": 18262,
+      "coverage_ips": 341060912,
+      "coverage_per_prefix": 18675,
       "average_prefixlen": 22.39,
-      "new_coverage_ips": 304648486,
-      "overlap_ips": 36393735,
-      "previous_coverage_ips": 36393735,
+      "new_coverage_ips": 304656678,
+      "overlap_ips": 36404234,
+      "previous_coverage_ips": 36404234,
       "is_superset": true,
       "providers": [
         "akamai",
@@ -98,9 +98,9 @@
     },
     "minimal-v6": {
       "prefixes": 672,
-      "coverage_ips": 27097363830739134241711308406971,
-      "coverage_per_prefix": 40323458081457045002546589891,
-      "average_prefixlen": 67.85,
+      "coverage_ips": 27097365039664953856340483113146,
+      "coverage_per_prefix": 40323459880453800381459052251,
+      "average_prefixlen": 67.73,
       "providers": [
         "cloudflare",
         "akamai",
@@ -111,12 +111,12 @@
     },
     "performance-v6": {
       "prefixes": 687,
-      "coverage_ips": 27176925656779612216957071261883,
-      "coverage_per_prefix": 39558843750770905701538677237,
-      "average_prefixlen": 67.37,
+      "coverage_ips": 27176926865705431831586245968058,
+      "coverage_per_prefix": 39558845510488255941173574917,
+      "average_prefixlen": 67.26,
       "new_coverage_ips": 79561826040477975245762854912,
-      "overlap_ips": 27097363830739134241711308406971,
-      "previous_coverage_ips": 27097363830739134241711308406971,
+      "overlap_ips": 27097365039664953856340483113146,
+      "previous_coverage_ips": 27097365039664953856340483113146,
       "is_superset": true,
       "providers": [
         "cloudflare",
@@ -129,13 +129,13 @@
       ]
     },
     "balanced-v6": {
-      "prefixes": 3068,
-      "coverage_ips": 113466225619578582020775143801019,
-      "coverage_per_prefix": 36983776277567986317071428879,
-      "average_prefixlen": 50.22,
-      "new_coverage_ips": 86289299962798969803818072539136,
-      "overlap_ips": 27176925656779612216957071261883,
-      "previous_coverage_ips": 27176925656779612216957071261883,
+      "prefixes": 3080,
+      "coverage_ips": 113466265514130629303537909104826,
+      "coverage_per_prefix": 36839696595496957566083736722,
+      "average_prefixlen": 50.18,
+      "new_coverage_ips": 86289338648425197471951663136768,
+      "overlap_ips": 27176926865705431831586245968058,
+      "previous_coverage_ips": 27176926865705431831586245968058,
       "is_superset": true,
       "providers": [
         "cloudflare",
@@ -151,13 +151,13 @@
       ]
     },
     "full-v6": {
-      "prefixes": 5331,
-      "coverage_ips": 292964478698426686591488558629067,
-      "coverage_per_prefix": 54954882517056215830329874062,
-      "average_prefixlen": 48.58,
-      "new_coverage_ips": 179498253078848104570713414828048,
-      "overlap_ips": 113466225619578582020775143801019,
-      "previous_coverage_ips": 113466225619578582020775143801019,
+      "prefixes": 5349,
+      "coverage_ips": 292964548816124224239980691587274,
+      "coverage_per_prefix": 54769966127523691202090239593,
+      "average_prefixlen": 48.56,
+      "new_coverage_ips": 179498283301993594936442782482448,
+      "overlap_ips": 113466265514130629303537909104826,
+      "previous_coverage_ips": 113466265514130629303537909104826,
       "is_superset": true,
       "providers": [
         "akamai",
@@ -190,20 +190,20 @@
     "profiles": {
       "stable-v4": {
         "previous_prefixes": 18146,
-        "retained_prefixes": 18140,
-        "retention_ratio": 0.9997845545346715,
+        "retained_prefixes": 18143,
+        "retention_ratio": 0.9997320156113345,
         "previous_coverage_ips": 340970281,
-        "retained_coverage_ips": 340968745,
-        "retention_coverage_ratio": 0.9999954952085692,
+        "retained_coverage_ips": 340969513,
+        "retention_coverage_ratio": 0.9999977476042846,
         "bootstrap": false
       },
       "stable-v6": {
         "previous_prefixes": 5330,
-        "retained_prefixes": 5146,
-        "retention_ratio": 0.9991849861662765,
+        "retained_prefixes": 5175,
+        "retention_ratio": 0.9991849244634511,
         "previous_coverage_ips": 292726245358561788537062610174158,
-        "retained_coverage_ips": 292725708595497879641709040632010,
-        "retention_coverage_ratio": 0.9999981663309238,
+        "retained_coverage_ips": 292725760579308123070763552997577,
+        "retention_coverage_ratio": 0.999998343915992,
         "bootstrap": false
       }
     }
