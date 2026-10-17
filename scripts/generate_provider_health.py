@@ -172,7 +172,6 @@ def update_readme(report):
         "",
         "> 🟢 OK = опубликовано нормально · 🟡 PARTIAL/FILTERED = опубликовано с предупреждением · "
         "🛡️ старая версия = сработала защита от плохого обновления.",
-        "",
         f"> Последняя проверка: {format_checked_at(report['checked_at'])} · [машиночитаемый отчёт](data/provider-health.json)",
         end_marker,
     ])
