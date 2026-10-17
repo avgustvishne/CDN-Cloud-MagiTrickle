@@ -11,6 +11,12 @@ spec.loader.exec_module(health)
 
 
 class ProviderHealthTests(unittest.TestCase):
+    def test_timestamp_is_formatted_as_moscow_local_time(self):
+        self.assertEqual(
+            health.format_checked_at("2026-10-17T05:03:29Z"),
+            "17 октября 2026 г., 08:03 МСК",
+        )
+
     def test_classification(self):
         self.assertEqual(health.classify("OK", True), "healthy")
         self.assertEqual(health.classify("PARTIAL", True), "warning")
