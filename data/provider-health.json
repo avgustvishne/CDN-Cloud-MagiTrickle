@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-17T05:03:29Z",
+  "checked_at": "2026-10-17T08:00:27Z",
   "source_of_truth": "published provider CIDR files + audit.csv + provider diff reports",
   "providers": [
     {
@@ -74,16 +74,16 @@
       "display_name": "AWS",
       "status": "OK",
       "health": "healthy",
-      "freshness": "updated",
+      "freshness": "unchanged",
       "ipv4": 5388,
       "ipv6": 1556,
       "previous_ipv4": 5388,
-      "previous_ipv6": 1554,
+      "previous_ipv6": 1556,
       "change": {
-        "added_ipv4": 2,
-        "removed_ipv4": 2,
-        "added_ipv6": 3,
-        "removed_ipv6": 1
+        "added_ipv4": 0,
+        "removed_ipv4": 0,
+        "added_ipv6": 0,
+        "removed_ipv6": 0
       },
       "errors": 0,
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -338,13 +338,13 @@
       "display_name": "Gcore",
       "status": "OK",
       "health": "healthy",
-      "freshness": "updated",
+      "freshness": "unchanged",
       "ipv4": 531,
       "ipv6": 224,
-      "previous_ipv4": 530,
+      "previous_ipv4": 531,
       "previous_ipv6": 224,
       "change": {
-        "added_ipv4": 1,
+        "added_ipv4": 0,
         "removed_ipv4": 0,
         "added_ipv6": 0,
         "removed_ipv6": 0
@@ -371,13 +371,13 @@
       "display_name": "Hetzner",
       "status": "OK",
       "health": "healthy",
-      "freshness": "updated",
+      "freshness": "unchanged",
       "ipv4": 4220,
       "ipv6": 439,
-      "previous_ipv4": 4217,
+      "previous_ipv4": 4220,
       "previous_ipv6": 439,
       "change": {
-        "added_ipv4": 3,
+        "added_ipv4": 0,
         "removed_ipv4": 0,
         "added_ipv6": 0,
         "removed_ipv6": 0
@@ -437,13 +437,13 @@
       "display_name": "Microsoft Azure",
       "status": "OK",
       "health": "healthy",
-      "freshness": "updated",
+      "freshness": "unchanged",
       "ipv4": 1010,
       "ipv6": 145,
-      "previous_ipv4": 1009,
+      "previous_ipv4": 1010,
       "previous_ipv6": 145,
       "change": {
-        "added_ipv4": 1,
+        "added_ipv4": 0,
         "removed_ipv4": 0,
         "added_ipv6": 0,
         "removed_ipv6": 0
@@ -503,13 +503,13 @@
       "display_name": "OVH",
       "status": "OK",
       "health": "healthy",
-      "freshness": "updated",
+      "freshness": "unchanged",
       "ipv4": 2778,
       "ipv6": 424,
-      "previous_ipv4": 2770,
+      "previous_ipv4": 2778,
       "previous_ipv6": 424,
       "change": {
-        "added_ipv4": 8,
+        "added_ipv4": 0,
         "removed_ipv4": 0,
         "added_ipv6": 0,
         "removed_ipv6": 0
@@ -637,14 +637,14 @@
       "health": "healthy",
       "freshness": "updated",
       "ipv4": 864,
-      "ipv6": 1579,
+      "ipv6": 1565,
       "previous_ipv4": 864,
-      "previous_ipv6": 1540,
+      "previous_ipv6": 1579,
       "change": {
         "added_ipv4": 0,
         "removed_ipv4": 0,
-        "added_ipv6": 179,
-        "removed_ipv6": 140
+        "added_ipv6": 70,
+        "removed_ipv6": 84
       },
       "errors": 0,
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
@@ -658,8 +658,8 @@
         "ipv6": {
           "path": "data/vultr-v6.txt",
           "exists": true,
-          "sha256": "bc75010a5a33520dec635f5e18e11b16edc09c15e0713c75245b034353e08ae9",
-          "cidr_count": 1579
+          "sha256": "591bebcd7f814cf9c96b3909d020450bca47e026f67e78eaca391f8b91edd3ee",
+          "cidr_count": 1565
         }
       }
     }
@@ -671,7 +671,7 @@
     "protected": 1,
     "problem": 0,
     "missing": 0,
-    "updated": 6,
-    "unchanged": 13
+    "updated": 1,
+    "unchanged": 18
   }
 }
