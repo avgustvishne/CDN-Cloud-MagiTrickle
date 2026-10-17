@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-17T11:24:27Z",
+  "checked_at": "2026-10-17T16:11:01Z",
   "source_of_truth": "published provider CIDR files + audit.csv + provider diff reports",
   "providers": [
     {
@@ -206,13 +206,13 @@
       "display_name": "Cloudflare",
       "status": "OK",
       "health": "healthy",
-      "freshness": "unchanged",
-      "ipv4": 869,
+      "freshness": "updated",
+      "ipv4": 870,
       "ipv6": 127,
       "previous_ipv4": 869,
       "previous_ipv6": 127,
       "change": {
-        "added_ipv4": 0,
+        "added_ipv4": 1,
         "removed_ipv4": 0,
         "added_ipv6": 0,
         "removed_ipv6": 0
@@ -223,8 +223,8 @@
         "ipv4": {
           "path": "data/cloudflare-v4.txt",
           "exists": true,
-          "sha256": "4508f56db878c24215deac89a028f57e6cb47da30a50f20e63feb1904eea7f18",
-          "cidr_count": 869
+          "sha256": "29ded149e389bacd0d6c098f180e016f0979a9fc63c79186229bfb82f6270643",
+          "cidr_count": 870
         },
         "ipv6": {
           "path": "data/cloudflare-v6.txt",
@@ -636,15 +636,15 @@
       "status": "OK",
       "health": "healthy",
       "freshness": "updated",
-      "ipv4": 864,
-      "ipv6": 1581,
+      "ipv4": 865,
+      "ipv6": 1564,
       "previous_ipv4": 864,
-      "previous_ipv6": 1565,
+      "previous_ipv6": 1581,
       "change": {
-        "added_ipv4": 0,
+        "added_ipv4": 1,
         "removed_ipv4": 0,
-        "added_ipv6": 57,
-        "removed_ipv6": 41
+        "added_ipv6": 34,
+        "removed_ipv6": 51
       },
       "errors": 0,
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
@@ -652,14 +652,14 @@
         "ipv4": {
           "path": "data/vultr-v4.txt",
           "exists": true,
-          "sha256": "e38e37dbc85fa2972de9cdeee0df9879e05d3a375b0bbde807dd185fff2aa0c1",
-          "cidr_count": 864
+          "sha256": "2a889a28f0df40351d75cf1600dbe3ac7282adbfea4eac29be27200119686327",
+          "cidr_count": 865
         },
         "ipv6": {
           "path": "data/vultr-v6.txt",
           "exists": true,
-          "sha256": "a98b8851705513b1faa3cc124d250d246f8ac08de621c3a277abd153c87354a0",
-          "cidr_count": 1581
+          "sha256": "49372904a70c15a8a0282b1fe97c382d3e35f1d3f33268bd6db3b2a13084fd30",
+          "cidr_count": 1564
         }
       }
     }
@@ -671,7 +671,7 @@
     "protected": 1,
     "problem": 0,
     "missing": 0,
-    "updated": 1,
-    "unchanged": 18
+    "updated": 2,
+    "unchanged": 17
   }
 }

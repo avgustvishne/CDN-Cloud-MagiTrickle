@@ -1,38 +1,38 @@
 # CDN-Cloud-MagiTrickle — Update Report
 
-Обновлено: 2026-10-17 11:24:27Z
+Обновлено: 2026-10-17 16:11:00Z
 
 ## Подписки
 
 | Подписка | CIDR | IPv4 | IPv6 |
 |---|---:|---:|---:|
-| balanced-v4 | 9 876 | 9 876 | 0 |
-| balanced-v6 | 3 121 | 0 | 3 121 |
-| cdn-v4 | 1 993 | 1 993 | 0 |
+| balanced-v4 | 9 878 | 9 878 | 0 |
+| balanced-v6 | 3 104 | 0 | 3 104 |
+| cdn-v4 | 1 994 | 1 994 | 0 |
 | cdn-v6 | 672 | 0 | 672 |
-| cloud-v4 | 9 208 | 9 208 | 0 |
+| cloud-v4 | 9 209 | 9 209 | 0 |
 | cloud-v6 | 2 361 | 0 | 2 361 |
-| full-v4 | 18 275 | 18 275 | 0 |
-| full-v6 | 5 392 | 0 | 5 392 |
+| full-v4 | 18 277 | 18 277 | 0 |
+| full-v6 | 5 375 | 0 | 5 375 |
 | messaging-v4 | 18 | 18 | 0 |
 | messaging-v6 | 8 | 0 | 8 |
-| minimal-v4 | 1 993 | 1 993 | 0 |
+| minimal-v4 | 1 994 | 1 994 | 0 |
 | minimal-v6 | 672 | 0 | 672 |
-| performance-v4 | 2 237 | 2 237 | 0 |
+| performance-v4 | 2 238 | 2 238 | 0 |
 | performance-v6 | 687 | 0 | 687 |
 | stable-v4 | 18 146 | 18 146 | 0 |
 | stable-v6 | 5 330 | 0 | 5 330 |
-| video-v4 | 7 535 | 7 535 | 0 |
+| video-v4 | 7 536 | 7 536 | 0 |
 | video-v6 | 2 116 | 0 | 2 116 |
-| vpn-v4 | 8 794 | 8 794 | 0 |
-| vpn-v6 | 2 721 | 0 | 2 721 |
+| vpn-v4 | 8 795 | 8 795 | 0 |
+| vpn-v6 | 2 704 | 0 | 2 704 |
 
 ## Провайдеры
 
 | Провайдер | IPv4 | IPv6 | Статус |
 |---|---:|---:|---|
 | aws | 5388 | 1556 | OK |
-| cloudflare | 869 | 127 | OK |
+| cloudflare | 870 | 127 | OK |
 | hetzner | 4220 | 439 | OK |
 | ovh | 2778 | 424 | OK |
 | akamai | 354 | 252 | OK |
@@ -44,7 +44,7 @@
 | fastly | 51 | 37 | OK |
 | melbicom | 102 | 19 | OK |
 | buyvm | 23 | 27 | OK |
-| vultr | 864 | 1581 | OK |
+| vultr | 865 | 1564 | OK |
 | contabo | 250 | 2 | OK |
 | scaleway | 11 | 1 | OK |
 | gcore | 531 | 224 | OK |
@@ -57,5 +57,5 @@
 - Engine: final-v44-source-fusion-ipverse
 - Global-only: True
 - Лимит на провайдера: None (искусственного лимита нет)
-- Общий IPv4: 18275 CIDR
-- Общий IPv6: 5394 CIDR
+- Общий IPv4: 18277 CIDR
+- Общий IPv6: 5377 CIDR
