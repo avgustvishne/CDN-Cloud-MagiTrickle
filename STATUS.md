@@ -2,12 +2,12 @@
 
 ## 🟢 HEALTHY
 
-**Публикация:** `held`  
-**Последнее обновление данных:** `Updated: 2026-10-17 04:55:02 UTC
+**Публикация:** `published`  
+**Последнее обновление данных:** `Updated: 2026-10-17 11:16:44 UTC
 ALL IPv4: 18275
-ALL IPv6: 5392
+ALL IPv6: 5394
 ALL ASN IPv4: 13037
-ALL ASN IPv6: 6078
+ALL ASN IPv6: 6080
 
 Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6
 aws,5388,1556,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
@@ -23,16 +23,16 @@ cdn77,190,33,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 fastly,51,37,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 melbicom,102,19,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 buyvm,23,27,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-vultr,864,1579,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
+vultr,864,1581,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 contabo,250,2,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 scaleway,11,1,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 gcore,531,224,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 backblaze,6,1,static+cloud-ip-ranges,OK,0,0,0
 telegram,8,4,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 twitter,10,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`  
-**Отчёт сформирован:** `2026-10-17T10:00:40Z`  
-**Исходный commit:** `1282376ebefd4abee8b6114e254bcc59834218e7`  
-**Последний известный рабочий commit:** `9425b6bfc494a310f93ca75e29e96decd646a130`
+**Отчёт сформирован:** `2026-10-17T11:24:58Z`  
+**Исходный commit:** `13a6cd9eadfd814c5deaeb1b7e3d68e8300253a1`  
+**Последний известный рабочий commit:** `7eab8ec36894013683e76102a12bc8cd134b815c`
 
 ## Данные
 
@@ -40,7 +40,7 @@ twitter,10,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`
 |---|---:|
 | Провайдеры | **20** |
 | IPv4 CIDR | **18 275** |
-| IPv6 CIDR | **5 378** |
+| IPv6 CIDR | **5 394** |
 | Источники | **8 / 8** healthy |
 | Network evidence | **128** queried |
 
@@ -48,9 +48,5 @@ twitter,10,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`
 
 - Rollback guard: **PASS**
 - Checksums: **available**
-
-## Последний сбой
-
-`https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/runs/39023253834 (conclusion: action_required, run: 39023253834)`
 
 Машиночитаемый статус: [`data/status.json`](data/status.json)
