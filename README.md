@@ -73,7 +73,7 @@
 | Vultr | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v6.txt) | 🟢 OK · обновлено |
 
 > 🟢 OK = опубликовано нормально · 🟡 PARTIAL/FILTERED = опубликовано с предупреждением · 🛡️ старая версия = сработала защита от плохого обновления.
-> Последняя проверка: 17 октября 2026 г., 11:00 МСК · [машиночитаемый отчёт](data/provider-health.json)
+> Последняя проверка: 17 октября 2026 г., 14:24 МСК · [машиночитаемый отчёт](data/provider-health.json)
 <!-- PROVIDER-HEALTH:END -->
 
 <!-- AUTO-STATS:START -->
@@ -81,20 +81,20 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
-| **FULL** | **18 275 CIDR** | **5 376 CIDR** |
-| **BALANCED** | **9 876 CIDR** | **3 105 CIDR** |
+| **FULL** | **18 275 CIDR** | **5 392 CIDR** |
+| **BALANCED** | **9 876 CIDR** | **3 121 CIDR** |
 | **PERFORMANCE** | **2 237 CIDR** | **687 CIDR** |
 | **MINIMAL** | **1 993 CIDR** | **672 CIDR** |
 | **STABLE** | **18 146 CIDR** | **5 330 CIDR** |
 | **CDN** | **1 993 CIDR** | **672 CIDR** |
 | **CLOUD** | **9 208 CIDR** | **2 361 CIDR** |
 | **VIDEO** | **7 535 CIDR** | **2 116 CIDR** |
-| **VPN** | **8 794 CIDR** | **2 705 CIDR** |
+| **VPN** | **8 794 CIDR** | **2 721 CIDR** |
 | **MESSAGING** | **18 CIDR** | **8 CIDR** |
-| **ASN ALL** | **13 037 CIDR** | **6 064 CIDR** |
+| **ASN ALL** | **13 037 CIDR** | **6 080 CIDR** |
 | **ALL-CLOUD** | **9 208 CIDR** | **2 363 CIDR** |
 
-**Обновлено:** 17 октября 2026, 08:00 UTC · [полная статистика](data/statistics.json)
+**Обновлено:** 17 октября 2026, 11:24 UTC · [полная статистика](data/statistics.json)
 
 > Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
