@@ -3,15 +3,15 @@
 ## 🟢 HEALTHY
 
 **Публикация:** `published`  
-**Последнее обновление данных:** `Updated: 2026-10-17 11:16:44 UTC
-ALL IPv4: 18275
-ALL IPv6: 5394
-ALL ASN IPv4: 13037
-ALL ASN IPv6: 6080
+**Последнее обновление данных:** `Updated: 2026-10-17 16:02:18 UTC
+ALL IPv4: 18277
+ALL IPv6: 5377
+ALL ASN IPv4: 13039
+ALL ASN IPv6: 6063
 
 Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6
 aws,5388,1556,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-cloudflare,869,127,official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+cloudflare,870,127,official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 hetzner,4220,439,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 ovh,2778,424,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 akamai,354,252,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
@@ -23,24 +23,24 @@ cdn77,190,33,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 fastly,51,37,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 melbicom,102,19,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 buyvm,23,27,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-vultr,864,1581,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
+vultr,865,1564,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 contabo,250,2,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 scaleway,11,1,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 gcore,531,224,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 backblaze,6,1,static+cloud-ip-ranges,OK,0,0,0
 telegram,8,4,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 twitter,10,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`  
-**Отчёт сформирован:** `2026-10-17T15:56:14Z`  
-**Исходный commit:** `f8c2f04a6f6b6b942dae8273ab464ff9e42056b5`  
-**Последний известный рабочий commit:** `7eab8ec36894013683e76102a12bc8cd134b815c`
+**Отчёт сформирован:** `2026-10-17T16:11:34Z`  
+**Исходный commit:** `2d2f4f3e904e1562c737e9acaa8776786566a0f2`  
+**Последний известный рабочий commit:** `0bf71d021338e27c67a90a84b3868473d7e33067`
 
 ## Данные
 
 | Показатель | Значение |
 |---|---:|
 | Провайдеры | **20** |
-| IPv4 CIDR | **18 275** |
-| IPv6 CIDR | **5 394** |
+| IPv4 CIDR | **18 277** |
+| IPv6 CIDR | **5 377** |
 | Источники | **8 / 8** healthy |
 | Network evidence | **128** queried |
 
