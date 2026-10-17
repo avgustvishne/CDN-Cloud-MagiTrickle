@@ -5,6 +5,7 @@ import hashlib
 import json
 import pathlib
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -69,6 +70,12 @@ def freshness(diff, status, exists):
         for family in (4, 6)
     )
     return "updated" if changed else "unchanged"
+
+def format_checked_at(iso_timestamp):
+    """Render an ISO UTC timestamp as a readable Moscow-local date and time."""
+    dt = datetime.fromisoformat(iso_timestamp.replace("Z", "+00:00")).astimezone(ZoneInfo("Europe/Moscow"))
+    months = ("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    return f"{dt.day} {months[dt.month - 1]} {dt.year} г., {dt:%H:%M} МСК"
 
 def status_label(status, health, fresh):
     if health == "missing":
@@ -166,7 +173,7 @@ def update_readme(report):
         "> 🟢 OK = опубликовано нормально · 🟡 PARTIAL/FILTERED = опубликовано с предупреждением · "
         "🛡️ старая версия = сработала защита от плохого обновления.",
         "",
-        f"> Последняя проверка: {report['checked_at']} · [машиночитаемый отчёт](data/provider-health.json)",
+        f"> Последняя проверка: {format_checked_at(report['checked_at'])} · [машиночитаемый отчёт](data/provider-health.json)",
         end_marker,
     ])
 
