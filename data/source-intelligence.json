@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-18T16:27:29Z",
+  "generated_at": "2026-10-19T05:09:12Z",
   "policy": {
     "mode": "observational",
     "mutates_subscriptions": false,
@@ -225,32 +225,32 @@
       "high_confidence_percent": 1.49
     },
     "alibaba": {
-      "records": 882,
+      "records": 881,
       "coverage": {
-        "ipv4": 21569540,
+        "ipv4": 21569796,
         "ipv6": 87330331373511338893370229522432
       },
       "sources": {
-        "IPVerse": 756,
-        "RIPE RIS": 436,
-        "RIPEstat": 442,
-        "RouteViews": 440,
+        "IPVerse": 755,
+        "RIPE RIS": 435,
+        "RIPEstat": 441,
+        "RouteViews": 438,
         "cloud-ip-ranges": 147
       },
-      "mean_confidence": 39.26,
-      "high_confidence_percent": 10.32
+      "mean_confidence": 39.25,
+      "high_confidence_percent": 10.33
     },
     "aws": {
-      "records": 6943,
+      "records": 6944,
       "coverage": {
-        "ipv4": 193087126,
+        "ipv4": 193087638,
         "ipv6": 77574036378408455516772873797632
       },
       "sources": {
-        "IPVerse": 5563,
-        "RIPE RIS": 4451,
+        "IPVerse": 5561,
+        "RIPE RIS": 4455,
         "RIPEstat": 4498,
-        "RouteViews": 4489,
+        "RouteViews": 4491,
         "cloud-ip-ranges": 770,
         "official": 735
       },
@@ -385,9 +385,9 @@
       "high_confidence_percent": 0.0
     },
     "hetzner": {
-      "records": 4673,
+      "records": 4674,
       "coverage": {
-        "ipv4": 6625024,
+        "ipv4": 6625280,
         "ipv6": 60513891694712669569500019949568
       },
       "sources": {
@@ -395,7 +395,7 @@
         "RIPE RIS": 81,
         "RIPEstat": 81,
         "RouteViews": 83,
-        "cloud-ip-ranges": 3421
+        "cloud-ip-ranges": 3422
       },
       "mean_confidence": 53.3,
       "high_confidence_percent": 1.6
@@ -438,7 +438,7 @@
         "ipv6": 1429163089728743859237448318976
       },
       "sources": {
-        "IPVerse": 1508,
+        "IPVerse": 1507,
         "RIPE RIS": 1021,
         "RIPEstat": 1023,
         "RouteViews": 1019,
@@ -448,20 +448,20 @@
       "high_confidence_percent": 17.23
     },
     "ovh": {
-      "records": 3207,
+      "records": 3209,
       "coverage": {
-        "ipv4": 7121024,
+        "ipv4": 7121536,
         "ipv6": 17051129808843069605075499352064
       },
       "sources": {
-        "IPVerse": 621,
+        "IPVerse": 622,
         "RIPE RIS": 574,
-        "RIPEstat": 584,
-        "RouteViews": 584,
-        "cloud-ip-ranges": 2637
+        "RIPEstat": 583,
+        "RouteViews": 585,
+        "cloud-ip-ranges": 2639
       },
       "mean_confidence": 60.69,
-      "high_confidence_percent": 17.8
+      "high_confidence_percent": 17.82
     },
     "scaleway": {
       "records": 12,
@@ -512,18 +512,18 @@
       "high_confidence_percent": 0.0
     },
     "vultr": {
-      "records": 2438,
+      "records": 2475,
       "coverage": {
         "ipv4": 1532160,
-        "ipv6": 8732143730625643406653191618560
+        "ipv6": 8732215057249000669774499282944
       },
       "sources": {
-        "IPVerse": 1037,
-        "RIPE RIS": 888,
-        "RIPEstat": 1752,
-        "RouteViews": 932
+        "IPVerse": 1000,
+        "RIPE RIS": 897,
+        "RIPEstat": 1743,
+        "RouteViews": 967
       },
-      "mean_confidence": 29.45,
+      "mean_confidence": 29.31,
       "high_confidence_percent": 0.0
     }
   },
@@ -557,24 +557,24 @@
     },
     {
       "provider": "alibaba",
-      "total_prefixes": 882,
+      "total_prefixes": 881,
       "independent_source_types": 5,
       "top_sources": [
         [
           "IPVerse",
-          756
+          755
         ],
         [
           "RIPEstat",
-          442
+          441
         ],
         [
           "RouteViews",
-          440
+          438
         ],
         [
           "RIPE RIS",
-          436
+          435
         ],
         [
           "cloud-ip-ranges",
@@ -584,12 +584,12 @@
     },
     {
       "provider": "aws",
-      "total_prefixes": 6943,
+      "total_prefixes": 6944,
       "independent_source_types": 6,
       "top_sources": [
         [
           "IPVerse",
-          5563
+          5561
         ],
         [
           "RIPEstat",
@@ -597,11 +597,11 @@
         ],
         [
           "RouteViews",
-          4489
+          4491
         ],
         [
           "RIPE RIS",
-          4451
+          4455
         ],
         [
           "cloud-ip-ranges",
@@ -827,12 +827,12 @@
     },
     {
       "provider": "hetzner",
-      "total_prefixes": 4673,
+      "total_prefixes": 4674,
       "independent_source_types": 5,
       "top_sources": [
         [
           "cloud-ip-ranges",
-          3421
+          3422
         ],
         [
           "IPVerse",
@@ -909,7 +909,7 @@
       "top_sources": [
         [
           "IPVerse",
-          1508
+          1507
         ],
         [
           "RIPEstat",
@@ -931,24 +931,24 @@
     },
     {
       "provider": "ovh",
-      "total_prefixes": 3207,
+      "total_prefixes": 3209,
       "independent_source_types": 5,
       "top_sources": [
         [
           "cloud-ip-ranges",
-          2637
+          2639
         ],
         [
           "IPVerse",
-          621
-        ],
-        [
-          "RIPEstat",
-          584
+          622
         ],
         [
           "RouteViews",
-          584
+          585
+        ],
+        [
+          "RIPEstat",
+          583
         ],
         [
           "RIPE RIS",
@@ -1039,24 +1039,24 @@
     },
     {
       "provider": "vultr",
-      "total_prefixes": 2438,
+      "total_prefixes": 2475,
       "independent_source_types": 4,
       "top_sources": [
         [
           "RIPEstat",
-          1752
+          1743
         ],
         [
           "IPVerse",
-          1037
+          1000
         ],
         [
           "RouteViews",
-          932
+          967
         ],
         [
           "RIPE RIS",
-          888
+          897
         ]
       ]
     }
@@ -10568,26 +10568,11 @@
     },
     {
       "provider": "alibaba",
-      "prefix": "43.109.208.0/23",
+      "prefix": "43.109.208.0/22",
       "version": 4,
-      "source_count": 1,
-      "sources": [
-        "IPVerse"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
-    },
-    {
-      "provider": "alibaba",
-      "prefix": "43.109.211.0/24",
-      "version": 4,
-      "source_count": 4,
-      "sources": [
-        "IPVerse",
-        "RIPE RIS",
-        "RIPEstat",
-        "RouteViews"
-      ],
-      "status": "confirmed"
     },
     {
       "provider": "alibaba",
@@ -14689,8 +14674,10 @@
       "provider": "alibaba",
       "prefix": "163.181.58.0/23",
       "version": 4,
-      "source_count": 0,
-      "sources": [],
+      "source_count": 1,
+      "sources": [
+        "IPVerse"
+      ],
       "status": "single_source"
     },
     {
@@ -15336,12 +15323,11 @@
       "provider": "alibaba",
       "prefix": "164.163.236.0/22",
       "version": 4,
-      "source_count": 4,
+      "source_count": 3,
       "sources": [
         "IPVerse",
         "RIPE RIS",
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
       "status": "confirmed"
     },
@@ -38825,6 +38811,19 @@
     },
     {
       "provider": "aws",
+      "prefix": "82.41.168.0/24",
+      "version": 4,
+      "source_count": 4,
+      "sources": [
+        "IPVerse",
+        "RIPE RIS",
+        "RIPEstat",
+        "RouteViews"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "provider": "aws",
       "prefix": "82.41.200.0/24",
       "version": 4,
       "source_count": 4,
@@ -46773,11 +46772,12 @@
       "provider": "aws",
       "prefix": "130.137.85.0/24",
       "version": 4,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
         "RIPE RIS",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -46812,8 +46812,8 @@
       "version": 4,
       "source_count": 2,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPE RIS",
+        "RIPEstat"
       ],
       "status": "confirmed"
     },
@@ -46871,11 +46871,10 @@
       "provider": "aws",
       "prefix": "130.137.111.0/24",
       "version": 4,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
         "IPVerse",
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
       "status": "confirmed"
     },
@@ -46907,13 +46906,11 @@
       "provider": "aws",
       "prefix": "130.137.121.0/24",
       "version": 4,
-      "source_count": 3,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "aws",
@@ -46958,9 +46955,9 @@
       "version": 4,
       "source_count": 3,
       "sources": [
-        "IPVerse",
         "RIPE RIS",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -46990,9 +46987,10 @@
       "provider": "aws",
       "prefix": "130.137.150.0/24",
       "version": 4,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -47053,11 +47051,12 @@
       "provider": "aws",
       "prefix": "130.137.227.0/24",
       "version": 4,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
         "RIPE RIS",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -52362,16 +52361,11 @@
     },
     {
       "provider": "aws",
-      "prefix": "149.24.122.0/24",
+      "prefix": "149.24.122.0/23",
       "version": 4,
-      "source_count": 4,
-      "sources": [
-        "IPVerse",
-        "RIPE RIS",
-        "RIPEstat",
-        "RouteViews"
-      ],
-      "status": "confirmed"
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
     },
     {
       "provider": "aws",
@@ -63068,12 +63062,11 @@
       "provider": "aws",
       "prefix": "173.82.63.0/24",
       "version": 4,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "aws",
@@ -63102,8 +63095,8 @@
       "version": 4,
       "source_count": 2,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPE RIS",
+        "RIPEstat"
       ],
       "status": "confirmed"
     },
@@ -63252,8 +63245,10 @@
       "provider": "aws",
       "prefix": "173.82.235.0/24",
       "version": 4,
-      "source_count": 2,
+      "source_count": 4,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -66731,8 +66726,9 @@
       "provider": "aws",
       "prefix": "191.166.0.0/16",
       "version": 4,
-      "source_count": 5,
+      "source_count": 6,
       "sources": [
+        "IPVerse",
         "RIPE RIS",
         "RIPEstat",
         "RouteViews",
@@ -90014,20 +90010,20 @@
       "provider": "aws",
       "prefix": "2605:9cc0:3b4::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "aws",
       "prefix": "2605:9cc0:3c2::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
         "IPVerse",
-        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -90151,8 +90147,8 @@
       "version": 6,
       "source_count": 2,
       "sources": [
-        "IPVerse",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -90168,11 +90164,13 @@
       "provider": "aws",
       "prefix": "2605:9cc0:c1c::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
-        "RIPEstat"
+        "RIPE RIS",
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "aws",
@@ -90180,8 +90178,8 @@
       "version": 6,
       "source_count": 2,
       "sources": [
-        "IPVerse",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -169593,6 +169591,16 @@
     },
     {
       "provider": "hetzner",
+      "prefix": "200.102.95.0/24",
+      "version": 4,
+      "source_count": 1,
+      "sources": [
+        "cloud-ip-ranges"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "hetzner",
       "prefix": "200.102.180.0/24",
       "version": 4,
       "source_count": 1,
@@ -210717,12 +210725,11 @@
       "provider": "oracle",
       "prefix": "2a14:7583:efd3::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "ovh",
@@ -210911,6 +210918,16 @@
       "source_count": 1,
       "sources": [
         "cloud-ip-ranges"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "ovh",
+      "prefix": "2.27.87.0/24",
+      "version": 4,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
       ],
       "status": "single_source"
     },
@@ -222402,6 +222419,16 @@
     {
       "provider": "ovh",
       "prefix": "92.249.62.0/24",
+      "version": 4,
+      "source_count": 1,
+      "sources": [
+        "cloud-ip-ranges"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "ovh",
+      "prefix": "92.255.85.0/24",
       "version": 4,
       "source_count": 1,
       "sources": [
@@ -237537,9 +237564,8 @@
       "provider": "ovh",
       "prefix": "199.7.141.0/24",
       "version": 4,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "RIPEstat",
         "RouteViews",
         "cloud-ip-ranges"
       ],
@@ -239440,11 +239466,13 @@
       "provider": "ovh",
       "prefix": "216.9.164.0/24",
       "version": 4,
-      "source_count": 3,
+      "source_count": 5,
       "sources": [
+        "IPVerse",
         "RIPE RIS",
         "RIPEstat",
-        "RouteViews"
+        "RouteViews",
+        "cloud-ip-ranges"
       ],
       "status": "confirmed"
     },
@@ -245759,12 +245787,11 @@
       "provider": "vultr",
       "prefix": "44.32.201.0/24",
       "version": 4,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
         "RouteViews"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -255118,10 +255145,9 @@
       "provider": "vultr",
       "prefix": "2001:19f0:ffff::/48",
       "version": 6,
-      "source_count": 4,
+      "source_count": 3,
       "sources": [
         "IPVerse",
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -255463,36 +255489,16 @@
       "provider": "vultr",
       "prefix": "2602:ff03:9::/48",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:a::/48",
-      "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:c::/48",
-      "version": 6,
       "source_count": 2,
       "sources": [
-        "IPVerse",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:15::/48",
+      "prefix": "2602:ff03:a::/48",
       "version": 6,
       "source_count": 2,
       "sources": [
@@ -255500,6 +255506,29 @@
         "RIPEstat"
       ],
       "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:c::/48",
+      "version": 6,
+      "source_count": 4,
+      "sources": [
+        "IPVerse",
+        "RIPE RIS",
+        "RIPEstat",
+        "RouteViews"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:15::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -255515,11 +255544,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:19::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -255535,11 +255565,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:1d::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -255573,11 +255604,13 @@
       "provider": "vultr",
       "prefix": "2602:ff03:29::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
-        "RIPEstat"
+        "IPVerse",
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -255593,11 +255626,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2c::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -255665,12 +255699,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:48::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -255678,6 +255711,16 @@
       "version": 6,
       "source_count": 0,
       "sources": [],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:52::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
       "status": "single_source"
     },
     {
@@ -255700,24 +255743,21 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:58::/48",
+      "prefix": "2602:ff03:58::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:5a::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -255779,12 +255819,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:73::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -255827,9 +255866,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:7f::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -255932,11 +255972,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:98::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -255972,12 +256013,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a3::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -255993,12 +256033,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a7::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256030,11 +256069,22 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:ae::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:b3::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -256043,12 +256093,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:b5::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256113,32 +256162,31 @@
       "provider": "vultr",
       "prefix": "2602:ff03:c9::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:cb::/48",
+      "prefix": "2602:ff03:ca::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:cc::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256155,11 +256203,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:d1::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -256203,21 +256252,23 @@
       "provider": "vultr",
       "prefix": "2602:ff03:e4::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:ee::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -256257,10 +256308,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:100::/48",
       "version": 6,
-      "source_count": 4,
+      "source_count": 2,
       "sources": [
-        "IPVerse",
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -256296,9 +256345,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:113::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -256323,12 +256373,10 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:11d::/48",
+      "prefix": "2602:ff03:11c::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -256345,12 +256393,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:125::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256376,9 +256423,17 @@
       "provider": "vultr",
       "prefix": "2602:ff03:12e::/47",
       "version": 6,
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:137::/48",
+      "version": 6,
       "source_count": 1,
       "sources": [
-        "IPVerse"
+        "RouteViews"
       ],
       "status": "single_source"
     },
@@ -256406,14 +256461,23 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:141::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:145::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256429,12 +256493,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:149::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256468,12 +256531,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:159::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256510,12 +256572,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:162::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256571,9 +256632,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:176::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -256582,9 +256644,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:178::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -256593,31 +256656,29 @@
       "provider": "vultr",
       "prefix": "2602:ff03:17b::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:17c::/47",
-      "version": 6,
-      "source_count": 0,
-      "sources": [],
       "status": "single_source"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:181::/48",
+      "prefix": "2602:ff03:17d::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
-        "RIPEstat"
+        "RouteViews"
       ],
-      "status": "confirmed"
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:180::/47",
+      "version": 6,
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256643,12 +256704,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:189::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256664,11 +256724,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:18c::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "IPVerse",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -256694,12 +256755,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:196::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256715,9 +256775,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:19c::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -256726,11 +256787,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:1a0::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -256818,12 +256880,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:1c1::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -256857,20 +256918,20 @@
       "provider": "vultr",
       "prefix": "2602:ff03:1cc::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:1cf::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -256938,9 +256999,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:1e5::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -256980,12 +257042,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:1ed::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257002,22 +257063,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:1f2::/48",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPE RIS",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:1f5::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
         "RIPEstat"
       ],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:1f5::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPEstat",
+        "RouteViews"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -257034,11 +257095,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:1f8::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -257093,12 +257155,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:20f::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257132,6 +257193,16 @@
       "provider": "vultr",
       "prefix": "2602:ff03:227::/48",
       "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:228::/48",
+      "version": 6,
       "source_count": 2,
       "sources": [
         "RIPE RIS",
@@ -257153,10 +257224,9 @@
       "provider": "vultr",
       "prefix": "2602:ff03:230::/48",
       "version": 6,
-      "source_count": 4,
+      "source_count": 3,
       "sources": [
         "IPVerse",
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -257202,11 +257272,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:240::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -257232,12 +257303,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:24c::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257259,12 +257329,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:253::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257294,6 +257363,17 @@
         "RIPEstat"
       ],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:260::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -257328,12 +257408,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:269::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257359,12 +257438,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:273::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257401,8 +257479,8 @@
       "version": 6,
       "source_count": 2,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPE RIS",
+        "RIPEstat"
       ],
       "status": "confirmed"
     },
@@ -257444,11 +257522,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:28f::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -257484,32 +257563,28 @@
       "provider": "vultr",
       "prefix": "2602:ff03:299::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:29a::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:29c::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "IPVerse"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -257566,11 +257641,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2b6::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "IPVerse",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -257592,11 +257668,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2bf::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -257612,12 +257689,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2c3::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257633,12 +257709,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2c7::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257654,9 +257729,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2cb::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -257684,9 +257760,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2d2::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -257696,12 +257771,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2d4::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257715,12 +257789,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2df::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257752,12 +257825,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2ea::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257783,23 +257855,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:2f5::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:2f6::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257853,12 +257923,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:30c::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257882,23 +257951,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:317::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:318::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -257912,12 +257979,10 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:31e::/48",
+      "prefix": "2602:ff03:31e::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -257994,9 +258059,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:32f::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -258090,12 +258156,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:352::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258110,20 +258175,19 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:356::/48",
+      "prefix": "2602:ff03:356::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RouteViews"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:358::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -258133,12 +258197,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:35d::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258226,23 +258289,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:381::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:382::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258266,34 +258327,29 @@
       "provider": "vultr",
       "prefix": "2602:ff03:390::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:393::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:397::/48",
+      "prefix": "2602:ff03:396::/47",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "IPVerse",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258319,11 +258375,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:3a1::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -258349,11 +258406,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:3a8::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -258369,12 +258427,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:3ac::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258388,11 +258445,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:3b4::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -258424,9 +258482,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:3c3::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -258444,20 +258503,29 @@
       "provider": "vultr",
       "prefix": "2602:ff03:3c6::/48",
       "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:3c8::/48",
+      "version": 6,
       "source_count": 2,
       "sources": [
-        "RIPE RIS",
+        "IPVerse",
         "RIPEstat"
       ],
       "status": "confirmed"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:3c8::/48",
+      "prefix": "2602:ff03:3cd::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "IPVerse",
         "RIPE RIS",
         "RIPEstat"
       ],
@@ -258475,9 +258543,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:3d0::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -258524,14 +258593,11 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:3e4::/48",
+      "prefix": "2602:ff03:3e4::/47",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPEstat",
-        "RouteViews"
-      ],
-      "status": "confirmed"
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258545,13 +258611,25 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:3ee::/48",
+      "prefix": "2602:ff03:3ed::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:3ee::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -258585,23 +258663,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:3f8::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:3fa::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258617,12 +258693,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:400::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258721,12 +258796,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:424::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258740,12 +258814,10 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:429::/48",
+      "prefix": "2602:ff03:428::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -258773,12 +258845,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:430::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258823,23 +258894,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:447::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:448::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258863,12 +258932,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:454::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -258884,22 +258952,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:459::/48",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPE RIS",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:45a::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
         "RIPEstat"
       ],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:45a::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPEstat",
+        "RouteViews"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -258916,9 +258984,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:45f::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -258975,11 +259044,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:46f::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -259070,11 +259140,20 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:491::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:493::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "IPVerse",
         "RIPEstat",
         "RouteViews"
       ],
@@ -259117,28 +259196,15 @@
       "provider": "vultr",
       "prefix": "2602:ff03:4a3::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
-        "RIPEstat",
-        "RouteViews"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:4a5::/48",
-      "version": 6,
-      "source_count": 2,
-      "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:4a6::/47",
+      "prefix": "2602:ff03:4a4::/46",
       "version": 6,
       "source_count": 0,
       "sources": [],
@@ -259148,11 +259214,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:4a9::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "IPVerse",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -259166,9 +259233,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:4af::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -259187,6 +259255,16 @@
       "provider": "vultr",
       "prefix": "2602:ff03:4b2::/48",
       "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:4b5::/48",
+      "version": 6,
       "source_count": 2,
       "sources": [
         "RIPE RIS",
@@ -259196,13 +259274,14 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:4b5::/48",
+      "prefix": "2602:ff03:4b7::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -259224,6 +259303,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:4c5::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:4c9::/48",
       "version": 6,
       "source_count": 1,
@@ -259236,11 +259325,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:4cb::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -259253,17 +259343,6 @@
     {
       "provider": "vultr",
       "prefix": "2602:ff03:4cf::/48",
-      "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPE RIS",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:4d3::/48",
       "version": 6,
       "source_count": 1,
       "sources": [
@@ -259305,9 +259384,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:4e0::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -259325,10 +259405,12 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:4e8::/47",
+      "prefix": "2602:ff03:4e8::/48",
       "version": 6,
-      "source_count": 0,
-      "sources": [],
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
       "status": "single_source"
     },
     {
@@ -259345,23 +259427,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:4ed::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:4ef::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -259408,22 +259488,20 @@
       "provider": "vultr",
       "prefix": "2602:ff03:502::/48",
       "version": 6,
-      "source_count": 4,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
-        "RIPE RIS",
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:507::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -259443,7 +259521,7 @@
       "version": 6,
       "source_count": 2,
       "sources": [
-        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -259508,12 +259586,10 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:522::/48",
+      "prefix": "2602:ff03:522::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -259561,9 +259637,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:53a::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -259573,19 +259648,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:53d::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "IPVerse",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:53f::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -259631,9 +259708,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:54c::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -259643,9 +259721,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:555::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -259691,12 +259768,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:567::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -259710,12 +259786,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:56a::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -259762,17 +259837,19 @@
       "version": 6,
       "source_count": 2,
       "sources": [
-        "RIPE RIS",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:582::/47",
+      "prefix": "2602:ff03:583::/48",
       "version": 6,
-      "source_count": 0,
-      "sources": [],
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
       "status": "single_source"
     },
     {
@@ -259799,6 +259876,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:58c::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:58e::/47",
       "version": 6,
       "source_count": 0,
@@ -259817,12 +259904,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:595::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -259860,6 +259946,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:5a0::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:5a2::/47",
       "version": 6,
       "source_count": 0,
@@ -259890,9 +259986,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:5aa::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -259901,11 +259998,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:5ad::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -259952,10 +260050,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:5ba::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "IPVerse"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -259984,9 +260080,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:5c3::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -260065,11 +260162,13 @@
       "provider": "vultr",
       "prefix": "2602:ff03:5dc::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -260095,9 +260194,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:5e5::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -260179,9 +260279,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:5fd::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -260191,9 +260290,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:600::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -260213,23 +260313,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:604::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:608::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -260255,23 +260353,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:610::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:613::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -260288,19 +260384,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:61f::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:620::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -260327,11 +260425,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:627::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -260378,9 +260477,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:637::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -260399,8 +260499,8 @@
       "version": 6,
       "source_count": 2,
       "sources": [
-        "RIPE RIS",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -260408,12 +260508,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:63f::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -260429,11 +260528,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:643::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -260457,9 +260557,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:64c::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -260468,11 +260569,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:64e::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -260536,7 +260638,27 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:662::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:664::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:668::/48",
       "version": 6,
       "source_count": 1,
       "sources": [
@@ -260665,12 +260787,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:694::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:696::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -260704,22 +260835,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:6a0::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:6a2::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -260755,45 +260886,41 @@
       "provider": "vultr",
       "prefix": "2602:ff03:6aa::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:6ad::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:6ae::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:6b1::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -260807,12 +260934,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:6b4::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -260838,11 +260964,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:6be::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -260925,21 +261052,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:6d9::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:6da::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
         "IPVerse",
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
       "status": "confirmed"
     },
@@ -260981,22 +261108,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:6eb::/48",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPE RIS",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:6ed::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
         "RIPEstat"
       ],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:6ed::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPEstat",
+        "RouteViews"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -261012,22 +261139,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:6f2::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:6f5::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -261041,8 +261168,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:6fa::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 4,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -261082,6 +261211,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:707::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:708::/48",
       "version": 6,
       "source_count": 1,
@@ -261104,20 +261243,20 @@
       "provider": "vultr",
       "prefix": "2602:ff03:70d::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:70e::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -261128,16 +261267,6 @@
       "version": 6,
       "source_count": 0,
       "sources": [],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:716::/48",
-      "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
       "status": "single_source"
     },
     {
@@ -261205,12 +261334,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:73b::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -261256,6 +261384,16 @@
       "version": 6,
       "source_count": 0,
       "sources": [],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:751::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
       "status": "single_source"
     },
     {
@@ -261341,22 +261479,23 @@
       "provider": "vultr",
       "prefix": "2602:ff03:766::/48",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "IPVerse",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:769::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
         "RIPEstat"
       ],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:769::/48",
+      "version": 6,
+      "source_count": 3,
+      "sources": [
+        "IPVerse",
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -261382,12 +261521,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:771::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -261401,19 +261539,7 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:778::/48",
-      "version": 6,
-      "source_count": 3,
-      "sources": [
-        "RIPE RIS",
-        "RIPEstat",
-        "RouteViews"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:77a::/47",
+      "prefix": "2602:ff03:778::/46",
       "version": 6,
       "source_count": 0,
       "sources": [],
@@ -261431,12 +261557,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:781::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -261478,20 +261603,9 @@
       "provider": "vultr",
       "prefix": "2602:ff03:78a::/48",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPE RIS",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:795::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
-        "IPVerse"
+        "RIPEstat"
       ],
       "status": "single_source"
     },
@@ -261538,9 +261652,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:7a7::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -261549,22 +261664,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:7a8::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:7ab::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -261581,11 +261696,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:7b1::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -261635,12 +261751,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:7c3::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -261674,11 +261789,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:7d1::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -261687,8 +261803,8 @@
       "source_count": 3,
       "sources": [
         "IPVerse",
-        "RIPEstat",
-        "RouteViews"
+        "RIPE RIS",
+        "RIPEstat"
       ],
       "status": "confirmed"
     },
@@ -261717,8 +261833,9 @@
       "provider": "vultr",
       "prefix": "2602:ff03:7d8::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -261798,6 +261915,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:7f7::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:7f9::/48",
       "version": 6,
       "source_count": 1,
@@ -261836,23 +261963,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:801::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:802::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -261876,9 +262001,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:809::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -261907,9 +262033,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:819::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -261924,12 +262051,10 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:81c::/48",
+      "prefix": "2602:ff03:81c::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -261950,6 +262075,16 @@
         "RIPEstat"
       ],
       "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:827::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -261982,11 +262117,22 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:82f::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:831::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -262024,13 +262170,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:83b::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262052,12 +262196,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:844::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262083,9 +262226,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:850::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "IPVerse",
         "RIPEstat",
         "RouteViews"
       ],
@@ -262156,9 +262298,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:870::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -262203,12 +262346,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:87d::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262224,17 +262366,6 @@
       "provider": "vultr",
       "prefix": "2602:ff03:881::/48",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPE RIS",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:882::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
         "RIPEstat"
@@ -262243,14 +262374,25 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:884::/48",
+      "prefix": "2602:ff03:882::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "IPVerse",
+        "RIPE RIS",
+        "RIPEstat"
       ],
       "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:884::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262286,12 +262428,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:890::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262302,6 +262443,17 @@
         "RIPEstat"
       ],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:896::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -262353,10 +262505,12 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:8a6::/47",
+      "prefix": "2602:ff03:8a6::/48",
       "version": 6,
-      "source_count": 0,
-      "sources": [],
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
       "status": "single_source"
     },
     {
@@ -262373,9 +262527,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8ab::/48",
       "version": 6,
+      "source_count": 3,
+      "sources": [
+        "IPVerse",
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:8af::/48",
+      "version": 6,
       "source_count": 1,
       "sources": [
-        "RIPEstat"
+        "RouteViews"
       ],
       "status": "single_source"
     },
@@ -262383,12 +262549,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8b2::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262415,23 +262580,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8bd::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:8c2::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262447,12 +262610,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8c6::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262468,22 +262630,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8ca::/48",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "IPVerse",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:8cd::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
         "RIPEstat"
       ],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:8cd::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -262499,12 +262661,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8d0::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262518,14 +262679,11 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:8d4::/48",
+      "prefix": "2602:ff03:8d4::/47",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPEstat",
-        "RouteViews"
-      ],
-      "status": "confirmed"
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262557,12 +262715,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8e2::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262578,11 +262735,23 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8e8::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:8ee::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -262609,11 +262778,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8f9::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
         "IPVerse",
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
       "status": "confirmed"
     },
@@ -262621,20 +262789,20 @@
       "provider": "vultr",
       "prefix": "2602:ff03:8fa::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:8fc::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -262651,12 +262819,10 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:907::/48",
+      "prefix": "2602:ff03:906::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -262685,12 +262851,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:90e::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262757,22 +262922,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:91f::/48",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:920::/48",
-      "version": 6,
       "source_count": 2,
       "sources": [
         "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:920::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262814,9 +262979,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:934::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -262861,9 +263027,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:946::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -262880,9 +263047,20 @@
       "provider": "vultr",
       "prefix": "2602:ff03:94a::/48",
       "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPEstat",
+        "RouteViews"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:94d::/48",
+      "version": 6,
       "source_count": 1,
       "sources": [
-        "RIPEstat"
+        "RouteViews"
       ],
       "status": "single_source"
     },
@@ -262890,11 +263068,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:951::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -262908,11 +263087,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:956::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -262962,12 +263142,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:967::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -262981,29 +263160,32 @@
       "provider": "vultr",
       "prefix": "2602:ff03:96c::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:96f::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:970::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -263032,31 +263214,29 @@
       "provider": "vultr",
       "prefix": "2602:ff03:97c::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:980::/47",
-      "version": 6,
-      "source_count": 0,
-      "sources": [],
       "status": "single_source"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:983::/48",
+      "prefix": "2602:ff03:97f::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
         "RouteViews"
       ],
-      "status": "confirmed"
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:980::/46",
+      "version": 6,
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263119,9 +263299,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:99d::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -263162,10 +263341,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:9ae::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -263173,11 +263353,13 @@
       "provider": "vultr",
       "prefix": "2602:ff03:9b1::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -263220,24 +263402,13 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:9bf::/48",
+      "prefix": "2602:ff03:9c1::/48",
       "version": 6,
       "source_count": 1,
       "sources": [
-        "RouteViews"
-      ],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:9c1::/48",
-      "version": 6,
-      "source_count": 2,
-      "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263254,6 +263425,16 @@
       "source_count": 1,
       "sources": [
         "IPVerse"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:9c9::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
       ],
       "status": "single_source"
     },
@@ -263282,12 +263463,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:9d0::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263321,9 +263501,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:9e1::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -263351,11 +263532,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:9e9::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -263371,12 +263553,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:9ef::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:9f4::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263439,8 +263630,8 @@
       "version": 6,
       "source_count": 2,
       "sources": [
-        "RIPE RIS",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -263491,6 +263682,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:a24::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:a2a::/48",
       "version": 6,
       "source_count": 1,
@@ -263533,12 +263734,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a34::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263573,12 +263773,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a41::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263677,9 +263876,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a5a::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -263688,12 +263888,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a5c::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263720,23 +263919,15 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a62::/47",
       "version": 6,
-      "source_count": 0,
-      "sources": [],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:a64::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
-        "RIPEstat"
+        "IPVerse"
       ],
       "status": "single_source"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:a6b::/48",
+      "prefix": "2602:ff03:a64::/48",
       "version": 6,
       "source_count": 1,
       "sources": [
@@ -263756,22 +263947,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a70::/48",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:a74::/48",
-      "version": 6,
       "source_count": 2,
       "sources": [
         "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:a74::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263785,12 +263976,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a7d::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263818,11 +264008,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a87::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -263856,22 +264047,13 @@
       "provider": "vultr",
       "prefix": "2602:ff03:a96::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:a99::/48",
-      "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RouteViews"
-      ],
-      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -263934,20 +264116,20 @@
       "provider": "vultr",
       "prefix": "2602:ff03:aab::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:aac::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -263977,31 +264159,28 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ab2::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:ab4::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:ab7::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -264088,19 +264267,18 @@
       "provider": "vultr",
       "prefix": "2602:ff03:aca::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "IPVerse"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:ad0::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -264129,14 +264307,23 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:adb::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:add::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -264153,11 +264340,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ae1::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -264171,12 +264359,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ae4::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -264202,9 +264389,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:aea::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -264241,12 +264429,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:af7::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -264262,11 +264449,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:aff::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -264282,12 +264470,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:b02::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -264296,6 +264483,16 @@
       "source_count": 1,
       "sources": [
         "RIPEstat"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:b06::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
       ],
       "status": "single_source"
     },
@@ -264324,19 +264521,41 @@
       "provider": "vultr",
       "prefix": "2602:ff03:b0d::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:b0e::/48",
       "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:b11::/48",
+      "version": 6,
       "source_count": 1,
       "sources": [
-        "RIPEstat"
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:b12::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
       ],
       "status": "single_source"
     },
@@ -264419,12 +264638,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:b30::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -264438,12 +264656,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:b35::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -264499,6 +264716,16 @@
     {
       "provider": "vultr",
       "prefix": "2602:ff03:b46::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:b4b::/48",
       "version": 6,
       "source_count": 2,
       "sources": [
@@ -264567,9 +264794,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:b65::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -264588,10 +264816,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:b6e::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "IPVerse"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -264610,8 +264836,8 @@
       "version": 6,
       "source_count": 2,
       "sources": [
-        "RIPE RIS",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -264657,20 +264883,20 @@
       "provider": "vultr",
       "prefix": "2602:ff03:b81::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:b82::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -264679,11 +264905,13 @@
       "provider": "vultr",
       "prefix": "2602:ff03:b84::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -264789,22 +265017,23 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ba0::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:ba8::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -264840,9 +265069,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:bb6::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -264891,10 +265121,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:bca::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "IPVerse"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -264941,11 +265169,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:bdc::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -265120,13 +265349,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:c0f::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -265166,8 +265393,8 @@
       "version": 6,
       "source_count": 2,
       "sources": [
-        "RIPE RIS",
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
       "status": "confirmed"
     },
@@ -265203,12 +265430,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:c26::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -265258,14 +265484,25 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:c3a::/48",
+      "prefix": "2602:ff03:c39::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
         "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:c3a::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -265360,11 +265597,13 @@
       "provider": "vultr",
       "prefix": "2602:ff03:c5a::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -265399,9 +265638,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:c68::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -265418,12 +265658,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:c6c::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -265505,13 +265744,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:c96::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -265537,12 +265774,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ca1::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -265567,11 +265803,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ca9::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "IPVerse",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -265617,12 +265854,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:cb6::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -265657,11 +265893,14 @@
       "provider": "vultr",
       "prefix": "2602:ff03:cc4::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 4,
       "sources": [
-        "RIPEstat"
+        "IPVerse",
+        "RIPE RIS",
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -265675,11 +265914,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:cc8::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -265703,11 +265943,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:cd1::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -265735,11 +265976,22 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:cdd::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:cdf::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -265748,9 +266000,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ce0::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
-        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -265794,16 +266045,6 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:ced::/48",
-      "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
       "prefix": "2602:ff03:cf2::/47",
       "version": 6,
       "source_count": 0,
@@ -265822,11 +266063,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:cf8::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -265868,21 +266110,18 @@
       "provider": "vultr",
       "prefix": "2602:ff03:d05::/48",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPE RIS",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:d06::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
         "RIPEstat"
       ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:d06::/47",
+      "version": 6,
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -265892,6 +266131,17 @@
       "source_count": 2,
       "sources": [
         "IPVerse",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:d0f::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -265922,9 +266172,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:d19::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -265933,11 +266184,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:d1a::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -265949,7 +266201,7 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:d20::/48",
+      "prefix": "2602:ff03:d21::/48",
       "version": 6,
       "source_count": 1,
       "sources": [
@@ -265979,12 +266231,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:d2b::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -266017,31 +266268,35 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:d34::/47",
+      "prefix": "2602:ff03:d35::/48",
       "version": 6,
-      "source_count": 0,
-      "sources": [],
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
       "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:d3a::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:d43::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -266092,6 +266347,18 @@
         "RouteViews"
       ],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:d54::/48",
+      "version": 6,
+      "source_count": 3,
+      "sources": [
+        "RIPE RIS",
+        "RIPEstat",
+        "RouteViews"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -266225,6 +266492,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:d86::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:d89::/48",
       "version": 6,
       "source_count": 1,
@@ -266237,12 +266514,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:d8a::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -266286,32 +266562,29 @@
       "provider": "vultr",
       "prefix": "2602:ff03:d96::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 2,
       "sources": [
         "IPVerse",
-        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:d98::/48",
+      "prefix": "2602:ff03:d99::/48",
       "version": 6,
       "source_count": 1,
       "sources": [
-        "RIPEstat"
+        "RouteViews"
       ],
       "status": "single_source"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:d9b::/48",
+      "prefix": "2602:ff03:d9a::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -266335,13 +266608,24 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:da7::/48",
+      "prefix": "2602:ff03:da5::/48",
       "version": 6,
       "source_count": 1,
       "sources": [
-        "RIPEstat"
+        "RouteViews"
       ],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:da7::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -266349,6 +266633,16 @@
       "version": 6,
       "source_count": 0,
       "sources": [],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:dab::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
       "status": "single_source"
     },
     {
@@ -266383,14 +266677,11 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:dc1::/48",
+      "prefix": "2602:ff03:dc0::/47",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPEstat",
-        "RouteViews"
-      ],
-      "status": "confirmed"
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -266406,12 +266697,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:dc6::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -266482,11 +266772,13 @@
       "provider": "vultr",
       "prefix": "2602:ff03:de0::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -266585,8 +266877,8 @@
       "source_count": 3,
       "sources": [
         "IPVerse",
-        "RIPEstat",
-        "RouteViews"
+        "RIPE RIS",
+        "RIPEstat"
       ],
       "status": "confirmed"
     },
@@ -266652,12 +266944,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:e11::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -266674,12 +266965,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:e1c::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -266751,12 +267041,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:e34::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -266772,10 +267061,8 @@
       "provider": "vultr",
       "prefix": "2602:ff03:e3a::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "IPVerse"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -266858,21 +267145,26 @@
       "provider": "vultr",
       "prefix": "2602:ff03:e53::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:e54::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 4,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
+        "RIPEstat",
         "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -266946,12 +267238,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:e75::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -266967,11 +267258,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:e79::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -267005,12 +267297,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:e81::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267074,26 +267365,21 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:e95::/48",
+      "prefix": "2602:ff03:e94::/47",
       "version": 6,
-      "source_count": 3,
-      "sources": [
-        "IPVerse",
-        "RIPE RIS",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:e98::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267125,12 +267411,10 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:eac::/48",
+      "prefix": "2602:ff03:eac::/47",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -267157,8 +267441,9 @@
       "provider": "vultr",
       "prefix": "2602:ff03:eb2::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
         "RIPEstat",
         "RouteViews"
       ],
@@ -267168,23 +267453,21 @@
       "provider": "vultr",
       "prefix": "2602:ff03:eb6::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:eb9::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267221,12 +267504,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ec5::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPEstat",
-        "RouteViews"
+        "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267240,11 +267522,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ec8::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -267299,11 +267582,13 @@
       "provider": "vultr",
       "prefix": "2602:ff03:edd::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -267327,11 +267612,12 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ee4::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -267376,9 +267662,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ef0::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -267387,16 +267674,6 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ef2::/48",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:ef4::/48",
-      "version": 6,
       "source_count": 2,
       "sources": [
         "IPVerse",
@@ -267406,14 +267683,25 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:ef9::/48",
+      "prefix": "2602:ff03:ef4::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
         "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:ef9::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267438,11 +267726,14 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:efe::/47",
+      "prefix": "2602:ff03:eff::/48",
       "version": 6,
-      "source_count": 0,
-      "sources": [],
-      "status": "single_source"
+      "source_count": 2,
+      "sources": [
+        "IPVerse",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -267466,9 +267757,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:f05::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -267493,10 +267785,30 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:f0b::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:f12::/47",
       "version": 6,
       "source_count": 0,
       "sources": [],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:f14::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
       "status": "single_source"
     },
     {
@@ -267529,7 +267841,15 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:f22::/48",
+      "prefix": "2602:ff03:f22::/47",
+      "version": 6,
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:f26::/48",
       "version": 6,
       "source_count": 1,
       "sources": [
@@ -267539,37 +267859,23 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:f26::/48",
-      "version": 6,
-      "source_count": 3,
-      "sources": [
-        "IPVerse",
-        "RIPE RIS",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
       "prefix": "2602:ff03:f28::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:f2d::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267596,9 +267902,10 @@
       "provider": "vultr",
       "prefix": "2602:ff03:f33::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -267617,8 +267924,9 @@
       "provider": "vultr",
       "prefix": "2602:ff03:f41::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -267687,12 +267995,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:f51::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267724,24 +268031,22 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:f58::/48",
+      "prefix": "2602:ff03:f58::/47",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "IPVerse",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:f5d::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -267757,20 +268062,20 @@
       "provider": "vultr",
       "prefix": "2602:ff03:f63::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:f64::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 3,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
       "status": "confirmed"
@@ -267816,22 +268121,11 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:f70::/47",
+      "prefix": "2602:ff03:f70::/46",
       "version": 6,
       "source_count": 0,
       "sources": [],
       "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:f73::/48",
-      "version": 6,
-      "source_count": 2,
-      "sources": [
-        "RIPEstat",
-        "RouteViews"
-      ],
-      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -267853,12 +268147,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:f7a::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267905,31 +268198,31 @@
       "provider": "vultr",
       "prefix": "2602:ff03:f8f::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
-      "prefix": "2602:ff03:f92::/47",
+      "prefix": "2602:ff03:f92::/48",
       "version": 6,
-      "source_count": 0,
-      "sources": [],
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
       "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:f94::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267963,22 +268256,22 @@
       "provider": "vultr",
       "prefix": "2602:ff03:fa9::/48",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPEstat"
-      ],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:faa::/48",
-      "version": 6,
       "source_count": 2,
       "sources": [
         "RIPEstat",
         "RouteViews"
       ],
       "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:faa::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPEstat"
+      ],
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -267994,20 +268287,20 @@
       "provider": "vultr",
       "prefix": "2602:ff03:fb4::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
       "prefix": "2602:ff03:fb7::/48",
       "version": 6,
-      "source_count": 3,
+      "source_count": 4,
       "sources": [
         "IPVerse",
+        "RIPE RIS",
         "RIPEstat",
         "RouteViews"
       ],
@@ -268037,21 +268330,18 @@
       "provider": "vultr",
       "prefix": "2602:ff03:fc3::/48",
       "version": 6,
-      "source_count": 2,
-      "sources": [
-        "IPVerse",
-        "RIPEstat"
-      ],
-      "status": "confirmed"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2602:ff03:fc5::/48",
-      "version": 6,
       "source_count": 1,
       "sources": [
         "RIPEstat"
       ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2602:ff03:fc4::/47",
+      "version": 6,
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -268080,12 +268370,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:fcc::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -268099,12 +268388,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:fd5::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -268156,6 +268444,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:fe0::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RouteViews"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:fe4::/48",
       "version": 6,
       "source_count": 1,
@@ -268192,6 +268490,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2602:ff03:fef::/48",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "IPVerse"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2602:ff03:ff0::/48",
       "version": 6,
       "source_count": 2,
@@ -268215,12 +268523,11 @@
       "provider": "vultr",
       "prefix": "2602:ff03:ff8::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -269075,7 +269382,26 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2a10:ccc1:400::/45",
+      "prefix": "2a10:ccc1:400::/48",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPEstat",
+        "RouteViews"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2a10:ccc1:402::/47",
+      "version": 6,
+      "source_count": 0,
+      "sources": [],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2a10:ccc1:404::/46",
       "version": 6,
       "source_count": 0,
       "sources": [],
@@ -269129,11 +269455,12 @@
       "provider": "vultr",
       "prefix": "2a10:ccc1:416::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -269207,28 +269534,21 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2a10:ccc1:432::/47",
+      "prefix": "2a10:ccc1:432::/48",
       "version": 6,
-      "source_count": 0,
-      "sources": [],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2a10:ccc1:434::/47",
-      "version": 6,
-      "source_count": 0,
-      "sources": [],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
-      "prefix": "2a10:ccc1:437::/48",
-      "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
+      "status": "confirmed"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2a10:ccc1:434::/46",
+      "version": 6,
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -269377,22 +269697,22 @@
       "provider": "vultr",
       "prefix": "2a10:ccc1:472::/48",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
-        "RIPEstat"
+        "RIPEstat",
+        "RouteViews"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
       "prefix": "2a10:ccc1:474::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -269484,12 +269804,11 @@
       "provider": "vultr",
       "prefix": "2a10:ccc1:49c::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -269610,12 +269929,11 @@
       "provider": "vultr",
       "prefix": "2a10:ccc1:4c0::/48",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "IPVerse",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -270223,6 +270541,16 @@
     },
     {
       "provider": "vultr",
+      "prefix": "2a14:7583:f014::/46",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPE RIS"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
       "prefix": "2a14:7583:f020::/46",
       "version": 6,
       "source_count": 1,
@@ -270241,12 +270569,10 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2a14:7583:f038::/46",
+      "prefix": "2a14:7583:f030::/45",
       "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPE RIS"
-      ],
+      "source_count": 0,
+      "sources": [],
       "status": "single_source"
     },
     {
@@ -270256,6 +270582,16 @@
       "source_count": 1,
       "sources": [
         "RIPEstat"
+      ],
+      "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2a14:7583:f04c::/46",
+      "version": 6,
+      "source_count": 1,
+      "sources": [
+        "RIPE RIS"
       ],
       "status": "single_source"
     },
@@ -270301,12 +270637,11 @@
       "provider": "vultr",
       "prefix": "2a14:7583:f074::/46",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
@@ -270318,21 +270653,11 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2a14:7583:f080::/46",
-      "version": 6,
-      "source_count": 1,
-      "sources": [
-        "RIPE RIS"
-      ],
-      "status": "single_source"
-    },
-    {
-      "provider": "vultr",
       "prefix": "2a14:7583:f088::/46",
       "version": 6,
       "source_count": 1,
       "sources": [
-        "RouteViews"
+        "RIPEstat"
       ],
       "status": "single_source"
     },
@@ -270356,11 +270681,22 @@
     },
     {
       "provider": "vultr",
-      "prefix": "2a14:7583:f0c0::/44",
+      "prefix": "2a14:7583:f0c0::/45",
       "version": 6,
       "source_count": 0,
       "sources": [],
       "status": "single_source"
+    },
+    {
+      "provider": "vultr",
+      "prefix": "2a14:7583:f0c8::/46",
+      "version": 6,
+      "source_count": 2,
+      "sources": [
+        "RIPE RIS",
+        "RIPEstat"
+      ],
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -270394,11 +270730,12 @@
       "provider": "vultr",
       "prefix": "2a14:7583:f0e8::/46",
       "version": 6,
-      "source_count": 1,
+      "source_count": 2,
       "sources": [
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -270414,11 +270751,13 @@
       "provider": "vultr",
       "prefix": "2a14:7583:f0f8::/46",
       "version": 6,
-      "source_count": 1,
+      "source_count": 3,
       "sources": [
+        "IPVerse",
+        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "single_source"
+      "status": "confirmed"
     },
     {
       "provider": "vultr",
@@ -270660,12 +270999,11 @@
       "provider": "vultr",
       "prefix": "2a14:7583:f1fc::/46",
       "version": 6,
-      "source_count": 2,
+      "source_count": 1,
       "sources": [
-        "RIPE RIS",
         "RIPEstat"
       ],
-      "status": "confirmed"
+      "status": "single_source"
     },
     {
       "provider": "vultr",
