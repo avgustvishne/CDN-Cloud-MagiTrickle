@@ -2,7 +2,7 @@
 
 ## 🟢 HEALTHY
 
-**Публикация:** `published`  
+**Публикация:** `held`  
 **Последнее обновление данных:** `Updated: 2026-10-19 05:04:40 UTC
 ALL IPv4: 18297
 ALL IPv6: 5423
@@ -30,8 +30,8 @@ gcore,530,224,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE
 backblaze,6,1,static+cloud-ip-ranges,OK,0,0,0
 telegram,8,4,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 twitter,10,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`  
-**Отчёт сформирован:** `2026-10-19T18:50:04Z`  
-**Исходный commit:** `1dde56614f9c79b8c9f851009550d138b8a63780`  
+**Отчёт сформирован:** `2026-10-19T19:18:31Z`  
+**Исходный commit:** `1b1cd4f0d2c9e52b606ba8dd17a72020a934cc7b`  
 **Последний известный рабочий commit:** `71fb14f691485b642475bbb3e33d80cee0b830e9`
 
 ## Данные
@@ -48,5 +48,9 @@ twitter,10,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`
 
 - Rollback guard: **PASS**
 - Checksums: **available**
+
+## Последний сбой
+
+`https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/runs/39304988342 (conclusion: failure, run: 39304988342)`
 
 Машиночитаемый статус: [`data/status.json`](data/status.json)
