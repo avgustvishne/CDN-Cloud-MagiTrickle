@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-20T05:26:16.450112+00:00",
+  "timestamp": "2026-10-20T17:34:57.452415+00:00",
   "previous_ref": "HEAD",
   "max_drop": 0.5,
   "max_coverage_drop": 0.5,
@@ -7,12 +7,12 @@
   "restored": false,
   "datasets": {
     "data/akamai-v4.txt": {
-      "previous": 354,
+      "previous": 355,
       "current": 355,
       "drop_percent": 0.0,
       "coverage": {
         "4": {
-          "previous": 14635860,
+          "previous": 14635859,
           "current": 14635859,
           "ratio": 1.0,
           "drop_percent": 0.0
@@ -95,101 +95,13 @@
       "coverage_guard": false
     },
     "data/all-cloud-v4.txt": {
-      "previous": 9209,
-      "current": 9212,
+      "previous": 9212,
+      "current": 9213,
       "drop_percent": 0.0,
       "coverage": {
         "4": {
-          "previous": 309232436,
-          "current": 309237812,
-          "ratio": 1.000017,
-          "drop_percent": 0.0
-        },
-        "6": {
-          "previous": 0,
-          "current": 0,
-          "ratio": null,
-          "drop_percent": 0
-        }
-      },
-      "status": "ok",
-      "count_guard": false,
-      "coverage_guard": false
-    },
-    "data/all-cloud-v6.txt": {
-      "previous": 2363,
-      "current": 2364,
-      "drop_percent": 0.0,
-      "coverage": {
-        "4": {
-          "previous": 0,
-          "current": 0,
-          "ratio": null,
-          "drop_percent": 0
-        },
-        "6": {
-          "previous": 180670323586052783525906251513872,
-          "current": 180670321168201144296647902101520,
-          "ratio": 1.0,
-          "drop_percent": 0.0
-        }
-      },
-      "status": "ok",
-      "count_guard": false,
-      "coverage_guard": false
-    },
-    "data/asn-all-v4.txt": {
-      "previous": 13041,
-      "current": 13046,
-      "drop_percent": 0.0,
-      "coverage": {
-        "4": {
-          "previous": 322825566,
-          "current": 322855517,
-          "ratio": 1.000093,
-          "drop_percent": 0.0
-        },
-        "6": {
-          "previous": 0,
-          "current": 0,
-          "ratio": null,
-          "drop_percent": 0
-        }
-      },
-      "status": "ok",
-      "count_guard": false,
-      "coverage_guard": false
-    },
-    "data/asn-all-v6.txt": {
-      "previous": 6109,
-      "current": 6143,
-      "drop_percent": 0.0,
-      "coverage": {
-        "4": {
-          "previous": 0,
-          "current": 0,
-          "ratio": null,
-          "drop_percent": 0
-        },
-        "6": {
-          "previous": 212002136354152242724898804334592,
-          "current": 212002223396811254978199383179264,
-          "ratio": 1.0,
-          "drop_percent": 0.0
-        }
-      },
-      "status": "ok",
-      "count_guard": false,
-      "coverage_guard": false
-    },
-    "data/aws-v4.txt": {
-      "previous": 5388,
-      "current": 5390,
-      "drop_percent": 0.0,
-      "coverage": {
-        "4": {
-          "previous": 193087638,
-          "current": 193088918,
+          "previous": 309237812,
+          "current": 309239860,
           "ratio": 1.000007,
           "drop_percent": 0.0
         },
@@ -204,8 +116,96 @@
       "count_guard": false,
       "coverage_guard": false
     },
+    "data/all-cloud-v6.txt": {
+      "previous": 2364,
+      "current": 2363,
+      "drop_percent": 0.04,
+      "coverage": {
+        "4": {
+          "previous": 0,
+          "current": 0,
+          "ratio": null,
+          "drop_percent": 0
+        },
+        "6": {
+          "previous": 180670321168201144296647902101520,
+          "current": 180670321168201144296647902101520,
+          "ratio": 1.0,
+          "drop_percent": 0.0
+        }
+      },
+      "status": "ok",
+      "count_guard": false,
+      "coverage_guard": false
+    },
+    "data/asn-all-v4.txt": {
+      "previous": 13046,
+      "current": 13058,
+      "drop_percent": 0.0,
+      "coverage": {
+        "4": {
+          "previous": 322855517,
+          "current": 322901342,
+          "ratio": 1.000142,
+          "drop_percent": 0.0
+        },
+        "6": {
+          "previous": 0,
+          "current": 0,
+          "ratio": null,
+          "drop_percent": 0
+        }
+      },
+      "status": "ok",
+      "count_guard": false,
+      "coverage_guard": false
+    },
+    "data/asn-all-v6.txt": {
+      "previous": 6143,
+      "current": 6115,
+      "drop_percent": 0.46,
+      "coverage": {
+        "4": {
+          "previous": 0,
+          "current": 0,
+          "ratio": null,
+          "drop_percent": 0
+        },
+        "6": {
+          "previous": 212002223396811254978199383179264,
+          "current": 212002156905891176173594774339584,
+          "ratio": 1.0,
+          "drop_percent": 0.0
+        }
+      },
+      "status": "ok",
+      "count_guard": false,
+      "coverage_guard": false
+    },
+    "data/aws-v4.txt": {
+      "previous": 5390,
+      "current": 5392,
+      "drop_percent": 0.0,
+      "coverage": {
+        "4": {
+          "previous": 193088918,
+          "current": 193091222,
+          "ratio": 1.000012,
+          "drop_percent": 0.0
+        },
+        "6": {
+          "previous": 0,
+          "current": 0,
+          "ratio": null,
+          "drop_percent": 0
+        }
+      },
+      "status": "ok",
+      "count_guard": false,
+      "coverage_guard": false
+    },
     "data/aws-v6.txt": {
-      "previous": 1556,
+      "previous": 1557,
       "current": 1557,
       "drop_percent": 0.0,
       "coverage": {
@@ -216,8 +216,8 @@
           "drop_percent": 0
         },
         "6": {
-          "previous": 77574036378408455516772873797632,
-          "current": 77574033960556816287514524385280,
+          "previous": 77574033960556816287514524385280,
+          "current": 77574035169482635902143699091456,
           "ratio": 1.0,
           "drop_percent": 0.0
         }
@@ -315,14 +315,14 @@
       "coverage_guard": false
     },
     "data/cdn77-v4.txt": {
-      "previous": 190,
+      "previous": 191,
       "current": 191,
       "drop_percent": 0.0,
       "coverage": {
         "4": {
-          "previous": 129792,
+          "previous": 130048,
           "current": 130048,
-          "ratio": 1.001972,
+          "ratio": 1.0,
           "drop_percent": 0.0
         },
         "6": {
@@ -360,14 +360,14 @@
     },
     "data/cloudflare-v4.txt": {
       "previous": 870,
-      "current": 870,
-      "drop_percent": 0.0,
+      "current": 869,
+      "drop_percent": 0.11,
       "coverage": {
         "4": {
           "previous": 2026256,
-          "current": 2026256,
-          "ratio": 1.0,
-          "drop_percent": 0.0
+          "current": 2026000,
+          "ratio": 0.999874,
+          "drop_percent": 0.01
         },
         "6": {
           "previous": 0,
@@ -447,14 +447,14 @@
       "coverage_guard": false
     },
     "data/digitalocean-v4.txt": {
-      "previous": 233,
+      "previous": 234,
       "current": 234,
       "drop_percent": 0.0,
       "coverage": {
         "4": {
-          "previous": 3169024,
+          "previous": 3173120,
           "current": 3173120,
-          "ratio": 1.001293,
+          "ratio": 1.0,
           "drop_percent": 0.0
         },
         "6": {
@@ -536,13 +536,13 @@
     },
     "data/gcore-v4.txt": {
       "previous": 530,
-      "current": 530,
+      "current": 531,
       "drop_percent": 0.0,
       "coverage": {
         "4": {
           "previous": 201510,
-          "current": 201510,
-          "ratio": 1.0,
+          "current": 201511,
+          "ratio": 1.000005,
           "drop_percent": 0.0
         },
         "6": {
@@ -558,8 +558,8 @@
     },
     "data/gcore-v6.txt": {
       "previous": 224,
-      "current": 224,
-      "drop_percent": 0.0,
+      "current": 223,
+      "drop_percent": 0.45,
       "coverage": {
         "4": {
           "previous": 0,
@@ -569,7 +569,7 @@
         },
         "6": {
           "previous": 2163977254003674370143158458,
-          "current": 2163977254003674370143158458,
+          "current": 2163977254003674370143158457,
           "ratio": 1.0,
           "drop_percent": 0.0
         }
@@ -584,9 +584,9 @@
       "drop_percent": 0.0,
       "coverage": {
         "4": {
-          "previous": 6625280,
+          "previous": 6629888,
           "current": 6629888,
-          "ratio": 1.000696,
+          "ratio": 1.0,
           "drop_percent": 0.0
         },
         "6": {
@@ -601,7 +601,7 @@
       "coverage_guard": false
     },
     "data/hetzner-v6.txt": {
-      "previous": 439,
+      "previous": 440,
       "current": 440,
       "drop_percent": 0.0,
       "coverage": {
@@ -612,7 +612,7 @@
           "drop_percent": 0
         },
         "6": {
-          "previous": 60513891694712669569500019949568,
+          "previous": 60513892903638489184129194655744,
           "current": 60513892903638489184129194655744,
           "ratio": 1.0,
           "drop_percent": 0.0
@@ -624,13 +624,13 @@
     },
     "data/melbicom-v4.txt": {
       "previous": 102,
-      "current": 102,
+      "current": 103,
       "drop_percent": 0.0,
       "coverage": {
         "4": {
           "previous": 64258,
-          "current": 64258,
-          "ratio": 1.0,
+          "current": 64259,
+          "ratio": 1.000016,
           "drop_percent": 0.0
         },
         "6": {
@@ -690,8 +690,8 @@
     },
     "data/microsoft-v6.txt": {
       "previous": 145,
-      "current": 145,
-      "drop_percent": 0.0,
+      "current": 144,
+      "drop_percent": 0.69,
       "coverage": {
         "4": {
           "previous": 0,
@@ -701,7 +701,7 @@
         },
         "6": {
           "previous": 11553239835688920601628801761296,
-          "current": 11553239835688920601628801761296,
+          "current": 11553238626763100986999627055120,
           "ratio": 1.0,
           "drop_percent": 0.0
         }
@@ -755,14 +755,14 @@
       "coverage_guard": false
     },
     "data/ovh-v4.txt": {
-      "previous": 2785,
-      "current": 2796,
+      "previous": 2796,
+      "current": 2797,
       "drop_percent": 0.0,
       "coverage": {
         "4": {
-          "previous": 7121536,
-          "current": 7124608,
-          "ratio": 1.000431,
+          "previous": 7124608,
+          "current": 7124864,
+          "ratio": 1.000036,
           "drop_percent": 0.0
         },
         "6": {
@@ -777,8 +777,8 @@
       "coverage_guard": false
     },
     "data/ovh-v6.txt": {
-      "previous": 424,
-      "current": 427,
+      "previous": 427,
+      "current": 428,
       "drop_percent": 0.0,
       "coverage": {
         "4": {
@@ -788,9 +788,9 @@
           "drop_percent": 0
         },
         "6": {
-          "previous": 17051129808843069605075499352064,
-          "current": 17051749987788531909842123620352,
-          "ratio": 1.000036,
+          "previous": 17051749987788531909842123620352,
+          "current": 17051751196714351524471298326528,
+          "ratio": 1.0,
           "drop_percent": 0.0
         }
       },
@@ -931,14 +931,14 @@
       "coverage_guard": false
     },
     "data/vultr-v4.txt": {
-      "previous": 865,
-      "current": 866,
-      "drop_percent": 0.0,
+      "previous": 866,
+      "current": 864,
+      "drop_percent": 0.23,
       "coverage": {
         "4": {
-          "previous": 1532160,
-          "current": 1532416,
-          "ratio": 1.000167,
+          "previous": 1532416,
+          "current": 1533440,
+          "ratio": 1.000668,
           "drop_percent": 0.0
         },
         "6": {
@@ -953,9 +953,9 @@
       "coverage_guard": false
     },
     "data/vultr-v6.txt": {
-      "previous": 1610,
-      "current": 1642,
-      "drop_percent": 0.0,
+      "previous": 1642,
+      "current": 1612,
+      "drop_percent": 1.83,
       "coverage": {
         "4": {
           "previous": 0,
@@ -964,9 +964,9 @@
           "drop_percent": 0
         },
         "6": {
-          "previous": 8732215057249000669774499282944,
-          "current": 8732302099908012923075078127616,
-          "ratio": 1.00001,
+          "previous": 8732302099908012923075078127616,
+          "current": 8732230773284655659953770463232,
+          "ratio": 0.999992,
           "drop_percent": 0.0
         }
       },
