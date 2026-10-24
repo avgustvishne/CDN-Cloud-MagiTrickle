@@ -2,45 +2,45 @@
 
 ## 🟢 HEALTHY
 
-**Публикация:** `held`  
-**Последнее обновление данных:** `Updated: 2026-10-23 17:32:53 UTC
-ALL IPv4: 18368
-ALL IPv6: 5419
-ALL ASN IPv4: 13076
-ALL ASN IPv6: 6104
+**Публикация:** `published`  
+**Последнее обновление данных:** `Updated: 2026-10-24 16:22:24 UTC
+ALL IPv4: 18089
+ALL IPv6: 5386
+ALL ASN IPv4: 13090
+ALL ASN IPv6: 6095
 
 Provider,IPv4,IPv6,Source,Status,Errors,RejectedIPv4,RejectedIPv6
-aws,5401,1557,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-cloudflare,873,129,official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-hetzner,4260,441,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-ovh,2807,431,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-akamai,354,252,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+aws,5404,1570,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+cloudflare,875,129,official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+hetzner,3924,405,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+ovh,2814,431,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+akamai,355,252,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 digitalocean,234,14,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 microsoft,1015,144,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 oracle,1226,329,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,KEEP_OLD_PARTIAL,1,0,0
-alibaba,688,194,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+alibaba,693,196,cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 cdn77,191,33,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-fastly,52,37,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+fastly,52,37,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 melbicom,102,19,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 buyvm,23,27,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-vultr,862,1601,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+vultr,862,1587,RIPEstat+RIPE RIS+RouteViews+IPVerse,OK,0,0,0
 contabo,250,2,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 scaleway,11,1,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
-gcore,531,219,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
+gcore,532,219,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 backblaze,6,1,static+cloud-ip-ranges,OK,0,0,0
 telegram,8,4,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 twitter,10,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`  
-**Отчёт сформирован:** `2026-10-24T16:14:43Z`  
-**Исходный commit:** `747e988a34b137bd2ea79dbe556d7ad500d7d879`  
-**Последний известный рабочий commit:** `6f0778f0f1829e3acf6c75766f19f7ba7d539310`
+**Отчёт сформирован:** `2026-10-24T16:31:56Z`  
+**Исходный commit:** `38020169e1f5314e0a9a94f921f5027c708b79c4`  
+**Последний известный рабочий commit:** `44f10fb4c16e5a3f6c12c045cf8116c22b6b12fe`
 
 ## Данные
 
 | Показатель | Значение |
 |---|---:|
 | Провайдеры | **20** |
-| IPv4 CIDR | **18 368** |
-| IPv6 CIDR | **5 419** |
+| IPv4 CIDR | **18 089** |
+| IPv6 CIDR | **5 386** |
 | Источники | **8 / 8** healthy |
 | Network evidence | **128** queried |
 
@@ -48,9 +48,5 @@ twitter,10,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`
 
 - Rollback guard: **PASS**
 - Checksums: **available**
-
-## Последний сбой
-
-`https://github.com/avgustvishne/CDN-Cloud-MagiTrickle/actions/runs/40063267772 (conclusion: failure, run: 40063267772)`
 
 Машиночитаемый статус: [`data/status.json`](data/status.json)
