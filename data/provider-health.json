@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-25T16:58:00Z",
+  "checked_at": "2026-10-26T05:23:53Z",
   "source_of_truth": "published provider CIDR files + audit.csv + provider diff reports",
   "providers": [
     {
@@ -41,14 +41,14 @@
       "display_name": "Alibaba Cloud",
       "status": "OK",
       "health": "healthy",
-      "freshness": "updated",
+      "freshness": "unchanged",
       "ipv4": 692,
       "ipv6": 196,
-      "previous_ipv4": 695,
+      "previous_ipv4": 692,
       "previous_ipv6": 196,
       "change": {
         "added_ipv4": 0,
-        "removed_ipv4": 3,
+        "removed_ipv4": 0,
         "added_ipv6": 0,
         "removed_ipv6": 0
       },
@@ -75,15 +75,15 @@
       "status": "OK",
       "health": "healthy",
       "freshness": "updated",
-      "ipv4": 5406,
-      "ipv6": 1579,
-      "previous_ipv4": 5401,
-      "previous_ipv6": 1563,
+      "ipv4": 5402,
+      "ipv6": 1567,
+      "previous_ipv4": 5406,
+      "previous_ipv6": 1579,
       "change": {
-        "added_ipv4": 7,
-        "removed_ipv4": 2,
-        "added_ipv6": 18,
-        "removed_ipv6": 2
+        "added_ipv4": 3,
+        "removed_ipv4": 7,
+        "added_ipv6": 3,
+        "removed_ipv6": 15
       },
       "errors": 0,
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -91,14 +91,14 @@
         "ipv4": {
           "path": "data/aws-v4.txt",
           "exists": true,
-          "sha256": "fc9bd0130aec61699c55223d8ff33af2d36c6ab7c3b7f06f8ce4810f25ea87a8",
-          "cidr_count": 5406
+          "sha256": "a79e2a81e7ec96bfacc322f4812e2e797063e3350ee6e31216abd3708156733f",
+          "cidr_count": 5402
         },
         "ipv6": {
           "path": "data/aws-v6.txt",
           "exists": true,
-          "sha256": "4facd0ded0e1c58e4cf93aa2fcd1f4d93f041145bd7b469626095b884cfbbaba",
-          "cidr_count": 1579
+          "sha256": "a55263d5e4967864dd1e1c8077b45d51c459bb7da45a6685d6bdf15943737dd8",
+          "cidr_count": 1567
         }
       }
     },
@@ -339,15 +339,15 @@
       "status": "OK",
       "health": "healthy",
       "freshness": "updated",
-      "ipv4": 533,
+      "ipv4": 534,
       "ipv6": 218,
       "previous_ipv4": 533,
-      "previous_ipv6": 219,
+      "previous_ipv6": 218,
       "change": {
-        "added_ipv4": 0,
+        "added_ipv4": 1,
         "removed_ipv4": 0,
         "added_ipv6": 0,
-        "removed_ipv6": 1
+        "removed_ipv6": 0
       },
       "errors": 0,
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -355,8 +355,8 @@
         "ipv4": {
           "path": "data/gcore-v4.txt",
           "exists": true,
-          "sha256": "b4204a9f53844cff8771740c9a6009a47fbbf859d24647731b2e83ddf6cdb285",
-          "cidr_count": 533
+          "sha256": "8f872af9e24303492faaead868fd72823d0e3628c3246c6fab3ae447479a7d29",
+          "cidr_count": 534
         },
         "ipv6": {
           "path": "data/gcore-v6.txt",
@@ -371,13 +371,13 @@
       "display_name": "Hetzner",
       "status": "OK",
       "health": "healthy",
-      "freshness": "updated",
+      "freshness": "unchanged",
       "ipv4": 4270,
       "ipv6": 441,
-      "previous_ipv4": 4269,
+      "previous_ipv4": 4270,
       "previous_ipv6": 441,
       "change": {
-        "added_ipv4": 1,
+        "added_ipv4": 0,
         "removed_ipv4": 0,
         "added_ipv6": 0,
         "removed_ipv6": 0
@@ -503,14 +503,14 @@
       "display_name": "OVH",
       "status": "OK",
       "health": "healthy",
-      "freshness": "unchanged",
+      "freshness": "updated",
       "ipv4": 2816,
       "ipv6": 432,
       "previous_ipv4": 2816,
       "previous_ipv6": 432,
       "change": {
-        "added_ipv4": 0,
-        "removed_ipv4": 0,
+        "added_ipv4": 2,
+        "removed_ipv4": 2,
         "added_ipv6": 0,
         "removed_ipv6": 0
       },
@@ -520,7 +520,7 @@
         "ipv4": {
           "path": "data/ovh-v4.txt",
           "exists": true,
-          "sha256": "2c81f9eaa76158f203ab7d81b4d2192a1e868d8f4ad5dfc91de4d66d08e334f4",
+          "sha256": "671ad1bcddc3f54eace8d7cbfa4dddb97395a7c9a123ec4c73f2bfaffea671ce",
           "cidr_count": 2816
         },
         "ipv6": {
@@ -637,14 +637,14 @@
       "health": "healthy",
       "freshness": "updated",
       "ipv4": 863,
-      "ipv6": 1576,
+      "ipv6": 1577,
       "previous_ipv4": 863,
-      "previous_ipv6": 1589,
+      "previous_ipv6": 1576,
       "change": {
         "added_ipv4": 0,
         "removed_ipv4": 0,
-        "added_ipv6": 111,
-        "removed_ipv6": 124
+        "added_ipv6": 124,
+        "removed_ipv6": 123
       },
       "errors": 0,
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
@@ -658,8 +658,8 @@
         "ipv6": {
           "path": "data/vultr-v6.txt",
           "exists": true,
-          "sha256": "8be524fa302008c9feb5596a13a560791b7158794f76d4e5abe07133e4ca07da",
-          "cidr_count": 1576
+          "sha256": "c03653873892a1b632e247dd1a3ce5f16bb3507f899fffc36b378d94107447d3",
+          "cidr_count": 1577
         }
       }
     }
@@ -671,7 +671,7 @@
     "protected": 1,
     "problem": 0,
     "missing": 0,
-    "updated": 5,
-    "unchanged": 14
+    "updated": 4,
+    "unchanged": 15
   }
 }
