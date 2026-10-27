@@ -1,15 +1,15 @@
 # Здоровье источников данных
 
-**8/8 источников отвечают.** Проверено: `2026-10-27 05:35:05 UTC`.
+**8/8 источников отвечают.** Проверено: `2026-10-27 18:32:15 UTC`.
 
 | Источник | Статус | Размер ответа |
 |---|:---:|---:|
 | AWS | ✅ | 2.6 MB |
 | Cloudflare | ✅ | 230 B |
 | IPVerse | ✅ | 17.0 KB |
-| RIPEstat | ✅ | 666.4 KB |
+| RIPEstat | ✅ | 663.8 KB |
 | RouteViews | ✅ | 4.3 KB |
-| RussiaFancyLists | ✅ | 626.4 KB |
+| RussiaFancyLists | ✅ | 625.9 KB |
 | cloud-egress-ip-ranges | ✅ | 128.8 MB |
 | cloud-ip-ranges | ✅ | 198.9 KB |
 
