@@ -1,20 +1,22 @@
-## Subscription update — v44 · 2026-10-30 06:16:19 UTC
+## Subscription update — v44 · 2026-10-30 18:24:43 UTC
 
-Generated: 2026-10-30 06:16:19 UTC
+Generated: 2026-10-30 18:24:43 UTC
 
-- Aggregate IPv4: **17,335**
-- Aggregate IPv6: **5,018**
+- Aggregate IPv4: **17,345**
+- Aggregate IPv6: **4,960**
 
 ### Changes
 
 | Provider | IPv4 (+ / -) | IPv6 (+ / -) |
 |---|---:|---:|
-| aws | +1 / -1 | +5 / -3 |
-| gcore | +1 / -1 | +0 / -0 |
-| hetzner | +12 / -20 | +0 / -1 |
-| oracle | +4 / -4 | +0 / -0 |
-| ovh | +8 / -1 | +1 / -3 |
-| vultr | +0 / -0 | +203 / -257 |
+| alibaba | +1 / -0 | +0 / -0 |
+| aws | +3 / -1 | +4 / -0 |
+| cdn77 | +2 / -0 | +0 / -0 |
+| cloudflare | +2 / -0 | +0 / -0 |
+| microsoft | +1 / -0 | +0 / -0 |
+| oracle | +1 / -0 | +0 / -0 |
+| ovh | +1 / -0 | +0 / -0 |
+| vultr | +0 / -0 | +213 / -275 |
 
 ### Safety
 
