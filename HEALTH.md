@@ -1,6 +1,6 @@
 # Здоровье источников данных
 
-**8/8 источников отвечают.** Проверено: `2026-11-07 06:24:44 UTC`.
+**8/8 источников отвечают.** Проверено: `2026-11-07 17:57:16 UTC`.
 
 | Источник | Статус | Размер ответа |
 |---|:---:|---:|
@@ -9,8 +9,8 @@
 | IPVerse | ✅ | 17.1 KB |
 | RIPEstat | ✅ | 672.0 KB |
 | RouteViews | ✅ | 4.3 KB |
-| RussiaFancyLists | ✅ | 616.8 KB |
-| cloud-egress-ip-ranges | ✅ | 124.3 MB |
+| RussiaFancyLists | ✅ | 616.7 KB |
+| cloud-egress-ip-ranges | ✅ | 124.4 MB |
 | cloud-ip-ranges | ✅ | 192.2 KB |
 
 Обновляется автоматически при каждом прогоне [update.yml](.github/workflows/update.yml). Полные данные — в [data/source-health.json](data/source-health.json).
