@@ -53,17 +53,17 @@
 |---|:---:|:---:|---|
 | Akamai | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/akamai-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/akamai-v6.txt) | 🟢 OK · без изменений |
 | Alibaba Cloud | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/alibaba-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/alibaba-v6.txt) | 🟢 OK · обновлено |
-| AWS | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v6.txt) | 🟢 OK · обновлено |
+| AWS | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v6.txt) | 🟢 OK · без изменений |
 | Backblaze | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v6.txt) | 🟢 OK · без изменений |
 | BuyVM | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v6.txt) | 🟢 OK · без изменений |
 | CDN77 | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v6.txt) | 🟢 OK · без изменений |
 | Cloudflare | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v6.txt) | 🟢 OK · без изменений |
 | Contabo | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v6.txt) | 🟢 OK · без изменений |
-| DigitalOcean | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v6.txt) | 🟢 OK · обновлено |
+| DigitalOcean | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v6.txt) | 🟢 OK · без изменений |
 | Fastly | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v6.txt) | 🟢 OK · без изменений |
 | Gcore | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v6.txt) | 🟡 FILTERED |
-| Hetzner | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v6.txt) | 🟢 OK · обновлено |
-| Melbicom | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/melbicom-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/melbicom-v6.txt) | 🟢 OK · обновлено |
+| Hetzner | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v6.txt) | 🟢 OK · без изменений |
+| Melbicom | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/melbicom-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/melbicom-v6.txt) | 🟢 OK · без изменений |
 | Microsoft Azure | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/microsoft-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/microsoft-v6.txt) | 🟢 OK · без изменений |
 | Oracle Cloud | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/oracle-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/oracle-v6.txt) | 🛡️ старая версия |
 | OVH | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/ovh-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/ovh-v6.txt) | 🟢 OK · обновлено |
@@ -73,7 +73,7 @@
 | Vultr | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v6.txt) | 🟢 OK · обновлено |
 
 > 🟢 OK = опубликовано нормально · 🟡 PARTIAL/FILTERED = опубликовано с предупреждением · 🛡️ старая версия = сработала защита от плохого обновления.
-> Последняя проверка: 8 ноября 2026 г., 09:30 МСК · [машиночитаемый отчёт](data/provider-health.json)
+> Последняя проверка: 8 ноября 2026 г., 21:30 МСК · [машиночитаемый отчёт](data/provider-health.json)
 <!-- PROVIDER-HEALTH:END -->
 
 <!-- AUTO-STATS:START -->
@@ -81,20 +81,20 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
-| **FULL** | **17 457 CIDR** | **4 940 CIDR** |
-| **BALANCED** | **9 003 CIDR** | **2 673 CIDR** |
+| **FULL** | **17 462 CIDR** | **4 960 CIDR** |
+| **BALANCED** | **9 010 CIDR** | **2 695 CIDR** |
 | **PERFORMANCE** | **2 252 CIDR** | **671 CIDR** |
 | **MINIMAL** | **2 004 CIDR** | **656 CIDR** |
 | **STABLE** | **17 457 CIDR** | **4 940 CIDR** |
 | **CDN** | **2 004 CIDR** | **656 CIDR** |
-| **CLOUD** | **9 235 CIDR** | **2 351 CIDR** |
+| **CLOUD** | **9 233 CIDR** | **2 349 CIDR** |
 | **VIDEO** | **7 557 CIDR** | **2 096 CIDR** |
-| **VPN** | **7 923 CIDR** | **2 282 CIDR** |
+| **VPN** | **7 930 CIDR** | **2 304 CIDR** |
 | **MESSAGING** | **18 CIDR** | **8 CIDR** |
-| **ASN ALL** | **13 130 CIDR** | **5 844 CIDR** |
-| **ALL-CLOUD** | **9 235 CIDR** | **2 351 CIDR** |
+| **ASN ALL** | **13 135 CIDR** | **5 865 CIDR** |
+| **ALL-CLOUD** | **9 233 CIDR** | **2 349 CIDR** |
 
-**Обновлено:** 8 ноября 2026, 09:37 UTC · [полная статистика](data/statistics.json)
+**Обновлено:** 8 ноября 2026, 18:30 UTC · [полная статистика](data/statistics.json)
 
 > Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
