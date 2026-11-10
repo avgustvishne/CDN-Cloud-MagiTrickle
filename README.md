@@ -59,7 +59,7 @@
 | CDN77 | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v6.txt) | 🟢 OK · без изменений |
 | Cloudflare | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v6.txt) | 🟢 OK · без изменений |
 | Contabo | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v6.txt) | 🟢 OK · без изменений |
-| DigitalOcean | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v6.txt) | 🟢 OK · без изменений |
+| DigitalOcean | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/digitalocean-v6.txt) | 🟢 OK · обновлено |
 | Fastly | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/fastly-v6.txt) | 🟢 OK · без изменений |
 | Gcore | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/gcore-v6.txt) | 🟡 FILTERED |
 | Hetzner | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/hetzner-v6.txt) | 🟢 OK · обновлено |
@@ -73,7 +73,7 @@
 | Vultr | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v6.txt) | 🟢 OK · обновлено |
 
 > 🟢 OK = опубликовано нормально · 🟡 PARTIAL/FILTERED = опубликовано с предупреждением · 🛡️ старая версия = сработала защита от плохого обновления.
-> Последняя проверка: 10 ноября 2026 г., 01:59 МСК · [машиночитаемый отчёт](data/provider-health.json)
+> Последняя проверка: 10 ноября 2026 г., 10:53 МСК · [машиночитаемый отчёт](data/provider-health.json)
 <!-- PROVIDER-HEALTH:END -->
 
 <!-- AUTO-STATS:START -->
@@ -81,20 +81,20 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
-| **FULL** | **17 479 CIDR** | **4 906 CIDR** |
-| **BALANCED** | **9 024 CIDR** | **2 641 CIDR** |
-| **PERFORMANCE** | **2 252 CIDR** | **670 CIDR** |
-| **MINIMAL** | **2 004 CIDR** | **655 CIDR** |
+| **FULL** | **17 484 CIDR** | **4 929 CIDR** |
+| **BALANCED** | **9 042 CIDR** | **2 659 CIDR** |
+| **PERFORMANCE** | **2 251 CIDR** | **670 CIDR** |
+| **MINIMAL** | **2 003 CIDR** | **655 CIDR** |
 | **STABLE** | **17 457 CIDR** | **4 940 CIDR** |
-| **CDN** | **2 004 CIDR** | **655 CIDR** |
-| **CLOUD** | **9 236 CIDR** | **2 349 CIDR** |
-| **VIDEO** | **7 560 CIDR** | **2 098 CIDR** |
-| **VPN** | **7 944 CIDR** | **2 250 CIDR** |
+| **CDN** | **2 003 CIDR** | **655 CIDR** |
+| **CLOUD** | **9 224 CIDR** | **2 354 CIDR** |
+| **VIDEO** | **7 548 CIDR** | **2 103 CIDR** |
+| **VPN** | **7 961 CIDR** | **2 268 CIDR** |
 | **MESSAGING** | **18 CIDR** | **8 CIDR** |
-| **ASN ALL** | **13 148 CIDR** | **5 811 CIDR** |
-| **ALL-CLOUD** | **9 236 CIDR** | **2 349 CIDR** |
+| **ASN ALL** | **13 138 CIDR** | **5 834 CIDR** |
+| **ALL-CLOUD** | **9 224 CIDR** | **2 354 CIDR** |
 
-**Обновлено:** 9 ноября 2026, 22:59 UTC · [полная статистика](data/statistics.json)
+**Обновлено:** 10 ноября 2026, 07:53 UTC · [полная статистика](data/statistics.json)
 
 > Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
