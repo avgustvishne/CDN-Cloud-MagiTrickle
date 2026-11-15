@@ -1,18 +1,21 @@
-## Subscription update — v44 · 2026-11-14 18:29:06 UTC
+## Subscription update — v44 · 2026-11-15 07:00:49 UTC
 
-Generated: 2026-11-14 18:29:06 UTC
+Generated: 2026-11-15 07:00:49 UTC
 
-- Aggregate IPv4: **17,579**
-- Aggregate IPv6: **4,972**
+- Aggregate IPv4: **17,591**
+- Aggregate IPv6: **5,116**
 
 ### Changes
 
 | Provider | IPv4 (+ / -) | IPv6 (+ / -) |
 |---|---:|---:|
-| akamai | +1 / -0 | +4 / -0 |
-| buyvm | +0 / -0 | +1 / -1 |
-| oracle | +7 / -7 | +0 / -0 |
-| vultr | +0 / -0 | +93 / -36 |
+| alibaba | +0 / -0 | +1 / -1 |
+| aws | +1 / -1 | +0 / -0 |
+| cloudflare | +1 / -0 | +0 / -0 |
+| hetzner | +14 / -3 | +1 / -0 |
+| microsoft | +1 / -0 | +0 / -0 |
+| ovh | +1 / -1 | +2 / -0 |
+| vultr | +0 / -0 | +382 / -241 |
 
 ### Safety
 

@@ -1,50 +1,50 @@
 # CDN-Cloud-MagiTrickle — Update Report
 
-Обновлено: 2026-11-14 18:35:47Z
+Обновлено: 2026-11-15 07:07:08Z
 
 ## Подписки
 
 | Подписка | CIDR | IPv4 | IPv6 |
 |---|---:|---:|---:|
-| balanced-v4 | 9 093 | 9 093 | 0 |
-| balanced-v6 | 2 689 | 0 | 2 689 |
-| cdn-v4 | 2 005 | 2 005 | 0 |
+| balanced-v4 | 9 105 | 9 105 | 0 |
+| balanced-v6 | 2 833 | 0 | 2 833 |
+| cdn-v4 | 2 006 | 2 006 | 0 |
 | cdn-v6 | 653 | 0 | 653 |
-| cloud-v4 | 9 263 | 9 263 | 0 |
+| cloud-v4 | 9 265 | 9 265 | 0 |
 | cloud-v6 | 2 367 | 0 | 2 367 |
-| full-v4 | 17 578 | 17 578 | 0 |
-| full-v6 | 4 972 | 0 | 4 972 |
+| full-v4 | 17 591 | 17 591 | 0 |
+| full-v6 | 5 116 | 0 | 5 116 |
 | messaging-v4 | 18 | 18 | 0 |
 | messaging-v6 | 8 | 0 | 8 |
-| minimal-v4 | 2 005 | 2 005 | 0 |
+| minimal-v4 | 2 006 | 2 006 | 0 |
 | minimal-v6 | 653 | 0 | 653 |
-| performance-v4 | 2 256 | 2 256 | 0 |
+| performance-v4 | 2 257 | 2 257 | 0 |
 | performance-v6 | 668 | 0 | 668 |
 | stable-v4 | 17 457 | 17 457 | 0 |
 | stable-v6 | 4 940 | 0 | 4 940 |
-| video-v4 | 7 589 | 7 589 | 0 |
+| video-v4 | 7 591 | 7 591 | 0 |
 | video-v6 | 2 112 | 0 | 2 112 |
-| vpn-v4 | 8 018 | 8 018 | 0 |
-| vpn-v6 | 2 300 | 0 | 2 300 |
+| vpn-v4 | 8 029 | 8 029 | 0 |
+| vpn-v6 | 2 444 | 0 | 2 444 |
 
 ## Провайдеры
 
 | Провайдер | IPv4 | IPv6 | Статус |
 |---|---:|---:|---|
 | aws | 5422 | 1562 | OK |
-| cloudflare | 881 | 124 | OK |
-| hetzner | 4176 | 420 | OK |
-| ovh | 1921 | 259 | OK |
+| cloudflare | 882 | 124 | OK |
+| hetzner | 4187 | 421 | OK |
+| ovh | 1921 | 261 | OK |
 | akamai | 354 | 244 | OK |
 | digitalocean | 240 | 14 | OK |
-| microsoft | 1018 | 144 | OK |
+| microsoft | 1019 | 144 | OK |
 | oracle | 1233 | 331 | KEEP_OLD_PARTIAL |
 | alibaba | 674 | 193 | OK |
 | cdn77 | 194 | 32 | OK |
 | fastly | 51 | 39 | OK |
 | melbicom | 102 | 19 | OK |
 | buyvm | 23 | 28 | OK |
-| vultr | 880 | 1348 | OK |
+| vultr | 880 | 1489 | OK |
 | contabo | 270 | 2 | OK |
 | scaleway | 11 | 1 | OK |
 | gcore | 527 | 215 | FILTERED |
@@ -57,5 +57,5 @@
 - Engine: final-v44-source-fusion-ipverse
 - Global-only: True
 - Лимит на провайдера: None (искусственного лимита нет)
-- Общий IPv4: 17579 CIDR
-- Общий IPv6: 4972 CIDR
+- Общий IPv4: 17591 CIDR
+- Общий IPv6: 5116 CIDR
