@@ -30,8 +30,8 @@ gcore,529,215,official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE
 backblaze,6,1,static+cloud-ip-ranges,OK,0,0,0
 telegram,8,4,official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0
 twitter,10,4,RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status,OK,0,0,0`  
-**Отчёт сформирован:** `2026-11-17T08:29:23Z`  
-**Исходный commit:** `7fd05fd95c107560808b3ca9576a64786f223763`  
+**Отчёт сформирован:** `2026-11-17T21:19:50Z`  
+**Исходный commit:** `a8d6897a3924e36b721a5ae5fbe81822fc598694`  
 **Последний известный рабочий commit:** `da15fef99b2388acf47a2317f62bb45baf53603a`
 
 ## Данные
