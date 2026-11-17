@@ -73,7 +73,7 @@
 | Vultr | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v6.txt) | 🟢 OK · обновлено |
 
 > 🟢 OK = опубликовано нормально · 🟡 PARTIAL/FILTERED = опубликовано с предупреждением · 🛡️ старая версия = сработала защита от плохого обновления.
-> Последняя проверка: 17 ноября 2026 г., 11:23 МСК · [машиночитаемый отчёт](data/provider-health.json)
+> Последняя проверка: 18 ноября 2026 г., 00:27 МСК · [машиночитаемый отчёт](data/provider-health.json)
 <!-- PROVIDER-HEALTH:END -->
 
 <!-- AUTO-STATS:START -->
@@ -81,20 +81,20 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
-| **FULL** | **17 620 CIDR** | **5 375 CIDR** |
-| **BALANCED** | **9 130 CIDR** | **3 093 CIDR** |
-| **PERFORMANCE** | **2 261 CIDR** | **668 CIDR** |
-| **MINIMAL** | **2 009 CIDR** | **653 CIDR** |
+| **FULL** | **17 704 CIDR** | **5 544 CIDR** |
+| **BALANCED** | **9 220 CIDR** | **3 261 CIDR** |
+| **PERFORMANCE** | **2 265 CIDR** | **667 CIDR** |
+| **MINIMAL** | **2 013 CIDR** | **652 CIDR** |
 | **STABLE** | **17 591 CIDR** | **5 116 CIDR** |
-| **CDN** | **2 009 CIDR** | **653 CIDR** |
-| **CLOUD** | **9 273 CIDR** | **2 366 CIDR** |
-| **VIDEO** | **7 594 CIDR** | **2 112 CIDR** |
-| **VPN** | **8 053 CIDR** | **2 704 CIDR** |
+| **CDN** | **2 013 CIDR** | **652 CIDR** |
+| **CLOUD** | **9 272 CIDR** | **2 367 CIDR** |
+| **VIDEO** | **7 593 CIDR** | **2 113 CIDR** |
+| **VPN** | **8 140 CIDR** | **2 872 CIDR** |
 | **MESSAGING** | **18 CIDR** | **8 CIDR** |
-| **ASN ALL** | **13 229 CIDR** | **6 256 CIDR** |
-| **ALL-CLOUD** | **9 274 CIDR** | **2 366 CIDR** |
+| **ASN ALL** | **13 319 CIDR** | **6 427 CIDR** |
+| **ALL-CLOUD** | **9 274 CIDR** | **2 367 CIDR** |
 
-**Обновлено:** 17 ноября 2026, 08:23 UTC · [полная статистика](data/statistics.json)
+**Обновлено:** 17 ноября 2026, 21:27 UTC · [полная статистика](data/statistics.json)
 
 > Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
