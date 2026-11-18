@@ -1,6 +1,6 @@
 {
   "version": 44,
-  "updated": "2026-11-17 21:20:09 UTC",
+  "updated": "2026-11-18 20:59:42 UTC",
   "ripe_min_peers": 1,
   "sources": [
     "official provider feeds",
@@ -224,29 +224,29 @@
     "ipv6": 16
   },
   "aggregate": {
-    "ipv4": 17706,
-    "ipv6": 5544
+    "ipv4": 17714,
+    "ipv6": 5526
   },
   "audit": [
     {
       "provider": "aws",
-      "ipv4_prefixes": 5422,
-      "ipv6_prefixes": 1563,
-      "previous_ipv4_prefixes": 5425,
-      "previous_ipv6_prefixes": 1562,
-      "ipv4_change_percent": -0.06,
-      "ipv6_change_percent": 0.06,
+      "ipv4_prefixes": 5424,
+      "ipv6_prefixes": 1561,
+      "previous_ipv4_prefixes": 5422,
+      "previous_ipv6_prefixes": 1563,
+      "ipv4_change_percent": 0.04,
+      "ipv6_change_percent": -0.13,
       "status": "OK",
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
     },
     {
       "provider": "cloudflare",
-      "ipv4_prefixes": 886,
+      "ipv4_prefixes": 887,
       "ipv6_prefixes": 124,
-      "previous_ipv4_prefixes": 883,
+      "previous_ipv4_prefixes": 886,
       "previous_ipv6_prefixes": 124,
-      "ipv4_change_percent": 0.34,
+      "ipv4_change_percent": 0.11,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -266,12 +266,12 @@
     },
     {
       "provider": "ovh",
-      "ipv4_prefixes": 1954,
+      "ipv4_prefixes": 1956,
       "ipv6_prefixes": 299,
-      "previous_ipv4_prefixes": 1945,
-      "previous_ipv6_prefixes": 298,
-      "ipv4_change_percent": 0.46,
-      "ipv6_change_percent": 0.34,
+      "previous_ipv4_prefixes": 1954,
+      "previous_ipv6_prefixes": 299,
+      "ipv4_change_percent": 0.1,
+      "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
@@ -314,11 +314,11 @@
     },
     {
       "provider": "oracle",
-      "ipv4_prefixes": 1235,
+      "ipv4_prefixes": 1238,
       "ipv6_prefixes": 331,
       "previous_ipv4_prefixes": 1233,
       "previous_ipv6_prefixes": 331,
-      "ipv4_change_percent": 0.16,
+      "ipv4_change_percent": 0.41,
       "ipv6_change_percent": 0.0,
       "status": "KEEP_OLD_PARTIAL",
       "source": "official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -338,11 +338,11 @@
     },
     {
       "provider": "cdn77",
-      "ipv4_prefixes": 194,
+      "ipv4_prefixes": 195,
       "ipv6_prefixes": 32,
       "previous_ipv4_prefixes": 194,
       "previous_ipv6_prefixes": 32,
-      "ipv4_change_percent": 0.0,
+      "ipv4_change_percent": 0.52,
       "ipv6_change_percent": 0.0,
       "status": "OK",
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
@@ -386,12 +386,12 @@
     },
     {
       "provider": "vultr",
-      "ipv4_prefixes": 971,
-      "ipv6_prefixes": 1880,
-      "previous_ipv4_prefixes": 883,
-      "previous_ipv6_prefixes": 1712,
-      "ipv4_change_percent": 9.97,
-      "ipv6_change_percent": 9.81,
+      "ipv4_prefixes": 976,
+      "ipv6_prefixes": 1867,
+      "previous_ipv4_prefixes": 971,
+      "previous_ipv6_prefixes": 1880,
+      "ipv4_change_percent": 0.51,
+      "ipv6_change_percent": -0.69,
       "status": "OK",
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "errors": 0
@@ -422,12 +422,12 @@
     },
     {
       "provider": "gcore",
-      "ipv4_prefixes": 530,
-      "ipv6_prefixes": 214,
-      "previous_ipv4_prefixes": 529,
-      "previous_ipv6_prefixes": 215,
-      "ipv4_change_percent": 0.19,
-      "ipv6_change_percent": -0.47,
+      "ipv4_prefixes": 527,
+      "ipv6_prefixes": 211,
+      "previous_ipv4_prefixes": 530,
+      "previous_ipv6_prefixes": 214,
+      "ipv4_change_percent": -0.57,
+      "ipv6_change_percent": -1.4,
       "status": "FILTERED",
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "errors": 0
@@ -472,15 +472,15 @@
   "diff": {},
   "providers": {
     "aws": {
-      "ipv4": 5422,
-      "ipv6": 1563,
+      "ipv4": 5424,
+      "ipv6": 1561,
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
       "rejected_ipv4": 0,
       "rejected_ipv6": 0
     },
     "cloudflare": {
-      "ipv4": 886,
+      "ipv4": 887,
       "ipv6": 124,
       "source": "official+cloud-ip-ranges+sw.ext.io+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
@@ -496,7 +496,7 @@
       "rejected_ipv6": 0
     },
     "ovh": {
-      "ipv4": 1954,
+      "ipv4": 1956,
       "ipv6": 299,
       "source": "cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
@@ -528,7 +528,7 @@
       "rejected_ipv6": 0
     },
     "oracle": {
-      "ipv4": 1235,
+      "ipv4": 1238,
       "ipv6": 331,
       "source": "official+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "KEEP_OLD_PARTIAL",
@@ -547,7 +547,7 @@
       "rejected_ipv6": 0
     },
     "cdn77": {
-      "ipv4": 194,
+      "ipv4": 195,
       "ipv6": 32,
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "OK",
@@ -579,8 +579,8 @@
       "rejected_ipv6": 0
     },
     "vultr": {
-      "ipv4": 971,
-      "ipv6": 1880,
+      "ipv4": 976,
+      "ipv6": 1867,
       "source": "RIPEstat+RIPE RIS+RouteViews+IPVerse",
       "status": "OK",
       "rejected_ipv4": 0,
@@ -603,8 +603,8 @@
       "rejected_ipv6": 0
     },
     "gcore": {
-      "ipv4": 530,
-      "ipv6": 214,
+      "ipv4": 527,
+      "ipv6": 211,
       "source": "official+cloud-ip-ranges+RIPEstat+RIPE RIS+RouteViews+IPVerse+RIPE routing-status",
       "status": "FILTERED",
       "rejected_ipv4": 2,
