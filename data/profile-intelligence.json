@@ -11,10 +11,10 @@
   },
   "profiles": {
     "minimal-v4": {
-      "prefixes": 2018,
-      "coverage_ips": 17441074,
-      "coverage_per_prefix": 8642,
-      "average_prefixlen": 23.71,
+      "prefixes": 2015,
+      "coverage_ips": 17441071,
+      "coverage_per_prefix": 8655,
+      "average_prefixlen": 23.7,
       "providers": [
         "cloudflare",
         "akamai",
@@ -24,13 +24,13 @@
       ]
     },
     "performance-v4": {
-      "prefixes": 2271,
-      "coverage_ips": 21209138,
-      "coverage_per_prefix": 9339,
-      "average_prefixlen": 23.35,
+      "prefixes": 2268,
+      "coverage_ips": 21209135,
+      "coverage_per_prefix": 9351,
+      "average_prefixlen": 23.34,
       "new_coverage_ips": 3768064,
-      "overlap_ips": 17441074,
-      "previous_coverage_ips": 17441074,
+      "overlap_ips": 17441071,
+      "previous_coverage_ips": 17441071,
       "is_superset": true,
       "providers": [
         "cloudflare",
@@ -44,12 +44,12 @@
     },
     "balanced-v4": {
       "prefixes": 9239,
-      "coverage_ips": 34942323,
+      "coverage_ips": 34946160,
       "coverage_per_prefix": 3782,
       "average_prefixlen": 23.24,
-      "new_coverage_ips": 13733185,
-      "overlap_ips": 21209138,
-      "previous_coverage_ips": 21209138,
+      "new_coverage_ips": 13737025,
+      "overlap_ips": 21209135,
+      "previous_coverage_ips": 21209135,
       "is_superset": true,
       "providers": [
         "cloudflare",
@@ -65,13 +65,13 @@
       ]
     },
     "full-v4": {
-      "prefixes": 17713,
-      "coverage_ips": 340145833,
-      "coverage_per_prefix": 19203,
+      "prefixes": 17714,
+      "coverage_ips": 340149926,
+      "coverage_per_prefix": 19202,
       "average_prefixlen": 22.4,
-      "new_coverage_ips": 305203510,
-      "overlap_ips": 34942323,
-      "previous_coverage_ips": 34942323,
+      "new_coverage_ips": 305203766,
+      "overlap_ips": 34946160,
+      "previous_coverage_ips": 34946160,
       "is_superset": true,
       "providers": [
         "akamai",
@@ -129,11 +129,11 @@
       ]
     },
     "balanced-v6": {
-      "prefixes": 3272,
-      "coverage_ips": 105087832926559928671606423945394,
-      "coverage_per_prefix": 32117308351638120009659665019,
-      "average_prefixlen": 49.84,
-      "new_coverage_ips": 77910330612189724549634368471040,
+      "prefixes": 3262,
+      "coverage_ips": 105087867985408697495852490424498,
+      "coverage_per_prefix": 32215778045802788931898372294,
+      "average_prefixlen": 49.85,
+      "new_coverage_ips": 77910365671038493373880434950144,
       "overlap_ips": 27177502314370204121972055474354,
       "previous_coverage_ips": 27177502314370204121972055474354,
       "is_superset": true,
@@ -151,13 +151,13 @@
       ]
     },
     "full-v6": {
-      "prefixes": 5555,
-      "coverage_ips": 285807358475435022637311258001602,
-      "coverage_per_prefix": 51450469572535557630479074347,
+      "prefixes": 5545,
+      "coverage_ips": 285807393534283791461557324480706,
+      "coverage_per_prefix": 51543263035939367260875982773,
       "average_prefixlen": 48.43,
       "new_coverage_ips": 180719525548875093965704834056208,
-      "overlap_ips": 105087832926559928671606423945394,
-      "previous_coverage_ips": 105087832926559928671606423945394,
+      "overlap_ips": 105087867985408697495852490424498,
+      "previous_coverage_ips": 105087867985408697495852490424498,
       "is_superset": true,
       "providers": [
         "akamai",
@@ -190,20 +190,20 @@
     "profiles": {
       "stable-v4": {
         "previous_prefixes": 17591,
-        "retained_prefixes": 17412,
-        "retention_ratio": 0.9990900726395199,
+        "retained_prefixes": 17407,
+        "retention_ratio": 0.9990750343423564,
         "previous_coverage_ips": 339915697,
-        "retained_coverage_ips": 339836325,
-        "retention_coverage_ratio": 0.9997664950436226,
+        "retained_coverage_ips": 339835299,
+        "retention_coverage_ratio": 0.9997634766481526,
         "bootstrap": false
       },
       "stable-v6": {
         "previous_prefixes": 5116,
-        "retained_prefixes": 5103,
-        "retention_ratio": 0.9977462869767076,
+        "retained_prefixes": 5098,
+        "retention_ratio": 0.9977461434378553,
         "previous_coverage_ips": 285322454702705283936628439515332,
-        "retained_coverage_ips": 285163230709486152066736060367042,
-        "retention_coverage_ratio": 0.999441950710171,
+        "retained_coverage_ips": 285163224664857053993590186836162,
+        "retention_coverage_ratio": 0.9994419295249154,
         "bootstrap": false
       }
     }
