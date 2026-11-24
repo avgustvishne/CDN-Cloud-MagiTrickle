@@ -55,7 +55,7 @@
 | Alibaba Cloud | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/alibaba-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/alibaba-v6.txt) | 🟢 OK · без изменений |
 | AWS | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/aws-v6.txt) | 🟢 OK · обновлено |
 | Backblaze | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/backblaze-v6.txt) | 🟢 OK · без изменений |
-| BuyVM | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v6.txt) | 🟢 OK · обновлено |
+| BuyVM | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/buyvm-v6.txt) | 🟢 OK · без изменений |
 | CDN77 | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cdn77-v6.txt) | 🟢 OK · без изменений |
 | Cloudflare | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/cloudflare-v6.txt) | 🟢 OK · обновлено |
 | Contabo | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/contabo-v6.txt) | 🟢 OK · без изменений |
@@ -73,7 +73,7 @@
 | Vultr | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v4.txt) | [скачать](https://raw.githubusercontent.com/avgustvishne/CDN-Cloud-MagiTrickle/main/data/vultr-v6.txt) | 🟢 OK · обновлено |
 
 > 🟢 OK = опубликовано нормально · 🟡 PARTIAL/FILTERED = опубликовано с предупреждением · 🛡️ старая версия = сработала защита от плохого обновления.
-> Последняя проверка: 24 ноября 2026 г., 03:28 МСК · [машиночитаемый отчёт](data/provider-health.json)
+> Последняя проверка: 24 ноября 2026 г., 13:38 МСК · [машиночитаемый отчёт](data/provider-health.json)
 <!-- PROVIDER-HEALTH:END -->
 
 <!-- AUTO-STATS:START -->
@@ -81,20 +81,20 @@
 
 | Набор | IPv4 | IPv6 |
 |---|---:|---:|
-| **FULL** | **17 683 CIDR** | **5 532 CIDR** |
-| **BALANCED** | **9 213 CIDR** | **3 245 CIDR** |
-| **PERFORMANCE** | **2 255 CIDR** | **662 CIDR** |
-| **MINIMAL** | **2 002 CIDR** | **647 CIDR** |
+| **FULL** | **17 708 CIDR** | **5 559 CIDR** |
+| **BALANCED** | **9 237 CIDR** | **3 272 CIDR** |
+| **PERFORMANCE** | **2 254 CIDR** | **663 CIDR** |
+| **MINIMAL** | **2 001 CIDR** | **648 CIDR** |
 | **STABLE** | **17 714 CIDR** | **5 545 CIDR** |
-| **CDN** | **2 002 CIDR** | **647 CIDR** |
-| **CLOUD** | **9 256 CIDR** | **2 368 CIDR** |
-| **VIDEO** | **7 587 CIDR** | **2 113 CIDR** |
-| **VPN** | **8 126 CIDR** | **2 859 CIDR** |
+| **CDN** | **2 001 CIDR** | **648 CIDR** |
+| **CLOUD** | **9 258 CIDR** | **2 369 CIDR** |
+| **VIDEO** | **7 589 CIDR** | **2 114 CIDR** |
+| **VPN** | **8 150 CIDR** | **2 885 CIDR** |
 | **MESSAGING** | **18 CIDR** | **8 CIDR** |
-| **ASN ALL** | **13 166 CIDR** | **6 440 CIDR** |
-| **ALL-CLOUD** | **9 262 CIDR** | **2 368 CIDR** |
+| **ASN ALL** | **13 175 CIDR** | **6 441 CIDR** |
+| **ALL-CLOUD** | **9 271 CIDR** | **2 369 CIDR** |
 
-**Обновлено:** 24 ноября 2026, 00:28 UTC · [полная статистика](data/statistics.json)
+**Обновлено:** 24 ноября 2026, 10:38 UTC · [полная статистика](data/statistics.json)
 
 > Статистика рассчитывается из опубликованных нормализованных CIDR-файлов после успешного прохождения проверок.
 <!-- AUTO-STATS:END -->
